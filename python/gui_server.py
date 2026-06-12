@@ -786,6 +786,25 @@ def read_solver_status(status_file: Optional[Path]) -> Dict[str, Any]:
         return {"available": False, "running": False, "finished": []}
 
 
+def disk_debug(tablebase_dir: Path, status_file: Optional[Path]) -> Dict[str, Any]:
+    data_root = Path("/data")
+    listing: List[str] = []
+    if data_root.is_dir():
+        listing = sorted(entry.name for entry in data_root.iterdir())
+    return {
+        "data_root": str(data_root),
+        "data_root_exists": data_root.is_dir(),
+        "data_root_writable": os.access(data_root, os.W_OK) if data_root.is_dir() else False,
+        "data_root_listing": listing,
+        "tablebase_dir": str(tablebase_dir),
+        "tablebase_dir_exists": tablebase_dir.is_dir(),
+        "status_file": str(status_file) if status_file else None,
+        "status_file_exists": status_file.is_file() if status_file else None,
+        "tablebases": list_tablebases(tablebase_dir),
+        "solver_status": read_solver_status(status_file),
+    }
+
+
 class GuiState:
     def __init__(
         self,
@@ -1049,6 +1068,8 @@ class GuiHandler(BaseHTTPRequestHandler):
             self.send_json(read_solver_status(self.status_file))
         elif path == "/api/tablebases":
             self.send_json({"tablebases": list_tablebases(self.tablebase_dir)})
+        elif path == "/api/disk-debug":
+            self.send_json(disk_debug(self.tablebase_dir, self.status_file))
         else:
             self.send_error(404)
 
