@@ -26,7 +26,7 @@ HTML = r"""<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Col Tablebase</title>
+  <title>Col — Position Explorer</title>
   <style>
     :root {
       color-scheme: light;
@@ -145,6 +145,22 @@ HTML = r"""<!doctype html>
     button:disabled {
       cursor: default;
       opacity: 0.45;
+    }
+
+    .nav-link {
+      align-self: center;
+      color: var(--muted);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .nav-link:hover {
+      color: var(--ink);
+      border-color: var(--line-strong);
     }
 
     .cell:disabled {
@@ -416,7 +432,7 @@ HTML = r"""<!doctype html>
     <main class="main">
       <section class="topbar">
         <div>
-          <div class="title">Col Tablebase</div>
+          <div class="title">Position Explorer</div>
           <div class="meta">
             <span id="boardSize"></span>
             <span id="turn"></span>
@@ -424,7 +440,7 @@ HTML = r"""<!doctype html>
           </div>
         </div>
         <div class="actions">
-          <a href="/dashboard" style="align-self:center;color:#0d9488;font-weight:600;text-decoration:none;font-size:12px">Solver status</a>
+          <a href="/" class="nav-link">Dashboard</a>
           <button id="vsComputerBtn">Play vs CPU</button>
           <button id="undoBtn">Undo</button>
           <button id="resetBtn">Reset</button>
@@ -634,78 +650,405 @@ DASHBOARD_HTML = r"""<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Col Solver Dashboard</title>
+  <title>Col — Research Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root { color-scheme: light; --bg: #fafafa; --panel: #fff; --ink: #1d1d1f; --muted: #6e6e73; --line: #e5e5ea; --accent: #0d9488; }
+    :root {
+      color-scheme: light;
+      --paper: #f3f1eb;
+      --surface: #fffcf7;
+      --ink: #1a1814;
+      --muted: #6b6459;
+      --line: #ddd6c8;
+      --line-strong: #c9bfb0;
+      --accent: #1e3a5f;
+      --accent-soft: #e8eef5;
+      --live: #166534;
+      --live-soft: #dcfce7;
+      --idle: #78716c;
+      --idle-soft: #f5f5f4;
+      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+      --sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; font: 14px/1.5 ui-sans-serif, system-ui, sans-serif; background: var(--bg); color: var(--ink); }
-    header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: var(--panel); border-bottom: 1px solid var(--line); }
-    header a { color: var(--accent); text-decoration: none; font-weight: 600; }
-    main { max-width: 960px; margin: 0 auto; padding: 20px; display: grid; gap: 16px; }
-    section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
-    h1 { margin: 0; font-size: 18px; }
-    h2 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
-    .stat { background: #f8fafc; border-radius: 8px; padding: 12px; }
-    .stat label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-    .stat value { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
-    th { color: var(--muted); font-size: 11px; text-transform: uppercase; }
-    .idle { color: var(--muted); }
-    .running { color: var(--accent); font-weight: 600; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0)),
+        repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(30,58,95,0.035) 24px),
+        var(--paper);
+      color: var(--ink);
+      font: 14px/1.55 var(--sans);
+    }
+    .shell { max-width: 1120px; margin: 0 auto; padding: 0 24px 48px; }
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 0 14px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 28px;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .mark {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, var(--accent-soft), #fff),
+        repeating-linear-gradient(90deg, transparent, transparent 7px, rgba(30,58,95,0.08) 8px);
+      flex-shrink: 0;
+    }
+    .brand-text { min-width: 0; }
+    .brand-text h1 {
+      margin: 0;
+      font: 600 22px/1.15 var(--serif);
+      letter-spacing: -0.02em;
+    }
+    .brand-text p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    nav { display: flex; gap: 6px; flex-shrink: 0; }
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+    nav a:hover { color: var(--ink); background: rgba(255,255,255,0.65); }
+    nav a.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: rgba(30,58,95,0.12);
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.9fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 1px 0 rgba(26,24,20,0.03);
+    }
+    .hero-main { padding: 22px 24px; }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .pill.live { background: var(--live-soft); color: var(--live); }
+    .pill.idle { background: var(--idle-soft); color: var(--idle); }
+    .pill.offline { background: #fef2f2; color: #991b1b; }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+    .pill.live .dot { animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+    #currentBoard {
+      margin: 0;
+      font: 600 34px/1.05 var(--serif);
+      letter-spacing: -0.03em;
+    }
+    #currentSummary {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .queue-line {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .queue-line strong { color: var(--ink); font-weight: 600; }
+    .hero-side { padding: 18px 20px; display: grid; gap: 12px; align-content: start; }
+    .mini-stat label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .mini-stat value, .mini-stat .value {
+      display: block;
+      font: 600 18px/1.2 var(--mono);
+      font-variant-numeric: tabular-nums;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .metric {
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    .metric label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .metric .value {
+      font: 600 24px/1 var(--mono);
+      font-variant-numeric: tabular-nums;
+    }
+    .metric .hint {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .columns {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 18px;
+    }
+    .section { padding: 18px 20px 8px; }
+    .section h2 {
+      margin: 0 0 14px;
+      font: 600 15px/1.2 var(--serif);
+      letter-spacing: -0.01em;
+    }
+    .section .caption {
+      margin: -8px 0 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead th {
+      text-align: left;
+      padding: 0 10px 10px 0;
+      border-bottom: 1px solid var(--line-strong);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    tbody td {
+      padding: 10px 10px 10px 0;
+      border-bottom: 1px solid var(--line);
+      font-variant-numeric: tabular-nums;
+    }
+    tbody tr:last-child td { border-bottom: 0; }
+    .num { font-family: var(--mono); font-size: 12px; }
+    .winner { font-weight: 600; }
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .empty {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 8px 0 16px;
+    }
+    footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    footer code {
+      font-family: var(--mono);
+      font-size: 11px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    @media (max-width: 900px) {
+      .hero, .metrics, .columns { grid-template-columns: 1fr; }
+      .site-header { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Col continuous solve</h1>
-    <a href="/">Open tablebase explorer →</a>
-  </header>
-  <main>
-    <section>
-      <h2>Current run</h2>
-      <div id="currentSummary" class="idle">Waiting for worker…</div>
-      <div class="grid" style="margin-top:12px">
-        <div class="stat"><label>States searched</label><div class="stat value" id="states">-</div></div>
-        <div class="stat"><label>Rate</label><div class="stat value" id="rate">-</div></div>
-        <div class="stat"><label>Elapsed</label><div class="stat value" id="elapsed">-</div></div>
-        <div class="stat"><label>Memo entries</label><div class="stat value" id="memo">-</div></div>
+  <div class="shell">
+    <header class="site-header">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <div class="brand-text">
+          <h1>Col Research</h1>
+          <p>Strong solving, tablebase generation, and position analysis</p>
+        </div>
+      </div>
+      <nav>
+        <a href="/" class="active">Dashboard</a>
+        <a href="/explorer">Position explorer</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="panel hero-main">
+        <div class="eyebrow">Active computation</div>
+        <div class="status-row">
+          <span id="statusPill" class="pill offline"><span class="dot"></span><span id="statusLabel">Offline</span></span>
+          <span id="refreshNote" class="note">Polling every 2s</span>
+        </div>
+        <p id="currentBoard">—</p>
+        <p id="currentSummary">Waiting for solver worker…</p>
+        <div class="queue-line">
+          <div>Queue: <strong id="queueDetail">—</strong></div>
+          <div>Boards completed this session: <strong id="boardsDone">—</strong></div>
+        </div>
+      </div>
+      <div class="panel hero-side">
+        <div class="mini-stat">
+          <label>Corpus size</label>
+          <span class="value" id="corpusCount">—</span>
+        </div>
+        <div class="mini-stat">
+          <label>Total solved (session)</label>
+          <span class="value" id="sessionSolved">—</span>
+        </div>
+        <div class="mini-stat">
+          <label>Last status update</label>
+          <span class="value" id="lastUpdate" style="font-size:13px">—</span>
+        </div>
       </div>
     </section>
-    <section>
-      <h2>Finished boards</h2>
-      <table>
-        <thead><tr><th>Board</th><th>Winner</th><th>States</th><th>Time</th><th>Notes</th></tr></thead>
-        <tbody id="finished"></tbody>
-      </table>
+
+    <section class="metrics">
+      <div class="metric">
+        <label>States searched</label>
+        <div class="value" id="states">—</div>
+        <div class="hint">Current board frontier</div>
+      </div>
+      <div class="metric">
+        <label>Throughput</label>
+        <div class="value" id="rate">—</div>
+        <div class="hint">States per second</div>
+      </div>
+      <div class="metric">
+        <label>Elapsed</label>
+        <div class="value" id="elapsed">—</div>
+        <div class="hint">Wall clock</div>
+      </div>
+      <div class="metric">
+        <label>Memo entries</label>
+        <div class="value" id="memo">—</div>
+        <div class="hint">Transposition table</div>
+      </div>
     </section>
-    <section>
-      <h2>Tablebases on disk</h2>
-      <table>
-        <thead><tr><th>Board</th><th>Size</th><th>Updated</th></tr></thead>
-        <tbody id="tablebases"></tbody>
-      </table>
-    </section>
-  </main>
+
+    <div class="columns">
+      <section class="panel section">
+        <h2>Results archive</h2>
+        <p class="caption">Boards finished in the current continuous-solve session.</p>
+        <table>
+          <thead><tr><th>Board</th><th>Outcome</th><th>States</th><th>Time</th><th>Notes</th></tr></thead>
+          <tbody id="finished"></tbody>
+        </table>
+        <div id="finishedEmpty" class="empty" hidden>No completed boards yet.</div>
+      </section>
+      <section class="panel section">
+        <h2>Tablebase corpus</h2>
+        <p class="caption">Persistent <code>*_sym.pkl</code> files on disk.</p>
+        <table>
+          <thead><tr><th>Board</th><th>Size</th><th>Modified</th></tr></thead>
+          <tbody id="tablebases"></tbody>
+        </table>
+        <div id="tablebasesEmpty" class="empty" hidden>No tablebase files found.</div>
+      </section>
+    </div>
+
+    <footer>
+      <span>Rust DFS · shadow-key memoization · adaptive AND-split parallelism</span>
+      <span>Updated <span id="footerUpdated">—</span></span>
+    </footer>
+  </div>
   <script>
     function fmt(n) {
-      if (n == null || n === '') return '-';
+      if (n == null || n === '') return '—';
       return Number(n).toLocaleString();
     }
     function fmtRate(n) {
-      if (n == null) return '-';
+      if (n == null) return '—';
       return fmt(Math.round(n)) + '/s';
     }
     function fmtSec(n) {
-      if (n == null) return '-';
+      if (n == null) return '—';
       return Number(n).toFixed(1) + 's';
     }
     function fmtBytes(n) {
-      if (!n) return '-';
+      if (!n) return '—';
       const units = ['B', 'KB', 'MB', 'GB'];
       let v = n, u = 0;
       while (v >= 1024 && u < units.length - 1) { v /= 1024; u++; }
       return v.toFixed(u ? 1 : 0) + ' ' + units[u];
+    }
+    function fmtTime(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso);
+      return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+    }
+    function setPill(kind, label) {
+      const pill = document.getElementById('statusPill');
+      pill.className = 'pill ' + kind;
+      document.getElementById('statusLabel').textContent = label;
     }
     async function refresh() {
       const [statusRes, tbRes] = await Promise.all([
@@ -715,34 +1058,74 @@ DASHBOARD_HTML = r"""<!doctype html>
       const status = await statusRes.json();
       const tb = await tbRes.json();
       const cur = status.current;
-      const summary = document.getElementById('currentSummary');
+      const queue = status.queue || {};
+      const finished = status.finished || [];
+      const tablebases = tb.tablebases || [];
+
       if (status.running && cur) {
-        summary.className = 'running';
-        summary.textContent = `Solving ${cur.m} x ${cur.n} (total area ${status.queue?.current_total ?? '?'})`;
-      } else if (status.last_finished) {
-        summary.className = 'idle';
-        summary.textContent = `Idle — last finished ${status.last_finished.m} x ${status.last_finished.n}`;
+        setPill('live', 'Computing');
+        document.getElementById('currentBoard').textContent = `${cur.m} × ${cur.n}`;
+        document.getElementById('currentSummary').textContent =
+          `Searching total area ${queue.current_total ?? '?'} · board ${queue.board_index ?? '?'} of ${queue.boards_on_total ?? '?'}`;
+      } else if (status.available) {
+        setPill('idle', 'Idle');
+        if (status.last_finished) {
+          document.getElementById('currentBoard').textContent =
+            `${status.last_finished.m} × ${status.last_finished.n}`;
+          document.getElementById('currentSummary').textContent =
+            `Last result: ${status.last_finished.winner} wins in ${fmtSec(status.last_finished.seconds)}`;
+        } else {
+          document.getElementById('currentBoard').textContent = 'Standing by';
+          document.getElementById('currentSummary').textContent = 'Worker connected; waiting for next board.';
+        }
       } else {
-        summary.className = 'idle';
-        summary.textContent = status.available ? 'Idle' : 'No status file yet (worker starting?)';
+        setPill('offline', 'Offline');
+        document.getElementById('currentBoard').textContent = 'No worker';
+        document.getElementById('currentSummary').textContent =
+          'Status file not found yet — solver may still be starting.';
       }
-      document.getElementById('states').textContent = cur ? fmt(cur.states) : '-';
-      document.getElementById('rate').textContent = cur ? fmtRate(cur.rate) : '-';
-      document.getElementById('elapsed').textContent = cur ? fmtSec(cur.elapsed_s) : '-';
-      document.getElementById('memo').textContent = cur && cur.memo != null ? fmt(cur.memo) : '-';
-      const finished = document.getElementById('finished');
-      finished.innerHTML = '';
-      for (const row of (status.finished || []).slice().reverse()) {
+
+      const start = queue.start_total ?? '?';
+      const maxTotal = queue.max_total != null ? queue.max_total : '∞';
+      document.getElementById('queueDetail').textContent =
+        `area ${start} → ${maxTotal}` + (queue.current_total != null ? ` · working on area ${queue.current_total}` : '');
+      document.getElementById('boardsDone').textContent =
+        status.boards_done != null ? fmt(status.boards_done) : fmt(finished.length);
+      document.getElementById('corpusCount').textContent = fmt(tablebases.length);
+      document.getElementById('sessionSolved').textContent = fmt(finished.length);
+      document.getElementById('lastUpdate').textContent = fmtTime(status.updated_at);
+      document.getElementById('footerUpdated').textContent = fmtTime(status.updated_at);
+
+      document.getElementById('states').textContent = cur ? fmt(cur.states) : '—';
+      document.getElementById('rate').textContent = cur ? fmtRate(cur.rate) : '—';
+      document.getElementById('elapsed').textContent = cur ? fmtSec(cur.elapsed_s) : '—';
+      document.getElementById('memo').textContent = cur && cur.memo != null ? fmt(cur.memo) : '—';
+
+      const finishedBody = document.getElementById('finished');
+      finishedBody.innerHTML = '';
+      const rows = finished.slice().reverse();
+      document.getElementById('finishedEmpty').hidden = rows.length > 0;
+      for (const row of rows) {
         const tr = document.createElement('tr');
-        const notes = row.skipped ? 'skipped' : (row.saved ? 'saved' : '');
-        tr.innerHTML = `<td>${row.m} x ${row.n}</td><td>${row.winner}</td><td>${fmt(row.states)}</td><td>${fmtSec(row.seconds)}</td><td>${notes}</td>`;
-        finished.appendChild(tr);
+        const notes = row.skipped ? 'skipped' : (row.saved ? 'saved to disk' : 'memory only');
+        tr.innerHTML =
+          `<td>${row.m} × ${row.n}</td>` +
+          `<td class="winner">${row.winner}</td>` +
+          `<td class="num">${fmt(row.states)}</td>` +
+          `<td class="num">${fmtSec(row.seconds)}</td>` +
+          `<td class="note">${notes}</td>`;
+        finishedBody.appendChild(tr);
       }
+
       const tbody = document.getElementById('tablebases');
       tbody.innerHTML = '';
-      for (const row of tb.tablebases || []) {
+      document.getElementById('tablebasesEmpty').hidden = tablebases.length > 0;
+      for (const row of tablebases) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${row.m} x ${row.n}</td><td>${fmtBytes(row.size_bytes)}</td><td>${row.updated_at || '-'}</td>`;
+        tr.innerHTML =
+          `<td>${row.m} × ${row.n}</td>` +
+          `<td class="num">${fmtBytes(row.size_bytes)}</td>` +
+          `<td class="note">${fmtTime(row.updated_at)}</td>`;
         tbody.appendChild(tr);
       }
     }
@@ -1058,10 +1441,10 @@ class GuiHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         path = urlparse(self.path).path
-        if path == "/":
-            self.send_html(HTML)
-        elif path == "/dashboard":
+        if path in ("/", "/dashboard"):
             self.send_html(DASHBOARD_HTML)
+        elif path == "/explorer":
+            self.send_html(HTML)
         elif path == "/api/state":
             self.send_json(self.app.snapshot())
         elif path == "/api/solver/status":
@@ -1166,8 +1549,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     print(f"Tablebase ready ({entries:,} entries).", flush=True)
     server = ThreadingHTTPServer((args.host, args.port), GuiHandler)
     url = f"http://{args.host}:{server.server_port}"
-    print(f"Col tablebase GUI: {url}", flush=True)
-    print(f"Solver dashboard: {url}/dashboard", flush=True)
+    print(f"Col research dashboard: {url}", flush=True)
+    print(f"Position explorer: {url}/explorer", flush=True)
     print("Press Ctrl+C to stop.")
     try:
         server.serve_forever()

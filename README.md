@@ -51,8 +51,9 @@ Deploy continuous solving + web explorer to [Render](https://render.com):
 
 | URL | Purpose |
 |---|---|
-| `/` | Tablebase explorer |
-| `/dashboard` | Live solver progress + finished tablebases |
+| `/` | Research dashboard (solver progress, tablebase corpus) |
+| `/explorer` | Interactive position explorer |
+| `/dashboard` | Alias for `/` |
 
 For a **manual** setup (no Blueprint): create one **Web Service** with Dockerfile `deploy/Dockerfile`, command **`./deploy/start-all.sh`**, disk at **`/data`**, and the env vars below. Do **not** split into a separate Background Worker unless you add external storage (S3, etc.).
 

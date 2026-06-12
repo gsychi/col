@@ -185,7 +185,7 @@ function startGui({ m, n, tablebaseDir }) {
     child.stdout.on("data", (chunk) => {
       const text = chunk.toString();
       send("gui-log", text);
-      const match = /Col tablebase GUI:\s+(http:\/\/\S+)/.exec(text);
+      const match = /Position explorer:\s+(http:\/\/\S+)/.exec(text);
       if (match) {
         announcedUrl = match[1];
         finish(announcedUrl).catch((error) => {
