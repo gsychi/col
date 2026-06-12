@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Col Tablebase</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="toolbar">
+      <div class="window-title">Col Tablebase</div>
+      <div class="toolbar-spacer"></div>
+      <button id="chooseDatabaseBtn" type="button">Choose Database…</button>
+    </header>
+
+    <div class="content">
+      <aside class="inspector">
+        <section class="group">
+          <div class="label">Database</div>
+          <select id="databaseSelect"></select>
+          <div id="databasePath" class="path">No database selected</div>
+        </section>
+
+        <section class="group">
+          <div class="label">Board</div>
+          <dl class="metadata">
+            <div><dt>Size</dt><dd id="boardSize">-</dd></div>
+            <div><dt>File size</dt><dd id="fileSize">-</dd></div>
+            <div><dt>Updated</dt><dd id="updatedAt">-</dd></div>
+          </dl>
+        </section>
+
+        <section class="group">
+          <div class="label">Status</div>
+          <div id="status" class="status">Choose a tablebase file.</div>
+        </section>
+      </aside>
+
+      <main class="viewer">
+        <div id="emptyState" class="empty">
+          <div>
+            <h1>Select a tablebase</h1>
+            <p>Choose a <code>3x11_sym.pkl</code>-style file from <code>data/tablebases/</code>, or use <strong>Choose Database…</strong> above. Board size is inferred from the filename.</p>
+          </div>
+        </div>
+        <iframe id="explorerFrame" title="Col tablebase explorer"></iframe>
+      </main>
+    </div>
+  </div>
+
+  <script src="./renderer.js"></script>
+</body>
+</html>

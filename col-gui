@@ -1,0 +1,11 @@
+#!/bin/sh
+# Desktop tablebase explorer (Electron + Python backend).
+#
+#   ./col-gui
+#
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+if [ ! -d "$ROOT/gui/node_modules" ]; then
+  echo "Installing GUI dependencies..." >&2
+  (cd "$ROOT/gui" && npm install) || exit 1
+fi
+exec npm --prefix "$ROOT/gui" start

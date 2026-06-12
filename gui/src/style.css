@@ -1,0 +1,226 @@
+:root {
+  color-scheme: light;
+  --bg: #f5f5f7;
+  --chrome: #ececf0;
+  --sidebar: #f7f7f9;
+  --panel: #ffffff;
+  --line: #d6d6dc;
+  --line-dark: #b9bac2;
+  --text: #1d1d1f;
+  --secondary: #6e6e73;
+  --green: #208a3c;
+  --red: #c9342f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+button {
+  min-height: 28px;
+  padding: 4px 12px;
+  border: 1px solid var(--line-dark);
+  border-radius: 6px;
+  background: linear-gradient(#ffffff, #f4f4f5);
+  color: var(--text);
+  cursor: pointer;
+}
+
+button:active {
+  background: linear-gradient(#e9e9ec, #f4f4f5);
+}
+
+select {
+  width: 100%;
+  min-height: 28px;
+  padding: 3px 28px 3px 8px;
+  border: 1px solid var(--line-dark);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+}
+
+code {
+  padding: 1px 4px;
+  border: 1px solid #dedee3;
+  border-radius: 4px;
+  background: #f2f2f4;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+}
+
+.app {
+  display: grid;
+  grid-template-rows: 48px minmax(0, 1fr);
+  height: 100vh;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px 0 78px;
+  border-bottom: 1px solid var(--line);
+  background: var(--chrome);
+  -webkit-app-region: drag;
+}
+
+.toolbar button,
+.toolbar select {
+  -webkit-app-region: no-drag;
+}
+
+.window-title {
+  font-weight: 600;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: 0;
+}
+
+.inspector {
+  border-right: 1px solid var(--line);
+  background: var(--sidebar);
+  overflow: auto;
+}
+
+.group {
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.label {
+  margin-bottom: 8px;
+  color: var(--secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.path {
+  margin-top: 8px;
+  overflow: hidden;
+  color: var(--secondary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.metadata {
+  margin: 0;
+}
+
+.metadata div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 24px;
+  align-items: baseline;
+}
+
+.metadata dt {
+  color: var(--secondary);
+}
+
+.metadata dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.status {
+  min-height: 32px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--secondary);
+}
+
+.status[data-kind="ok"] {
+  color: var(--green);
+}
+
+.status[data-kind="error"] {
+  color: var(--red);
+}
+
+.viewer {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  background: #fafafa;
+}
+
+.viewer iframe {
+  display: none;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fafafa;
+}
+
+.viewer iframe.visible {
+  display: block;
+}
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--secondary);
+  background: #f5f5f7;
+}
+
+.empty.hidden {
+  display: none;
+}
+
+.empty > div {
+  max-width: 420px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  text-align: center;
+}
+
+.empty h1 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.empty p {
+  margin: 0;
+  line-height: 1.5;
+}

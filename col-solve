@@ -1,0 +1,13 @@
+#!/bin/sh
+# Col solver (Rust). Run from the repo root.
+#
+#   ./col-solve --m 5 --n 7 --progress
+#   ./col-solve --m 3 --n 11 --no-tablebase
+#
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+BIN="$ROOT/solver/target/release/col-rs"
+if [ ! -x "$BIN" ]; then
+  echo "Building solver (first run)..." >&2
+  (cd "$ROOT/solver" && cargo build --release) || exit 1
+fi
+exec "$BIN" "$@"

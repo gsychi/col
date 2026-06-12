@@ -1,0 +1,9 @@
+#!/bin/sh
+# Estimate state counts and solve times for Col boards.
+#
+#   ./col-predict --estimate
+#   ./col-predict --estimate --plot --save predict/complexity.png
+#   ./col-predict 7x7 5x9
+#
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+exec python3 "$ROOT/predict/estimate.py" "$@"

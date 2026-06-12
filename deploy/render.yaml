@@ -1,0 +1,44 @@
+# Render blueprint: https://render.com/docs/blueprint-spec
+#
+# Connect this repo in Render → New → Blueprint, or apply manually from the dashboard.
+services:
+  - type: web
+    name: col-web
+    runtime: docker
+    dockerfilePath: ./deploy/Dockerfile
+    dockerCommand: ./deploy/start-web.sh
+    plan: starter
+    disk:
+      name: col-data
+      mountPath: /data
+      sizeGB: 10
+    envVars:
+      - key: TABLEBASE_DIR
+        value: /data/tablebases
+      - key: STATUS_FILE
+        value: /data/solver_status.json
+      - key: COL_M
+        value: "3"
+      - key: COL_N
+        value: "11"
+
+  - type: worker
+    name: col-worker
+    runtime: docker
+    dockerfilePath: ./deploy/Dockerfile
+    dockerCommand: ./deploy/start-worker.sh
+    plan: starter
+    disk:
+      name: col-data
+      mountPath: /data
+      sizeGB: 10
+    envVars:
+      - key: TABLEBASE_DIR
+        value: /data/tablebases
+      - key: STATUS_FILE
+        value: /data/solver_status.json
+      - key: SOLVER_THREADS
+        value: "12"
+      - key: CONTINUOUS_START_TOTAL
+        value: "3"
+      # Omit CONTINUOUS_MAX_TOTAL to run until interrupted.

@@ -1,0 +1,9 @@
+#!/bin/sh
+# Continuously solve Col boards by odd total area and update the tablebase.
+#
+#   ./continuous-solve
+#   ./continuous-solve --max-total 25
+#   ./continuous-solve --skip-existing --status-file /tmp/status.json -- --progress --threads 12
+#
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+exec python3 "$ROOT/continuous_solve.py" "$@"
