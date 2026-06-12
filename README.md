@@ -62,6 +62,10 @@ For a **manual** setup (no Blueprint): create one **Web Service** with Dockerfil
 | `TABLEBASE_DIR` | `/data/tablebases` | Shared tablebase storage |
 | `STATUS_FILE` | `/data/solver_status.json` | Live progress for dashboard |
 | `SOLVER_THREADS` | `auto` (all CPUs) | Worker: `--threads` for col-solve; set a number to cap |
+| `SOLVER_MEMO` | `fixed` | Transposition table: `fixed` (RAM cap), `open`, or `hash` |
+| `SOLVER_MEMO_BITS` | auto from RAM | Fixed table size: `2^bits` slots × 16 bytes (~18% of RAM by default) |
+| `SOLVER_MEMO_FRACTION` | `0.18` | Share of host RAM for the fixed memo table (leaves headroom for save spikes + web UI) |
+| `SOLVER_MEMO_MIN_LEGAL` | (none) | Skip memo below N legal cells (e.g. `8` on huge boards) |
 | `CONTINUOUS_START_TOTAL` | `3` | First odd cell total to solve |
 | `CONTINUOUS_MAX_TOTAL` | (none) | Optional cap, e.g. `35` for 5×7 era |
 | `COL_M` / `COL_N` | `3` / `11` | Default board for explorer UI |
