@@ -39,12 +39,16 @@ Tablebases are saved to `data/tablebases/` by default.
 Deploy continuous solving + web explorer to [Render](https://render.com):
 
 1. Push this repo to GitHub.
-2. In Render: **New → Blueprint** and point at `deploy/render.yaml`, or create two services manually from `deploy/Dockerfile`:
-   - **Web** — `./deploy/start-web.sh` (explorer at `/`, dashboard at `/dashboard`)
-   - **Worker** — `./deploy/start-worker.sh` (runs `./continuous-solve` with `--progress`)
-3. Attach a **persistent disk** (10GB) at `/data` to **both** services.
+2. In Render: **New → Blueprint** → repo `gsychi/col` → blueprint path **`deploy/render.yaml`**.
 
-The worker runs Rust `col-solve` in a loop; the web service reads completed tablebases and live progress from `/data/solver_status.json`.
+**Important:** Render disks are **per-service only** — two separate services cannot share one disk. This blueprint runs the solver and web UI in **one** web service (`deploy/start-all.sh`) so they share `/data`.
+
+| URL | Purpose |
+|---|---|
+| `/` | Tablebase explorer |
+| `/dashboard` | Live solver progress + finished tablebases |
+
+For a **manual** setup (no Blueprint): create one **Web Service** with Dockerfile `deploy/Dockerfile`, command **`./deploy/start-all.sh`**, disk at **`/data`**, and the env vars below. Do **not** split into a separate Background Worker unless you add external storage (S3, etc.).
 
 | Env var | Default | Purpose |
 |---|---|---|

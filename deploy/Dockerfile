@@ -13,7 +13,7 @@ COPY col-solve continuous-solve continuous_solve.py ./
 COPY python/ python/
 COPY deploy/start-web.sh deploy/start-worker.sh deploy/
 
-RUN chmod +x col-solve continuous-solve deploy/start-web.sh deploy/start-worker.sh
+RUN chmod +x col-solve continuous-solve deploy/start-web.sh deploy/start-worker.sh deploy/start-all.sh
 
 ENV PYTHONPATH=/app/python
 ENV TABLEBASE_DIR=/data/tablebases
