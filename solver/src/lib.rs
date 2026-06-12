@@ -866,6 +866,465 @@ fn solve_parallel_root<M: Memo + Sync>(
     }
 }
 
+/// Move bits in search order for `legal`, optionally trying `preferred` first.
+fn ordered_move_bits(board: &Board, legal: u64, preferred: Option<usize>) -> Vec<u64> {
+    let mut bits = Vec::new();
+    if let Some(cell) = preferred {
+        bits.push(1u64 << cell);
+    }
+    for &(cell, bit) in &board.move_order {
+        if Some(cell) == preferred || legal & bit == 0 {
+            continue;
+        }
+        bits.push(bit);
+    }
+    bits
+}
+
+#[derive(Clone, Copy)]
+struct SubTask {
+    key: u128,
+    p1: u64,
+    p2: u64,
+}
+
+enum JobState {
+    Unexpanded,
+    Running {
+        generation: u32,
+        reply_index: usize,
+        q_key: u128,
+        subtasks: Vec<SubTask>,
+        next: usize,
+        pending: usize,
+    },
+    Done,
+}
+
+struct OpeningJob {
+    key: u128,
+    p1: u64,
+    p2: u64,
+    /// P2 reply bits in move order.
+    replies: Vec<u64>,
+    state: JobState,
+}
+
+struct SchedState {
+    jobs: Vec<OpeningJob>,
+    active: usize,
+    result: Option<bool>,
+}
+
+struct Claim {
+    job: usize,
+    generation: u32,
+    task: SubTask,
+}
+
+enum Poll {
+    Work(Claim),
+    NoWorkYet,
+    Finished,
+}
+
+enum Advance {
+    /// Opening refuted (P2-to-move wins it); job done.
+    JobDone,
+    /// Every P2 reply fails: this opening is a P1 win, so P1 wins the game.
+    P1Wins,
+    /// Subtasks installed; workers can claim them.
+    Working,
+}
+
+enum ReplyOutcome {
+    Refuted,
+    NextReply,
+    Installed(u128, Vec<SubTask>),
+}
+
+/// AND-split scheduler. Tasks mirror exactly what sequential search must do:
+/// every symmetry-distinct opening must be searched (AND at the root), and for
+/// the speculated best P2 reply, every P1 continuation must be searched (AND
+/// one ply deeper). Speculation only wastes work when move ordering picks a
+/// losing P2 reply, which is rare and detected as soon as one subtask fails.
+struct AndSplit<'a, M: Memo> {
+    board: &'a Board,
+    memo: &'a M,
+    coord: &'a Coordination,
+    state: Mutex<SchedState>,
+}
+
+impl<'a, M: Memo> AndSplit<'a, M> {
+    fn new(board: &'a Board, memo: &'a M, coord: &'a Coordination) -> Self {
+        let jobs: Vec<OpeningJob> = distinct_openings(board)
+            .into_iter()
+            .map(|(key, p1, p2)| OpeningJob {
+                key,
+                p1,
+                p2,
+                replies: ordered_move_bits(board, p2, None),
+                state: JobState::Unexpanded,
+            })
+            .collect();
+        let active = jobs.len();
+        AndSplit {
+            board,
+            memo,
+            coord,
+            state: Mutex::new(SchedState {
+                jobs,
+                active,
+                result: None,
+            }),
+        }
+    }
+
+    /// Expand one P2 reply of an opening into its P1-continuation subtasks.
+    /// Memo hits resolve children (or the whole reply) without queueing work.
+    fn expand_reply(&self, o_p1: u64, o_p2: u64, reply: u64) -> ReplyOutcome {
+        let board = self.board;
+        let (q1, q2) = board.child_legals(o_p1, o_p2, P2, reply);
+        if q1 == 0 {
+            // P1 has no continuation: this reply refutes the opening.
+            return ReplyOutcome::Refuted;
+        }
+        let q_key = board.shadow_key(q1, q2, P1);
+        match self.memo.get(q_key) {
+            Some(true) => return ReplyOutcome::NextReply,
+            Some(false) => return ReplyOutcome::Refuted,
+            None => {}
+        }
+        let preferred = match board.center_cell {
+            Some(center) if q1 & (1u64 << center) != 0 => Some(center),
+            _ => None,
+        };
+        let mut subtasks = Vec::new();
+        let mut seen: FxHashSet<u128> = FxHashSet::default();
+        for bit in ordered_move_bits(board, q1, preferred) {
+            let (c1, c2) = board.child_legals(q1, q2, P1, bit);
+            if c2 == 0 {
+                // P1 move leaves P2 with nothing: P1 wins Q, reply fails.
+                self.memo.insert(q_key, true);
+                return ReplyOutcome::NextReply;
+            }
+            let ckey = board.shadow_key(c1, c2, P2);
+            if !seen.insert(ckey) {
+                continue;
+            }
+            match self.memo.get(ckey) {
+                Some(true) => continue,
+                Some(false) => {
+                    self.memo.insert(q_key, true);
+                    return ReplyOutcome::NextReply;
+                }
+                None => subtasks.push(SubTask {
+                    key: ckey,
+                    p1: c1,
+                    p2: c2,
+                }),
+            }
+        }
+        if subtasks.is_empty() {
+            self.memo.insert(q_key, false);
+            return ReplyOutcome::Refuted;
+        }
+        ReplyOutcome::Installed(q_key, subtasks)
+    }
+
+    /// Try replies of `job` starting at `start_reply` until one installs
+    /// subtasks or the job resolves. Caller holds the state lock.
+    fn advance_job(&self, job: &mut OpeningJob, start_reply: usize, generation: u32) -> Advance {
+        let mut index = start_reply;
+        while index < job.replies.len() {
+            match self.expand_reply(job.p1, job.p2, job.replies[index]) {
+                ReplyOutcome::Refuted => {
+                    self.memo.insert(job.key, true);
+                    job.state = JobState::Done;
+                    return Advance::JobDone;
+                }
+                ReplyOutcome::NextReply => index += 1,
+                ReplyOutcome::Installed(q_key, subtasks) => {
+                    let pending = subtasks.len();
+                    job.state = JobState::Running {
+                        generation,
+                        reply_index: index,
+                        q_key,
+                        subtasks,
+                        next: 0,
+                        pending,
+                    };
+                    return Advance::Working;
+                }
+            }
+        }
+        self.memo.insert(job.key, false);
+        job.state = JobState::Done;
+        Advance::P1Wins
+    }
+
+    fn set_result(&self, state: &mut SchedState, p1_wins: bool) {
+        if state.result.is_none() {
+            state.result = Some(p1_wins);
+            self.coord.cancel.store(true, Ordering::Relaxed);
+        }
+    }
+
+    fn take_work(&self) -> Poll {
+        let mut state = self.state.lock().unwrap();
+        if state.result.is_some() {
+            return Poll::Finished;
+        }
+        // Claim an already-expanded subtask first.
+        for job_idx in 0..state.jobs.len() {
+            if let JobState::Running {
+                generation,
+                ref subtasks,
+                next,
+                ..
+            } = state.jobs[job_idx].state
+            {
+                if next < subtasks.len() {
+                    let task = subtasks[next];
+                    let generation = generation;
+                    if let JobState::Running { ref mut next, .. } = state.jobs[job_idx].state {
+                        *next += 1;
+                    }
+                    return Poll::Work(Claim {
+                        job: job_idx,
+                        generation,
+                        task,
+                    });
+                }
+            }
+        }
+        // Expand the next opening.
+        for job_idx in 0..state.jobs.len() {
+            if !matches!(state.jobs[job_idx].state, JobState::Unexpanded) {
+                continue;
+            }
+            match self.memo.get(state.jobs[job_idx].key) {
+                Some(true) => {
+                    state.jobs[job_idx].state = JobState::Done;
+                    state.active -= 1;
+                    if state.active == 0 {
+                        self.set_result(&mut state, false);
+                        return Poll::Finished;
+                    }
+                    continue;
+                }
+                Some(false) => {
+                    state.jobs[job_idx].state = JobState::Done;
+                    self.set_result(&mut state, true);
+                    return Poll::Finished;
+                }
+                None => {}
+            }
+            if state.jobs[job_idx].replies.is_empty() {
+                // P2 has no reply: P1's opening wins outright.
+                self.memo.insert(state.jobs[job_idx].key, false);
+                state.jobs[job_idx].state = JobState::Done;
+                self.set_result(&mut state, true);
+                return Poll::Finished;
+            }
+            let mut job = std::mem::replace(
+                &mut state.jobs[job_idx],
+                OpeningJob {
+                    key: 0,
+                    p1: 0,
+                    p2: 0,
+                    replies: Vec::new(),
+                    state: JobState::Done,
+                },
+            );
+            let advance = self.advance_job(&mut job, 0, 0);
+            state.jobs[job_idx] = job;
+            match advance {
+                Advance::JobDone => {
+                    state.active -= 1;
+                    if state.active == 0 {
+                        self.set_result(&mut state, false);
+                        return Poll::Finished;
+                    }
+                }
+                Advance::P1Wins => {
+                    self.set_result(&mut state, true);
+                    return Poll::Finished;
+                }
+                Advance::Working => {
+                    let job_state = &mut state.jobs[job_idx].state;
+                    if let JobState::Running {
+                        generation,
+                        ref subtasks,
+                        ref mut next,
+                        ..
+                    } = *job_state
+                    {
+                        let task = subtasks[*next];
+                        *next += 1;
+                        return Poll::Work(Claim {
+                            job: job_idx,
+                            generation,
+                            task,
+                        });
+                    }
+                }
+            }
+        }
+        if state.active == 0 {
+            self.set_result(&mut state, false);
+            return Poll::Finished;
+        }
+        Poll::NoWorkYet
+    }
+
+    fn report(&self, claim: &Claim, p2_wins_child: bool) {
+        let mut state = self.state.lock().unwrap();
+        if state.result.is_some() {
+            return;
+        }
+        let job_idx = claim.job;
+        let (matches_gen, q_key, reply_index) = match state.jobs[job_idx].state {
+            JobState::Running {
+                generation,
+                q_key,
+                reply_index,
+                ..
+            } => (generation == claim.generation, q_key, reply_index),
+            _ => (false, 0, 0),
+        };
+        if !matches_gen {
+            return; // stale result from an abandoned speculation
+        }
+        if p2_wins_child {
+            if let JobState::Running {
+                ref mut pending, ..
+            } = state.jobs[job_idx].state
+            {
+                *pending -= 1;
+                if *pending > 0 {
+                    return;
+                }
+            }
+            // Every P1 continuation refuted: the reply wins, opening refuted.
+            self.memo.insert(q_key, false);
+            self.memo.insert(state.jobs[job_idx].key, true);
+            state.jobs[job_idx].state = JobState::Done;
+            state.active -= 1;
+            if state.active == 0 {
+                self.set_result(&mut state, false);
+            }
+        } else {
+            // P1 has a winning continuation: speculated reply fails.
+            self.memo.insert(q_key, true);
+            let mut job = std::mem::replace(
+                &mut state.jobs[job_idx],
+                OpeningJob {
+                    key: 0,
+                    p1: 0,
+                    p2: 0,
+                    replies: Vec::new(),
+                    state: JobState::Done,
+                },
+            );
+            let advance = self.advance_job(&mut job, reply_index + 1, claim.generation + 1);
+            state.jobs[job_idx] = job;
+            match advance {
+                Advance::JobDone => {
+                    state.active -= 1;
+                    if state.active == 0 {
+                        self.set_result(&mut state, false);
+                    }
+                }
+                Advance::P1Wins => self.set_result(&mut state, true),
+                Advance::Working => {}
+            }
+        }
+    }
+}
+
+/// Parallel AND-split: openings (all required) are subdivided one ply deeper
+/// into the P1 continuations of the best-ordered P2 reply (all required when
+/// the reply is correct). Yields hundreds of tasks instead of ~20 without
+/// enlarging the search.
+fn solve_parallel_and_split<M: Memo + Sync>(
+    board: &Board,
+    threads: usize,
+    progress: bool,
+    endgame_size: u32,
+    memo: M,
+    memo_min_legal: u32,
+) -> SolveOutput {
+    let coord = Coordination::new();
+    let legal = board.all_cells_mask;
+    let root_key = board.shadow_key(legal, legal, P1);
+    let shared_endgame = (endgame_size > 0).then(|| Arc::new(SharedEndgameCache::new()));
+    let sched = AndSplit::new(board, &memo, &coord);
+    let total = std::sync::Mutex::new(Stats::default());
+
+    std::thread::scope(|scope| {
+        for _ in 0..threads {
+            scope.spawn(|| {
+                let mut solver = Solver::new(
+                    board,
+                    &memo,
+                    &coord,
+                    progress,
+                    shared_endgame.clone(),
+                    endgame_size,
+                    memo_min_legal,
+                );
+                loop {
+                    if coord.cancel.load(Ordering::Relaxed) {
+                        break;
+                    }
+                    match sched.take_work() {
+                        Poll::Work(claim) => {
+                            match solver.is_winning(
+                                P2,
+                                claim.task.key,
+                                claim.task.p1,
+                                claim.task.p2,
+                            ) {
+                                Some(p2_wins) => sched.report(&claim, p2_wins),
+                                None => break,
+                            }
+                        }
+                        Poll::NoWorkYet => {
+                            std::thread::sleep(std::time::Duration::from_millis(1))
+                        }
+                        Poll::Finished => break,
+                    }
+                }
+                let stats = solver.take_stats();
+                let mut total = total.lock().unwrap();
+                total.states_searched += stats.states_searched;
+                total.memo_hits += stats.memo_hits;
+                total.endgame_hits += stats.endgame_hits;
+                total.endgame_raw_cache_hits += stats.endgame_raw_cache_hits;
+                total.endgame_canonical_cache_hits += stats.endgame_canonical_cache_hits;
+                total.endgame_cgt_misses += stats.endgame_cgt_misses;
+                total.endgame_component_evaluations += stats.endgame_component_evaluations;
+            });
+        }
+    });
+
+    let mut stats = total.into_inner().unwrap();
+    stats.states_searched += 1;
+    let p1_wins = sched
+        .state
+        .into_inner()
+        .unwrap()
+        .result
+        .expect("and-split must resolve the root");
+    memo.insert(root_key, p1_wins);
+    SolveOutput {
+        p1_wins,
+        stats,
+        entries: memo.into_entries(),
+    }
+}
+
 pub fn run(args: Vec<String>) {
     let mut m = 0usize;
     let mut n = 0usize;
@@ -876,6 +1335,7 @@ pub fn run(args: Vec<String>) {
     let mut memo_min_legal = 0u32;
     let mut memo_bits = 0u32;
     let mut endgame_size = 10u32;
+    let mut root_split = false;
     let mut threads = std::thread::available_parallelism()
         .map(|p| p.get())
         .unwrap_or(1);
@@ -918,6 +1378,10 @@ pub fn run(args: Vec<String>) {
                 tablebase_enabled = false;
                 i += 1;
             }
+            "--root-split" => {
+                root_split = true;
+                i += 1;
+            }
             "--progress" => {
                 progress = true;
                 i += 1;
@@ -927,7 +1391,7 @@ pub fn run(args: Vec<String>) {
     }
     assert!(
         m > 0 && n > 0,
-        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--tablebase-dir DIR] [--no-tablebase] [--progress]"
+        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--tablebase-dir DIR] [--no-tablebase] [--root-split] [--progress]"
     );
     assert!(threads > 0, "--threads must be >= 1");
     assert!(
@@ -1019,27 +1483,35 @@ pub fn run(args: Vec<String>) {
             for (key, value) in loaded {
                 memo.insert(key, value);
             }
-            solve_parallel_root(
-                &board,
-                threads,
-                progress,
-                endgame_size,
-                memo,
-                memo_min_legal,
-            )
+            if root_split {
+                solve_parallel_root(&board, threads, progress, endgame_size, memo, memo_min_legal)
+            } else {
+                solve_parallel_and_split(
+                    &board,
+                    threads,
+                    progress,
+                    endgame_size,
+                    memo,
+                    memo_min_legal,
+                )
+            }
         } else {
             let memo = SharedMemo(DashMap::with_hasher(FxBuildHasher));
             for (key, value) in loaded {
                 memo.insert(key, value);
             }
-            solve_parallel_root(
-                &board,
-                threads,
-                progress,
-                endgame_size,
-                memo,
-                memo_min_legal,
-            )
+            if root_split {
+                solve_parallel_root(&board, threads, progress, endgame_size, memo, memo_min_legal)
+            } else {
+                solve_parallel_and_split(
+                    &board,
+                    threads,
+                    progress,
+                    endgame_size,
+                    memo,
+                    memo_min_legal,
+                )
+            }
         };
         (output, true)
     };
@@ -1068,9 +1540,16 @@ pub fn run(args: Vec<String>) {
         if output.p1_wins { "P1" } else { "P2" }
     );
     println!(
-        "solver: rust DFS (shadow keys, {} thread{}, {} memo{})",
+        "solver: rust DFS (shadow keys, {} thread{}{}, {} memo{})",
         threads,
         if threads == 1 { "" } else { "s" },
+        if threads == 1 {
+            ""
+        } else if root_split {
+            " root-split"
+        } else {
+            " and-split"
+        },
         if threads == 1 {
             memo_kind.as_str()
         } else if memo_kind == "fixed" {

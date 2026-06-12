@@ -34,6 +34,12 @@ col/
 
 Tablebases are saved to `data/tablebases/` by default.
 
+With multiple threads the solver uses an **AND-split** scheduler: every
+symmetry-distinct P1 opening must be refuted anyway, and within each opening
+the P1 continuations of the move-ordered P2 reply must all be refuted too, so
+the work splits into hundreds of required subtasks instead of ~20 openings.
+Pass `--root-split` for the older opening-level split (useful for comparison).
+
 ## Render (cloud)
 
 Deploy continuous solving + web explorer to [Render](https://render.com):
