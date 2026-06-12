@@ -12,6 +12,7 @@ use dashmap::DashMap;
 use endgame::{EndgameEvaluator, EndgameStats, SharedEndgameCache};
 use rustc_hash::{FxBuildHasher, FxHashMap, FxHashSet};
 use std::cell::RefCell;
+use std::collections::VecDeque;
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
@@ -912,6 +913,7 @@ struct OpeningJob {
 
 struct SchedState {
     jobs: Vec<OpeningJob>,
+    ready: VecDeque<Claim>,
     active: usize,
     result: Option<bool>,
 }
@@ -974,6 +976,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
             coord,
             state: Mutex::new(SchedState {
                 jobs,
+                ready: VecDeque::new(),
                 active,
                 result: None,
             }),
@@ -1070,32 +1073,47 @@ impl<'a, M: Memo> AndSplit<'a, M> {
         }
     }
 
+    fn is_current_claim(state: &SchedState, claim: &Claim) -> bool {
+        matches!(
+            state.jobs.get(claim.job).map(|job| &job.state),
+            Some(JobState::Running { generation, .. }) if *generation == claim.generation
+        )
+    }
+
+    fn enqueue_ready(state: &mut SchedState, job_idx: usize) {
+        let (generation, tasks) = match &mut state.jobs[job_idx].state {
+            JobState::Running {
+                generation,
+                subtasks,
+                next,
+                ..
+            } => {
+                let generation = *generation;
+                let start = *next;
+                *next = subtasks.len();
+                (generation, subtasks[start..].to_vec())
+            }
+            _ => return,
+        };
+        state
+            .ready
+            .extend(tasks.into_iter().map(|task| Claim {
+                job: job_idx,
+                generation,
+                task,
+            }));
+    }
+
     fn take_work(&self) -> Poll {
         let mut state = self.state.lock().unwrap();
         if state.result.is_some() {
             return Poll::Finished;
         }
-        // Claim an already-expanded subtask first.
-        for job_idx in 0..state.jobs.len() {
-            if let JobState::Running {
-                generation,
-                ref subtasks,
-                next,
-                ..
-            } = state.jobs[job_idx].state
-            {
-                if next < subtasks.len() {
-                    let task = subtasks[next];
-                    let generation = generation;
-                    if let JobState::Running { ref mut next, .. } = state.jobs[job_idx].state {
-                        *next += 1;
-                    }
-                    return Poll::Work(Claim {
-                        job: job_idx,
-                        generation,
-                        task,
-                    });
-                }
+        // Claim an already-expanded subtask first. Stale tasks can remain
+        // after a speculated P2 reply fails; skip them before doing work.
+        while let Some(claim) = state.ready.pop_front() {
+            if Self::is_current_claim(&state, &claim) {
+                return Poll::Work(claim);
             }
         }
         // Expand the next opening.
@@ -1152,21 +1170,9 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                     return Poll::Finished;
                 }
                 Advance::Working => {
-                    let job_state = &mut state.jobs[job_idx].state;
-                    if let JobState::Running {
-                        generation,
-                        ref subtasks,
-                        ref mut next,
-                        ..
-                    } = *job_state
-                    {
-                        let task = subtasks[*next];
-                        *next += 1;
-                        return Poll::Work(Claim {
-                            job: job_idx,
-                            generation,
-                            task,
-                        });
+                    Self::enqueue_ready(&mut state, job_idx);
+                    if let Some(claim) = state.ready.pop_front() {
+                        return Poll::Work(claim);
                     }
                 }
             }
@@ -1237,7 +1243,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                     }
                 }
                 Advance::P1Wins => self.set_result(&mut state, true),
-                Advance::Working => {}
+                Advance::Working => Self::enqueue_ready(&mut state, job_idx),
             }
         }
     }
@@ -1409,6 +1415,7 @@ pub fn run(args: Vec<String>) {
     let board = Board::new(m, n);
     let legal = board.all_cells_mask;
     let root_key = board.shadow_key(legal, legal, P1);
+    let effective_root_split = root_split || m == 1;
 
     let loaded = if tablebase_enabled {
         tablebase::load(&tablebase_dir, m, n).unwrap_or_else(|err| {
@@ -1483,7 +1490,7 @@ pub fn run(args: Vec<String>) {
             for (key, value) in loaded {
                 memo.insert(key, value);
             }
-            if root_split {
+            if effective_root_split {
                 solve_parallel_root(&board, threads, progress, endgame_size, memo, memo_min_legal)
             } else {
                 solve_parallel_and_split(
@@ -1500,7 +1507,7 @@ pub fn run(args: Vec<String>) {
             for (key, value) in loaded {
                 memo.insert(key, value);
             }
-            if root_split {
+            if effective_root_split {
                 solve_parallel_root(&board, threads, progress, endgame_size, memo, memo_min_legal)
             } else {
                 solve_parallel_and_split(
@@ -1545,7 +1552,7 @@ pub fn run(args: Vec<String>) {
         if threads == 1 { "" } else { "s" },
         if threads == 1 {
             ""
-        } else if root_split {
+        } else if effective_root_split {
             " root-split"
         } else {
             " and-split"
