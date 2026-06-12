@@ -20,7 +20,5 @@ services:
         value: "3"
       - key: COL_N
         value: "11"
-      - key: SOLVER_THREADS
-        value: "12"
       - key: CONTINUOUS_START_TOTAL
         value: "3"

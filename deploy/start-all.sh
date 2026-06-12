@@ -2,9 +2,17 @@
 # Run continuous solve + web UI in one container (Render disks are per-service only).
 set -eu
 
+. "$(dirname "$0")/resources.sh"
+
 TABLEBASE_DIR="${TABLEBASE_DIR:-/data/tablebases}"
 STATUS_FILE="${STATUS_FILE:-/data/solver_status.json}"
 mkdir -p "$TABLEBASE_DIR"
+
+if [ -n "${SOLVER_MEM_MB:-}" ]; then
+  echo "Host resources: ${SOLVER_THREADS} CPU(s), ${SOLVER_MEM_MB} MB RAM" >&2
+else
+  echo "Host resources: ${SOLVER_THREADS} CPU(s)" >&2
+fi
 
 echo "Starting continuous solver in background..." >&2
 ./deploy/start-worker.sh &

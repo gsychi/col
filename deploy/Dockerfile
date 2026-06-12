@@ -11,9 +11,9 @@ WORKDIR /app
 COPY --from=builder /app/solver/target/release/col-rs /app/solver/target/release/col-rs
 COPY col-solve continuous-solve continuous_solve.py ./
 COPY python/ python/
-COPY deploy/start-web.sh deploy/start-worker.sh deploy/start-all.sh deploy/
+COPY deploy/start-web.sh deploy/start-worker.sh deploy/start-all.sh deploy/resources.sh deploy/
 
-RUN chmod +x col-solve continuous-solve deploy/start-web.sh deploy/start-worker.sh deploy/start-all.sh
+RUN chmod +x col-solve continuous-solve deploy/start-web.sh deploy/start-worker.sh deploy/start-all.sh deploy/resources.sh
 
 ENV PYTHONPATH=/app/python
 ENV TABLEBASE_DIR=/data/tablebases

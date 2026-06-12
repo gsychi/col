@@ -54,7 +54,7 @@ For a **manual** setup (no Blueprint): create one **Web Service** with Dockerfil
 |---|---|---|
 | `TABLEBASE_DIR` | `/data/tablebases` | Shared tablebase storage |
 | `STATUS_FILE` | `/data/solver_status.json` | Live progress for dashboard |
-| `SOLVER_THREADS` | `12` | Worker: `--threads` for col-solve |
+| `SOLVER_THREADS` | `auto` (all CPUs) | Worker: `--threads` for col-solve; set a number to cap |
 | `CONTINUOUS_START_TOTAL` | `3` | First odd cell total to solve |
 | `CONTINUOUS_MAX_TOTAL` | (none) | Optional cap, e.g. `35` for 5×7 era |
 | `COL_M` / `COL_N` | `3` / `11` | Default board for explorer UI |
