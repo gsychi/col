@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 from urllib.parse import urlparse
 
+from col.complexity import build_complexity_forecast
 from col.dfs import DfsSolver
 from col.cli import positive_int
 from col.core import P1, P2
@@ -694,24 +695,13 @@ DASHBOARD_HTML = r"""<!doctype html>
       border-bottom: 1px solid var(--line);
       margin-bottom: 28px;
     }
-    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
-    .mark {
-      width: 36px;
-      height: 36px;
-      border: 1px solid var(--line-strong);
-      border-radius: 8px;
-      background:
-        linear-gradient(135deg, var(--accent-soft), #fff),
-        repeating-linear-gradient(90deg, transparent, transparent 7px, rgba(30,58,95,0.08) 8px);
-      flex-shrink: 0;
-    }
-    .brand-text { min-width: 0; }
-    .brand-text h1 {
+    .brand { min-width: 0; }
+    .brand h1 {
       margin: 0;
       font: 600 22px/1.15 var(--serif);
       letter-spacing: -0.02em;
     }
-    .brand-text p {
+    .brand p {
       margin: 3px 0 0;
       color: var(--muted);
       font-size: 12px;
@@ -900,6 +890,40 @@ DASHBOARD_HTML = r"""<!doctype html>
       font-size: 13px;
       padding: 8px 0 16px;
     }
+    .chart-wrap {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    #complexityChart {
+      display: block;
+      width: 100%;
+      min-width: 640px;
+      height: auto;
+    }
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .chart-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chart-legend i {
+      width: 18px;
+      height: 0;
+      border-top: 2px solid currentColor;
+      font-style: normal;
+    }
+    .chart-legend b {
+      color: var(--ink);
+      font-weight: 600;
+    }
     footer {
       margin-top: 28px;
       padding-top: 16px;
@@ -929,11 +953,8 @@ DASHBOARD_HTML = r"""<!doctype html>
   <div class="shell">
     <header class="site-header">
       <div class="brand">
-        <div class="mark" aria-hidden="true"></div>
-        <div class="brand-text">
-          <h1>Col Research</h1>
-          <p>Strong solving, tablebase generation, and position analysis</p>
-        </div>
+        <h1>Col Research</h1>
+        <p>Strong solving, tablebase generation, and position analysis</p>
       </div>
       <nav>
         <a href="/" class="active">Dashboard</a>
@@ -994,6 +1015,16 @@ DASHBOARD_HTML = r"""<!doctype html>
       </div>
     </section>
 
+    <section class="panel section">
+      <h2>Complexity forecast</h2>
+      <p class="caption" id="complexityNote">Estimating state counts from tablebase file sizes on disk.</p>
+      <div class="chart-wrap">
+        <svg id="complexityChart" viewBox="0 0 920 340" role="img" aria-label="State complexity by board area"></svg>
+      </div>
+      <div id="chartLegend" class="chart-legend"></div>
+      <div id="complexityEmpty" class="empty" hidden>Not enough tablebase data to plot yet.</div>
+    </section>
+
     <div class="columns">
       <section class="panel section">
         <h2>Results archive</h2>
@@ -1050,6 +1081,160 @@ DASHBOARD_HTML = r"""<!doctype html>
       pill.className = 'pill ' + kind;
       document.getElementById('statusLabel').textContent = label;
     }
+
+    const SERIES_COLORS = ['#1e3a5f', '#0f766e', '#7c3aed', '#b45309', '#be123c', '#0369a1'];
+
+    function fmtStates(n) {
+      if (n == null || !Number.isFinite(n)) return '—';
+      if (n >= 1e12) return n.toExponential(1);
+      return Math.round(n).toLocaleString();
+    }
+
+    function renderComplexity(data) {
+      const svg = document.getElementById('complexityChart');
+      const legend = document.getElementById('chartLegend');
+      const empty = document.getElementById('complexityEmpty');
+      const note = document.getElementById('complexityNote');
+      svg.innerHTML = '';
+      legend.innerHTML = '';
+
+      if (!data.available || !data.series.length) {
+        empty.hidden = false;
+        note.textContent = data.note || 'Not enough tablebase data to plot yet.';
+        return;
+      }
+      empty.hidden = true;
+      note.textContent = data.note;
+
+      const width = 920;
+      const height = 340;
+      const margin = { top: 18, right: 24, bottom: 42, left: 72 };
+      const plotW = width - margin.left - margin.right;
+      const plotH = height - margin.top - margin.bottom;
+
+      const allPoints = data.series.flatMap(series => series.points);
+      const xMin = 0;
+      const xMax = Math.max(...allPoints.map(p => p.cells), 1);
+      const yValues = allPoints.map(p => Math.max(p.states, 1));
+      const yMin = Math.min(...yValues);
+      const yMax = Math.max(...yValues);
+      const logMin = Math.floor(Math.log10(yMin));
+      const logMax = Math.ceil(Math.log10(yMax));
+
+      const xScale = cells => margin.left + (cells / xMax) * plotW;
+      const yScale = states => {
+        const log = Math.log10(Math.max(states, 1));
+        return margin.top + plotH - ((log - logMin) / Math.max(logMax - logMin, 1)) * plotH;
+      };
+
+      const ns = 'http://www.w3.org/2000/svg';
+      const add = (tag, attrs) => {
+        const el = document.createElementNS(ns, tag);
+        for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, String(value));
+        svg.appendChild(el);
+        return el;
+      };
+
+      add('rect', {
+        x: margin.left, y: margin.top, width: plotW, height: plotH,
+        fill: '#faf8f4', stroke: '#ddd6c8'
+      });
+
+      for (let decade = logMin; decade <= logMax; decade++) {
+        const value = 10 ** decade;
+        const y = yScale(value);
+        add('line', {
+          x1: margin.left, y1: y, x2: margin.left + plotW, y2: y,
+          stroke: '#e7e0d4', 'stroke-width': 1
+        });
+        const label = add('text', {
+          x: margin.left - 8, y: y + 4, 'text-anchor': 'end',
+          fill: '#6b6459', 'font-size': 11, 'font-family': 'IBM Plex Mono, monospace'
+        });
+        label.textContent = value >= 1e6 ? `10^${decade}` : value.toLocaleString();
+      }
+
+      for (let tick = 0; tick <= xMax; tick += tick < 20 ? 5 : 10) {
+        if (tick === 0) continue;
+        const x = xScale(tick);
+        add('line', {
+          x1: x, y1: margin.top, x2: x, y2: margin.top + plotH,
+          stroke: '#efeae2', 'stroke-width': 1
+        });
+      }
+
+      const xLabel = add('text', {
+        x: margin.left + plotW / 2, y: height - 10, 'text-anchor': 'middle',
+        fill: '#6b6459', 'font-size': 12, 'font-family': 'Inter, sans-serif'
+      });
+      xLabel.textContent = 'Board area (cells)';
+
+      const yLabel = add('text', {
+        x: 16, y: margin.top + plotH / 2, 'text-anchor': 'middle',
+        fill: '#6b6459', 'font-size': 12, 'font-family': 'Inter, sans-serif',
+        transform: `rotate(-90 16 ${margin.top + plotH / 2})`
+      });
+      yLabel.textContent = 'Stored states (log scale)';
+
+      data.series.forEach((series, index) => {
+        const color = SERIES_COLORS[index % SERIES_COLORS.length];
+        const points = series.points.slice().sort((a, b) => a.cells - b.cells);
+        if (points.length > 1) {
+          const path = points.map((p, i) =>
+            `${i === 0 ? 'M' : 'L'} ${xScale(p.cells).toFixed(2)} ${yScale(p.states).toFixed(2)}`
+          ).join(' ');
+          add('path', {
+            d: path, fill: 'none', stroke: color, 'stroke-width': 1.8, opacity: 0.75
+          });
+        }
+        for (const point of points) {
+          const cx = xScale(point.cells);
+          const cy = yScale(point.states);
+          const circle = add('circle', {
+            cx, cy,
+            r: point.measured ? 4.5 : 4,
+            fill: point.measured ? color : '#fffcf7',
+            stroke: color,
+            'stroke-width': point.measured ? 0 : 1.6
+          });
+          if (point.measured) {
+            const title = document.createElementNS(ns, 'title');
+            title.textContent =
+              `${point.m}×${point.n}: ${fmtStates(point.states)} states` +
+              (point.size_bytes ? ` · ${fmtBytes(point.size_bytes)}` : '');
+            circle.appendChild(title);
+          }
+        }
+        const last = points[points.length - 1];
+        if (last) {
+          const label = add('text', {
+            x: xScale(last.cells) + 6, y: yScale(last.states) + 4,
+            fill: color, 'font-size': 11, 'font-family': 'Inter, sans-serif'
+          });
+          label.textContent = `${series.m}×N`;
+        }
+
+        const item = document.createElement('span');
+        item.style.color = color;
+        item.innerHTML = `<i></i><b>${series.m}×N</b> ${series.points.some(p => !p.measured) ? 'fit + forecast' : 'measured'}`;
+        legend.appendChild(item);
+      });
+
+      legend.insertAdjacentHTML('beforeend',
+        '<span><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#1e3a5f"/></svg> measured</span>' +
+        '<span><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#fff" stroke="#1e3a5f" stroke-width="1.5"/></svg> extrapolated</span>'
+      );
+    }
+
+    async function refreshComplexity() {
+      try {
+        const response = await fetch('/api/complexity');
+        renderComplexity(await response.json());
+      } catch (_error) {
+        document.getElementById('complexityEmpty').hidden = false;
+      }
+    }
+
     async function refresh() {
       const [statusRes, tbRes] = await Promise.all([
         fetch('/api/solver/status'),
@@ -1130,7 +1315,9 @@ DASHBOARD_HTML = r"""<!doctype html>
       }
     }
     refresh();
+    refreshComplexity();
     setInterval(refresh, 2000);
+    setInterval(refreshComplexity, 15000);
   </script>
 </body>
 </html>
@@ -1451,6 +1638,8 @@ class GuiHandler(BaseHTTPRequestHandler):
             self.send_json(read_solver_status(self.status_file))
         elif path == "/api/tablebases":
             self.send_json({"tablebases": list_tablebases(self.tablebase_dir)})
+        elif path == "/api/complexity":
+            self.send_json(build_complexity_forecast(self.tablebase_dir))
         elif path == "/api/disk-debug":
             self.send_json(disk_debug(self.tablebase_dir, self.status_file))
         else:
