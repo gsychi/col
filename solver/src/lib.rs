@@ -37,6 +37,15 @@ impl MoveOrdering {
     }
 }
 
+/// Default move order: heuristic helps on most boards but regresses on long 3×N strips.
+fn default_move_ordering(m: usize, n: usize) -> MoveOrdering {
+    if m == 3 && n >= 13 {
+        MoveOrdering::Legacy
+    } else {
+        MoveOrdering::Heuristic
+    }
+}
+
 /// Per-byte lookup tables for a single symmetry transform.
 struct ByteTransformTables {
     /// tables[byte_index][byte_value] -> contribution to transformed u64 mask
@@ -1515,7 +1524,7 @@ pub fn run(args: Vec<String>) {
     let mut memo_bits = 0u32;
     let mut endgame_size = 10u32;
     let mut root_split = false;
-    let mut move_ordering = MoveOrdering::Heuristic;
+    let mut move_ordering: Option<MoveOrdering> = None;
     let mut threads = std::thread::available_parallelism()
         .map(|p| p.get())
         .unwrap_or(1);
@@ -1563,7 +1572,7 @@ pub fn run(args: Vec<String>) {
                 i += 1;
             }
             "--move-order" => {
-                move_ordering = MoveOrdering::parse(&args[i + 1]);
+                move_ordering = Some(MoveOrdering::parse(&args[i + 1]));
                 i += 2;
             }
             "--progress" => {
@@ -1590,6 +1599,7 @@ pub fn run(args: Vec<String>) {
     }
 
     let (m, n) = if m > n { (n, m) } else { (m, n) };
+    let move_ordering = move_ordering.unwrap_or_else(|| default_move_ordering(m, n));
     let board = Board::new(m, n);
     let legal = board.all_cells_mask;
     let root_key = board.shadow_key(legal, legal, P1);
