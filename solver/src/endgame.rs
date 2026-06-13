@@ -782,6 +782,37 @@ impl EndgameEvaluator {
     }
 }
 
+pub fn component_value_text(n: usize, legal_p1: u64, legal_p2: u64) -> Option<String> {
+    let live = legal_p1 | legal_p2;
+    if live.count_ones() as usize > MAX_LOCAL_CELLS {
+        return None;
+    }
+    let (shape, p1, p2) = local_shape_from_masks(n, legal_p1, legal_p2);
+    let mut evaluator = EndgameEvaluator::new(MAX_LOCAL_CELLS as u32, None);
+    let value = evaluator.component_value_local(&shape, p1, p2);
+    Some(format_value(value))
+}
+
+fn format_value(value: Value) -> String {
+    let number = format_dyadic(value.number);
+    if value.star {
+        if value.number == Dyadic::zero() {
+            "*".to_string()
+        } else {
+            format!("{number}+*")
+        }
+    } else {
+        number
+    }
+}
+
+fn format_dyadic(value: Dyadic) -> String {
+    if value.shift == 0 {
+        return value.num.to_string();
+    }
+    format!("{}/{}", value.num, 1i64 << value.shift)
+}
+
 struct LocalShape {
     rows: [i16; MAX_LOCAL_CELLS],
     cols: [i16; MAX_LOCAL_CELLS],
