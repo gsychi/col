@@ -21,6 +21,22 @@ use std::time::Instant;
 const P1: u8 = 0;
 const P2: u8 = 1;
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum MoveOrdering {
+    Legacy,
+    Heuristic,
+}
+
+impl MoveOrdering {
+    fn parse(s: &str) -> MoveOrdering {
+        match s {
+            "legacy" => MoveOrdering::Legacy,
+            "heuristic" => MoveOrdering::Heuristic,
+            other => panic!("--move-order must be legacy or heuristic, got {other}"),
+        }
+    }
+}
+
 /// Per-byte lookup tables for a single symmetry transform.
 struct ByteTransformTables {
     /// tables[byte_index][byte_value] -> contribution to transformed u64 mask
@@ -28,11 +44,16 @@ struct ByteTransformTables {
 }
 
 struct Board {
+    m: usize,
     n: usize,
     num_cells: usize,
     all_cells_mask: u64,
     adjacency: Vec<u64>,
     move_order: Vec<(usize, u64)>,
+    p1_order: Vec<(usize, u64)>,
+    p2_order: Vec<(usize, u64)>,
+    reflected_cell: Vec<usize>,
+    corners: Vec<usize>,
     center_cell: Option<usize>,
     transform_byte_tables: Vec<ByteTransformTables>,
     has_even_dimension: bool,
@@ -74,6 +95,72 @@ impl Board {
         order.sort_by_key(|&cell| (-center_distance(cell), cell));
         let move_order = order.iter().map(|&cell| (cell, 1u64 << cell)).collect();
 
+        let reflected_cell: Vec<usize> = (0..num_cells)
+            .map(|cell| {
+                let row = cell / n;
+                let col = cell % n;
+                (m - 1 - row) * n + (n - 1 - col)
+            })
+            .collect();
+
+        let is_corner = |cell: usize| -> bool {
+            let row = cell / n;
+            let col = cell % n;
+            (row == 0 || row + 1 == m) && (col == 0 || col + 1 == n)
+        };
+        let is_edge = |cell: usize| -> bool {
+            let row = cell / n;
+            let col = cell % n;
+            row == 0 || row + 1 == m || col == 0 || col + 1 == n
+        };
+        let middle_row = if m % 2 == 1 { Some(m / 2) } else { None };
+
+        let mut corners: Vec<usize> = (0..num_cells).filter(|&cell| is_corner(cell)).collect();
+        corners.sort_unstable();
+
+        let mut p1_ranked: Vec<(i64, usize)> = (0..num_cells)
+            .map(|cell| {
+                let row = cell / n;
+                let degree = adjacency[cell].count_ones() as i64;
+                let mut score = degree * 100;
+                score -= center_distance(cell);
+                if middle_row == Some(row) {
+                    score += 50;
+                }
+                if is_corner(cell) {
+                    score -= 500;
+                } else if is_edge(cell) {
+                    score -= 100;
+                }
+                (score, cell)
+            })
+            .collect();
+        p1_ranked.sort_by(|a, b| b.cmp(a).then_with(|| a.1.cmp(&b.1)));
+        let p1_order = p1_ranked
+            .iter()
+            .map(|&(_, cell)| (cell, 1u64 << cell))
+            .collect();
+
+        let mut p2_ranked: Vec<(i64, usize)> = (0..num_cells)
+            .map(|cell| {
+                let degree = adjacency[cell].count_ones() as i64;
+                let mut score = 0i64;
+                if is_corner(cell) {
+                    score += 300;
+                } else if is_edge(cell) {
+                    score += 150;
+                }
+                score += center_distance(cell);
+                score -= degree * 10;
+                (score, cell)
+            })
+            .collect();
+        p2_ranked.sort_by(|a, b| b.cmp(a).then_with(|| a.1.cmp(&b.1)));
+        let p2_order = p2_ranked
+            .iter()
+            .map(|&(_, cell)| (cell, 1u64 << cell))
+            .collect();
+
         let center_cell = if m % 2 == 1 && n % 2 == 1 {
             Some((m / 2) * n + n / 2)
         } else {
@@ -110,14 +197,64 @@ impl Board {
             .collect();
 
         Board {
+            m,
             n,
             num_cells,
             all_cells_mask,
             adjacency,
             move_order,
+            p1_order,
+            p2_order,
+            reflected_cell,
+            corners,
             center_cell,
             transform_byte_tables,
             has_even_dimension: m % 2 == 0 || n % 2 == 0,
+        }
+    }
+
+    fn p2_preferred(&self, legal: u64, last_p1_move: Option<usize>) -> Option<usize> {
+        if let (Some(center), Some(last)) = (self.center_cell, last_p1_move) {
+            if last == center {
+                for &cell in &self.corners {
+                    if legal & (1u64 << cell) != 0 {
+                        return Some(cell);
+                    }
+                }
+                return None;
+            }
+        }
+        if let Some(last) = last_p1_move {
+            let mirror = self.reflected_cell[last];
+            if legal & (1u64 << mirror) != 0 {
+                return Some(mirror);
+            }
+        }
+        None
+    }
+
+    fn ordered_move_bits(
+        &self,
+        turn: u8,
+        legal: u64,
+        last_p1_move: Option<usize>,
+        ordering: MoveOrdering,
+    ) -> Vec<u64> {
+        match ordering {
+            MoveOrdering::Legacy => {
+                let preferred = match (turn, self.center_cell) {
+                    (P1, Some(center)) if legal & (1u64 << center) != 0 => Some(center),
+                    _ => None,
+                };
+                legacy_move_bits(self, legal, preferred)
+            }
+            MoveOrdering::Heuristic if turn == P1 => {
+                heuristic_move_bits(self, legal, None, &self.p1_order)
+            }
+            MoveOrdering::Heuristic => {
+                let preferred = self.p2_preferred(legal, last_p1_move);
+                heuristic_move_bits(self, legal, preferred, &self.p2_order)
+            }
         }
     }
 
@@ -558,6 +695,7 @@ struct Solver<'a, M: Memo> {
     /// Positions with fewer combined legal cells than this are not
     /// memoized (cheap to recompute; they dominate entry counts).
     memo_min_legal: u32,
+    move_ordering: MoveOrdering,
 }
 
 impl<'a, M: Memo> Solver<'a, M> {
@@ -569,6 +707,7 @@ impl<'a, M: Memo> Solver<'a, M> {
         shared_endgame: Option<Arc<SharedEndgameCache>>,
         endgame_size: u32,
         memo_min_legal: u32,
+        move_ordering: MoveOrdering,
     ) -> Self {
         let endgame =
             (endgame_size > 0).then(|| EndgameEvaluator::new(endgame_size, shared_endgame));
@@ -580,6 +719,7 @@ impl<'a, M: Memo> Solver<'a, M> {
             progress,
             endgame,
             memo_min_legal,
+            move_ordering,
         }
     }
 
@@ -599,7 +739,14 @@ impl<'a, M: Memo> Solver<'a, M> {
     }
 
     /// Returns None if the search was cancelled by another worker.
-    fn is_winning(&mut self, turn: u8, key: u128, p1_legal: u64, p2_legal: u64) -> Option<bool> {
+    fn is_winning(
+        &mut self,
+        turn: u8,
+        key: u128,
+        p1_legal: u64,
+        p2_legal: u64,
+        last_p1_move: Option<usize>,
+    ) -> Option<bool> {
         if let Some(cached) = self.memo.get(key) {
             self.stats.memo_hits += 1;
             return Some(cached);
@@ -639,13 +786,11 @@ impl<'a, M: Memo> Solver<'a, M> {
 
         let next_turn = 1 - turn;
 
-        let preferred = match (turn, self.board.center_cell) {
-            (P1, Some(center)) if legal_mask & (1u64 << center) != 0 => Some(center),
-            _ => None,
-        };
-
-        let moves = self.ordered_moves(legal_mask, preferred);
-        for (_cell, bit) in moves {
+        let moves = self
+            .board
+            .ordered_move_bits(turn, legal_mask, last_p1_move, self.move_ordering);
+        for bit in moves {
+            let cell = bit.trailing_zeros() as usize;
             let (child_p1_legal, child_p2_legal) =
                 self.board.child_legals(p1_legal, p2_legal, turn, bit);
             let child_legal = if next_turn == P1 {
@@ -671,8 +816,18 @@ impl<'a, M: Memo> Solver<'a, M> {
                 continue;
             }
 
-            let opponent_wins =
-                self.is_winning(next_turn, child_key, child_p1_legal, child_p2_legal)?;
+            let child_last_p1 = if turn == P1 {
+                Some(cell)
+            } else {
+                last_p1_move
+            };
+            let opponent_wins = self.is_winning(
+                next_turn,
+                child_key,
+                child_p1_legal,
+                child_p2_legal,
+                child_last_p1,
+            )?;
             if !opponent_wins {
                 self.remember(key, p1_legal, p2_legal, true);
                 return Some(true);
@@ -682,25 +837,42 @@ impl<'a, M: Memo> Solver<'a, M> {
         self.remember(key, p1_legal, p2_legal, false);
         Some(false)
     }
+}
 
-    fn ordered_moves(
-        &self,
-        legal_mask: u64,
-        preferred: Option<usize>,
-    ) -> Vec<(usize, u64)> {
-        let mut moves = Vec::new();
-        if let Some(preferred_cell) = preferred {
-            moves.push((preferred_cell, 1u64 << preferred_cell));
-        }
-        for &(cell, bit) in &self.board.move_order {
-            if Some(cell) == preferred || legal_mask & bit == 0 {
-                continue;
-            }
-            moves.push((cell, bit));
-        }
-        moves
+fn legacy_move_bits(board: &Board, legal: u64, preferred: Option<usize>) -> Vec<u64> {
+    let mut bits = Vec::new();
+    if let Some(cell) = preferred {
+        bits.push(1u64 << cell);
     }
+    for &(cell, bit) in &board.move_order {
+        if Some(cell) == preferred || legal & bit == 0 {
+            continue;
+        }
+        bits.push(bit);
+    }
+    bits
+}
 
+fn heuristic_move_bits(
+    board: &Board,
+    legal: u64,
+    preferred: Option<usize>,
+    order: &[(usize, u64)],
+) -> Vec<u64> {
+    let mut bits = Vec::new();
+    if let Some(cell) = preferred {
+        bits.push(1u64 << cell);
+    }
+    for &(cell, bit) in order {
+        if Some(cell) == preferred || legal & bit == 0 {
+            continue;
+        }
+        bits.push(bit);
+    }
+    bits
+}
+
+impl<'a, M: Memo> Solver<'a, M> {
     /// Print at most one progress line per ~250ms across all workers.
     fn maybe_report(&self) {
         let elapsed_ms = self.coord.started.elapsed().as_millis() as u64;
@@ -728,26 +900,21 @@ impl<'a, M: Memo> Solver<'a, M> {
 }
 
 /// Symmetry-distinct P1 openings, each a self-contained subtree:
-/// (child shadow key, child P1 legal, child P2 legal).
-fn distinct_openings(board: &Board) -> Vec<(u128, u64, u64)> {
+/// (child shadow key, child P1 legal, child P2 legal, P1 opening cell).
+fn distinct_openings(board: &Board, ordering: MoveOrdering) -> Vec<(u128, u64, u64, usize)> {
     let legal = board.all_cells_mask;
     let mut seen: FxHashSet<u128> = FxHashSet::default();
     let mut openings = Vec::new();
-    let mut emit = |bit: u64| {
+    let mut emit = |cell: usize, bit: u64| {
         let (c1, c2) = board.child_legals(legal, legal, P1, bit);
         let key = board.shadow_key(c1, c2, P2);
         if seen.insert(key) {
-            openings.push((key, c1, c2));
+            openings.push((key, c1, c2, cell));
         }
     };
-    if let Some(center) = board.center_cell {
-        emit(1u64 << center);
-    }
-    for &(cell, bit) in &board.move_order {
-        if Some(cell) == board.center_cell {
-            continue;
-        }
-        emit(bit);
+    let bits = board.ordered_move_bits(P1, legal, None, ordering);
+    for bit in bits {
+        emit(bit.trailing_zeros() as usize, bit);
     }
     openings
 }
@@ -764,6 +931,7 @@ fn run_sequential<M: Memo>(
     progress: bool,
     endgame_size: u32,
     memo_min_legal: u32,
+    move_ordering: MoveOrdering,
 ) -> SolveOutput {
     let coord = Coordination::new();
     let legal = board.all_cells_mask;
@@ -777,9 +945,10 @@ fn run_sequential<M: Memo>(
         shared_endgame,
         endgame_size,
         memo_min_legal,
+        move_ordering,
     );
     let p1_wins = solver
-        .is_winning(P1, key, legal, legal)
+        .is_winning(P1, key, legal, legal, None)
         .expect("sequential search cannot be cancelled");
     let stats = solver.take_stats();
     drop(solver);
@@ -801,9 +970,10 @@ fn solve_parallel_root<M: Memo + Sync>(
     endgame_size: u32,
     memo: M,
     memo_min_legal: u32,
+    move_ordering: MoveOrdering,
 ) -> SolveOutput {
     let coord = Coordination::new();
-    let openings = distinct_openings(board);
+    let openings = distinct_openings(board, move_ordering);
     let legal = board.all_cells_mask;
     let root_key = board.shadow_key(legal, legal, P1);
     let shared_endgame = (endgame_size > 0).then(|| Arc::new(SharedEndgameCache::new()));
@@ -822,6 +992,7 @@ fn solve_parallel_root<M: Memo + Sync>(
                     shared_endgame.clone(),
                     endgame_size,
                     memo_min_legal,
+                    move_ordering,
                 );
                 loop {
                     if coord.cancel.load(Ordering::Relaxed) {
@@ -831,8 +1002,8 @@ fn solve_parallel_root<M: Memo + Sync>(
                     if i >= openings.len() {
                         break;
                     }
-                    let (key, c1, c2) = openings[i];
-                    match solver.is_winning(P2, key, c1, c2) {
+                    let (key, c1, c2, opening_cell) = openings[i];
+                    match solver.is_winning(P2, key, c1, c2, Some(opening_cell)) {
                         // P2 to move loses this opening => P1 wins the game.
                         Some(false) => {
                             p1_wins.store(true, Ordering::Relaxed);
@@ -867,26 +1038,12 @@ fn solve_parallel_root<M: Memo + Sync>(
     }
 }
 
-/// Move bits in search order for `legal`, optionally trying `preferred` first.
-fn ordered_move_bits(board: &Board, legal: u64, preferred: Option<usize>) -> Vec<u64> {
-    let mut bits = Vec::new();
-    if let Some(cell) = preferred {
-        bits.push(1u64 << cell);
-    }
-    for &(cell, bit) in &board.move_order {
-        if Some(cell) == preferred || legal & bit == 0 {
-            continue;
-        }
-        bits.push(bit);
-    }
-    bits
-}
-
 #[derive(Clone, Copy)]
 struct SubTask {
     key: u128,
     p1: u64,
     p2: u64,
+    last_p1_move: Option<usize>,
 }
 
 enum JobState {
@@ -906,6 +1063,7 @@ struct OpeningJob {
     key: u128,
     p1: u64,
     p2: u64,
+    opening_cell: usize,
     /// P2 reply bits in move order.
     replies: Vec<u64>,
     state: JobState,
@@ -954,18 +1112,25 @@ struct AndSplit<'a, M: Memo> {
     board: &'a Board,
     memo: &'a M,
     coord: &'a Coordination,
+    move_ordering: MoveOrdering,
     state: Mutex<SchedState>,
 }
 
 impl<'a, M: Memo> AndSplit<'a, M> {
-    fn new(board: &'a Board, memo: &'a M, coord: &'a Coordination) -> Self {
-        let jobs: Vec<OpeningJob> = distinct_openings(board)
+    fn new(
+        board: &'a Board,
+        memo: &'a M,
+        coord: &'a Coordination,
+        move_ordering: MoveOrdering,
+    ) -> Self {
+        let jobs: Vec<OpeningJob> = distinct_openings(board, move_ordering)
             .into_iter()
-            .map(|(key, p1, p2)| OpeningJob {
+            .map(|(key, p1, p2, opening_cell)| OpeningJob {
                 key,
                 p1,
                 p2,
-                replies: ordered_move_bits(board, p2, None),
+                opening_cell,
+                replies: board.ordered_move_bits(P2, p2, Some(opening_cell), move_ordering),
                 state: JobState::Unexpanded,
             })
             .collect();
@@ -974,6 +1139,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
             board,
             memo,
             coord,
+            move_ordering,
             state: Mutex::new(SchedState {
                 jobs,
                 ready: VecDeque::new(),
@@ -1004,7 +1170,8 @@ impl<'a, M: Memo> AndSplit<'a, M> {
         };
         let mut subtasks = Vec::new();
         let mut seen: FxHashSet<u128> = FxHashSet::default();
-        for bit in ordered_move_bits(board, q1, preferred) {
+        for bit in board.ordered_move_bits(P1, q1, preferred, self.move_ordering) {
+            let cell = bit.trailing_zeros() as usize;
             let (c1, c2) = board.child_legals(q1, q2, P1, bit);
             if c2 == 0 {
                 // P1 move leaves P2 with nothing: P1 wins Q, reply fails.
@@ -1025,6 +1192,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                     key: ckey,
                     p1: c1,
                     p2: c2,
+                    last_p1_move: Some(cell),
                 }),
             }
         }
@@ -1151,6 +1319,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                     key: 0,
                     p1: 0,
                     p2: 0,
+                    opening_cell: 0,
                     replies: Vec::new(),
                     state: JobState::Done,
                 },
@@ -1229,6 +1398,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                     key: 0,
                     p1: 0,
                     p2: 0,
+                    opening_cell: 0,
                     replies: Vec::new(),
                     state: JobState::Done,
                 },
@@ -1260,12 +1430,13 @@ fn solve_parallel_and_split<M: Memo + Sync>(
     endgame_size: u32,
     memo: M,
     memo_min_legal: u32,
+    move_ordering: MoveOrdering,
 ) -> SolveOutput {
     let coord = Coordination::new();
     let legal = board.all_cells_mask;
     let root_key = board.shadow_key(legal, legal, P1);
     let shared_endgame = (endgame_size > 0).then(|| Arc::new(SharedEndgameCache::new()));
-    let sched = AndSplit::new(board, &memo, &coord);
+    let sched = AndSplit::new(board, &memo, &coord, move_ordering);
     let total = std::sync::Mutex::new(Stats::default());
 
     std::thread::scope(|scope| {
@@ -1279,6 +1450,7 @@ fn solve_parallel_and_split<M: Memo + Sync>(
                     shared_endgame.clone(),
                     endgame_size,
                     memo_min_legal,
+                    move_ordering,
                 );
                 loop {
                     if coord.cancel.load(Ordering::Relaxed) {
@@ -1291,6 +1463,7 @@ fn solve_parallel_and_split<M: Memo + Sync>(
                                 claim.task.key,
                                 claim.task.p1,
                                 claim.task.p2,
+                                claim.task.last_p1_move,
                             ) {
                                 Some(p2_wins) => sched.report(&claim, p2_wins),
                                 None => break,
@@ -1342,6 +1515,7 @@ pub fn run(args: Vec<String>) {
     let mut memo_bits = 0u32;
     let mut endgame_size = 10u32;
     let mut root_split = false;
+    let mut move_ordering = MoveOrdering::Heuristic;
     let mut threads = std::thread::available_parallelism()
         .map(|p| p.get())
         .unwrap_or(1);
@@ -1388,6 +1562,10 @@ pub fn run(args: Vec<String>) {
                 root_split = true;
                 i += 1;
             }
+            "--move-order" => {
+                move_ordering = MoveOrdering::parse(&args[i + 1]);
+                i += 2;
+            }
             "--progress" => {
                 progress = true;
                 i += 1;
@@ -1397,7 +1575,7 @@ pub fn run(args: Vec<String>) {
     }
     assert!(
         m > 0 && n > 0,
-        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--tablebase-dir DIR] [--no-tablebase] [--root-split] [--progress]"
+        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--move-order legacy|heuristic] [--tablebase-dir DIR] [--no-tablebase] [--root-split] [--progress]"
     );
     assert!(threads > 0, "--threads must be >= 1");
     assert!(
@@ -1460,6 +1638,7 @@ pub fn run(args: Vec<String>) {
                     progress,
                     endgame_size,
                     memo_min_legal,
+                    move_ordering,
                 )
             }
             "fixed" => {
@@ -1473,6 +1652,7 @@ pub fn run(args: Vec<String>) {
                     progress,
                     endgame_size,
                     memo_min_legal,
+                    move_ordering,
                 )
             }
             _ => run_sequential(
@@ -1481,6 +1661,7 @@ pub fn run(args: Vec<String>) {
                 progress,
                 endgame_size,
                 memo_min_legal,
+                move_ordering,
             ),
         };
         (output, true)
@@ -1491,7 +1672,15 @@ pub fn run(args: Vec<String>) {
                 memo.insert(key, value);
             }
             if effective_root_split {
-                solve_parallel_root(&board, threads, progress, endgame_size, memo, memo_min_legal)
+                solve_parallel_root(
+                    &board,
+                    threads,
+                    progress,
+                    endgame_size,
+                    memo,
+                    memo_min_legal,
+                    move_ordering,
+                )
             } else {
                 solve_parallel_and_split(
                     &board,
@@ -1500,6 +1689,7 @@ pub fn run(args: Vec<String>) {
                     endgame_size,
                     memo,
                     memo_min_legal,
+                    move_ordering,
                 )
             }
         } else {
@@ -1508,7 +1698,15 @@ pub fn run(args: Vec<String>) {
                 memo.insert(key, value);
             }
             if effective_root_split {
-                solve_parallel_root(&board, threads, progress, endgame_size, memo, memo_min_legal)
+                solve_parallel_root(
+                    &board,
+                    threads,
+                    progress,
+                    endgame_size,
+                    memo,
+                    memo_min_legal,
+                    move_ordering,
+                )
             } else {
                 solve_parallel_and_split(
                     &board,
@@ -1517,6 +1715,7 @@ pub fn run(args: Vec<String>) {
                     endgame_size,
                     memo,
                     memo_min_legal,
+                    move_ordering,
                 )
             }
         };
@@ -1546,8 +1745,13 @@ pub fn run(args: Vec<String>) {
         n,
         if output.p1_wins { "P1" } else { "P2" }
     );
+    let move_order_label = match move_ordering {
+        MoveOrdering::Legacy => "legacy",
+        MoveOrdering::Heuristic => "heuristic",
+    };
+    let ordering_suffix = format!(", move-order {move_order_label}");
     println!(
-        "solver: rust DFS (shadow keys, {} thread{}{}, {} memo{})",
+        "solver: rust DFS (shadow keys, {} thread{}{}, {} memo{}{})",
         threads,
         if threads == 1 { "" } else { "s" },
         if threads == 1 {
@@ -1564,6 +1768,7 @@ pub fn run(args: Vec<String>) {
         } else {
             "dashmap"
         },
+        ordering_suffix,
         if memo_min_legal > 0 {
             format!(", min-legal {memo_min_legal}")
         } else if endgame_size > 0 {
