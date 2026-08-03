@@ -1,13 +1,18 @@
 use dashmap::DashMap;
 use rustc_hash::FxBuildHasher;
 use rustc_hash::FxHashMap;
+use serde::{Deserialize, Serialize};
 use std::cmp::Ordering;
+use std::fs;
+use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 const BLOCK_P1: u8 = 1;
 const BLOCK_P2: u8 = 2;
 const DEAD: u8 = BLOCK_P1 | BLOCK_P2;
-const MAX_LOCAL_CELLS: usize = 12;
+const MAX_LOCAL_CELLS: usize = 14;
+const CACHE_VERSION: i64 = 1;
+const CACHE_FILENAME: &str = "cgt_components_rs.pkl";
 const ZERO_DYADIC: Dyadic = Dyadic { num: 0, shift: 0 };
 const ZERO_VALUE: Value = Value {
     number: ZERO_DYADIC,
@@ -20,9 +25,18 @@ pub struct EndgameStats {
     pub canonical_cache_hits: u64,
     pub cgt_misses: u64,
     pub component_evaluations: u64,
+    pub reduction_calls: u64,
+    pub reduction_single_component_exits: u64,
+    pub reduction_all_small_exits: u64,
+    pub reduction_multi_oversized: u64,
+    pub reduction_changes: u64,
+    pub conjugate_pairs_removed: u64,
+    pub zero_components_removed: u64,
+    pub zero_sum_cells_removed: u64,
+    pub reductions_to_empty: u64,
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 struct Dyadic {
     num: i64,
     shift: u8,
@@ -114,10 +128,29 @@ fn div_floor(num: i64, den: i64) -> i64 {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 struct Value {
     number: Dyadic,
     star: bool,
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+struct LocalKey {
+    len: u8,
+    codes: [u16; MAX_LOCAL_CELLS],
+}
+
+#[derive(Deserialize, Serialize)]
+struct CacheEntry {
+    key: LocalKey,
+    value: Value,
+}
+
+#[derive(Deserialize, Serialize)]
+struct CachePayload {
+    version: i64,
+    max_local_cells: i64,
+    entries: Vec<CacheEntry>,
 }
 
 impl Value {
@@ -590,16 +623,24 @@ fn sort_dedup_values(values: &mut [Value; MAX_LOCAL_CELLS], len: usize) -> usize
 
 pub struct EndgameEvaluator {
     max_component_size: u32,
-    raw_values: FxHashMap<u128, Value>,
-    values: FxHashMap<u128, Value>,
+    shapes: FxHashMap<u64, LocalShape>,
+    raw_values: FxHashMap<LocalKey, Value>,
+    values: FxHashMap<LocalKey, Value>,
     shared: Option<Arc<SharedEndgameCache>>,
     cgt: CgtEngine,
     stats: EndgameStats,
 }
 
+/// A position after safely deleting disjoint zero-valued summands.
+pub struct ComponentReduction {
+    pub legal_p1: u64,
+    pub legal_p2: u64,
+    pub changed: bool,
+}
+
 pub struct SharedEndgameCache {
-    raw_values: DashMap<u128, Value, FxBuildHasher>,
-    values: DashMap<u128, Value, FxBuildHasher>,
+    raw_values: DashMap<LocalKey, Value, FxBuildHasher>,
+    values: DashMap<LocalKey, Value, FxBuildHasher>,
 }
 
 impl SharedEndgameCache {
@@ -609,6 +650,99 @@ impl SharedEndgameCache {
             values: DashMap::with_hasher(FxBuildHasher),
         }
     }
+
+    pub fn canonical_len(&self) -> usize {
+        self.values.len()
+    }
+
+    fn insert_loaded(&self, key: LocalKey, value: Value) {
+        self.values.insert(key, value);
+    }
+
+    fn canonical_entries(&self) -> Vec<CacheEntry> {
+        let mut entries: Vec<CacheEntry> = self
+            .values
+            .iter()
+            .map(|entry| CacheEntry {
+                key: *entry.key(),
+                value: *entry.value(),
+            })
+            .collect();
+        entries.sort_unstable_by_key(|entry| entry.key);
+        entries
+    }
+}
+
+pub fn cache_path(root: &Path) -> PathBuf {
+    root.join(CACHE_FILENAME)
+}
+
+pub fn load_shared_cache(root: &Path) -> Result<(Arc<SharedEndgameCache>, usize), String> {
+    let cache = Arc::new(SharedEndgameCache::new());
+    let path = cache_path(root);
+    if !path.is_file() {
+        return Ok((cache, 0));
+    }
+
+    let bytes = fs::read(&path).map_err(|err| err.to_string())?;
+    let payload: CachePayload =
+        serde_pickle::from_slice(&bytes, Default::default()).map_err(|err| err.to_string())?;
+    if payload.version != CACHE_VERSION {
+        return Err(format!(
+            "unsupported CGT cache version {} in {}",
+            payload.version,
+            path.display()
+        ));
+    }
+    if payload.max_local_cells != MAX_LOCAL_CELLS as i64 {
+        return Err(format!(
+            "CGT cache {} was built for max-local-cells {}, expected {}",
+            path.display(),
+            payload.max_local_cells,
+            MAX_LOCAL_CELLS
+        ));
+    }
+
+    let mut loaded = 0usize;
+    for entry in payload.entries {
+        cache.insert_loaded(entry.key, entry.value);
+        loaded += 1;
+    }
+    Ok((cache, loaded))
+}
+
+pub fn save_shared_cache(
+    root: &Path,
+    cache: &SharedEndgameCache,
+    loaded_count: usize,
+) -> Result<Option<(PathBuf, usize)>, String> {
+    let entries = cache.canonical_entries();
+    if entries.len() <= loaded_count {
+        return Ok(None);
+    }
+
+    fs::create_dir_all(root).map_err(|err| err.to_string())?;
+    let path = cache_path(root);
+    let payload = CachePayload {
+        version: CACHE_VERSION,
+        max_local_cells: MAX_LOCAL_CELLS as i64,
+        entries,
+    };
+    let saved_count = payload.entries.len();
+    let bytes =
+        serde_pickle::to_vec(&payload, Default::default()).map_err(|err| err.to_string())?;
+    let tmp = path.with_extension("pkl.tmp");
+    fs::write(&tmp, bytes).map_err(|err| err.to_string())?;
+    fs::rename(&tmp, &path).map_err(|err| err.to_string())?;
+    Ok(Some((path, saved_count)))
+}
+
+fn effective_component_limit(configured: u32, open_cells: u32) -> u32 {
+    if configured > 12 && open_cells > configured {
+        12
+    } else {
+        configured
+    }
 }
 
 impl EndgameEvaluator {
@@ -617,11 +751,12 @@ impl EndgameEvaluator {
         shared: Option<Arc<SharedEndgameCache>>,
     ) -> EndgameEvaluator {
         assert!(
-            max_component_size <= 12,
-            "packed endgame keys support components up to 12 cells"
+            max_component_size <= MAX_LOCAL_CELLS as u32,
+            "packed endgame keys support components up to MAX_LOCAL_CELLS"
         );
         EndgameEvaluator {
             max_component_size,
+            shapes: FxHashMap::default(),
             raw_values: FxHashMap::default(),
             values: FxHashMap::default(),
             shared,
@@ -632,6 +767,123 @@ impl EndgameEvaluator {
 
     pub fn stats(&self) -> EndgameStats {
         self.stats
+    }
+
+    /// Delete disconnected summands that are provably zero without requiring
+    /// every component to fit the local CGT cutoff.
+    pub fn reduce_zero_summands(
+        &mut self,
+        n: usize,
+        adjacency: &[u64],
+        legal_p1: u64,
+        legal_p2: u64,
+    ) -> ComponentReduction {
+        self.stats.reduction_calls += 1;
+        let combined = legal_p1 | legal_p2;
+        let effective_max_component_size =
+            effective_component_limit(self.max_component_size, combined.count_ones());
+        let mut remaining = combined;
+        let mut components = [0u64; 64];
+        let mut component_count = 0usize;
+        let mut oversized_count = 0usize;
+        while remaining != 0 {
+            let component = take_component(adjacency, combined, &mut remaining);
+            components[component_count] = component;
+            component_count += 1;
+            oversized_count +=
+                usize::from(component.count_ones() > effective_max_component_size);
+        }
+        let components = &components[..component_count];
+        if component_count < 2 {
+            self.stats.reduction_single_component_exits += 1;
+            return ComponentReduction {
+                legal_p1,
+                legal_p2,
+                changed: false,
+            };
+        }
+        // Fully small positions are already handled exactly by `try_evaluate`;
+        // stripping them here only duplicates its work. This pass is for the
+        // important case where an oversized component would otherwise make
+        // the whole evaluator return `None`.
+        if oversized_count == 0 {
+            self.stats.reduction_all_small_exits += 1;
+            return ComponentReduction {
+                legal_p1,
+                legal_p2,
+                changed: false,
+            };
+        }
+
+        let mut remove = 0u64;
+        if oversized_count > 1 {
+            self.stats.reduction_multi_oversized += 1;
+            let mut pending: FxHashMap<Vec<u16>, Vec<u64>> = FxHashMap::default();
+            for &component in components {
+                if component.count_ones() <= effective_max_component_size {
+                    continue;
+                }
+                let signature = component_signature(n, component, legal_p1, legal_p2, false);
+                let conjugate = component_signature(n, component, legal_p1, legal_p2, true);
+                if signature == conjugate {
+                    continue;
+                }
+                if let Some(mut matches) = pending.remove(&conjugate) {
+                    let mate = matches.pop().expect("nonempty component signature bucket");
+                    if !matches.is_empty() {
+                        pending.insert(conjugate, matches);
+                    }
+                    remove |= component | mate;
+                    self.stats.conjugate_pairs_removed += 1;
+                } else {
+                    pending.entry(signature).or_default().push(component);
+                }
+            }
+        }
+
+        let mut evaluated = [0u64; 64];
+        let mut evaluated_count = 0usize;
+        let mut total = Value::zero();
+        for &component in components {
+            if component.count_ones() > effective_max_component_size {
+                continue;
+            }
+            let (shape, p1, p2) =
+                self.local_shape_and_masks(n, legal_p1 & component, legal_p2 & component);
+            let value = self.component_value_local(&shape, p1, p2);
+            if value == Value::zero() {
+                remove |= component;
+                self.stats.zero_components_removed += 1;
+            }
+            total = total.add(value);
+            evaluated[evaluated_count] = component;
+            evaluated_count += 1;
+        }
+        if evaluated_count > 1 && total == Value::zero() {
+            for &component in &evaluated[..evaluated_count] {
+                remove |= component;
+            }
+        }
+
+        if remove == 0 {
+            return ComponentReduction {
+                legal_p1,
+                legal_p2,
+                changed: false,
+            };
+        }
+        self.stats.zero_sum_cells_removed += remove.count_ones() as u64;
+        let legal_p1 = legal_p1 & !remove;
+        let legal_p2 = legal_p2 & !remove;
+        if legal_p1 | legal_p2 == 0 {
+            self.stats.reductions_to_empty += 1;
+        }
+        self.stats.reduction_changes += 1;
+        ComponentReduction {
+            legal_p1,
+            legal_p2,
+            changed: true,
+        }
     }
 
     pub fn try_evaluate(
@@ -646,31 +898,51 @@ impl EndgameEvaluator {
         if combined == 0 {
             return Some(false);
         }
+        let effective_max_component_size =
+            effective_component_limit(self.max_component_size, combined.count_ones());
 
         let mut remaining = combined;
         let mut component_count = 0usize;
-        let mut first_component: Option<(u64, u64)> = None;
+        let mut first_local_component: Option<(u64, u64)> = None;
         let mut total = Value::zero();
+        let mut used_known_value = false;
         while remaining != 0 {
-            let component =
-                take_component(adjacency, combined, &mut remaining, self.max_component_size)?;
-            let component_masks = (legal_p1 & component, legal_p2 & component);
             component_count += 1;
-
-            if component_count == 1 {
-                first_component = Some(component_masks);
-                continue;
+            match take_component_eval(
+                n,
+                adjacency,
+                combined,
+                &mut remaining,
+                legal_p1,
+                legal_p2,
+                effective_max_component_size,
+            )? {
+                ComponentEval::KnownValue(value) => {
+                    if let Some((comp_p1, comp_p2)) = first_local_component.take() {
+                        let (shape, p1, p2) = self.local_shape_and_masks(n, comp_p1, comp_p2);
+                        total = total.add(self.component_value_local(&shape, p1, p2));
+                    }
+                    total = total.add(value);
+                    used_known_value = true;
+                }
+                ComponentEval::Local(component) => {
+                    let component_masks = (legal_p1 & component, legal_p2 & component);
+                    if component_count == 1 && !used_known_value {
+                        first_local_component = Some(component_masks);
+                        continue;
+                    }
+                    if let Some((comp_p1, comp_p2)) = first_local_component.take() {
+                        let (shape, p1, p2) = self.local_shape_and_masks(n, comp_p1, comp_p2);
+                        total = total.add(self.component_value_local(&shape, p1, p2));
+                    }
+                    let (shape, p1, p2) =
+                        self.local_shape_and_masks(n, component_masks.0, component_masks.1);
+                    total = total.add(self.component_value_local(&shape, p1, p2));
+                }
             }
-            if component_count == 2 {
-                let (comp_p1, comp_p2) = first_component.take().expect("first component missing");
-                let (shape, p1, p2) = local_shape_from_masks(n, comp_p1, comp_p2);
-                total = total.add(self.component_value_local(&shape, p1, p2));
-            }
-            let (shape, p1, p2) = local_shape_from_masks(n, component_masks.0, component_masks.1);
-            total = total.add(self.component_value_local(&shape, p1, p2));
         }
 
-        if component_count < 2 {
+        if component_count < 2 && !used_known_value {
             return None;
         }
 
@@ -688,6 +960,9 @@ impl EndgameEvaluator {
             let bit = live & live.wrapping_neg();
             let tint = local_tint(bit, p1_legal, p2_legal);
             return single_cell_value(tint);
+        }
+        if let Some(value) = linear_chain_value_local(shape, p1_legal, p2_legal) {
+            return value;
         }
 
         let raw_key = raw_shape_key_local(shape, p1_legal, p2_legal);
@@ -763,6 +1038,24 @@ impl EndgameEvaluator {
         value
     }
 
+    fn local_shape_and_masks(
+        &mut self,
+        n: usize,
+        legal_p1: u64,
+        legal_p2: u64,
+    ) -> (LocalShape, u16, u16) {
+        let live = legal_p1 | legal_p2;
+        let shape = if let Some(shape) = self.shapes.get(&live) {
+            *shape
+        } else {
+            let shape = local_shape_from_live(n, live);
+            self.shapes.insert(live, shape);
+            shape
+        };
+        let (p1, p2) = local_masks_from_live(live, legal_p1, legal_p2);
+        (shape, p1, p2)
+    }
+
     fn position_value_local(&mut self, shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> Value {
         let live = p1_legal | p2_legal;
         if live == 0 {
@@ -813,6 +1106,7 @@ fn format_dyadic(value: Dyadic) -> String {
     format!("{}/{}", value.num, 1i64 << value.shift)
 }
 
+#[derive(Clone, Copy)]
 struct LocalShape {
     rows: [i16; MAX_LOCAL_CELLS],
     cols: [i16; MAX_LOCAL_CELLS],
@@ -820,28 +1114,48 @@ struct LocalShape {
 }
 
 fn local_shape_from_masks(n: usize, legal_p1: u64, legal_p2: u64) -> (LocalShape, u16, u16) {
-    let mut rows = [0i16; MAX_LOCAL_CELLS];
-    let mut cols = [0i16; MAX_LOCAL_CELLS];
-    let mut global_bits = [0u64; MAX_LOCAL_CELLS];
+    let live = legal_p1 | legal_p2;
+    let shape = local_shape_from_live(n, live);
+    let (p1, p2) = local_masks_from_live(live, legal_p1, legal_p2);
+    (shape, p1, p2)
+}
+
+fn local_masks_from_live(live: u64, legal_p1: u64, legal_p2: u64) -> (u16, u16) {
     let mut p1 = 0u16;
     let mut p2 = 0u16;
     let mut len = 0usize;
-    let mut combined = legal_p1 | legal_p2;
+    let mut combined = live;
 
     while combined != 0 {
         let bit = combined & combined.wrapping_neg();
         combined ^= bit;
-        let cell = bit.trailing_zeros() as usize;
         let local_bit = 1u16 << len;
-        rows[len] = (cell / n) as i16;
-        cols[len] = (cell % n) as i16;
-        global_bits[len] = bit;
         if legal_p1 & bit != 0 {
             p1 |= local_bit;
         }
         if legal_p2 & bit != 0 {
             p2 |= local_bit;
         }
+        len += 1;
+    }
+
+    (p1, p2)
+}
+
+fn local_shape_from_live(n: usize, live: u64) -> LocalShape {
+    let mut rows = [0i16; MAX_LOCAL_CELLS];
+    let mut cols = [0i16; MAX_LOCAL_CELLS];
+    let mut global_bits = [0u64; MAX_LOCAL_CELLS];
+    let mut len = 0usize;
+    let mut combined = live;
+
+    while combined != 0 {
+        let bit = combined & combined.wrapping_neg();
+        combined ^= bit;
+        let cell = bit.trailing_zeros() as usize;
+        rows[len] = (cell / n) as i16;
+        cols[len] = (cell % n) as i16;
+        global_bits[len] = bit;
         len += 1;
     }
     debug_assert!(len <= MAX_LOCAL_CELLS);
@@ -857,7 +1171,7 @@ fn local_shape_from_masks(n: usize, legal_p1: u64, legal_p2: u64) -> (LocalShape
     }
     let _ = global_bits;
 
-    (LocalShape { rows, cols, adj }, p1, p2)
+    LocalShape { rows, cols, adj }
 }
 
 fn local_tint(bit: u16, p1_legal: u16, p2_legal: u16) -> u8 {
@@ -896,7 +1210,7 @@ fn take_local_component(shape: &LocalShape, live: u16, remaining: &mut u16) -> u
     component
 }
 
-fn raw_shape_key_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> u128 {
+fn raw_shape_key_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> LocalKey {
     let live = p1_legal | p2_legal;
     debug_assert!(live != 0);
 
@@ -928,11 +1242,11 @@ fn raw_shape_key_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> u128
     pack_key(&key[..len])
 }
 
-fn canonical_key_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> (u128, bool) {
+fn canonical_key_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> (LocalKey, bool) {
     let live = p1_legal | p2_legal;
     debug_assert!(live != 0);
 
-    let mut best_key: Option<u128> = None;
+    let mut best_key: Option<LocalKey> = None;
     let mut best_swapped = false;
     for transform in 0..8 {
         let mut rows = [0i16; MAX_LOCAL_CELLS];
@@ -977,11 +1291,21 @@ fn canonical_key_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> (u12
         }
     }
 
-    (best_key.unwrap_or(0), best_swapped)
+    (best_key.expect("local canonical key missing"), best_swapped)
 }
 
 fn first_player_wins(value: Value) -> bool {
     value.number > Dyadic::zero() || (value.number == Dyadic::zero() && value.star)
+}
+
+fn endpoint_chain_score(tint: u8) -> Option<i64> {
+    match tint {
+        0 => Some(0),
+        BLOCK_P2 => Some(1),
+        BLOCK_P1 => Some(-1),
+        DEAD => None,
+        _ => unreachable!(),
+    }
 }
 
 fn single_cell_value(tint: u8) -> Value {
@@ -1003,18 +1327,12 @@ fn single_cell_value(tint: u8) -> Value {
     }
 }
 
-fn take_component(
-    adjacency: &[u64],
-    combined: u64,
-    remaining: &mut u64,
-    max_component_size: u32,
-) -> Option<u64> {
+fn take_component(adjacency: &[u64], combined: u64, remaining: &mut u64) -> u64 {
     let seed = *remaining & remaining.wrapping_neg();
     let mut stack = [0u64; 64];
     let mut stack_len = 1usize;
     stack[0] = seed;
     let mut component = seed;
-    let mut count = 1u32;
     *remaining ^= seed;
 
     while stack_len > 0 {
@@ -1027,23 +1345,163 @@ fn take_component(
             neighbors ^= neighbor;
             component |= neighbor;
             *remaining &= !neighbor;
+            stack[stack_len] = neighbor;
+            stack_len += 1;
+        }
+    }
+    component
+}
+
+fn component_signature(
+    n: usize,
+    component: u64,
+    legal_p1: u64,
+    legal_p2: u64,
+    swapped: bool,
+) -> Vec<u16> {
+    let mut best: Option<Vec<u16>> = None;
+    for transform in 0..8 {
+        let mut points = Vec::with_capacity(component.count_ones() as usize);
+        let mut min_row = i16::MAX;
+        let mut min_col = i16::MAX;
+        let mut bits = component;
+        while bits != 0 {
+            let bit = bits & bits.wrapping_neg();
+            bits ^= bit;
+            let cell = bit.trailing_zeros() as usize;
+            let (row, col) = transform_point(transform, (cell / n) as i16, (cell % n) as i16);
+            min_row = min_row.min(row);
+            min_col = min_col.min(col);
+            let tint = global_tint(bit, legal_p1, legal_p2);
+            points.push((row, col, if swapped { swap_tint(tint) } else { tint }));
+        }
+        let mut key = Vec::with_capacity(points.len());
+        for (row, col, tint) in points {
+            let row = (row - min_row) as u16;
+            let col = (col - min_col) as u16;
+            debug_assert!(row < 64 && col < 64);
+            key.push((row << 8) | (col << 2) | tint as u16);
+        }
+        key.sort_unstable();
+        if best.as_ref().map_or(true, |current| key < *current) {
+            best = Some(key);
+        }
+    }
+    best.expect("component signature needs a live cell")
+}
+
+enum ComponentEval {
+    Local(u64),
+    KnownValue(Value),
+}
+
+fn take_component_eval(
+    n: usize,
+    adjacency: &[u64],
+    combined: u64,
+    remaining: &mut u64,
+    legal_p1: u64,
+    legal_p2: u64,
+    max_component_size: u32,
+) -> Option<ComponentEval> {
+    let seed = *remaining & remaining.wrapping_neg();
+    let mut stack = [0u64; 64];
+    let mut stack_len = 1usize;
+    stack[0] = seed;
+    let mut component = seed;
+    let mut count = 1u32;
+    let mut linear_possible = true;
+    let mut endpoint_count = 0u32;
+    let mut endpoint_score_sum = 0i64;
+    let mut all_open = true;
+    let mut min_row = usize::MAX;
+    let mut max_row = 0usize;
+    let mut min_col = usize::MAX;
+    let mut max_col = 0usize;
+    *remaining ^= seed;
+
+    while stack_len > 0 {
+        stack_len -= 1;
+        let bit = stack[stack_len];
+        let cell = bit.trailing_zeros() as usize;
+        let row = cell / n;
+        let col = cell % n;
+        min_row = min_row.min(row);
+        max_row = max_row.max(row);
+        min_col = min_col.min(col);
+        max_col = max_col.max(col);
+        let degree = (adjacency[cell] & combined).count_ones();
+        let tint = global_tint(bit, legal_p1, legal_p2);
+        if tint != 0 {
+            all_open = false;
+            if count > max_component_size && !linear_possible {
+                return None;
+            }
+        }
+        if degree > 2 {
+            linear_possible = false;
+        } else if degree <= 1 {
+            endpoint_count += 1;
+            endpoint_score_sum += endpoint_chain_score(tint)?;
+        } else if tint != 0 {
+            linear_possible = false;
+        }
+
+        let mut neighbors = adjacency[cell] & combined & !component;
+        while neighbors != 0 {
+            let neighbor = neighbors & neighbors.wrapping_neg();
+            neighbors ^= neighbor;
+            component |= neighbor;
+            *remaining &= !neighbor;
             count += 1;
-            if count > max_component_size {
+            if count > max_component_size && !linear_possible && !all_open {
                 return None;
             }
             stack[stack_len] = neighbor;
             stack_len += 1;
         }
     }
-    Some(component)
+
+    if all_open {
+        let rows = max_row - min_row + 1;
+        let cols = max_col - min_col + 1;
+        if rows * cols == count as usize && (rows % 2 == 0 || cols % 2 == 0) {
+            return Some(ComponentEval::KnownValue(Value::zero()));
+        }
+    }
+
+    if linear_possible {
+        let value = if count == 1 {
+            single_cell_value(global_tint(seed, legal_p1, legal_p2))
+        } else if endpoint_count == 2 {
+            Value {
+                number: Dyadic::new(endpoint_score_sum, 1),
+                star: false,
+            }
+        } else if count <= max_component_size {
+            return Some(ComponentEval::Local(component));
+        } else {
+            return None;
+        };
+        return Some(ComponentEval::KnownValue(value));
+    }
+
+    if count <= max_component_size {
+        Some(ComponentEval::Local(component))
+    } else {
+        None
+    }
 }
 
-fn pack_key(codes: &[u16]) -> u128 {
-    debug_assert!(codes.len() <= 12);
-    let mut key = codes.len() as u128;
-    for &code in codes {
+fn pack_key(codes: &[u16]) -> LocalKey {
+    debug_assert!(codes.len() <= MAX_LOCAL_CELLS);
+    let mut key = LocalKey {
+        len: codes.len() as u8,
+        codes: [0u16; MAX_LOCAL_CELLS],
+    };
+    for (index, &code) in codes.iter().enumerate() {
         debug_assert!(code < 1024);
-        key = (key << 10) | code as u128;
+        key.codes[index] = code;
     }
     key
 }
@@ -1064,4 +1522,247 @@ fn transform_point(transform: u8, row: i16, col: i16) -> (i16, i16) {
 
 fn swap_tint(tint: u8) -> u8 {
     ((tint & BLOCK_P1) << 1) | ((tint & BLOCK_P2) >> 1)
+}
+
+fn global_tint(bit: u64, p1_legal: u64, p2_legal: u64) -> u8 {
+    let mut tint = 0;
+    if p1_legal & bit == 0 {
+        tint |= BLOCK_P1;
+    }
+    if p2_legal & bit == 0 {
+        tint |= BLOCK_P2;
+    }
+    tint
+}
+
+fn linear_chain_value_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> Option<Value> {
+    let live = p1_legal | p2_legal;
+    debug_assert!(live.count_ones() > 1);
+
+    let mut endpoint_count = 0u32;
+    let mut endpoint_score_sum = 0i64;
+    let mut bits = live;
+    while bits != 0 {
+        let bit = bits & bits.wrapping_neg();
+        bits ^= bit;
+        let cell = bit.trailing_zeros() as usize;
+        let degree = (shape.adj[cell] & live).count_ones();
+        let tint = local_tint(bit, p1_legal, p2_legal);
+        if degree > 2 {
+            return None;
+        }
+        if degree <= 1 {
+            endpoint_count += 1;
+            endpoint_score_sum += endpoint_chain_score(tint)?;
+        } else if tint != 0 {
+            return None;
+        }
+    }
+
+    if endpoint_count == 2 {
+        Some(Value {
+            number: Dyadic::new(endpoint_score_sum, 1),
+            star: false,
+        })
+    } else {
+        None
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    fn line_adjacency(len: usize) -> Vec<u64> {
+        let mut adjacency = vec![0u64; len];
+        for cell in 0..len {
+            if cell > 0 {
+                adjacency[cell] |= 1u64 << (cell - 1);
+            }
+            if cell + 1 < len {
+                adjacency[cell] |= 1u64 << (cell + 1);
+            }
+        }
+        adjacency
+    }
+
+    fn grid_adjacency(m: usize, n: usize) -> Vec<u64> {
+        let mut adjacency = vec![0u64; m * n];
+        for row in 0..m {
+            for col in 0..n {
+                let cell = row * n + col;
+                if row > 0 {
+                    adjacency[cell] |= 1u64 << ((row - 1) * n + col);
+                }
+                if row + 1 < m {
+                    adjacency[cell] |= 1u64 << ((row + 1) * n + col);
+                }
+                if col > 0 {
+                    adjacency[cell] |= 1u64 << (row * n + col - 1);
+                }
+                if col + 1 < n {
+                    adjacency[cell] |= 1u64 << (row * n + col + 1);
+                }
+            }
+        }
+        adjacency
+    }
+
+    fn temp_cache_dir() -> PathBuf {
+        let unique = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        std::env::temp_dir().join(format!("col-rs-cgt-cache-{unique}"))
+    }
+
+    fn masks(pattern: &str) -> (u64, u64) {
+        let mut p1 = 0u64;
+        let mut p2 = 0u64;
+        for (index, ch) in pattern.chars().enumerate() {
+            let bit = 1u64 << index;
+            match ch {
+                'o' => {
+                    p1 |= bit;
+                    p2 |= bit;
+                }
+                'b' => p1 |= bit,
+                'w' => p2 |= bit,
+                'x' => {}
+                _ => panic!("bad chain pattern"),
+            }
+        }
+        (p1, p2)
+    }
+
+    #[test]
+    fn small_linear_chain_values_match_theorem() {
+        let (p1, p2) = masks("oooo");
+        assert_eq!(component_value_text(4, p1, p2).as_deref(), Some("0"));
+
+        let (p1, p2) = masks("booo");
+        assert_eq!(component_value_text(4, p1, p2).as_deref(), Some("1/2"));
+
+        let (p1, p2) = masks("wooo");
+        assert_eq!(component_value_text(4, p1, p2).as_deref(), Some("-1/2"));
+
+        let (p1, p2) = masks("boow");
+        assert_eq!(component_value_text(4, p1, p2).as_deref(), Some("0"));
+    }
+
+    #[test]
+    fn empty_even_rectangle_value_matches_pairing_theorem() {
+        let adjacency = grid_adjacency(2, 3);
+        let legal = (1u64 << 6) - 1;
+        let mut evaluator = EndgameEvaluator::new(4, None);
+
+        assert_eq!(evaluator.try_evaluate(3, &adjacency, legal, legal, 0), Some(false));
+    }
+
+    #[test]
+    fn shared_cache_round_trips_canonical_values() {
+        let root = temp_cache_dir();
+        let cache = SharedEndgameCache::new();
+        let key = LocalKey {
+            len: 2,
+            codes: [0, 68, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        };
+        let value = Value {
+            number: Dyadic::new(1, 1),
+            star: false,
+        };
+        cache.insert_loaded(key, value);
+
+        let saved = save_shared_cache(&root, &cache, 0).unwrap();
+        assert!(saved.is_some());
+        let (loaded, loaded_count) = load_shared_cache(&root).unwrap();
+        assert_eq!(loaded_count, 1);
+        assert_eq!(loaded.values.get(&key).as_deref().copied(), Some(value));
+
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn long_linear_chains_bypass_local_component_limit() {
+        let adjacency = line_adjacency(15);
+        let mut evaluator = EndgameEvaluator::new(6, None);
+
+        let (p1, p2) = masks("ooooooooooooooo");
+        assert_eq!(
+            evaluator.try_evaluate(15, &adjacency, p1, p2, 0),
+            Some(false)
+        );
+
+        let (p1, p2) = masks("boooooooooooooo");
+        assert_eq!(
+            evaluator.try_evaluate(15, &adjacency, p1, p2, 0),
+            Some(true)
+        );
+        assert_eq!(
+            evaluator.try_evaluate(15, &adjacency, p1, p2, 1),
+            Some(false)
+        );
+    }
+
+    #[test]
+    fn zero_components_are_removed_beside_other_components() {
+        let adjacency = line_adjacency(12);
+        let mut evaluator = EndgameEvaluator::new(4, None);
+        let large = ((1u64 << 6) - 1) << 6;
+        let p1 = (1u64 << 0) | (1u64 << 3) | large;
+        let p2 = (1u64 << 1) | (1u64 << 4) | large;
+
+        let reduced = evaluator.reduce_zero_summands(12, &adjacency, p1, p2);
+        assert!(reduced.changed);
+        assert_eq!(reduced.legal_p1 | reduced.legal_p2, large);
+        assert_eq!(evaluator.stats().zero_components_removed, 2);
+    }
+
+    #[test]
+    fn small_conjugate_components_cancel_beside_oversized_component() {
+        let adjacency = line_adjacency(12);
+        let mut evaluator = EndgameEvaluator::new(4, None);
+        let large = ((1u64 << 8) - 1) << 4;
+        let p1 = (1u64 << 0) | large;
+        let p2 = (1u64 << 2) | large;
+
+        let reduced = evaluator.reduce_zero_summands(12, &adjacency, p1, p2);
+
+        assert!(reduced.changed);
+        assert_eq!(reduced.legal_p1 | reduced.legal_p2, large);
+        assert_eq!(evaluator.stats().reduction_multi_oversized, 0);
+    }
+
+    #[test]
+    fn oversized_conjugate_components_cancel_by_signature() {
+        let adjacency = line_adjacency(11);
+        let mut evaluator = EndgameEvaluator::new(4, None);
+        let left = (1u64 << 5) - 1;
+        let right = left << 6;
+        let p1 = left | (right & !(1u64 << 6));
+        let p2 = (left & !1u64) | right;
+
+        let reduced = evaluator.reduce_zero_summands(11, &adjacency, p1, p2);
+
+        assert!(reduced.changed);
+        assert_eq!(reduced.legal_p1 | reduced.legal_p2, 0);
+        assert_eq!(evaluator.stats().conjugate_pairs_removed, 1);
+        assert_eq!(evaluator.stats().reduction_multi_oversized, 1);
+    }
+
+    #[test]
+    fn nonzero_small_component_beside_oversized_component_is_unchanged() {
+        let adjacency = line_adjacency(8);
+        let mut evaluator = EndgameEvaluator::new(4, None);
+        let large = ((1u64 << 6) - 1) << 2;
+        let p1 = 1u64 | large;
+        let p2 = large;
+
+        let reduced = evaluator.reduce_zero_summands(8, &adjacency, p1, p2);
+
+        assert!(!reduced.changed);
+        assert_eq!(reduced.legal_p1, p1);
+        assert_eq!(reduced.legal_p2, p2);
+    }
 }

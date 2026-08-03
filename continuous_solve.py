@@ -27,14 +27,19 @@ import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterator, List, Sequence, Tuple
+from typing import Any, List, Sequence, Tuple
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / "python"))
+
+from col.boards import odd_totals  # noqa: E402
+
+
 SOLVER = ROOT / "col-solve"
 DEFAULT_TABLEBASE_DIR = ROOT / "data" / "tablebases"
 
 WINNER_RE = re.compile(r"^(\d+)\s+x\s+(\d+):\s+(P[12])\s+wins\s*$", re.MULTILINE)
-TIME_RE = re.compile(r"^time elapsed:\s+([0-9.]+)s\s*$", re.MULTILINE)
+TIME_RE = re.compile(r"^time elapsed(?: \(solve\))?:\s+([0-9.]+)s\s*$", re.MULTILINE)
 STATES_RE = re.compile(r"^states searched:\s+(\d+)\s*$", re.MULTILINE)
 SAVED_RE = re.compile(r"^tablebase saved:\s+", re.MULTILINE)
 LOADED_RE = re.compile(r"^tablebase loaded:\s+(\d+)\s+entries\s*$", re.MULTILINE)
@@ -51,13 +56,6 @@ def _handle_signal(_signum: int, _frame: object) -> None:
     global _stop_requested
     _stop_requested = True
     print("\nStop requested; finishing current board...", file=sys.stderr, flush=True)
-
-
-def odd_totals(start: int, max_total: int | None) -> Iterator[int]:
-    total = start if start % 2 == 1 else start + 1
-    while max_total is None or total <= max_total:
-        yield total
-        total += 2
 
 
 def boards_for_total(total: int) -> List[Board]:

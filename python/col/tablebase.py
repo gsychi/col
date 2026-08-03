@@ -68,7 +68,8 @@ def _decode_entries(count: int, deltas_blob: bytes, bitmap_blob: bytes) -> Table
 
 
 class Tablebase:
-    VERSION = 4
+    # Version 5 adds global color-swap canonicalization to state keys.
+    VERSION = 5
 
     def __init__(self, root: Optional[Path] = None, enabled: bool = True) -> None:
         self.enabled = enabled

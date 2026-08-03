@@ -11,7 +11,8 @@ use std::fs;
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
-pub const VERSION: i64 = 4;
+/// Version 5 adds global color-swap canonicalization to shadow keys.
+pub const VERSION: i64 = 5;
 
 #[derive(Serialize, Deserialize)]
 struct Payload {

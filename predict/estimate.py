@@ -23,11 +23,16 @@ from pathlib import Path
 from typing import Iterable, List, Optional, Sequence, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "python"))
+
+from col.boards import BoardSpec, odd_boards  # noqa: E402
+
+
 SOLVER = ROOT / "col-solve"
 DATA_PATH = ROOT / "predict" / "measurements.json"
 
 STATES_RE = re.compile(r"^states searched:\s+(\d+)\s*$", re.MULTILINE)
-TIME_RE = re.compile(r"^time elapsed:\s+([0-9.]+)s\s*$", re.MULTILINE)
+TIME_RE = re.compile(r"^time elapsed(?: \(solve\))?:\s+([0-9.]+)s\s*$", re.MULTILINE)
 WINNER_RE = re.compile(r"^(\d+)\s+x\s+(\d+):\s+(P[12])\s+wins\s*$", re.MULTILINE)
 
 
@@ -64,34 +69,7 @@ def normalize(m: int, n: int) -> Tuple[int, int]:
 
 
 def default_boards(max_cells: int = 45) -> List[Tuple[int, int]]:
-    boards: List[Tuple[int, int]] = []
-
-    for n in range(9, max_cells + 1, 2):
-        if n <= max_cells:
-            boards.append((1, n))
-
-    for n in range(3, 15, 2):
-        cells = 3 * n
-        if cells <= max_cells:
-            boards.append((3, n))
-
-    for n in range(3, 11, 2):
-        cells = 5 * n
-        if cells <= max_cells:
-            boards.append((5, n))
-
-    for side in (7, 9):
-        if side * side <= max_cells:
-            boards.append((side, side))
-
-    seen = set()
-    unique: List[Tuple[int, int]] = []
-    for board in boards:
-        key = normalize(*board)
-        if key not in seen:
-            seen.add(key)
-            unique.append(key)
-    return sorted(unique, key=lambda item: item[0] * item[1])
+    return [(board.m, board.n) for board in odd_boards(max_cells)]
 
 
 def seed_results() -> List[BoardResult]:
@@ -317,12 +295,7 @@ def estimate_boards(
     estimates: List[Estimate] = []
 
     if boards is None:
-        targets: List[Tuple[int, int]] = []
-        for m in range(1, max_cells + 1, 2):
-            if m * m > max_cells:
-                break
-            for n in range(m, max_cells // m + 1, 2):
-                targets.append((m, n))
+        targets = [(board.m, board.n) for board in odd_boards(max_cells)]
     else:
         targets = [normalize(m, n) for m, n in boards]
 
@@ -466,7 +439,8 @@ def parse_boards_arg(values: Iterable[str]) -> List[Tuple[int, int]]:
         if "x" not in token:
             raise ValueError(f"Expected MxN, got {token!r}")
         m_text, n_text = token.lower().split("x", 1)
-        boards.append(normalize(int(m_text), int(n_text)))
+        board = BoardSpec.normalized(int(m_text), int(n_text))
+        boards.append((board.m, board.n))
     return boards
 
 

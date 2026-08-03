@@ -22,12 +22,6 @@ const P1: u8 = 0;
 const P2: u8 = 1;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum MoveOrdering {
-    Legacy,
-    Heuristic,
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum MoveOrderSpec {
     Auto,
     Legacy,
@@ -44,8 +38,12 @@ impl MoveOrderSpec {
         }
     }
 
-    fn default_for_board(_m: usize, _n: usize) -> MoveOrderSpec {
-        MoveOrderSpec::Auto
+    fn default_for_board(m: usize, n: usize) -> MoveOrderSpec {
+        if m == 3 && n >= 13 {
+            MoveOrderSpec::Auto
+        } else {
+            MoveOrderSpec::Heuristic
+        }
     }
 }
 
@@ -76,25 +74,6 @@ fn order_mode_label(code: u8) -> &'static str {
     }
 }
 
-impl MoveOrdering {
-    fn parse(s: &str) -> MoveOrdering {
-        match s {
-            "legacy" => MoveOrdering::Legacy,
-            "heuristic" => MoveOrdering::Heuristic,
-            other => panic!("--move-order must be auto, legacy, or heuristic, got {other}"),
-        }
-    }
-}
-
-impl ActiveOrder {
-    fn from_fixed(ordering: MoveOrdering) -> ActiveOrder {
-        match ordering {
-            MoveOrdering::Legacy => ActiveOrder::Legacy,
-            MoveOrdering::Heuristic => ActiveOrder::Heuristic { p2_mirror: true },
-        }
-    }
-}
-
 /// Per-byte lookup tables for a single symmetry transform.
 struct ByteTransformTables {
     /// tables[byte_index][byte_value] -> contribution to transformed u64 mask
@@ -111,6 +90,8 @@ struct Board {
     p1_order: Vec<(usize, u64)>,
     p2_order: Vec<(usize, u64)>,
     reflected_cell: Vec<usize>,
+    reflection_byte_tables: ByteTransformTables,
+    vertical_reflection_byte_tables: ByteTransformTables,
     corners: Vec<usize>,
     center_cell: Option<usize>,
     transform_byte_tables: Vec<ByteTransformTables>,
@@ -160,6 +141,16 @@ impl Board {
                 (m - 1 - row) * n + (n - 1 - col)
             })
             .collect();
+        let reflection_byte_tables = Self::build_byte_tables(&reflected_cell, num_cells);
+        let vertical_reflected_cell: Vec<usize> = (0..num_cells)
+            .map(|cell| {
+                let row = cell / n;
+                let col = cell % n;
+                row * n + (n - 1 - col)
+            })
+            .collect();
+        let vertical_reflection_byte_tables =
+            Self::build_byte_tables(&vertical_reflected_cell, num_cells);
 
         let is_corner = |cell: usize| -> bool {
             let row = cell / n;
@@ -264,6 +255,8 @@ impl Board {
             p1_order,
             p2_order,
             reflected_cell,
+            reflection_byte_tables,
+            vertical_reflection_byte_tables,
             corners,
             center_cell,
             transform_byte_tables,
@@ -315,17 +308,17 @@ impl Board {
                 legacy_move_bits(self, legal, preferred)
             }
             ActiveOrder::Heuristic { p2_mirror: false } if turn == P1 => {
-                heuristic_move_bits(self, legal, None, &self.p1_order)
+                heuristic_move_bits(legal, None, &self.p1_order)
             }
             ActiveOrder::Heuristic { p2_mirror: false } => {
-                heuristic_move_bits(self, legal, None, &self.p2_order)
+                heuristic_move_bits(legal, None, &self.p2_order)
             }
             ActiveOrder::Heuristic { p2_mirror: true } if turn == P1 => {
-                heuristic_move_bits(self, legal, None, &self.p1_order)
+                heuristic_move_bits(legal, None, &self.p1_order)
             }
             ActiveOrder::Heuristic { p2_mirror: true } => {
                 let preferred = self.p2_preferred(legal, last_p1_move, true);
-                heuristic_move_bits(self, legal, preferred, &self.p2_order)
+                heuristic_move_bits(legal, preferred, &self.p2_order)
             }
         }
     }
@@ -361,6 +354,48 @@ impl Board {
         out
     }
 
+    #[inline]
+    fn reflect_mask(&self, mask: u64) -> u64 {
+        self.transform_mask(mask, &self.reflection_byte_tables)
+    }
+
+    #[inline]
+    fn vertical_reflect_mask(&self, mask: u64) -> u64 {
+        self.transform_mask(mask, &self.vertical_reflection_byte_tables)
+    }
+
+    fn middle_column_mask(&self) -> u64 {
+        let col = self.n / 2;
+        (0..self.m)
+            .map(|row| 1u64 << (row * self.n + col))
+            .fold(0, |mask, bit| mask | bit)
+    }
+
+    fn unpack_shadow_key(&self, key: u128) -> (u64, u64, u8) {
+        let turn = (key & 1) as u8;
+        let p2 = ((key >> 1) as u64) & self.all_cells_mask;
+        let p1 = ((key >> (self.num_cells + 1)) as u64) & self.all_cells_mask;
+        (p1, p2, turn)
+    }
+
+    /// A color-swapping half-turn involution pairs every move with a legal
+    /// response and restores the same relation after the pair.
+    #[inline]
+    fn has_reflection_pairing_certificate(
+        &self,
+        legal_p1: u64,
+        legal_p2: u64,
+        turn: u8,
+    ) -> bool {
+        let actor_legal = if turn == P1 { legal_p1 } else { legal_p2 };
+        if let Some(center) = self.center_cell {
+            if actor_legal & (1u64 << center) != 0 {
+                return false;
+            }
+        }
+        self.reflect_mask(legal_p1) == legal_p2
+    }
+
     fn canonical_legal_pair(&self, legal_p1: u64, legal_p2: u64) -> (u64, u64) {
         let mut best = (legal_p1, legal_p2);
         for transform in &self.transform_byte_tables {
@@ -379,7 +414,13 @@ impl Board {
     #[inline]
     fn shadow_key(&self, legal_p1: u64, legal_p2: u64, turn: u8) -> u128 {
         let (c1, c2) = self.canonical_legal_pair(legal_p1, legal_p2);
-        ((c1 as u128) << (self.num_cells + 1)) | ((c2 as u128) << 1) | turn as u128
+        let (swapped_c1, swapped_c2) = self.canonical_legal_pair(legal_p2, legal_p1);
+        let normal =
+            ((c1 as u128) << (self.num_cells + 1)) | ((c2 as u128) << 1) | turn as u128;
+        let swapped = ((swapped_c1 as u128) << (self.num_cells + 1))
+            | ((swapped_c2 as u128) << 1)
+            | (turn ^ 1) as u128;
+        normal.min(swapped)
     }
 
     /// O(1) child legal masks after the current player plays `bit`.
@@ -392,6 +433,26 @@ impl Board {
         } else {
             (p1_legal & !bit, p2_legal & !blocked)
         }
+    }
+
+    fn neighbor_union(&self, mut mask: u64) -> u64 {
+        let mut out = 0u64;
+        while mask != 0 {
+            let bit = mask & mask.wrapping_neg();
+            let cell = bit.trailing_zeros() as usize;
+            out |= self.adjacency[cell];
+            mask ^= bit;
+        }
+        out
+    }
+
+    fn legal_masks_from_stones(&self, p1: u64, p2: u64) -> (u64, u64) {
+        assert!(p1 & p2 == 0, "P1 and P2 stones overlap");
+        let occupied = p1 | p2;
+        (
+            self.all_cells_mask & !(occupied | self.neighbor_union(p1)),
+            self.all_cells_mask & !(occupied | self.neighbor_union(p2)),
+        )
     }
 }
 
@@ -524,18 +585,20 @@ struct FixedTable {
     shift: u32,
     mask: usize,
     len: usize,
+    num_cells: usize,
 }
 
 const PROBE_WINDOW: usize = 8;
 
 impl FixedTable {
-    fn with_slots_log2(bits: u32) -> FixedTable {
+    fn with_slots_log2(bits: u32, num_cells: usize) -> FixedTable {
         let cap = 1usize << bits;
         FixedTable {
             slots: vec![EMPTY_SLOT; cap],
             shift: 64 - bits,
             mask: cap - 1,
             len: 0,
+            num_cells,
         }
     }
 
@@ -572,8 +635,27 @@ impl FixedTable {
                 return;
             }
         }
-        // Window full of other keys: evict the base slot.
-        self.slots[base] = entry;
+        // Window full: retain the positions with the most remaining legal
+        // moves, which are usually the most expensive to recompute.
+        let mut victim = base;
+        let mut victim_priority = self.priority(self.slots[base] >> 1);
+        for offset in 1..PROBE_WINDOW {
+            let i = (base + offset) & self.mask;
+            let priority = self.priority(self.slots[i] >> 1);
+            if priority < victim_priority {
+                victim = i;
+                victim_priority = priority;
+            }
+        }
+        self.slots[victim] = entry;
+    }
+
+    #[inline]
+    fn priority(&self, key: u128) -> u32 {
+        let legal_mask = (1u128 << self.num_cells) - 1;
+        let p2 = (key >> 1) & legal_mask;
+        let p1 = (key >> (self.num_cells + 1)) & legal_mask;
+        (p1 | p2).count_ones()
     }
 }
 
@@ -658,12 +740,12 @@ struct SharedFixedMemo {
 }
 
 impl SharedFixedMemo {
-    fn with_total_slots_log2(bits: u32) -> SharedFixedMemo {
+    fn with_total_slots_log2(bits: u32, num_cells: usize) -> SharedFixedMemo {
         let shard_bits = (bits.saturating_sub(10)).min(6);
         let shard_count = 1usize << shard_bits;
         let table_bits = bits - shard_bits;
         let shards = (0..shard_count)
-            .map(|_| Mutex::new(FixedTable::with_slots_log2(table_bits)))
+            .map(|_| Mutex::new(FixedTable::with_slots_log2(table_bits, num_cells)))
             .collect();
         SharedFixedMemo {
             shards,
@@ -818,11 +900,22 @@ impl OrderStats {
 struct Stats {
     states_searched: u64,
     memo_hits: u64,
+    pairing_certificate_checks: u64,
+    pairing_certificate_hits: u64,
     endgame_hits: u64,
     endgame_raw_cache_hits: u64,
     endgame_canonical_cache_hits: u64,
     endgame_cgt_misses: u64,
     endgame_component_evaluations: u64,
+    reduction_calls: u64,
+    reduction_single_component_exits: u64,
+    reduction_all_small_exits: u64,
+    reduction_multi_oversized: u64,
+    reduction_changes: u64,
+    conjugate_pairs_removed: u64,
+    zero_components_removed: u64,
+    zero_sum_cells_removed: u64,
+    reductions_to_empty: u64,
     order: OrderStats,
 }
 
@@ -830,11 +923,22 @@ impl Stats {
     fn merge(&mut self, other: &Stats) {
         self.states_searched += other.states_searched;
         self.memo_hits += other.memo_hits;
+        self.pairing_certificate_checks += other.pairing_certificate_checks;
+        self.pairing_certificate_hits += other.pairing_certificate_hits;
         self.endgame_hits += other.endgame_hits;
         self.endgame_raw_cache_hits += other.endgame_raw_cache_hits;
         self.endgame_canonical_cache_hits += other.endgame_canonical_cache_hits;
         self.endgame_cgt_misses += other.endgame_cgt_misses;
         self.endgame_component_evaluations += other.endgame_component_evaluations;
+        self.reduction_calls += other.reduction_calls;
+        self.reduction_single_component_exits += other.reduction_single_component_exits;
+        self.reduction_all_small_exits += other.reduction_all_small_exits;
+        self.reduction_multi_oversized += other.reduction_multi_oversized;
+        self.reduction_changes += other.reduction_changes;
+        self.conjugate_pairs_removed += other.conjugate_pairs_removed;
+        self.zero_components_removed += other.zero_components_removed;
+        self.zero_sum_cells_removed += other.zero_sum_cells_removed;
+        self.reductions_to_empty += other.reductions_to_empty;
         self.order.merge(&other.order);
     }
 
@@ -843,6 +947,15 @@ impl Stats {
         self.endgame_canonical_cache_hits += endgame.canonical_cache_hits;
         self.endgame_cgt_misses += endgame.cgt_misses;
         self.endgame_component_evaluations += endgame.component_evaluations;
+        self.reduction_calls += endgame.reduction_calls;
+        self.reduction_single_component_exits += endgame.reduction_single_component_exits;
+        self.reduction_all_small_exits += endgame.reduction_all_small_exits;
+        self.reduction_multi_oversized += endgame.reduction_multi_oversized;
+        self.reduction_changes += endgame.reduction_changes;
+        self.conjugate_pairs_removed += endgame.conjugate_pairs_removed;
+        self.zero_components_removed += endgame.zero_components_removed;
+        self.zero_sum_cells_removed += endgame.zero_sum_cells_removed;
+        self.reductions_to_empty += endgame.reductions_to_empty;
     }
 }
 
@@ -864,6 +977,8 @@ struct Coordination {
     p2_preferred_miss: AtomicU64,
     last_adapt_states: AtomicU64,
     order_switches: AtomicUsize,
+    pairing_certificate: bool,
+    component_reduction: bool,
 }
 
 const ADAPT_MIN_STATES: u64 = 1_000_000;
@@ -872,7 +987,14 @@ const ADAPT_CHECK_INTERVAL: u64 = 2_000_000;
 const ADAPT_WD_RATIO_THRESHOLD: f64 = 0.365;
 
 impl Coordination {
-    fn new(adapt: bool, board_m: usize, board_n: usize, initial_mode: u8) -> Coordination {
+    fn new(
+        adapt: bool,
+        board_m: usize,
+        board_n: usize,
+        initial_mode: u8,
+        pairing_certificate: bool,
+        component_reduction: bool,
+    ) -> Coordination {
         Coordination {
             searched: AtomicU64::new(0),
             last_report_ms: AtomicU64::new(0),
@@ -889,6 +1011,8 @@ impl Coordination {
             p2_preferred_miss: AtomicU64::new(0),
             last_adapt_states: AtomicU64::new(0),
             order_switches: AtomicUsize::new(0),
+            pairing_certificate,
+            component_reduction,
         }
     }
 
@@ -1065,16 +1189,32 @@ impl<'a, M: Memo> Solver<'a, M> {
     fn is_winning(
         &mut self,
         turn: u8,
-        key: u128,
-        p1_legal: u64,
-        p2_legal: u64,
+        mut key: u128,
+        mut p1_legal: u64,
+        mut p2_legal: u64,
         last_p1_move: Option<usize>,
     ) -> Option<bool> {
+        if self.coord.component_reduction {
+            let endgame = self
+                .endgame
+                .as_mut()
+                .expect("component reduction requires endgame evaluation");
+            let reduction = endgame.reduce_zero_summands(
+                self.board.n,
+                &self.board.adjacency,
+                p1_legal,
+                p2_legal,
+            );
+            if reduction.changed {
+                p1_legal = reduction.legal_p1;
+                p2_legal = reduction.legal_p2;
+                key = self.board.shadow_key(p1_legal, p2_legal, turn);
+            }
+        }
         if let Some(cached) = self.memo.get(key) {
             self.stats.memo_hits += 1;
             return Some(cached);
         }
-
         self.stats.states_searched += 1;
         if self.stats.states_searched % FLUSH_INTERVAL == 0 {
             if self.coord.cancel.load(Ordering::Relaxed) {
@@ -1093,6 +1233,17 @@ impl<'a, M: Memo> Solver<'a, M> {
         if legal_mask == 0 {
             self.remember(key, p1_legal, p2_legal, false);
             return Some(false);
+        }
+        if self.coord.pairing_certificate {
+            self.stats.pairing_certificate_checks += 1;
+            if self
+                .board
+                .has_reflection_pairing_certificate(p1_legal, p2_legal, turn)
+            {
+                self.stats.pairing_certificate_hits += 1;
+                self.remember(key, p1_legal, p2_legal, false);
+                return Some(false);
+            }
         }
         if let Some(endgame) = self.endgame.as_mut() {
             if let Some(wins) = endgame.try_evaluate(
@@ -1210,7 +1361,6 @@ fn legacy_move_bits(board: &Board, legal: u64, preferred: Option<usize>) -> Vec<
 }
 
 fn heuristic_move_bits(
-    board: &Board,
     legal: u64,
     preferred: Option<usize>,
     order: &[(usize, u64)],
@@ -1353,13 +1503,13 @@ fn run_sequential<M: Memo>(
     memo: M,
     coord: &Coordination,
     progress: bool,
+    shared_endgame: Option<Arc<SharedEndgameCache>>,
     endgame_size: u32,
     memo_min_legal: u32,
     order_stats: bool,
 ) -> SolveOutput {
     let legal = board.all_cells_mask;
     let key = board.shadow_key(legal, legal, P1);
-    let shared_endgame = (endgame_size > 0).then(|| Arc::new(SharedEndgameCache::new()));
     let mut solver = Solver::new(
         board,
         &memo,
@@ -1384,6 +1534,200 @@ fn run_sequential<M: Memo>(
     }
 }
 
+fn run_position_query(
+    board: &Board,
+    loaded: FxHashMap<u128, bool>,
+    coord: &Coordination,
+    progress: bool,
+    shared_endgame: Option<Arc<SharedEndgameCache>>,
+    endgame_size: u32,
+    memo_min_legal: u32,
+    order_stats: bool,
+    p1_stones: u64,
+    p2_stones: u64,
+    turn: u8,
+) -> SolveOutput {
+    let (p1_legal, p2_legal) = board.legal_masks_from_stones(p1_stones, p2_stones);
+    let key = board.shadow_key(p1_legal, p2_legal, turn);
+    let memo = SeqMemo(RefCell::new(loaded));
+    let mut solver = Solver::new(
+        board,
+        &memo,
+        coord,
+        progress,
+        shared_endgame,
+        endgame_size,
+        memo_min_legal,
+        order_stats,
+    );
+    let p1_wins = solver
+        .is_winning(turn, key, p1_legal, p2_legal, None)
+        .expect("position query should not be cancelled");
+    let stats = solver.take_stats();
+    SolveOutput {
+        p1_wins,
+        stats,
+        entries: Vec::new(),
+    }
+}
+
+fn parse_position(position: &str, board: &Board) -> (u64, u64) {
+    let rows: Vec<&str> = position.split('/').collect();
+    assert!(
+        rows.len() == board.m,
+        "--position row count must match --m (use / between rows)"
+    );
+    let mut p1 = 0u64;
+    let mut p2 = 0u64;
+    for (row, text) in rows.iter().enumerate() {
+        assert!(
+            text.chars().count() == board.n,
+            "--position column count must match --n"
+        );
+        for (col, ch) in text.chars().enumerate() {
+            let bit = 1u64 << (row * board.n + col);
+            match ch {
+                'B' | 'b' | '1' => p1 |= bit,
+                'W' | 'w' | '2' => p2 |= bit,
+                '.' | '_' | '-' => {}
+                other => panic!("bad --position character {other:?}; use B, W, or ."),
+            }
+        }
+    }
+    assert!(p1 & p2 == 0, "--position has overlapping stones");
+    (p1, p2)
+}
+
+fn parse_turn(turn: &str) -> u8 {
+    match turn {
+        "P1" | "p1" | "1" | "B" | "b" => P1,
+        "P2" | "p2" | "2" | "W" | "w" => P2,
+        other => panic!("bad --turn {other}; expected P1 or P2"),
+    }
+}
+
+fn write_opening_certificate(
+    path: &PathBuf,
+    board: &Board,
+    entries: &[(u128, bool)],
+) -> Result<(), String> {
+    let lookup = |key: u128| -> Option<bool> {
+        entries
+            .binary_search_by_key(&key, |entry| entry.0)
+            .ok()
+            .map(|index| entries[index].1)
+    };
+    let mut openings = Vec::new();
+    let p1_legal = board.all_cells_mask;
+    let p2_legal = board.all_cells_mask;
+    let mut p1_moves = p1_legal;
+    while p1_moves != 0 {
+        let p1_bit = p1_moves & p1_moves.wrapping_neg();
+        p1_moves ^= p1_bit;
+        let p1_cell = p1_bit.trailing_zeros() as usize;
+        let (child_p1, child_p2) = board.child_legals(p1_legal, p2_legal, P1, p1_bit);
+        let child_key = board.shadow_key(child_p1, child_p2, P2);
+        if lookup(child_key) != Some(true) {
+            return Err(format!("opening {p1_cell} has no certified winning P2 state"));
+        }
+
+        let mut response = None;
+        let mut p2_moves = child_p2;
+        while p2_moves != 0 {
+            let p2_bit = p2_moves & p2_moves.wrapping_neg();
+            p2_moves ^= p2_bit;
+            let (target_p1, target_p2) =
+                board.child_legals(child_p1, child_p2, P2, p2_bit);
+            let target_key = board.shadow_key(target_p1, target_p2, P1);
+            if lookup(target_key) == Some(false) {
+                response = Some((p2_bit.trailing_zeros() as usize, target_key));
+                break;
+            }
+        }
+        let (p2_cell, target_key) =
+            response.ok_or_else(|| format!("opening {p1_cell} has no certified P2 reply"))?;
+        openings.push((p1_cell, p2_cell, child_key, target_key));
+    }
+
+    let mut json = format!(
+        "{{\n  \"schema_version\": 1,\n  \"board\": \"{}x{}\",\n  \"openings\": [\n",
+        board.m, board.n
+    );
+    for (index, (p1_cell, p2_cell, child_key, target_key)) in openings.iter().enumerate() {
+        json.push_str(&format!(
+            "    {{\"p1_move\": {p1_cell}, \"p2_response\": {p2_cell}, \
+             \"child_key\": \"0x{child_key:x}\", \"target_key\": \"0x{target_key:x}\"}}{}",
+            if index + 1 == openings.len() { "\n" } else { ",\n" }
+        ));
+    }
+    json.push_str("  ]\n}\n");
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent).map_err(|err| err.to_string())?;
+    }
+    std::fs::write(path, json).map_err(|err| err.to_string())
+}
+
+fn write_invariant_report(
+    path: &PathBuf,
+    board: &Board,
+    entries: &[(u128, bool)],
+) -> Result<(), String> {
+    let middle = board.middle_column_mask();
+    let wings = board.all_cells_mask & !middle;
+    let mut candidates = 0u64;
+    let mut counterexample_count = 0u64;
+    let mut counterexamples = Vec::new();
+    for &(key, side_to_move_wins) in entries {
+        let (p1_legal, p2_legal, turn) = board.unpack_shadow_key(key);
+        if board.vertical_reflect_mask(p1_legal & wings) != p2_legal & wings {
+            continue;
+        }
+        let middle_value = endgame::component_value_text(
+            board.n,
+            p1_legal & middle,
+            p2_legal & middle,
+        );
+        if middle_value.as_deref() != Some("0") {
+            continue;
+        }
+        candidates += 1;
+        if side_to_move_wins {
+            counterexample_count += 1;
+            if counterexamples.len() < 100 {
+                counterexamples.push((key, turn, p1_legal, p2_legal));
+            }
+        }
+    }
+
+    let mut json = format!(
+        "{{\n  \"schema_version\": 1,\n  \"board\": \"{}x{}\",\n  \
+         \"entries\": {},\n  \"naive_candidates\": {},\n  \
+         \"naive_counterexamples\": {},\n  \"examples\": [\n",
+        board.m,
+        board.n,
+        entries.len(),
+        candidates,
+        counterexample_count,
+    );
+    for (index, (key, turn, p1_legal, p2_legal)) in counterexamples.iter().enumerate() {
+        json.push_str(&format!(
+            "    {{\"key\": \"0x{key:x}\", \"turn\": \"P{}\", \
+             \"p1_legal\": \"0x{p1_legal:x}\", \"p2_legal\": \"0x{p2_legal:x}\"}}{}",
+            turn + 1,
+            if index + 1 == counterexamples.len() {
+                "\n"
+            } else {
+                ",\n"
+            }
+        ));
+    }
+    json.push_str("  ]\n}\n");
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent).map_err(|err| err.to_string())?;
+    }
+    std::fs::write(path, json).map_err(|err| err.to_string())
+}
+
 /// Parallel root split: one task per symmetry-distinct P1 opening.
 /// Preserves sequential early-exit semantics within each opening subtree.
 fn solve_parallel_root<M: Memo + Sync>(
@@ -1391,6 +1735,7 @@ fn solve_parallel_root<M: Memo + Sync>(
     threads: usize,
     coord: &Coordination,
     progress: bool,
+    shared_endgame: Option<Arc<SharedEndgameCache>>,
     endgame_size: u32,
     memo: M,
     memo_min_legal: u32,
@@ -1399,7 +1744,6 @@ fn solve_parallel_root<M: Memo + Sync>(
     let openings = distinct_openings(board, coord.active_order());
     let legal = board.all_cells_mask;
     let root_key = board.shadow_key(legal, legal, P1);
-    let shared_endgame = (endgame_size > 0).then(|| Arc::new(SharedEndgameCache::new()));
     let next_opening = AtomicUsize::new(0);
     let p1_wins = AtomicBool::new(false);
     let total = std::sync::Mutex::new(Stats::default());
@@ -1847,6 +2191,7 @@ fn solve_parallel_and_split<M: Memo + Sync>(
     threads: usize,
     coord: &Coordination,
     progress: bool,
+    shared_endgame: Option<Arc<SharedEndgameCache>>,
     endgame_size: u32,
     memo: M,
     memo_min_legal: u32,
@@ -1854,7 +2199,6 @@ fn solve_parallel_and_split<M: Memo + Sync>(
 ) -> SolveOutput {
     let legal = board.all_cells_mask;
     let root_key = board.shadow_key(legal, legal, P1);
-    let shared_endgame = (endgame_size > 0).then(|| Arc::new(SharedEndgameCache::new()));
     let sched = AndSplit::new(board, &memo, coord);
     let total = std::sync::Mutex::new(Stats::default());
 
@@ -1926,9 +2270,16 @@ pub fn run(args: Vec<String>) {
     let mut memo_min_legal = 0u32;
     let mut memo_bits = 0u32;
     let mut endgame_size = 10u32;
+    let mut endgame_cache_enabled = true;
     let mut root_split = false;
+    let mut pairing_certificate = true;
+    let mut component_reduction = false;
     let mut move_order_spec: Option<MoveOrderSpec> = None;
     let mut order_stats = false;
+    let mut opening_certificate_path: Option<PathBuf> = None;
+    let mut invariant_report_path: Option<PathBuf> = None;
+    let mut position_arg: Option<String> = None;
+    let mut query_turn = P1;
     let mut threads = std::thread::available_parallelism()
         .map(|p| p.get())
         .unwrap_or(1);
@@ -1963,6 +2314,10 @@ pub fn run(args: Vec<String>) {
                 endgame_size = args[i + 1].parse().expect("bad --endgame-size");
                 i += 2;
             }
+            "--no-endgame-cache" => {
+                endgame_cache_enabled = false;
+                i += 1;
+            }
             "--tablebase-dir" => {
                 tablebase_dir = PathBuf::from(&args[i + 1]);
                 i += 2;
@@ -1975,6 +2330,14 @@ pub fn run(args: Vec<String>) {
                 root_split = true;
                 i += 1;
             }
+            "--no-pairing-certificate" => {
+                pairing_certificate = false;
+                i += 1;
+            }
+            "--component-reduction" => {
+                component_reduction = true;
+                i += 1;
+            }
             "--move-order" => {
                 move_order_spec = Some(MoveOrderSpec::parse(&args[i + 1]));
                 i += 2;
@@ -1982,6 +2345,22 @@ pub fn run(args: Vec<String>) {
             "--order-stats" => {
                 order_stats = true;
                 i += 1;
+            }
+            "--opening-certificate" => {
+                opening_certificate_path = Some(PathBuf::from(&args[i + 1]));
+                i += 2;
+            }
+            "--invariant-report" => {
+                invariant_report_path = Some(PathBuf::from(&args[i + 1]));
+                i += 2;
+            }
+            "--position" => {
+                position_arg = Some(args[i + 1].clone());
+                i += 2;
+            }
+            "--turn" => {
+                query_turn = parse_turn(&args[i + 1]);
+                i += 2;
             }
             "--progress" => {
                 progress = true;
@@ -1992,7 +2371,7 @@ pub fn run(args: Vec<String>) {
     }
     assert!(
         m > 0 && n > 0,
-        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--move-order auto|legacy|heuristic] [--order-stats] [--tablebase-dir DIR] [--no-tablebase] [--root-split] [--progress]"
+        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--no-endgame-cache] [--component-reduction] [--move-order auto|legacy|heuristic] [--order-stats] [--opening-certificate PATH] [--invariant-report PATH] [--position ROWS] [--turn P1|P2] [--tablebase-dir DIR] [--no-tablebase] [--root-split] [--no-pairing-certificate] [--progress]"
     );
     assert!(threads > 0, "--threads must be >= 1");
     assert!(
@@ -2013,11 +2392,21 @@ pub fn run(args: Vec<String>) {
         MoveOrderSpec::Legacy => (false, ORDER_LEGACY),
         MoveOrderSpec::Heuristic => (false, ORDER_HEURISTIC),
     };
-    let coord = Coordination::new(adapt_order, m, n, initial_order_mode);
+    let coord = Coordination::new(
+        adapt_order,
+        m,
+        n,
+        initial_order_mode,
+        pairing_certificate,
+        component_reduction,
+    );
     let track_order = order_stats || adapt_order;
     let board = Board::new(m, n);
     let legal = board.all_cells_mask;
     let root_key = board.shadow_key(legal, legal, P1);
+    let position_query = position_arg
+        .as_deref()
+        .map(|position| parse_position(position, &board));
     let effective_root_split = root_split || m == 1;
 
     let loaded = if tablebase_enabled {
@@ -2030,9 +2419,43 @@ pub fn run(args: Vec<String>) {
     };
     let loaded_count = loaded.len();
     let cached_root = loaded.get(&root_key).copied();
+    let cache_load_start = Instant::now();
+    let (shared_endgame, endgame_cache_loaded) = if endgame_size > 0 {
+        if endgame_cache_enabled {
+            endgame::load_shared_cache(&tablebase_dir).unwrap_or_else(|err| {
+                eprintln!("warning: could not load CGT component cache: {err}");
+                (Arc::new(SharedEndgameCache::new()), 0)
+            })
+        } else {
+            (Arc::new(SharedEndgameCache::new()), 0)
+        }
+    } else {
+        (Arc::new(SharedEndgameCache::new()), 0)
+    };
+    let endgame_cache_load_secs = cache_load_start.elapsed().as_secs_f64();
+    let shared_endgame = (endgame_size > 0).then_some(shared_endgame);
 
     let start = Instant::now();
-    let (output, searched_fresh) = if board.has_even_dimension {
+    let empty_linear_second_player_win = m == 1 && n > 1;
+
+    let (mut output, searched_fresh) = if let Some((p1_stones, p2_stones)) = position_query {
+        (
+            run_position_query(
+                &board,
+                loaded,
+                &coord,
+                progress,
+                shared_endgame.clone(),
+                endgame_size,
+                memo_min_legal,
+                track_order,
+                p1_stones,
+                p2_stones,
+                query_turn,
+            ),
+            false,
+        )
+    } else if board.has_even_dimension || empty_linear_second_player_win {
         (
             SolveOutput {
                 p1_wins: false,
@@ -2062,13 +2485,14 @@ pub fn run(args: Vec<String>) {
                     OpenMemo(RefCell::new(table)),
                     &coord,
                     progress,
+                    shared_endgame.clone(),
                     endgame_size,
                     memo_min_legal,
                     track_order,
                 )
             }
             "fixed" => {
-                let mut table = FixedTable::with_slots_log2(memo_bits);
+                let mut table = FixedTable::with_slots_log2(memo_bits, board.num_cells);
                 for (key, value) in loaded {
                     table.insert(key, value);
                 }
@@ -2077,6 +2501,7 @@ pub fn run(args: Vec<String>) {
                     FixedMemo(RefCell::new(table)),
                     &coord,
                     progress,
+                    shared_endgame.clone(),
                     endgame_size,
                     memo_min_legal,
                     track_order,
@@ -2087,6 +2512,7 @@ pub fn run(args: Vec<String>) {
                 SeqMemo(RefCell::new(loaded)),
                 &coord,
                 progress,
+                shared_endgame.clone(),
                 endgame_size,
                 memo_min_legal,
                 track_order,
@@ -2095,7 +2521,7 @@ pub fn run(args: Vec<String>) {
         (output, true)
     } else {
         let output = if memo_kind == "fixed" {
-            let memo = SharedFixedMemo::with_total_slots_log2(memo_bits);
+            let memo = SharedFixedMemo::with_total_slots_log2(memo_bits, board.num_cells);
             for (key, value) in loaded {
                 memo.insert(key, value);
             }
@@ -2105,6 +2531,7 @@ pub fn run(args: Vec<String>) {
                     threads,
                     &coord,
                     progress,
+                    shared_endgame.clone(),
                     endgame_size,
                     memo,
                     memo_min_legal,
@@ -2116,6 +2543,7 @@ pub fn run(args: Vec<String>) {
                     threads,
                     &coord,
                     progress,
+                    shared_endgame.clone(),
                     endgame_size,
                     memo,
                     memo_min_legal,
@@ -2133,6 +2561,7 @@ pub fn run(args: Vec<String>) {
                     threads,
                     &coord,
                     progress,
+                    shared_endgame.clone(),
                     endgame_size,
                     memo,
                     memo_min_legal,
@@ -2144,6 +2573,7 @@ pub fn run(args: Vec<String>) {
                     threads,
                     &coord,
                     progress,
+                    shared_endgame.clone(),
                     endgame_size,
                     memo,
                     memo_min_legal,
@@ -2158,6 +2588,20 @@ pub fn run(args: Vec<String>) {
         eprintln!();
     }
 
+    if let Some(path) = &opening_certificate_path {
+        output.entries.sort_unstable_by_key(|entry| entry.0);
+        if let Err(err) = write_opening_certificate(path, &board, &output.entries) {
+            panic!("could not write opening certificate: {err}");
+        }
+        println!("opening certificate saved: {}", path.display());
+    }
+    if let Some(path) = &invariant_report_path {
+        if let Err(err) = write_invariant_report(path, &board, &output.entries) {
+            panic!("could not write invariant report: {err}");
+        }
+        println!("invariant report saved: {}", path.display());
+    }
+
     let memo_entries = output.entries.len();
     let saved_path = if tablebase_enabled && searched_fresh && !output.entries.is_empty() {
         match tablebase::save(&tablebase_dir, m, n, output.entries) {
@@ -2170,13 +2614,39 @@ pub fn run(args: Vec<String>) {
     } else {
         None
     };
+    let (endgame_cache_saved, endgame_cache_save_secs) = if endgame_size > 0 && endgame_cache_enabled {
+        if let Some(cache) = &shared_endgame {
+            let save_start = Instant::now();
+            let saved = match endgame::save_shared_cache(&tablebase_dir, cache, endgame_cache_loaded) {
+                Ok(saved) => saved,
+                Err(err) => {
+                    eprintln!("warning: could not save CGT component cache: {err}");
+                    None
+                }
+            };
+            (saved, save_start.elapsed().as_secs_f64())
+        } else {
+            (None, 0.0)
+        }
+    } else {
+        (None, 0.0)
+    };
+    let endgame_cache_entries = shared_endgame
+        .as_ref()
+        .map(|cache| cache.canonical_len())
+        .unwrap_or(0);
 
-    println!(
-        "{} x {}: {} wins",
-        m,
-        n,
-        if output.p1_wins { "P1" } else { "P2" }
-    );
+    let winner = if position_query.is_some() {
+        match (query_turn, output.p1_wins) {
+            (P1, true) | (P2, false) => "P1",
+            _ => "P2",
+        }
+    } else if output.p1_wins {
+        "P1"
+    } else {
+        "P2"
+    };
+    println!("{} x {}: {} wins", m, n, winner);
     let move_order_label = match move_order_spec {
         MoveOrderSpec::Auto => {
             let final_mode = order_mode_label(coord.order_mode.load(Ordering::Relaxed));
@@ -2220,6 +2690,14 @@ pub fn run(args: Vec<String>) {
     );
     println!("states searched: {}", output.stats.states_searched);
     println!("memo hits: {}", output.stats.memo_hits);
+    println!(
+        "pairing certificate checks: {}",
+        output.stats.pairing_certificate_checks
+    );
+    println!(
+        "pairing certificate hits: {}",
+        output.stats.pairing_certificate_hits
+    );
     if endgame_size > 0 {
         println!("endgame hits: {}", output.stats.endgame_hits);
         println!(
@@ -2235,6 +2713,48 @@ pub fn run(args: Vec<String>) {
             "endgame component evals: {}",
             output.stats.endgame_component_evaluations
         );
+        println!("component reduction calls: {}", output.stats.reduction_calls);
+        println!(
+            "component reduction single-component exits: {}",
+            output.stats.reduction_single_component_exits
+        );
+        println!(
+            "component reduction all-small exits: {}",
+            output.stats.reduction_all_small_exits
+        );
+        println!(
+            "component reduction multi-oversized: {}",
+            output.stats.reduction_multi_oversized
+        );
+        println!(
+            "component reduction changes: {}",
+            output.stats.reduction_changes
+        );
+        println!(
+            "conjugate pairs removed: {}",
+            output.stats.conjugate_pairs_removed
+        );
+        println!(
+            "zero components removed: {}",
+            output.stats.zero_components_removed
+        );
+        println!(
+            "zero-sum cells removed: {}",
+            output.stats.zero_sum_cells_removed
+        );
+        println!(
+            "reductions to empty: {}",
+            output.stats.reductions_to_empty
+        );
+        if endgame_cache_enabled {
+            println!("endgame cache loaded: {endgame_cache_loaded} entries");
+            if endgame_cache_loaded > 0 {
+                println!("endgame cache load: {endgame_cache_load_secs:.6}s");
+            }
+            println!("endgame cache entries: {endgame_cache_entries}");
+        } else {
+            println!("endgame cache: disabled");
+        }
     }
     if tablebase_enabled && loaded_count > 0 {
         println!("tablebase loaded: {loaded_count} entries");
@@ -2248,10 +2768,70 @@ pub fn run(args: Vec<String>) {
             file_size as f64 / 1_048_576.0
         );
     }
+    if let Some((path, saved_count)) = endgame_cache_saved {
+        let file_size = std::fs::metadata(&path).map(|meta| meta.len()).unwrap_or(0);
+        println!(
+            "endgame cache saved: {} ({} entries, {:.2} MB)",
+            path.display(),
+            saved_count,
+            file_size as f64 / 1_048_576.0
+        );
+        println!("endgame cache save: {endgame_cache_save_secs:.6}s");
+    }
     let rate = output.stats.states_searched as f64 / elapsed.max(1e-9);
     println!("states per second: {:.0}", rate);
-    println!("time elapsed: {:.6}s", elapsed);
+    println!("time elapsed (solve): {elapsed:.6}s");
     if track_order {
         print_order_stats(&output.stats.order);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Board, P1, P2};
+
+    #[test]
+    fn shadow_key_identifies_global_color_swap() {
+        let board = Board::new(3, 3);
+        let p1_legal = (1u64 << 0) | (1u64 << 4) | (1u64 << 7);
+        let p2_legal = (1u64 << 1) | (1u64 << 3) | (1u64 << 8);
+
+        assert_eq!(
+            board.shadow_key(p1_legal, p2_legal, P1),
+            board.shadow_key(p2_legal, p1_legal, P2),
+        );
+    }
+
+    #[test]
+    fn reflection_pairing_certificate_requires_color_swapped_legals() {
+        let board = Board::new(3, 3);
+        let p1_legal = (1u64 << 0) | (1u64 << 1);
+        let p2_legal = (1u64 << 8) | (1u64 << 7);
+
+        assert!(board.has_reflection_pairing_certificate(p1_legal, p2_legal, P1));
+        assert!(board.has_reflection_pairing_certificate(p1_legal, p2_legal, P2));
+        assert!(!board.has_reflection_pairing_certificate(
+            p1_legal | (1u64 << 4),
+            p2_legal | (1u64 << 4),
+            P1,
+        ));
+        assert!(!board.has_reflection_pairing_certificate(
+            p1_legal,
+            p2_legal ^ (1u64 << 7),
+            P1,
+        ));
+    }
+
+    #[test]
+    fn paired_moves_preserve_reflected_legal_masks() {
+        let board = Board::new(3, 3);
+        let p1_legal = (1u64 << 0) | (1u64 << 1);
+        let p2_legal = (1u64 << 8) | (1u64 << 7);
+        let (after_p1, after_p2) = board.child_legals(p1_legal, p2_legal, P1, 1u64 << 0);
+        assert_ne!(after_p2 & (1u64 << 8), 0);
+
+        let (paired_p1, paired_p2) =
+            board.child_legals(after_p1, after_p2, P2, 1u64 << 8);
+        assert_eq!(board.reflect_mask(paired_p1), paired_p2);
     }
 }

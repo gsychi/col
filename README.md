@@ -6,6 +6,7 @@ Three entry points at the repo root:
 |---|---|
 | `./col-solve` | Rust solver (builds on first run) |
 | `./col-predict` | Estimate state counts and solve times |
+| `./col-cgt` | Recommend CGT endgame cutoff for a board |
 | `./col-gui` | Desktop tablebase explorer |
 
 ## Layout
@@ -89,6 +90,61 @@ docker run --rm -p 8000:8000 -v col-data:/data -e PORT=8000 col-render ./deploy/
 ```
 
 Estimates use log-linear extrapolation from measured benchmarks (no solver runs unless `--run`).
+
+## CGT Cutoff Sweeps
+
+```bash
+python3 scripts/cgt_size_sweep.py --boards 3x9 3x11 5x7 --cgt-sizes 0,6,8,10,12
+```
+
+This runs fresh `--no-tablebase` solves, compares each `--endgame-size` against
+CGT disabled, and writes matrix reports to `reports/cgt-size-sweep.md` and
+`reports/cgt-size-sweep.json`.
+
+Recommend a cutoff from that data:
+
+```bash
+./col-cgt 5x9
+./col-cgt 3x13
+```
+
+## Reproducible odd-board research
+
+“Odd boards through 39 cells” means every normalized odd-by-odd rectangle
+`m <= n` with `m*n <= 39` (excluding `1x1`). The shared catalog contains 27
+boards, including these eight non-path boards:
+
+```text
+3x3 3x5 3x7 5x5 3x9 3x11 5x7 3x13
+```
+
+Run the complete outcome/performance baseline or a controlled experiment:
+
+```bash
+python3 scripts/odd_board_experiments.py --experiment baseline
+python3 scripts/odd_board_experiments.py --experiment pairing
+python3 scripts/odd_board_experiments.py --experiment cgt --boards 3x11 5x7 3x13
+python3 scripts/odd_board_experiments.py --experiment threads --boards 3x11 5x7
+```
+
+The harness records the command, commit, dirty working tree, platform, winner,
+state count, throughput, solve time, and peak RSS in JSON and Markdown under
+`reports/odd-board-experiments/`.
+
+Proof-oriented tools emit replayable artifacts rather than treating pattern
+frequency as a proof:
+
+```bash
+python3 scripts/mine_3xn_families.py --boards 3x5 3x7 3x9
+python3 scripts/verify_3xn_certificates.py
+python3 scripts/certify_cgt_components.py
+python3 scripts/test_odd_invariants.py
+python3 scripts/proof_status.py
+```
+
+`proof_status.py` exits nonzero while any all-width proof obligation remains
+open. In particular, finite verification through a fixed width is not reported
+as a proof of all odd `3xn` boards.
 
 ## GUI
 

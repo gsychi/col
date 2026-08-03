@@ -101,7 +101,11 @@ class ColBoard:
             return self.pack_key(p1_mask, p2_mask, turn)
 
         p1_mask, p2_mask = self._canonical_pair(p1_mask, p2_mask)
-        return self.pack_key(p1_mask, p2_mask, turn)
+        swapped_p1, swapped_p2 = self._canonical_pair(p2_mask, p1_mask)
+        return min(
+            self.pack_key(p1_mask, p2_mask, turn),
+            self.pack_key(swapped_p1, swapped_p2, turn ^ 1),
+        )
 
     def shadow_key(self, legal_p1: int, legal_p2: int, turn: int) -> StateKey:
         """Memo key from both players' legal masks (outcome depends only on these)."""
@@ -116,7 +120,11 @@ class ColBoard:
             return self.pack_key(legal_p1, legal_p2, turn)
 
         legal_p1, legal_p2 = self._canonical_legal_pair(legal_p1, legal_p2)
-        return self.pack_key(legal_p1, legal_p2, turn)
+        swapped_p1, swapped_p2 = self._canonical_legal_pair(legal_p2, legal_p1)
+        return min(
+            self.pack_key(legal_p1, legal_p2, turn),
+            self.pack_key(swapped_p1, swapped_p2, turn ^ 1),
+        )
 
     def shadow_key_from_stones(self, p1_mask: int, p2_mask: int, turn: int) -> StateKey:
         return self.shadow_key(
