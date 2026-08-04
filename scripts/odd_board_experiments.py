@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import json
 import os
 import platform
@@ -27,10 +28,47 @@ METRIC_PATTERNS = {
     "winner": re.compile(r"^\d+\s+x\s+\d+:\s+(P[12])\s+wins$"),
     "states": re.compile(r"^states searched:\s+(\d+)$"),
     "memo_hits": re.compile(r"^memo hits:\s+(\d+)$"),
+    "front_cache_queries": re.compile(r"^front cache queries:\s+(\d+)$"),
+    "front_cache_hits": re.compile(r"^front cache hits:\s+(\d+)$"),
+    "dominance_nodes": re.compile(r"^dominance nodes:\s+(\d+)$"),
+    "dominance_pruned_moves": re.compile(r"^dominance pruned moves:\s+(\d+)$"),
+    "reserve_matching_checks": re.compile(r"^reserve matching checks:\s+(\d+)$"),
+    "reserve_greedy_checks": re.compile(r"^reserve greedy checks:\s+(\d+)$"),
+    "reserve_win_hits": re.compile(r"^reserve win hits:\s+(\d+)$"),
+    "reserve_loss_hits": re.compile(r"^reserve loss hits:\s+(\d+)$"),
     "memo_entries": re.compile(r"^memo entries:\s+(\d+)$"),
+    "memo_evictions": re.compile(r"^memo evictions:\s+(\d+)$"),
+    "memo_entries_collected": re.compile(r"^memo entries collected:\s+(\d+)$"),
     "endgame_hits": re.compile(r"^endgame hits:\s+(\d+)$"),
+    "endgame_raw_cache_hits": re.compile(r"^endgame raw cache hits:\s+(\d+)$"),
+    "endgame_canonical_cache_hits": re.compile(
+        r"^endgame canonical cache hits:\s+(\d+)$"
+    ),
     "endgame_cgt_misses": re.compile(r"^endgame cgt misses:\s+(\d+)$"),
     "endgame_component_evals": re.compile(r"^endgame component evals:\s+(\d+)$"),
+    "component_reduction_calls": re.compile(r"^component reduction calls:\s+(\d+)$"),
+    "component_reduction_component_evals": re.compile(
+        r"^component reduction component evals:\s+(\d+)$"
+    ),
+    "component_reduction_column_all_small_exits": re.compile(
+        r"^component reduction column all-small exits:\s+(\d+)$"
+    ),
+    "component_reduction_single_component_exits": re.compile(
+        r"^component reduction single-component exits:\s+(\d+)$"
+    ),
+    "component_reduction_all_small_exits": re.compile(
+        r"^component reduction all-small exits:\s+(\d+)$"
+    ),
+    "component_reduction_multi_oversized": re.compile(
+        r"^component reduction multi-oversized:\s+(\d+)$"
+    ),
+    "component_reduction_changes": re.compile(
+        r"^component reduction changes:\s+(\d+)$"
+    ),
+    "conjugate_pairs_removed": re.compile(r"^conjugate pairs removed:\s+(\d+)$"),
+    "zero_components_removed": re.compile(r"^zero components removed:\s+(\d+)$"),
+    "zero_sum_cells_removed": re.compile(r"^zero-sum cells removed:\s+(\d+)$"),
+    "reductions_to_empty": re.compile(r"^reductions to empty:\s+(\d+)$"),
     "pairing_certificate_hits": re.compile(r"^pairing certificate hits:\s+(\d+)$"),
     "pairing_certificate_checks": re.compile(r"^pairing certificate checks:\s+(\d+)$"),
     "states_per_second": re.compile(r"^states per second:\s+(\d+)$"),
@@ -44,9 +82,11 @@ class Configuration:
     name: str
     threads: int
     memo: str
+    memo_bits: int
     move_order: str
     endgame_size: int
     pairing_certificate: bool
+    component_reduction: bool
     cache_state: str
 
 
@@ -63,10 +103,33 @@ class RunResult:
     winner: str | None = None
     states: int | None = None
     memo_hits: int | None = None
+    front_cache_queries: int | None = None
+    front_cache_hits: int | None = None
+    dominance_nodes: int | None = None
+    dominance_pruned_moves: int | None = None
+    reserve_matching_checks: int | None = None
+    reserve_greedy_checks: int | None = None
+    reserve_win_hits: int | None = None
+    reserve_loss_hits: int | None = None
     memo_entries: int | None = None
+    memo_evictions: int | None = None
+    memo_entries_collected: int | None = None
     endgame_hits: int | None = None
+    endgame_raw_cache_hits: int | None = None
+    endgame_canonical_cache_hits: int | None = None
     endgame_cgt_misses: int | None = None
     endgame_component_evals: int | None = None
+    component_reduction_calls: int | None = None
+    component_reduction_component_evals: int | None = None
+    component_reduction_column_all_small_exits: int | None = None
+    component_reduction_single_component_exits: int | None = None
+    component_reduction_all_small_exits: int | None = None
+    component_reduction_multi_oversized: int | None = None
+    component_reduction_changes: int | None = None
+    conjugate_pairs_removed: int | None = None
+    zero_components_removed: int | None = None
+    zero_sum_cells_removed: int | None = None
+    reductions_to_empty: int | None = None
     pairing_certificate_hits: int | None = None
     pairing_certificate_checks: int | None = None
     states_per_second: int | None = None
@@ -109,9 +172,11 @@ def configurations(args: argparse.Namespace) -> list[Configuration]:
     base = {
         "threads": args.threads,
         "memo": args.memo,
+        "memo_bits": args.memo_bits,
         "move_order": args.move_order,
         "endgame_size": args.endgame_size,
         "pairing_certificate": not args.no_pairing_certificate,
+        "component_reduction": args.component_reduction and args.endgame_size > 0,
         "cache_state": args.cache_state,
     }
     if args.experiment == "baseline":
@@ -123,7 +188,14 @@ def configurations(args: argparse.Namespace) -> list[Configuration]:
         ]
     if args.experiment == "cgt":
         return [
-            Configuration(f"cgt-{size}", **{**base, "endgame_size": size})
+            Configuration(
+                f"cgt-{size}",
+                **{
+                    **base,
+                    "endgame_size": size,
+                    "component_reduction": args.component_reduction and size > 0,
+                },
+            )
             for size in args.cgt_sizes
         ]
     if args.experiment == "move-order":
@@ -148,7 +220,9 @@ def git_output(*args: str) -> str:
     return completed.stdout.strip()
 
 
-def manifest(args: argparse.Namespace, configs: Sequence[Configuration]) -> dict[str, object]:
+def manifest(
+    args: argparse.Namespace, configs: Sequence[Configuration]
+) -> dict[str, object]:
     return {
         "schema_version": 1,
         "created_at": datetime.now(timezone.utc).isoformat(),
@@ -170,6 +244,7 @@ def solver_command(
     board: BoardSpec,
     config: Configuration,
     cache_dir: Path,
+    extra_args: Sequence[str] = (),
 ) -> list[str]:
     command = [
         str(args.solver),
@@ -189,12 +264,20 @@ def solver_command(
         str(cache_dir),
         "--no-tablebase",
     ]
+    if config.memo == "fixed":
+        command.extend(("--memo-bits", str(config.memo_bits)))
     if not config.pairing_certificate:
         command.append("--no-pairing-certificate")
+    command.append(
+        "--component-reduction"
+        if config.component_reduction
+        else "--no-component-reduction"
+    )
     if config.cache_state == "cold":
         command.append("--no-endgame-cache")
     if args.order_stats:
         command.append("--order-stats")
+    command.extend(extra_args)
     return command
 
 
@@ -216,17 +299,32 @@ def parse_output(output: str) -> dict[str, int | float | str]:
     return parsed
 
 
+@functools.lru_cache(maxsize=1)
+def darwin_extended_time_available() -> bool:
+    if platform.system() != "Darwin" or not Path("/usr/bin/time").is_file():
+        return False
+    probe = subprocess.run(
+        ["/usr/bin/time", "-l", "/usr/bin/true"],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+    )
+    return probe.returncode == 0 and "maximum resident set size" in probe.stdout
+
+
 def run_one(
     args: argparse.Namespace,
     board: BoardSpec,
     config: Configuration,
     repeat: int,
+    extra_args: Sequence[str] = (),
 ) -> RunResult:
     cache_dir = args.out_dir / "cache" / config.name
     cache_dir.mkdir(parents=True, exist_ok=True)
-    command = solver_command(args, board, config, cache_dir)
+    command = solver_command(args, board, config, cache_dir, extra_args)
     timed_command = command
-    if platform.system() == "Darwin" and Path("/usr/bin/time").is_file():
+    if darwin_extended_time_available():
         timed_command = ["/usr/bin/time", "-l", *command]
 
     started = time.perf_counter()
@@ -261,7 +359,7 @@ def run_one(
         config=config.name,
         repeat=repeat,
         command=command,
-        ok=completed.returncode == 0 and parsed.get("winner") == "P2",
+        ok=completed.returncode == 0 and parsed.get("winner") in {"P1", "P2"},
         returncode=completed.returncode,
         wall_seconds=time.perf_counter() - started,
         error=None,
@@ -277,7 +375,9 @@ def fmt_int(value: int | None) -> str:
     return "-" if value is None else f"{value:,}"
 
 
-def write_report(path: Path, metadata: dict[str, object], results: Sequence[RunResult]) -> None:
+def write_report(
+    path: Path, metadata: dict[str, object], results: Sequence[RunResult]
+) -> None:
     lines = [
         "# Odd-board Experiment",
         "",
@@ -306,7 +406,9 @@ def write_report(path: Path, metadata: dict[str, object], results: Sequence[RunR
     if failures:
         lines.extend(["", "## Failures", ""])
         for result in failures:
-            lines.append(f"- `{result.board}/{result.config}`: {result.error or 'unknown error'}")
+            lines.append(
+                f"- `{result.board}/{result.config}`: {result.error or 'unknown error'}"
+            )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -320,7 +422,9 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-cells", type=int, default=39)
     parser.add_argument("--boards", nargs="+", type=parse_board)
     parser.add_argument("--threads", type=int, default=min(os.cpu_count() or 1, 12))
-    parser.add_argument("--thread-values", type=parse_int_list, default=[1, 4, 8, 12, 16])
+    parser.add_argument(
+        "--thread-values", type=parse_int_list, default=[1, 4, 8, 12, 16]
+    )
     parser.add_argument(
         "--cgt-sizes",
         type=parse_nonnegative_int_list,
@@ -328,9 +432,24 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--endgame-size", type=int, default=10)
     parser.add_argument("--memo", choices=("hash", "open", "fixed"), default="hash")
-    parser.add_argument("--move-order", choices=("legacy", "heuristic", "auto"), default="heuristic")
+    parser.add_argument("--memo-bits", type=int, default=24)
+    parser.add_argument(
+        "--move-order", choices=("legacy", "heuristic", "auto"), default="heuristic"
+    )
     parser.add_argument("--cache-state", choices=("cold", "warm"), default="cold")
     parser.add_argument("--no-pairing-certificate", action="store_true")
+    component_reduction = parser.add_mutually_exclusive_group()
+    component_reduction.add_argument(
+        "--component-reduction",
+        dest="component_reduction",
+        action="store_true",
+    )
+    component_reduction.add_argument(
+        "--no-component-reduction",
+        dest="component_reduction",
+        action="store_false",
+    )
+    parser.set_defaults(component_reduction=True)
     parser.add_argument("--order-stats", action="store_true")
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--timeout", type=float, default=600.0)
@@ -344,6 +463,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     args = parser.parse_args(argv)
     if args.max_cells <= 0 or args.repeats <= 0:
         parser.error("--max-cells and --repeats must be positive")
+    if args.memo == "fixed" and not 16 <= args.memo_bits <= 34:
+        parser.error("--memo fixed requires --memo-bits between 16 and 34")
     return args
 
 

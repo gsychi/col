@@ -1,0 +1,10 @@
+#!/bin/sh
+# Compare two Col solver executables on a reproducible cold benchmark suite.
+#
+#   ./col-bench /path/to/baseline ./col-solve
+#   ./col-bench ./col-solve ./col-solve \
+#     --baseline-arg=--no-component-reduction \
+#     --candidate-arg=--component-reduction
+#
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+exec python3 "$ROOT/scripts/benchmark_compare.py" "$@"

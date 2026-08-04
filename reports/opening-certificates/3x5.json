@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "board": "3x5",
+  "openings": [
+    {"p1_move": 0, "p2_response": 14, "child_key": "0x1dff7fff", "target_key": "0x1dfe7fb8"},
+    {"p1_move": 1, "p2_response": 13, "child_key": "0xeffbfff", "target_key": "0xefdbf70"},
+    {"p1_move": 2, "p2_response": 12, "child_key": "0x477fdfff", "target_key": "0x477bdee2"},
+    {"p1_move": 3, "p2_response": 11, "child_key": "0xeffbfff", "target_key": "0xefdbf70"},
+    {"p1_move": 4, "p2_response": 10, "child_key": "0x1dff7fff", "target_key": "0x1dfe7fb8"},
+    {"p1_move": 5, "p2_response": 9, "child_key": "0x3ceffbff", "target_key": "0x3ccff33c"},
+    {"p1_move": 6, "p2_response": 8, "child_key": "0x5c77fdff", "target_key": "0x5c37ec3a"},
+    {"p1_move": 7, "p2_response": 0, "child_key": "0x6e3bfeff", "target_key": "0x2e3b3afe"},
+    {"p1_move": 8, "p2_response": 6, "child_key": "0x5c77fdff", "target_key": "0x5c37ec3a"},
+    {"p1_move": 9, "p2_response": 5, "child_key": "0x3ceffbff", "target_key": "0x3ccff33c"},
+    {"p1_move": 10, "p2_response": 4, "child_key": "0x1dff7fff", "target_key": "0x1dfe7fb8"},
+    {"p1_move": 11, "p2_response": 3, "child_key": "0xeffbfff", "target_key": "0xefdbf70"},
+    {"p1_move": 12, "p2_response": 2, "child_key": "0x477fdfff", "target_key": "0x477bdee2"},
+    {"p1_move": 13, "p2_response": 1, "child_key": "0xeffbfff", "target_key": "0xefdbf70"},
+    {"p1_move": 14, "p2_response": 0, "child_key": "0x1dff7fff", "target_key": "0x1dfe7fb8"}
+  ]
+}

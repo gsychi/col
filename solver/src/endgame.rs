@@ -26,6 +26,8 @@ pub struct EndgameStats {
     pub cgt_misses: u64,
     pub component_evaluations: u64,
     pub reduction_calls: u64,
+    pub reduction_component_evaluations: u64,
+    pub reduction_column_all_small_exits: u64,
     pub reduction_single_component_exits: u64,
     pub reduction_all_small_exits: u64,
     pub reduction_multi_oversized: u64,
@@ -638,6 +640,13 @@ pub struct ComponentReduction {
     pub changed: bool,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum EndgameEvaluation {
+    Solved(bool),
+    SingleLocalComponent,
+    OversizedMiss,
+}
+
 pub struct SharedEndgameCache {
     raw_values: DashMap<LocalKey, Value, FxBuildHasher>,
     values: DashMap<LocalKey, Value, FxBuildHasher>,
@@ -780,14 +789,59 @@ impl EndgameEvaluator {
     ) -> ComponentReduction {
         self.stats.reduction_calls += 1;
         let combined = legal_p1 | legal_p2;
+        let open_cells = combined.count_ones();
         let effective_max_component_size =
-            effective_component_limit(self.max_component_size, combined.count_ones());
+            effective_component_limit(self.max_component_size, open_cells);
+        // With no more live cells than the local cutoff, every component is
+        // necessarily small. `try_evaluate` handles such positions exactly,
+        // so avoid discovering components only to take the all-small exit.
+        if open_cells <= effective_max_component_size {
+            self.stats.reduction_all_small_exits += 1;
+            return ComponentReduction {
+                legal_p1,
+                legal_p2,
+                changed: false,
+            };
+        }
+        // Dead columns partition a 3xn strip. If every resulting interval has
+        // at most the cutoff's live cells, every component is necessarily
+        // small and `try_evaluate` will handle the position exactly.
+        if adjacency.len() == 3 * n {
+            let row_mask = (1u64 << n) - 1;
+            let mut live_columns =
+                (combined | (combined >> n) | (combined >> (2 * n))) & row_mask;
+            let mut all_intervals_small = true;
+            while live_columns != 0 {
+                let start = live_columns.trailing_zeros();
+                let width = (live_columns >> start).trailing_ones();
+                let columns = ((1u64 << width) - 1) << start;
+                let interval = columns | (columns << n) | (columns << (2 * n));
+                if (combined & interval).count_ones() > effective_max_component_size {
+                    all_intervals_small = false;
+                    break;
+                }
+                live_columns &= !columns;
+            }
+            if all_intervals_small {
+                self.stats.reduction_column_all_small_exits += 1;
+                self.stats.reduction_all_small_exits += 1;
+                return ComponentReduction {
+                    legal_p1,
+                    legal_p2,
+                    changed: false,
+                };
+            }
+        }
         let mut remaining = combined;
         let mut components = [0u64; 64];
         let mut component_count = 0usize;
         let mut oversized_count = 0usize;
         while remaining != 0 {
-            let component = take_component(adjacency, combined, &mut remaining);
+            let component = if adjacency.len() == 3 * n {
+                take_component_3xn(n, legal_p1, legal_p2, &mut remaining)
+            } else {
+                take_component(adjacency, legal_p1, legal_p2, &mut remaining)
+            };
             components[component_count] = component;
             component_count += 1;
             oversized_count +=
@@ -850,6 +904,7 @@ impl EndgameEvaluator {
             }
             let (shape, p1, p2) =
                 self.local_shape_and_masks(n, legal_p1 & component, legal_p2 & component);
+            self.stats.reduction_component_evaluations += 1;
             let value = self.component_value_local(&shape, p1, p2);
             if value == Value::zero() {
                 remove |= component;
@@ -894,9 +949,24 @@ impl EndgameEvaluator {
         legal_p2: u64,
         turn: u8,
     ) -> Option<bool> {
+        match self.classify_position(n, adjacency, legal_p1, legal_p2, turn) {
+            EndgameEvaluation::Solved(wins) => Some(wins),
+            EndgameEvaluation::SingleLocalComponent
+            | EndgameEvaluation::OversizedMiss => None,
+        }
+    }
+
+    pub fn classify_position(
+        &mut self,
+        n: usize,
+        adjacency: &[u64],
+        legal_p1: u64,
+        legal_p2: u64,
+        turn: u8,
+    ) -> EndgameEvaluation {
         let combined = legal_p1 | legal_p2;
         if combined == 0 {
-            return Some(false);
+            return EndgameEvaluation::Solved(false);
         }
         let effective_max_component_size =
             effective_component_limit(self.max_component_size, combined.count_ones());
@@ -908,15 +978,18 @@ impl EndgameEvaluator {
         let mut used_known_value = false;
         while remaining != 0 {
             component_count += 1;
-            match take_component_eval(
+            let component_eval = match take_component_eval(
                 n,
                 adjacency,
-                combined,
                 &mut remaining,
                 legal_p1,
                 legal_p2,
                 effective_max_component_size,
-            )? {
+            ) {
+                Some(component_eval) => component_eval,
+                None => return EndgameEvaluation::OversizedMiss,
+            };
+            match component_eval {
                 ComponentEval::KnownValue(value) => {
                     if let Some((comp_p1, comp_p2)) = first_local_component.take() {
                         let (shape, p1, p2) = self.local_shape_and_masks(n, comp_p1, comp_p2);
@@ -943,11 +1016,11 @@ impl EndgameEvaluator {
         }
 
         if component_count < 2 && !used_known_value {
-            return None;
+            return EndgameEvaluation::SingleLocalComponent;
         }
 
         let value = if turn == 0 { total } else { total.neg() };
-        Some(first_player_wins(value))
+        EndgameEvaluation::Solved(first_player_wins(value))
     }
 
     fn component_value_local(&mut self, shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> Value {
@@ -1064,7 +1137,8 @@ impl EndgameEvaluator {
         let mut total = Value::zero();
         let mut remaining = live;
         while remaining != 0 {
-            let component = take_local_component(shape, live, &mut remaining);
+            let component =
+                take_local_component(shape, p1_legal, p2_legal, &mut remaining);
             total = total.add(self.component_value_local(
                 shape,
                 p1_legal & component,
@@ -1082,7 +1156,7 @@ pub fn component_value_text(n: usize, legal_p1: u64, legal_p2: u64) -> Option<St
     }
     let (shape, p1, p2) = local_shape_from_masks(n, legal_p1, legal_p2);
     let mut evaluator = EndgameEvaluator::new(MAX_LOCAL_CELLS as u32, None);
-    let value = evaluator.component_value_local(&shape, p1, p2);
+    let value = evaluator.position_value_local(&shape, p1, p2);
     Some(format_value(value))
 }
 
@@ -1185,7 +1259,30 @@ fn local_tint(bit: u16, p1_legal: u16, p2_legal: u16) -> u8 {
     tint
 }
 
-fn take_local_component(shape: &LocalShape, live: u16, remaining: &mut u16) -> u16 {
+#[inline]
+fn local_interaction_neighbors(
+    shape: &LocalShape,
+    cell: usize,
+    bit: u16,
+    p1_legal: u16,
+    p2_legal: u16,
+) -> u16 {
+    let mut neighbors = 0;
+    if p1_legal & bit != 0 {
+        neighbors |= shape.adj[cell] & p1_legal;
+    }
+    if p2_legal & bit != 0 {
+        neighbors |= shape.adj[cell] & p2_legal;
+    }
+    neighbors
+}
+
+fn take_local_component(
+    shape: &LocalShape,
+    p1_legal: u16,
+    p2_legal: u16,
+    remaining: &mut u16,
+) -> u16 {
     let seed = *remaining & remaining.wrapping_neg();
     let mut stack = [0u16; MAX_LOCAL_CELLS];
     let mut stack_len = 1usize;
@@ -1197,7 +1294,8 @@ fn take_local_component(shape: &LocalShape, live: u16, remaining: &mut u16) -> u
         stack_len -= 1;
         let bit = stack[stack_len];
         let cell = bit.trailing_zeros() as usize;
-        let mut neighbors = shape.adj[cell] & live & !component;
+        let mut neighbors =
+            local_interaction_neighbors(shape, cell, bit, p1_legal, p2_legal) & !component;
         while neighbors != 0 {
             let neighbor = neighbors & neighbors.wrapping_neg();
             neighbors ^= neighbor;
@@ -1238,8 +1336,11 @@ fn raw_shape_key_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> Loca
         key[len] = (row << 6) | (col << 2) | local_tint(bit, p1_legal, p2_legal) as u16;
         len += 1;
     }
-    key[..len].sort_unstable();
-    pack_key(&key[..len])
+    debug_assert!(key[..len].windows(2).all(|pair| pair[0] < pair[1]));
+    LocalKey {
+        len: len as u8,
+        codes: key,
+    }
 }
 
 fn canonical_key_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> (LocalKey, bool) {
@@ -1269,25 +1370,28 @@ fn canonical_key_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) -> (Loc
             len += 1;
         }
 
-        for swapped in [false, true] {
-            let mut key = [0u16; MAX_LOCAL_CELLS];
-            for index in 0..len {
-                let row = (rows[index] - min_row) as u16;
-                let col = (cols[index] - min_col) as u16;
-                debug_assert!(row < 16 && col < 16);
-                let tint = if swapped {
-                    swap_tint(tints[index])
-                } else {
-                    tints[index]
-                };
-                key[index] = (row << 6) | (col << 2) | tint as u16;
-            }
-            key[..len].sort_unstable();
-            let packed = pack_key(&key[..len]);
-            if best_key.map_or(true, |best| packed < best) {
-                best_key = Some(packed);
-                best_swapped = swapped;
-            }
+        let mut key = [0u16; MAX_LOCAL_CELLS];
+        for index in 0..len {
+            let row = (rows[index] - min_row) as u16;
+            let col = (cols[index] - min_col) as u16;
+            debug_assert!(row < 16 && col < 16);
+            key[index] = (row << 6) | (col << 2) | tints[index] as u16;
+        }
+        key[..len].sort_unstable();
+        let normal = pack_key(&key[..len]);
+        if best_key.map_or(true, |best| normal < best) {
+            best_key = Some(normal);
+            best_swapped = false;
+        }
+
+        for code in &mut key[..len] {
+            *code = (*code & !3) | swap_tint((*code & 3) as u8) as u16;
+        }
+        debug_assert!(key[..len].windows(2).all(|pair| pair[0] < pair[1]));
+        let swapped = pack_key(&key[..len]);
+        if best_key.map_or(true, |best| swapped < best) {
+            best_key = Some(swapped);
+            best_swapped = true;
         }
     }
 
@@ -1327,7 +1431,30 @@ fn single_cell_value(tint: u8) -> Value {
     }
 }
 
-fn take_component(adjacency: &[u64], combined: u64, remaining: &mut u64) -> u64 {
+#[inline]
+fn interaction_neighbors(
+    adjacency: &[u64],
+    cell: usize,
+    bit: u64,
+    legal_p1: u64,
+    legal_p2: u64,
+) -> u64 {
+    let mut neighbors = 0;
+    if legal_p1 & bit != 0 {
+        neighbors |= adjacency[cell] & legal_p1;
+    }
+    if legal_p2 & bit != 0 {
+        neighbors |= adjacency[cell] & legal_p2;
+    }
+    neighbors
+}
+
+fn take_component(
+    adjacency: &[u64],
+    legal_p1: u64,
+    legal_p2: u64,
+    remaining: &mut u64,
+) -> u64 {
     let seed = *remaining & remaining.wrapping_neg();
     let mut stack = [0u64; 64];
     let mut stack_len = 1usize;
@@ -1339,7 +1466,8 @@ fn take_component(adjacency: &[u64], combined: u64, remaining: &mut u64) -> u64 
         stack_len -= 1;
         let bit = stack[stack_len];
         let cell = bit.trailing_zeros() as usize;
-        let mut neighbors = adjacency[cell] & combined & !component;
+        let mut neighbors =
+            interaction_neighbors(adjacency, cell, bit, legal_p1, legal_p2) & !component;
         while neighbors != 0 {
             let neighbor = neighbors & neighbors.wrapping_neg();
             neighbors ^= neighbor;
@@ -1349,6 +1477,36 @@ fn take_component(adjacency: &[u64], combined: u64, remaining: &mut u64) -> u64 
             stack_len += 1;
         }
     }
+    component
+}
+
+fn take_component_3xn(
+    n: usize,
+    legal_p1: u64,
+    legal_p2: u64,
+    remaining: &mut u64,
+) -> u64 {
+    debug_assert!(n > 0 && 3 * n <= 63);
+    let left_edge = 1u64 | (1u64 << n) | (1u64 << (2 * n));
+    let right_edge = left_edge << (n - 1);
+    let seed = *remaining & remaining.wrapping_neg();
+    let mut component = seed;
+    let mut frontier = seed;
+    while frontier != 0 {
+        let p1_frontier = frontier & legal_p1;
+        let p1_horizontal =
+            ((p1_frontier & !right_edge) << 1) | ((p1_frontier & !left_edge) >> 1);
+        let p1_vertical = (p1_frontier << n) | (p1_frontier >> n);
+        let p2_frontier = frontier & legal_p2;
+        let p2_horizontal =
+            ((p2_frontier & !right_edge) << 1) | ((p2_frontier & !left_edge) >> 1);
+        let p2_vertical = (p2_frontier << n) | (p2_frontier >> n);
+        frontier = (((p1_horizontal | p1_vertical) & legal_p1)
+            | ((p2_horizontal | p2_vertical) & legal_p2))
+            & !component;
+        component |= frontier;
+    }
+    *remaining &= !component;
     component
 }
 
@@ -1398,7 +1556,6 @@ enum ComponentEval {
 fn take_component_eval(
     n: usize,
     adjacency: &[u64],
-    combined: u64,
     remaining: &mut u64,
     legal_p1: u64,
     legal_p2: u64,
@@ -1430,7 +1587,8 @@ fn take_component_eval(
         max_row = max_row.max(row);
         min_col = min_col.min(col);
         max_col = max_col.max(col);
-        let degree = (adjacency[cell] & combined).count_ones();
+        let interaction = interaction_neighbors(adjacency, cell, bit, legal_p1, legal_p2);
+        let degree = interaction.count_ones();
         let tint = global_tint(bit, legal_p1, legal_p2);
         if tint != 0 {
             all_open = false;
@@ -1442,12 +1600,13 @@ fn take_component_eval(
             linear_possible = false;
         } else if degree <= 1 {
             endpoint_count += 1;
-            endpoint_score_sum += endpoint_chain_score(tint)?;
+            endpoint_score_sum += endpoint_chain_score(tint)
+                .expect("a cell in the live union cannot have dead tint");
         } else if tint != 0 {
             linear_possible = false;
         }
 
-        let mut neighbors = adjacency[cell] & combined & !component;
+        let mut neighbors = interaction & !component;
         while neighbors != 0 {
             let neighbor = neighbors & neighbors.wrapping_neg();
             neighbors ^= neighbor;
@@ -1546,7 +1705,8 @@ fn linear_chain_value_local(shape: &LocalShape, p1_legal: u16, p2_legal: u16) ->
         let bit = bits & bits.wrapping_neg();
         bits ^= bit;
         let cell = bit.trailing_zeros() as usize;
-        let degree = (shape.adj[cell] & live).count_ones();
+        let degree =
+            local_interaction_neighbors(shape, cell, bit, p1_legal, p2_legal).count_ones();
         let tint = local_tint(bit, p1_legal, p2_legal);
         if degree > 2 {
             return None;
@@ -1637,6 +1797,125 @@ mod tests {
     }
 
     #[test]
+    fn bit_parallel_three_row_components_match_generic_bfs() {
+        let n = 5;
+        let adjacency = grid_adjacency(3, n);
+        for live in 1u64..(1u64 << (3 * n)) {
+            let mut generic_remaining = live;
+            let mut parallel_remaining = live;
+            while generic_remaining != 0 {
+                let generic =
+                    take_component(&adjacency, live, live, &mut generic_remaining);
+                let parallel = take_component_3xn(n, live, live, &mut parallel_remaining);
+                assert_eq!(parallel, generic);
+            }
+            assert_eq!(parallel_remaining, 0);
+        }
+    }
+
+    #[test]
+    fn bit_parallel_three_row_interaction_components_match_generic_bfs() {
+        let n = 3;
+        let adjacency = grid_adjacency(3, n);
+        let limit = 1u64 << (3 * n);
+        for legal_p1 in 0..limit {
+            for legal_p2 in 0..limit {
+                let mut generic_remaining = legal_p1 | legal_p2;
+                let mut parallel_remaining = generic_remaining;
+                while generic_remaining != 0 {
+                    let generic = take_component(
+                        &adjacency,
+                        legal_p1,
+                        legal_p2,
+                        &mut generic_remaining,
+                    );
+                    let parallel = take_component_3xn(
+                        n,
+                        legal_p1,
+                        legal_p2,
+                        &mut parallel_remaining,
+                    );
+                    assert_eq!(parallel, generic);
+                }
+                assert_eq!(parallel_remaining, 0);
+            }
+        }
+    }
+
+    #[test]
+    fn interaction_components_preserve_exact_value_exhaustively_on_two_by_three() {
+        let n = 3;
+        let adjacency = grid_adjacency(2, n);
+        let limit = 1u64 << 6;
+        let mut evaluator = EndgameEvaluator::new(MAX_LOCAL_CELLS as u32, None);
+        for legal_p1 in 0..limit {
+            for legal_p2 in 0..limit {
+                let live = legal_p1 | legal_p2;
+                let full = if live == 0 {
+                    Value::zero()
+                } else {
+                    let (shape, p1, p2) = local_shape_from_masks(n, legal_p1, legal_p2);
+                    evaluator.position_value_local(&shape, p1, p2)
+                };
+
+                let mut sum = Value::zero();
+                let mut remaining = live;
+                while remaining != 0 {
+                    let component =
+                        take_component(&adjacency, legal_p1, legal_p2, &mut remaining);
+                    let (shape, p1, p2) = local_shape_from_masks(
+                        n,
+                        legal_p1 & component,
+                        legal_p2 & component,
+                    );
+                    sum = sum.add(evaluator.component_value_local(&shape, p1, p2));
+                }
+                assert_eq!(sum, full, "p1={legal_p1:#x}, p2={legal_p2:#x}");
+            }
+        }
+    }
+
+    #[test]
+    fn interaction_components_are_move_independent_exhaustively_on_two_by_three() {
+        let n = 3;
+        let adjacency = grid_adjacency(2, n);
+        let limit = 1u64 << 6;
+        for legal_p1 in 0..limit {
+            for legal_p2 in 0..limit {
+                let live = legal_p1 | legal_p2;
+                let mut remaining = live;
+                while remaining != 0 {
+                    let component =
+                        take_component(&adjacency, legal_p1, legal_p2, &mut remaining);
+                    let outside = live & !component;
+
+                    let mut p1_moves = legal_p1 & component;
+                    while p1_moves != 0 {
+                        let bit = p1_moves & p1_moves.wrapping_neg();
+                        p1_moves ^= bit;
+                        let cell = bit.trailing_zeros() as usize;
+                        let child_p1 = legal_p1 & !(bit | adjacency[cell]);
+                        let child_p2 = legal_p2 & !bit;
+                        assert_eq!(child_p1 & outside, legal_p1 & outside);
+                        assert_eq!(child_p2 & outside, legal_p2 & outside);
+                    }
+
+                    let mut p2_moves = legal_p2 & component;
+                    while p2_moves != 0 {
+                        let bit = p2_moves & p2_moves.wrapping_neg();
+                        p2_moves ^= bit;
+                        let cell = bit.trailing_zeros() as usize;
+                        let child_p1 = legal_p1 & !bit;
+                        let child_p2 = legal_p2 & !(bit | adjacency[cell]);
+                        assert_eq!(child_p1 & outside, legal_p1 & outside);
+                        assert_eq!(child_p2 & outside, legal_p2 & outside);
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
     fn small_linear_chain_values_match_theorem() {
         let (p1, p2) = masks("oooo");
         assert_eq!(component_value_text(4, p1, p2).as_deref(), Some("0"));
@@ -1649,6 +1928,59 @@ mod tests {
 
         let (p1, p2) = masks("boow");
         assert_eq!(component_value_text(4, p1, p2).as_deref(), Some("0"));
+    }
+
+    #[test]
+    fn detailed_evaluation_distinguishes_exact_miss_reasons() {
+        let adjacency_2x2 = grid_adjacency(2, 2);
+        let all_2x2 = (1u64 << 4) - 1;
+        let mut evaluator = EndgameEvaluator::new(4, None);
+        assert_eq!(
+            evaluator.classify_position(2, &adjacency_2x2, 0, 0, 0),
+            EndgameEvaluation::Solved(false)
+        );
+        assert_eq!(
+            evaluator.classify_position(
+                2,
+                &adjacency_2x2,
+                all_2x2,
+                all_2x2 ^ 1,
+                0,
+            ),
+            EndgameEvaluation::SingleLocalComponent
+        );
+
+        let adjacency_2x3 = grid_adjacency(2, 3);
+        let all_2x3 = (1u64 << 6) - 1;
+        assert_eq!(
+            evaluator.classify_position(
+                3,
+                &adjacency_2x3,
+                all_2x3,
+                all_2x3 ^ 1,
+                0,
+            ),
+            EndgameEvaluation::OversizedMiss
+        );
+        assert_eq!(
+            evaluator.classify_position(3, &adjacency_2x3, all_2x3, all_2x3, 0),
+            EndgameEvaluation::Solved(false)
+        );
+
+        let adjacency_2x5 = grid_adjacency(2, 5);
+        let left_block = 0b00111u64 | (0b00111u64 << 5);
+        let isolated_column = (1u64 << 4) | (1u64 << 9);
+        let mixed = left_block | isolated_column;
+        assert_eq!(
+            evaluator.classify_position(
+                5,
+                &adjacency_2x5,
+                mixed,
+                mixed ^ 1,
+                0,
+            ),
+            EndgameEvaluation::OversizedMiss
+        );
     }
 
     #[test]
@@ -1716,7 +2048,47 @@ mod tests {
         let reduced = evaluator.reduce_zero_summands(12, &adjacency, p1, p2);
         assert!(reduced.changed);
         assert_eq!(reduced.legal_p1 | reduced.legal_p2, large);
-        assert_eq!(evaluator.stats().zero_components_removed, 2);
+        assert_eq!(evaluator.stats().zero_components_removed, 0);
+        assert_eq!(evaluator.stats().reduction_component_evaluations, 4);
+    }
+
+    #[test]
+    fn fully_small_single_component_uses_fast_exit() {
+        let adjacency = line_adjacency(4);
+        let mut evaluator = EndgameEvaluator::new(4, None);
+        let p1 = (1u64 << 4) - 1;
+        let p2 = p1;
+
+        let reduced = evaluator.reduce_zero_summands(4, &adjacency, p1, p2);
+
+        assert!(!reduced.changed);
+        assert_eq!(reduced.legal_p1, p1);
+        assert_eq!(reduced.legal_p2, p2);
+        assert_eq!(evaluator.stats().reduction_single_component_exits, 0);
+        assert_eq!(evaluator.stats().reduction_all_small_exits, 1);
+        assert_eq!(
+            evaluator.try_evaluate(4, &adjacency, p1, p2, 0),
+            Some(false)
+        );
+    }
+
+    #[test]
+    fn three_row_small_intervals_skip_component_scan() {
+        let adjacency = grid_adjacency(3, 5);
+        let live = (1u64 << 0)
+            | (1u64 << 4)
+            | (1u64 << 5)
+            | (1u64 << 9)
+            | (1u64 << 10)
+            | (1u64 << 14);
+        let mut evaluator = EndgameEvaluator::new(4, None);
+
+        let reduced = evaluator.reduce_zero_summands(5, &adjacency, live, live);
+
+        assert!(!reduced.changed);
+        assert_eq!(evaluator.stats().reduction_column_all_small_exits, 1);
+        assert_eq!(evaluator.stats().reduction_all_small_exits, 1);
+        assert_eq!(evaluator.stats().reduction_single_component_exits, 0);
     }
 
     #[test]

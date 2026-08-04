@@ -91,6 +91,8 @@ def run_board(
     ]
     if reduction:
         command.append("--component-reduction")
+    else:
+        command.append("--no-component-reduction")
     label = f"{m}x{n}"
     config = "reduction" if reduction else "baseline"
     try:

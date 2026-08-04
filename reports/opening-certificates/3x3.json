@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "board": "3x3",
+  "openings": [
+    {"p1_move": 0, "p2_response": 8, "child_key": "0x17dff", "target_key": "0x179e8"},
+    {"p1_move": 1, "p2_response": 7, "child_key": "0xbeff", "target_key": "0xb6d0"},
+    {"p1_move": 2, "p2_response": 6, "child_key": "0x17dff", "target_key": "0x179e8"},
+    {"p1_move": 3, "p2_response": 5, "child_key": "0xbeff", "target_key": "0xb6d0"},
+    {"p1_move": 4, "p2_response": 0, "child_key": "0x517df", "target_key": "0x1149e"},
+    {"p1_move": 5, "p2_response": 3, "child_key": "0xbeff", "target_key": "0xb6d0"},
+    {"p1_move": 6, "p2_response": 2, "child_key": "0x17dff", "target_key": "0x179e8"},
+    {"p1_move": 7, "p2_response": 1, "child_key": "0xbeff", "target_key": "0xb6d0"},
+    {"p1_move": 8, "p2_response": 0, "child_key": "0x17dff", "target_key": "0x179e8"}
+  ]
+}

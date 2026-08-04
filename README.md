@@ -7,6 +7,7 @@ Three entry points at the repo root:
 | `./col-solve` | Rust solver (builds on first run) |
 | `./col-predict` | Estimate state counts and solve times |
 | `./col-cgt` | Recommend CGT endgame cutoff for a board |
+| `./col-bench` | Compare two solver binaries with paired cold runs |
 | `./col-gui` | Desktop tablebase explorer |
 
 ## Layout
@@ -131,16 +132,38 @@ The harness records the command, commit, dirty working tree, platform, winner,
 state count, throughput, solve time, and peak RSS in JSON and Markdown under
 `reports/odd-board-experiments/`.
 
+Compare two already-built solver binaries with interleaved A/B runs and a
+winner-equivalence gate:
+
+```bash
+./col-bench /tmp/col-rs-baseline ./solver/target/release/col-rs \
+  --boards 3x11 5x7 --repeats 3 --memo fixed --memo-bits 20 \
+  --out-json /tmp/col-bench.json
+```
+
+Progress goes to stderr and the complete comparison JSON goes to stdout. No
+report or cache is retained unless `--out-json` is supplied. Fixed-memo runs
+also record full-window TT evictions, making replacement pressure visible.
+
 Proof-oriented tools emit replayable artifacts rather than treating pattern
 frequency as a proof:
 
 ```bash
 python3 scripts/mine_3xn_families.py --boards 3x5 3x7 3x9
 python3 scripts/verify_3xn_certificates.py
+python3 scripts/build_3xn_strategy_dag.py
+python3 scripts/verify_3xn_strategy_dag.py
+python3 scripts/audit_3xn_frontier_abstraction.py
 python3 scripts/certify_cgt_components.py
 python3 scripts/test_odd_invariants.py
 python3 scripts/proof_status.py
 ```
+
+The rooted strategy DAG is an exact finite-board P2 certificate: its verifier
+replays every P1 move, checks the selected P2 response, and independently
+checks terminal and half-turn-pairing leaves. The frontier audit exits nonzero
+when one truncated signature contains both winning and losing exact states;
+that is a concrete counterexample to treating the signature as a proof state.
 
 `proof_status.py` exits nonzero while any all-width proof obligation remains
 open. In particular, finite verification through a fixed width is not reported

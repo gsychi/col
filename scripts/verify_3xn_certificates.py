@@ -240,16 +240,17 @@ def write_report(
         f"- Invalid records: `{summary.invalid:,}`",
         f"- Exact whole-state family size: `{details['exact_family_size']:,}`",
         f"- Radius-{radius} frontier family size: `{details['frontier_family_size']:,}`",
-        f"- Frontier transition closure: `{summary.frontier_closed:,}/{total:,}` (`{closure:.2%}`)",
+        f"- Empirical frontier target coverage: `{summary.frontier_closed:,}/{total:,}` (`{closure:.2%}`)",
         f"- Width coverage: `{details['widths']}`",
+        "- Quotient soundness: `not checked here` (run `audit_3xn_frontier_abstraction.py`)",
         "",
         "## Held-out widest strip",
         "",
         f"`{held_summary}`",
         "",
-        "A finite induction is established only when replay errors, open frontier transitions, "
-        "and held-out novel signatures are all zero. Nonzero values are concrete closure gaps, "
-        "not proof failures hidden by frequency ranking.",
+        "These coverage counts do not establish a finite-state induction. A proof also needs an "
+        "outcome-pure, response-congruent quotient and a symbolic all-width extension theorem. "
+        "Replay errors, open targets, and held-out novel signatures remain concrete gaps.",
     ]
     if errors:
         lines.extend(["", "## Replay errors", ""])
@@ -291,6 +292,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         json.dumps(
             {
                 "schema_version": 1,
+                "frontier_radius": args.frontier_radius,
                 "summary": summary.__dict__,
                 "details": details,
                 "errors": errors,

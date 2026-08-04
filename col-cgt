@@ -1,0 +1,8 @@
+#!/bin/sh
+# Recommend CGT endgame cutoff for a board.
+#
+#   ./col-cgt 5x9
+#   ./col-cgt 3x13 5x7
+#
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+exec python3 "$ROOT/scripts/cgt_recommend.py" "$@"

@@ -16,6 +16,14 @@ sys.path.insert(0, str(REPO_ROOT / "python"))
 from col.core import ColBoard, P1, P2  # noqa: E402
 
 
+def positive_int(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value > 0
+
+
+def nonnegative_int(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
 def read_json(path: Path) -> dict[str, object]:
     with path.open(encoding="utf-8") as handle:
         payload = json.load(handle)
@@ -79,6 +87,89 @@ def opening_certificate_replays(payload: dict[str, object], width: int) -> bool:
     return seen == set(range(board.num_cells))
 
 
+def frontier_audit_status(
+    frontier: dict[str, object],
+    audit: dict[str, object],
+) -> tuple[bool, str]:
+    """Check that purity evidence describes the same nonempty frontier quotient."""
+
+    details = frontier.get("details", {})
+    summary = frontier.get("summary", {})
+    widths = details.get("widths", {}) if isinstance(details, dict) else {}
+    certificate_boards = (
+        {f"3x{width}" for width in widths} if isinstance(widths, dict) else set()
+    )
+    audit_boards = audit.get("boards", [])
+    audited_labels = (
+        {
+            str(board.get("board"))
+            for board in audit_boards
+            if isinstance(board, dict) and isinstance(board.get("board"), str)
+        }
+        if isinstance(audit_boards, list)
+        else set()
+    )
+    aggregate = audit.get("aggregate", {})
+    mixed_classes = (
+        aggregate.get("mixed_frontier_classes") if isinstance(aggregate, dict) else None
+    )
+    frontier_radius = frontier.get("frontier_radius")
+    audit_radius = audit.get("radius")
+    board_records_valid = (
+        isinstance(audit_boards, list)
+        and bool(audit_boards)
+        and all(
+            isinstance(board, dict)
+            and board.get("radius") == audit_radius
+            and positive_int(board.get("observations"))
+            and nonnegative_int(board.get("mixed_frontier_classes"))
+            and isinstance(board.get("outcome_pure"), bool)
+            for board in audit_boards
+        )
+    )
+    metadata_matches = (
+        type(frontier.get("schema_version")) is int
+        and frontier.get("schema_version") == 1
+        and type(audit.get("schema_version")) is int
+        and audit.get("schema_version") == 1
+        and audit.get("audit") == "3xn-frontier-outcome-purity"
+        and audit.get("fresh_solve") is True
+        and audit.get("tablebase_enabled") is False
+        and positive_int(frontier_radius)
+        and positive_int(audit_radius)
+        and audit_radius == frontier_radius
+        and isinstance(summary, dict)
+        and positive_int(summary.get("certificates"))
+        and positive_int(summary.get("transitions"))
+        and bool(certificate_boards)
+        and all(positive_int(count) for count in widths.values())
+        and certificate_boards <= audited_labels
+        and board_records_valid
+        and isinstance(aggregate, dict)
+        and positive_int(aggregate.get("observations"))
+        and nonnegative_int(mixed_classes)
+    )
+    pure = (
+        metadata_matches
+        and mixed_classes == 0
+        and aggregate.get("outcome_pure") is True
+        and audit.get("outcome_pure") is True
+        and all(
+            isinstance(board, dict)
+            and board.get("mixed_frontier_classes") == 0
+            and board.get("outcome_pure") is True
+            for board in audit_boards
+        )
+    )
+    evidence = (
+        f"closure_radius={frontier_radius}; audit_radius={audit_radius}; "
+        f"certificate_boards={sorted(certificate_boards)}; "
+        f"audited_boards={sorted(audited_labels)}; "
+        f"mixed_classes={mixed_classes}; compatible={metadata_matches}"
+    )
+    return pure, evidence
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -90,6 +181,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         "--cgt",
         type=Path,
         default=REPO_ROOT / "reports" / "cgt-component-certificates.json",
+    )
+    parser.add_argument(
+        "--frontier-audit",
+        type=Path,
+        default=REPO_ROOT / "reports" / "3xn-frontier-abstraction-audit.json",
     )
     parser.add_argument(
         "--out",
@@ -108,6 +204,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv)
     frontier = read_json(args.frontier)
     cgt = read_json(args.cgt)
+    frontier_audit = read_json(args.frontier_audit)
     opening_widths = []
     for width in (3, 5, 7, 9, 11, 13):
         path = args.opening_dir / f"3x{width}.json"
@@ -118,7 +215,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             opening_widths.append(width)
     summary = frontier.get("summary", {})
     details = frontier.get("details", {})
-    held_out = details.get("held_out", {}) if isinstance(details, dict) else {}
+    if not isinstance(summary, dict):
+        summary = {}
+    if not isinstance(details, dict):
+        details = {}
+    held_out = details.get("held_out", {})
     held_out_summary = (
         {
             "width": held_out.get("width"),
@@ -130,21 +231,38 @@ def main(argv: Sequence[str] | None = None) -> int:
         else held_out
     )
     cgt_errors = cgt.get("verification_errors", [])
+    purity_passed, purity_evidence = frontier_audit_status(frontier, frontier_audit)
 
     obligations = [
         (
             "Transition replay",
-            summary.get("invalid") == 0,
+            positive_int(summary.get("certificates"))
+            and positive_int(summary.get("transitions"))
+            and summary.get("invalid") == 0,
             f"invalid={summary.get('invalid')}",
         ),
         (
-            "Frontier response closure",
-            summary.get("frontier_open") == 0,
+            "Empirical frontier target coverage",
+            positive_int(summary.get("transitions"))
+            and summary.get("frontier_open") == 0,
             f"open={summary.get('frontier_open')}",
         ),
         (
+            "Matching sampled frontier outcome purity",
+            purity_passed,
+            purity_evidence,
+        ),
+        (
+            "Frontier response congruence",
+            False,
+            "no checker proves one abstract response rule works for every concretization",
+        ),
+        (
             "Held-out width prediction",
-            isinstance(held_out, dict) and not held_out.get("novel", []),
+            isinstance(held_out, dict)
+            and positive_int(held_out.get("frontiers"))
+            and held_out.get("width") is not None
+            and not held_out.get("novel", []),
             f"held_out={held_out_summary}",
         ),
         (
@@ -176,8 +294,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         "",
         "This gate intentionally distinguishes finite computational evidence from an "
         "all-width theorem. It exits successfully only after every finite certificate "
-        "replays, the frontier family closes, width 13 is covered, and a symbolic "
-        "two-column extension certificate exists.",
+        "replays, the proposed frontier quotient passes finite soundness checks, width "
+        "13 is covered, and a symbolic two-column extension certificate exists.",
         "",
         "| Obligation | Passed | Evidence |",
         "|---|---:|---|",
