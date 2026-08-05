@@ -72,10 +72,35 @@ METRIC_PATTERNS = {
     "reductions_to_empty": re.compile(r"^reductions to empty:\s+(\d+)$"),
     "component_bag_queries": re.compile(r"^component bag queries:\s+(\d+)$"),
     "component_bag_hits": re.compile(r"^component bag hits:\s+(\d+)$"),
+    "component_bag_local_hits": re.compile(r"^component bag local hits:\s+(\d+)$"),
     "component_bag_inserts": re.compile(r"^component bag inserts:\s+(\d+)$"),
+    "component_bag_local_duplicate_inserts": re.compile(
+        r"^component bag local duplicate inserts:\s+(\d+)$"
+    ),
+    "component_bag_shared_queries": re.compile(
+        r"^component bag shared queries:\s+(\d+)$"
+    ),
+    "component_bag_shared_hits": re.compile(
+        r"^component bag shared hits:\s+(\d+)$"
+    ),
+    "component_bag_shared_inserts": re.compile(
+        r"^component bag shared inserts:\s+(\d+)$"
+    ),
+    "component_bag_shared_duplicate_inserts": re.compile(
+        r"^component bag shared duplicate inserts:\s+(\d+)$"
+    ),
     "component_bag_raw_id_hits": re.compile(r"^component bag raw id hits:\s+(\d+)$"),
     "component_bag_signature_hits": re.compile(
         r"^component bag signature hits:\s+(\d+)$"
+    ),
+    "component_signature_shared_queries": re.compile(
+        r"^component signature shared queries:\s+(\d+)$"
+    ),
+    "component_signature_shared_hits": re.compile(
+        r"^component signature shared hits:\s+(\d+)$"
+    ),
+    "component_signature_shared_inserts": re.compile(
+        r"^component signature shared inserts:\s+(\d+)$"
     ),
     "pairing_certificate_hits": re.compile(r"^pairing certificate hits:\s+(\d+)$"),
     "pairing_certificate_checks": re.compile(r"^pairing certificate checks:\s+(\d+)$"),
@@ -141,9 +166,18 @@ class RunResult:
     reductions_to_empty: int | None = None
     component_bag_queries: int | None = None
     component_bag_hits: int | None = None
+    component_bag_local_hits: int | None = None
     component_bag_inserts: int | None = None
+    component_bag_local_duplicate_inserts: int | None = None
+    component_bag_shared_queries: int | None = None
+    component_bag_shared_hits: int | None = None
+    component_bag_shared_inserts: int | None = None
+    component_bag_shared_duplicate_inserts: int | None = None
     component_bag_raw_id_hits: int | None = None
     component_bag_signature_hits: int | None = None
+    component_signature_shared_queries: int | None = None
+    component_signature_shared_hits: int | None = None
+    component_signature_shared_inserts: int | None = None
     pairing_certificate_hits: int | None = None
     pairing_certificate_checks: int | None = None
     states_per_second: int | None = None

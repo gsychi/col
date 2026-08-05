@@ -60,9 +60,18 @@ zero-sum cells removed: 117
 reductions to empty: 118
 component bag queries: 200
 component bag hits: 201
+component bag local hits: 151
 component bag inserts: 202
+component bag local duplicate inserts: 7
+component bag shared queries: 50
+component bag shared hits: 25
+component bag shared inserts: 20
+component bag shared duplicate inserts: 5
 component bag raw id hits: 203
 component bag signature hits: 204
+component signature shared queries: 40
+component signature shared hits: 30
+component signature shared inserts: 10
 pairing certificate hits: 119
 pairing certificate checks: 120
 states per second: 121
@@ -100,9 +109,18 @@ time elapsed (solve): 1.250000s
         self.assertEqual(parsed["reductions_to_empty"], 118)
         self.assertEqual(parsed["component_bag_queries"], 200)
         self.assertEqual(parsed["component_bag_hits"], 201)
+        self.assertEqual(parsed["component_bag_local_hits"], 151)
         self.assertEqual(parsed["component_bag_inserts"], 202)
+        self.assertEqual(parsed["component_bag_local_duplicate_inserts"], 7)
+        self.assertEqual(parsed["component_bag_shared_queries"], 50)
+        self.assertEqual(parsed["component_bag_shared_hits"], 25)
+        self.assertEqual(parsed["component_bag_shared_inserts"], 20)
+        self.assertEqual(parsed["component_bag_shared_duplicate_inserts"], 5)
         self.assertEqual(parsed["component_bag_raw_id_hits"], 203)
         self.assertEqual(parsed["component_bag_signature_hits"], 204)
+        self.assertEqual(parsed["component_signature_shared_queries"], 40)
+        self.assertEqual(parsed["component_signature_shared_hits"], 30)
+        self.assertEqual(parsed["component_signature_shared_inserts"], 10)
         self.assertEqual(parsed["solve_seconds"], 1.25)
         self.assertEqual(parsed["peak_rss_bytes"], 122)
 

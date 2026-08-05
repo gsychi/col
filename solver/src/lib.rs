@@ -1283,9 +1283,18 @@ struct Stats {
     reductions_to_empty: u64,
     component_bag_queries: u64,
     component_bag_hits: u64,
+    component_bag_local_hits: u64,
     component_bag_inserts: u64,
+    component_bag_local_duplicate_inserts: u64,
+    component_bag_shared_queries: u64,
+    component_bag_shared_hits: u64,
+    component_bag_shared_inserts: u64,
+    component_bag_shared_duplicate_inserts: u64,
     component_bag_raw_id_hits: u64,
     component_bag_signature_hits: u64,
+    component_signature_shared_queries: u64,
+    component_signature_shared_hits: u64,
+    component_signature_shared_inserts: u64,
     order: OrderStats,
 }
 
@@ -1322,9 +1331,20 @@ impl Stats {
         self.reductions_to_empty += other.reductions_to_empty;
         self.component_bag_queries += other.component_bag_queries;
         self.component_bag_hits += other.component_bag_hits;
+        self.component_bag_local_hits += other.component_bag_local_hits;
         self.component_bag_inserts += other.component_bag_inserts;
+        self.component_bag_local_duplicate_inserts +=
+            other.component_bag_local_duplicate_inserts;
+        self.component_bag_shared_queries += other.component_bag_shared_queries;
+        self.component_bag_shared_hits += other.component_bag_shared_hits;
+        self.component_bag_shared_inserts += other.component_bag_shared_inserts;
+        self.component_bag_shared_duplicate_inserts +=
+            other.component_bag_shared_duplicate_inserts;
         self.component_bag_raw_id_hits += other.component_bag_raw_id_hits;
         self.component_bag_signature_hits += other.component_bag_signature_hits;
+        self.component_signature_shared_queries += other.component_signature_shared_queries;
+        self.component_signature_shared_hits += other.component_signature_shared_hits;
+        self.component_signature_shared_inserts += other.component_signature_shared_inserts;
         self.order.merge(&other.order);
     }
 
@@ -1346,9 +1366,20 @@ impl Stats {
         self.reductions_to_empty += endgame.reductions_to_empty;
         self.component_bag_queries += endgame.component_bag_queries;
         self.component_bag_hits += endgame.component_bag_hits;
+        self.component_bag_local_hits += endgame.component_bag_local_hits;
         self.component_bag_inserts += endgame.component_bag_inserts;
+        self.component_bag_local_duplicate_inserts +=
+            endgame.component_bag_local_duplicate_inserts;
+        self.component_bag_shared_queries += endgame.component_bag_shared_queries;
+        self.component_bag_shared_hits += endgame.component_bag_shared_hits;
+        self.component_bag_shared_inserts += endgame.component_bag_shared_inserts;
+        self.component_bag_shared_duplicate_inserts +=
+            endgame.component_bag_shared_duplicate_inserts;
         self.component_bag_raw_id_hits += endgame.component_bag_raw_id_hits;
         self.component_bag_signature_hits += endgame.component_bag_signature_hits;
+        self.component_signature_shared_queries += endgame.component_signature_shared_queries;
+        self.component_signature_shared_hits += endgame.component_signature_shared_hits;
+        self.component_signature_shared_inserts += endgame.component_signature_shared_inserts;
     }
 }
 
@@ -1532,6 +1563,12 @@ impl<'a, M: Memo> Solver<'a, M> {
             front_cache: M::USE_FRONT_CACHE.then(|| FrontCache::new(FRONT_CACHE_BITS)),
             memo_min_legal,
             order_stats,
+        }
+    }
+
+    fn enable_shared_component_bags(&mut self) {
+        if let Some(endgame) = self.endgame.as_mut() {
+            endgame.enable_shared_component_bags();
         }
     }
 
@@ -2290,6 +2327,7 @@ fn solve_parallel_root<M: Memo + Sync>(
                     memo_min_legal,
                     order_stats,
                 );
+                solver.enable_shared_component_bags();
                 loop {
                     if coord.cancel.load(Ordering::Relaxed) {
                         break;
@@ -2747,6 +2785,7 @@ fn solve_parallel_and_split<M: Memo + Sync>(
                     memo_min_legal,
                     order_stats,
                 );
+                solver.enable_shared_component_bags();
                 loop {
                     if coord.cancel.load(Ordering::Relaxed) {
                         break;
@@ -3340,9 +3379,47 @@ pub fn run(args: Vec<String>) {
             );
             println!("component bag hits: {}", output.stats.component_bag_hits);
             println!(
+                "component bag local hits: {}",
+                output.stats.component_bag_local_hits
+            );
+            println!(
                 "component bag inserts: {}",
                 output.stats.component_bag_inserts
             );
+            println!(
+                "component bag local duplicate inserts: {}",
+                output.stats.component_bag_local_duplicate_inserts
+            );
+            if output.stats.component_bag_shared_queries > 0 {
+                println!(
+                    "component bag shared queries: {}",
+                    output.stats.component_bag_shared_queries
+                );
+                println!(
+                    "component bag shared hits: {}",
+                    output.stats.component_bag_shared_hits
+                );
+                println!(
+                    "component bag shared inserts: {}",
+                    output.stats.component_bag_shared_inserts
+                );
+                println!(
+                    "component bag shared duplicate inserts: {}",
+                    output.stats.component_bag_shared_duplicate_inserts
+                );
+                println!(
+                    "component signature shared queries: {}",
+                    output.stats.component_signature_shared_queries
+                );
+                println!(
+                    "component signature shared hits: {}",
+                    output.stats.component_signature_shared_hits
+                );
+                println!(
+                    "component signature shared inserts: {}",
+                    output.stats.component_signature_shared_inserts
+                );
+            }
             println!(
                 "component bag raw id hits: {}",
                 output.stats.component_bag_raw_id_hits

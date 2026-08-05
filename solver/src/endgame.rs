@@ -1,3 +1,4 @@
+use dashmap::mapref::entry::Entry;
 use dashmap::DashMap;
 use rustc_hash::FxBuildHasher;
 use rustc_hash::FxHashMap;
@@ -5,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use std::cmp::Ordering;
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicU32, Ordering as AtomicOrdering};
 use std::sync::Arc;
 
 const BLOCK_P1: u8 = 1;
@@ -59,9 +61,18 @@ pub struct EndgameStats {
     pub reductions_to_empty: u64,
     pub component_bag_queries: u64,
     pub component_bag_hits: u64,
+    pub component_bag_local_hits: u64,
     pub component_bag_inserts: u64,
+    pub component_bag_local_duplicate_inserts: u64,
+    pub component_bag_shared_queries: u64,
+    pub component_bag_shared_hits: u64,
+    pub component_bag_shared_inserts: u64,
+    pub component_bag_shared_duplicate_inserts: u64,
     pub component_bag_raw_id_hits: u64,
     pub component_bag_signature_hits: u64,
+    pub component_signature_shared_queries: u64,
+    pub component_signature_shared_hits: u64,
+    pub component_signature_shared_inserts: u64,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
@@ -659,6 +670,7 @@ pub struct EndgameEvaluator {
     component_signature_ids: FxHashMap<Vec<u16>, u32>,
     raw_component_ids: FxHashMap<u128, u32>,
     component_bag_outcomes: FxHashMap<ComponentBagKey, bool>,
+    share_component_bags: bool,
     reduction_components: [u64; 64],
     reduction_component_count: u8,
     stats: EndgameStats,
@@ -672,14 +684,14 @@ pub struct ComponentReduction {
     pub component_bag_candidate: bool,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct ComponentBagKey {
     private_singleton_score: i8,
     shared_singleton_parity: bool,
     components: ComponentIds,
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum ComponentIds {
     Inline {
         len: u8,
@@ -719,6 +731,9 @@ pub enum EndgameEvaluation {
 pub struct SharedEndgameCache {
     raw_values: DashMap<LocalKey, Value, FxBuildHasher>,
     values: DashMap<LocalKey, Value, FxBuildHasher>,
+    component_signature_ids: DashMap<Vec<u16>, u32, FxBuildHasher>,
+    next_component_signature_id: AtomicU32,
+    component_bag_outcomes: DashMap<ComponentBagKey, bool, FxBuildHasher>,
 }
 
 impl SharedEndgameCache {
@@ -726,11 +741,49 @@ impl SharedEndgameCache {
         SharedEndgameCache {
             raw_values: DashMap::with_hasher(FxBuildHasher),
             values: DashMap::with_hasher(FxBuildHasher),
+            component_signature_ids: DashMap::with_hasher(FxBuildHasher),
+            next_component_signature_id: AtomicU32::new(0),
+            component_bag_outcomes: DashMap::with_hasher(FxBuildHasher),
         }
     }
 
     pub fn canonical_len(&self) -> usize {
         self.values.len()
+    }
+
+    fn intern_component_signature(&self, signature: &[u16]) -> (u32, bool) {
+        if let Some(id) = self.component_signature_ids.get(signature) {
+            return (*id, true);
+        }
+        match self.component_signature_ids.entry(signature.to_vec()) {
+            Entry::Occupied(entry) => (*entry.get(), true),
+            Entry::Vacant(entry) => {
+                let id = self
+                    .next_component_signature_id
+                    .fetch_update(
+                        AtomicOrdering::Relaxed,
+                        AtomicOrdering::Relaxed,
+                        |next| next.checked_add(1),
+                    )
+                    .expect("component signature ID space exhausted");
+                entry.insert(id);
+                (id, false)
+            }
+        }
+    }
+
+    fn component_bag_outcome(&self, key: &ComponentBagKey) -> Option<bool> {
+        self.component_bag_outcomes.get(key).map(|entry| *entry)
+    }
+
+    fn insert_component_bag(&self, key: ComponentBagKey, wins: bool) -> Option<bool> {
+        match self.component_bag_outcomes.entry(key) {
+            Entry::Occupied(entry) => Some(*entry.get()),
+            Entry::Vacant(entry) => {
+                entry.insert(wins);
+                None
+            }
+        }
     }
 
     fn insert_loaded(&self, key: LocalKey, value: Value) {
@@ -842,6 +895,7 @@ impl EndgameEvaluator {
             component_signature_ids: FxHashMap::default(),
             raw_component_ids: FxHashMap::default(),
             component_bag_outcomes: FxHashMap::default(),
+            share_component_bags: false,
             reduction_components: [0; 64],
             reduction_component_count: 0,
             stats: EndgameStats::default(),
@@ -850,6 +904,18 @@ impl EndgameEvaluator {
 
     pub fn stats(&self) -> EndgameStats {
         self.stats
+    }
+
+    /// Enable exact cross-worker component interning and solved-bag reuse.
+    /// This must happen before the evaluator assigns any worker-local IDs.
+    pub fn enable_shared_component_bags(&mut self) {
+        assert!(
+            self.component_signature_ids.is_empty()
+                && self.raw_component_ids.is_empty()
+                && self.component_bag_outcomes.is_empty(),
+            "shared component bags must be enabled before the first bag query"
+        );
+        self.share_component_bags = self.shared.is_some();
     }
 
     /// Query an exact actor-relative multiset key for a fragmented position.
@@ -902,6 +968,21 @@ impl EndgameEvaluator {
                 let id = if let Some(&id) = self.component_signature_ids.get(signature) {
                     self.stats.component_bag_signature_hits += 1;
                     id
+                } else if self.share_component_bags {
+                    self.stats.component_signature_shared_queries += 1;
+                    let (id, hit) = self
+                        .shared
+                        .as_ref()
+                        .expect("shared component bags require a shared cache")
+                        .intern_component_signature(signature);
+                    if hit {
+                        self.stats.component_signature_shared_hits += 1;
+                    } else {
+                        self.stats.component_signature_shared_inserts += 1;
+                    }
+                    self.component_signature_ids
+                        .insert(signature.to_vec(), id);
+                    id
                 } else {
                     let id = self.component_signature_ids.len() as u32;
                     self.component_signature_ids.insert(signature.to_vec(), id);
@@ -921,17 +1002,53 @@ impl EndgameEvaluator {
         };
         if let Some(&wins) = self.component_bag_outcomes.get(&key) {
             self.stats.component_bag_hits += 1;
+            self.stats.component_bag_local_hits += 1;
             ComponentBagProbe::Hit(wins)
+        } else if self.share_component_bags {
+            self.stats.component_bag_shared_queries += 1;
+            if let Some(wins) = self
+                .shared
+                .as_ref()
+                .expect("shared component bags require a shared cache")
+                .component_bag_outcome(&key)
+            {
+                self.stats.component_bag_hits += 1;
+                self.stats.component_bag_shared_hits += 1;
+                self.component_bag_outcomes.insert(key, wins);
+                self.stats.component_bag_inserts += 1;
+                ComponentBagProbe::Hit(wins)
+            } else {
+                ComponentBagProbe::Miss(key)
+            }
         } else {
             ComponentBagProbe::Miss(key)
         }
     }
 
     pub fn insert_component_bag(&mut self, key: ComponentBagKey, wins: bool) {
-        if let Some(previous) = self.component_bag_outcomes.insert(key, wins) {
+        let shared_key = self.share_component_bags.then(|| key.clone());
+        let local_was_new = if let Some(previous) = self.component_bag_outcomes.insert(key, wins) {
             debug_assert_eq!(previous, wins, "component-bag outcome conflict");
+            self.stats.component_bag_local_duplicate_inserts += 1;
+            false
         } else {
             self.stats.component_bag_inserts += 1;
+            true
+        };
+        if let Some(key) = shared_key {
+            let previous = self
+                .shared
+                .as_ref()
+                .expect("shared component bags require a shared cache")
+                .insert_component_bag(key, wins);
+            if let Some(previous) = previous {
+                assert_eq!(previous, wins, "shared component-bag outcome conflict");
+                if local_was_new {
+                    self.stats.component_bag_shared_duplicate_inserts += 1;
+                }
+            } else {
+                self.stats.component_bag_shared_inserts += 1;
+            }
         }
     }
 
@@ -2126,6 +2243,103 @@ mod tests {
             evaluator.probe_component_bag(n, p1 | (1u64 << 18), p2, 0),
             ComponentBagProbe::Miss(_)
         ));
+    }
+
+    #[test]
+    fn completed_component_bags_are_shared_across_evaluators_exactly() {
+        let n = 8;
+        let shared = Arc::new(SharedEndgameCache::new());
+        let mut first = EndgameEvaluator::new(0, Some(shared.clone()));
+        let mut second = EndgameEvaluator::new(0, Some(shared.clone()));
+        first.enable_shared_component_bags();
+        second.enable_shared_component_bags();
+
+        let shared_domino = (1u64 << 0) | (1u64 << 1);
+        let actor_domino = (1u64 << 10) | (1u64 << 11);
+        let opponent_domino = (1u64 << 20) | (1u64 << 21);
+        let star = 1u64 << 31;
+        let p1 = shared_domino | actor_domino | star;
+        let p2 = shared_domino | opponent_domino | star;
+        first.retain_reduction_components(
+            &[shared_domino, actor_domino, opponent_domino, star],
+            0,
+        );
+        let key = match first.probe_component_bag(n, p1, p2, 0) {
+            ComponentBagProbe::Miss(key) => key,
+            _ => panic!("first evaluator must miss the shared bag"),
+        };
+        first.insert_component_bag(key, true);
+
+        // Translate every component, permute their order, then globally swap
+        // colors and the side to move. The actor-relative game bag is exact.
+        let moved_shared = (1u64 << 4) | (1u64 << 5);
+        let moved_actor = (1u64 << 14) | (1u64 << 15);
+        let moved_opponent = (1u64 << 24) | (1u64 << 25);
+        let moved_star = 1u64 << 8;
+        let moved_p1 = moved_shared | moved_actor | moved_star;
+        let moved_p2 = moved_shared | moved_opponent | moved_star;
+        second.retain_reduction_components(
+            &[moved_star, moved_opponent, moved_shared, moved_actor],
+            0,
+        );
+        assert!(matches!(
+            second.probe_component_bag(n, moved_p2, moved_p1, 1),
+            ComponentBagProbe::Hit(true)
+        ));
+        assert_eq!(second.stats.component_bag_local_hits, 0);
+        assert_eq!(second.stats.component_bag_shared_hits, 1);
+        assert_eq!(second.stats.component_signature_shared_hits, 3);
+
+        // Recoloring only the opponent domino changes the component multiset.
+        second.retain_reduction_components(
+            &[moved_star, moved_opponent, moved_shared, moved_actor],
+            0,
+        );
+        assert!(matches!(
+            second.probe_component_bag(n, moved_p1 | moved_opponent, moved_p2, 0),
+            ComponentBagProbe::Miss(_)
+        ));
+    }
+
+    #[test]
+    fn shared_component_interning_and_outcomes_are_race_safe() {
+        let shared = Arc::new(SharedEndgameCache::new());
+        let signature = vec![0x101u16, 0x202, 0x303];
+        std::thread::scope(|scope| {
+            let handles: Vec<_> = (0..8)
+                .map(|_| {
+                    let shared = shared.clone();
+                    let signature = signature.clone();
+                    scope.spawn(move || shared.intern_component_signature(&signature).0)
+                })
+                .collect();
+            for handle in handles {
+                assert_eq!(handle.join().unwrap(), 0);
+            }
+        });
+        assert_eq!(shared.component_signature_ids.len(), 1);
+
+        let key = ComponentBagKey {
+            private_singleton_score: 1,
+            shared_singleton_parity: true,
+            components: ComponentIds::from_sorted(&[0, 0, 0]),
+        };
+        let unique_inserts: usize = std::thread::scope(|scope| {
+            let handles: Vec<_> = (0..8)
+                .map(|_| {
+                    let shared = shared.clone();
+                    let key = key.clone();
+                    scope.spawn(move || shared.insert_component_bag(key, true).is_none())
+                })
+                .collect();
+            handles
+                .into_iter()
+                .map(|handle| usize::from(handle.join().unwrap()))
+                .sum()
+        });
+        assert_eq!(unique_inserts, 1);
+        assert_eq!(shared.component_bag_outcomes.len(), 1);
+        assert_eq!(shared.component_bag_outcome(&key), Some(true));
     }
 
     #[test]

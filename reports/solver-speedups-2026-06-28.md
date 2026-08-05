@@ -338,3 +338,77 @@ and 19 Python tests. The Rust tests include exhaustive actor-relative bag
 outcomes for every 2x4 legality-mask pair with at least three components,
 exhaustive agreement between fixed and allocating component signatures on all
 3x3 mask pairs, and explicit gate/invariance tests.
+
+## Shared Completed-Bag L2 - 2026-08-04
+
+This round tested the highest-ranked parallel hypothesis against the frozen
+component-native solver above:
+
+- Baseline SHA-256: `2fd7b7dcb23b10e1ad78ff9ab3bfd86117bdd5e45e06f41dd209dbe5a527c72b`
+- Final shared-bag SHA-256: `8872206525f5fc57ba6730c008c72496ef1050e0e69167c5b72c51b7f173ae85`
+
+The old parallel solver gave every worker its own component-ID namespace and
+solved-bag table. A thread sweep confirmed the resulting duplication: from one
+to eight threads, 3x13 states rose 27.0%, bag queries rose 25.9%, and local bag
+inserts rose 42.5%, while bag hits stayed near 1.15 million.
+
+The retained implementation is an exact two-level cache:
+
+1. Each worker keeps the existing raw-component and solved-bag L1 maps.
+2. A per-solve shared signature interner assigns globally stable IDs to exact,
+   actor-relative canonical component signatures. Sharing the former
+   worker-local numeric IDs directly would have been unsound.
+3. A sharded shared completed-bag L2 maps exact `ComponentBagKey` values to the
+   actor-to-move outcome. Hash collisions are resolved by full key equality.
+4. L1 is checked before L2. Shared hits backfill L1; completed misses publish
+   to both. No map guard is retained across recursion.
+5. The shared layer is enabled only for multi-threaded search. Cancellation
+   cannot publish a partial result, and conflicting completed outcomes are a
+   hard assertion failure.
+
+Paired cold runs used the same hash-memo, heuristic-order, cutoff-10,
+no-tablebase, no-endgame-cache configuration as the preceding round.
+
+| workload | repeats | baseline states | final states | reduction | baseline median | final median | speedup |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 3x11, 1 thread | 15 | 859,377 | 859,377 | 0.0% | 0.610074s | 0.598298s | 1.020x |
+| 3x13, 1 thread | 7 | 9,358,902 | 9,358,902 | 0.0% | 9.138000s | 8.938746s | 1.022x |
+| 3x13, 8 threads | 9 | 11,880,838 | 10,107,157 | 14.9% | 2.576039s | 2.138054s | 1.205x |
+
+The short one-thread differences are noise/code-layout effects; the shared
+path is disabled and every deterministic counter is identical. At eight
+threads the improvement is structural: parallel state inflation fell from
+26.95% to 8.00%. The median candidate recorded 376,503 shared bag hits,
+1,779,899 unique shared inserts, and 85,896 duplicate publishes that completed
+after another worker had already published the same exact bag.
+
+The result meets every primary phase-one target: more than 10% fewer parallel
+states, more than 10% less solve time, no one-thread regression, and less than
+15% parallel state inflation. On the current machine the effective 3x13
+one-to-eight-thread scaling is now roughly 4.2x rather than the earlier 3.0x.
+
+### Follow-up screens
+
+- **Single-flight:** deferred rather than implemented. After shared completion
+  caching, only 4.6% of shared publish attempts are genuine cross-worker races
+  and total parallel inflation is already 8.0%. The proposed additional 10%
+  state-reduction target is therefore above the observed duplication ceiling,
+  while safe nonblocking single-flight requires continuation-aware scheduling.
+- **Identical-component multiplicity:** exact board-mode pruning was
+  implemented and fully reverted. It found 1.44 million equivalent moves on
+  3x13, but removed only 1.55% of sequential states and gave 1.007x sequential
+  speed. At eight threads the median within-pair ratio was only 1.016x. The
+  solved-bag cache already absorbs most of this equivalence.
+- **Shared raw component IDs:** fully reverted. A global raw-ID map avoided
+  roughly 300,000 repeated canonicalizations, but required about 890,000 extra
+  shared lookups and made the nine-run 8-thread median 3.6% slower.
+
+These screens sharpen the next architectural target: cache whole canonical
+component transitions or remain in component-bag mode after fragmentation.
+Sharing work smaller than a complete solved bag does not amortize concurrent
+lookup cost in the current board-mode recursion.
+
+Final verification passed 36 library tests, 22 proof-miner tests, doc tests,
+19 Python tests, and `cargo clippy --all-targets` with the existing warnings.
+New tests cover cross-evaluator geometric/color/turn equivalence, independent
+recoloring misses, and concurrent component interning/outcome publication.
