@@ -13,6 +13,7 @@ gui/node_modules/
 .col_tablebase/
 data/tablebases/*.pkl
 data/tablebases/*.log
+data/tablebases/*.bin.z
 
 # Cursor
 .cursor/

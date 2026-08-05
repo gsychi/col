@@ -83,6 +83,9 @@ METRIC_PATTERNS = {
     "component_bag_shared_hits": re.compile(
         r"^component bag shared hits:\s+(\d+)$"
     ),
+    "component_bag_persistent_hits": re.compile(
+        r"^component bag persistent hits:\s+(\d+)$"
+    ),
     "component_bag_shared_inserts": re.compile(
         r"^component bag shared inserts:\s+(\d+)$"
     ),
@@ -101,6 +104,69 @@ METRIC_PATTERNS = {
     ),
     "component_signature_shared_inserts": re.compile(
         r"^component signature shared inserts:\s+(\d+)$"
+    ),
+    "component_native_calls": re.compile(r"^component native calls:\s+(\d+)$"),
+    "component_native_eligible": re.compile(
+        r"^component native eligible:\s+(\d+)$"
+    ),
+    "component_native_solved": re.compile(r"^component native solved:\s+(\d+)$"),
+    "component_native_states": re.compile(r"^component native states:\s+(\d+)$"),
+    "component_native_memo_hits": re.compile(
+        r"^component native memo hits:\s+(\d+)$"
+    ),
+    "component_native_transition_queries": re.compile(
+        r"^component native transition queries:\s+(\d+)$"
+    ),
+    "component_native_transition_hits": re.compile(
+        r"^component native transition hits:\s+(\d+)$"
+    ),
+    "component_native_transition_builds": re.compile(
+        r"^component native transition builds:\s+(\d+)$"
+    ),
+    "component_native_transition_options": re.compile(
+        r"^component native transition options:\s+(\d+)$"
+    ),
+    "component_native_transition_deduplicated": re.compile(
+        r"^component native transition deduplicated:\s+(\d+)$"
+    ),
+    "component_native_value_option_queries": re.compile(
+        r"^component native value option queries:\s+(\d+)$"
+    ),
+    "component_native_value_option_hits": re.compile(
+        r"^component native value option hits:\s+(\d+)$"
+    ),
+    "component_native_closure_fallbacks": re.compile(
+        r"^component native closure fallbacks:\s+(\d+)$"
+    ),
+    "component_native_cancellations": re.compile(
+        r"^component native cancellations:\s+(\d+)$"
+    ),
+    "scheduler_subtasks_generated": re.compile(
+        r"^scheduler subtasks generated:\s+(\d+)$"
+    ),
+    "scheduler_subtasks_released": re.compile(
+        r"^scheduler subtasks released:\s+(\d+)$"
+    ),
+    "scheduler_subtasks_never_released": re.compile(
+        r"^scheduler subtasks never released:\s+(\d+)$"
+    ),
+    "scheduler_abandoned_published": re.compile(
+        r"^scheduler abandoned published:\s+(\d+)$"
+    ),
+    "scheduler_stale_queued": re.compile(r"^scheduler stale queued:\s+(\d+)$"),
+    "scheduler_stale_results": re.compile(r"^scheduler stale results:\s+(\d+)$"),
+    "scheduler_no_work_polls": re.compile(r"^scheduler no-work polls:\s+(\d+)$"),
+    "scheduler_ready_high_water": re.compile(
+        r"^scheduler ready high-water:\s+(\d+)$"
+    ),
+    "component_bag_db_loaded_signatures": re.compile(
+        r"^component bag db loaded signatures:\s+(\d+)$"
+    ),
+    "component_bag_db_loaded_bags": re.compile(
+        r"^component bag db loaded bags:\s+(\d+)$"
+    ),
+    "component_bag_db_load_seconds": re.compile(
+        r"^component bag db load:\s+([0-9.]+)s$"
     ),
     "pairing_certificate_hits": re.compile(r"^pairing certificate hits:\s+(\d+)$"),
     "pairing_certificate_checks": re.compile(r"^pairing certificate checks:\s+(\d+)$"),
@@ -171,6 +237,7 @@ class RunResult:
     component_bag_local_duplicate_inserts: int | None = None
     component_bag_shared_queries: int | None = None
     component_bag_shared_hits: int | None = None
+    component_bag_persistent_hits: int | None = None
     component_bag_shared_inserts: int | None = None
     component_bag_shared_duplicate_inserts: int | None = None
     component_bag_raw_id_hits: int | None = None
@@ -178,6 +245,31 @@ class RunResult:
     component_signature_shared_queries: int | None = None
     component_signature_shared_hits: int | None = None
     component_signature_shared_inserts: int | None = None
+    component_native_calls: int | None = None
+    component_native_eligible: int | None = None
+    component_native_solved: int | None = None
+    component_native_states: int | None = None
+    component_native_memo_hits: int | None = None
+    component_native_transition_queries: int | None = None
+    component_native_transition_hits: int | None = None
+    component_native_transition_builds: int | None = None
+    component_native_transition_options: int | None = None
+    component_native_transition_deduplicated: int | None = None
+    component_native_value_option_queries: int | None = None
+    component_native_value_option_hits: int | None = None
+    component_native_closure_fallbacks: int | None = None
+    component_native_cancellations: int | None = None
+    scheduler_subtasks_generated: int | None = None
+    scheduler_subtasks_released: int | None = None
+    scheduler_subtasks_never_released: int | None = None
+    scheduler_abandoned_published: int | None = None
+    scheduler_stale_queued: int | None = None
+    scheduler_stale_results: int | None = None
+    scheduler_no_work_polls: int | None = None
+    scheduler_ready_high_water: int | None = None
+    component_bag_db_loaded_signatures: int | None = None
+    component_bag_db_loaded_bags: int | None = None
+    component_bag_db_load_seconds: float | None = None
     pairing_certificate_hits: int | None = None
     pairing_certificate_checks: int | None = None
     states_per_second: int | None = None
@@ -339,7 +431,7 @@ def parse_output(output: str) -> dict[str, int | float | str]:
             value = match.group(1)
             if name == "winner":
                 parsed[name] = value
-            elif name in {"solve_seconds"}:
+            elif name in {"solve_seconds", "component_bag_db_load_seconds"}:
                 parsed[name] = float(value)
             else:
                 parsed[name] = int(value)

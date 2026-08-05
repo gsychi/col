@@ -10,8 +10,8 @@ mod tablebase;
 
 use dashmap::DashMap;
 use endgame::{
-    ComponentBagKey, ComponentBagProbe, EndgameEvaluation, EndgameEvaluator, EndgameStats,
-    SharedEndgameCache,
+    ComponentBagDbStats, ComponentBagKey, ComponentBagPolicy, ComponentBagProbe, EndgameEvaluation,
+    EndgameEvaluator, EndgameStats, SharedEndgameCache,
 };
 use rustc_hash::{FxBuildHasher, FxHashMap, FxHashSet};
 use std::cell::RefCell;
@@ -24,6 +24,36 @@ use std::time::Instant;
 const P1: u8 = 0;
 const P2: u8 = 1;
 const RESERVE_CARDINALITY_GATE_SHARED: u32 = 8;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum SearchProfile {
+    Default,
+    LargeSearch,
+}
+
+impl SearchProfile {
+    fn parse(s: &str) -> SearchProfile {
+        match s {
+            "default" => SearchProfile::Default,
+            "large-search" => SearchProfile::LargeSearch,
+            other => panic!("--search-profile must be default or large-search, got {other}"),
+        }
+    }
+
+    fn label(self) -> &'static str {
+        match self {
+            SearchProfile::Default => "default",
+            SearchProfile::LargeSearch => "large-search",
+        }
+    }
+
+    fn component_bag_policy(self) -> ComponentBagPolicy {
+        match self {
+            SearchProfile::Default => ComponentBagPolicy::default_profile(),
+            SearchProfile::LargeSearch => ComponentBagPolicy::large_search_profile(),
+        }
+    }
+}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum MoveOrderSpec {
@@ -292,12 +322,7 @@ impl Board {
         }
     }
 
-    fn p2_preferred(
-        &self,
-        legal: u64,
-        last_p1_move: Option<usize>,
-        mirror: bool,
-    ) -> Option<usize> {
+    fn p2_preferred(&self, legal: u64, last_p1_move: Option<usize>, mirror: bool) -> Option<usize> {
         if !mirror {
             return None;
         }
@@ -338,9 +363,7 @@ impl Board {
             ActiveOrder::Heuristic { p2_mirror: false } if turn == P1 => {
                 (None, self.p1_order.as_slice())
             }
-            ActiveOrder::Heuristic { p2_mirror: false } => {
-                (None, self.p2_order.as_slice())
-            }
+            ActiveOrder::Heuristic { p2_mirror: false } => (None, self.p2_order.as_slice()),
             ActiveOrder::Heuristic { p2_mirror: true } if turn == P1 => {
                 (None, self.p1_order.as_slice())
             }
@@ -388,15 +411,13 @@ impl Board {
                     let candidate = candidates & candidates.wrapping_neg();
                     candidates ^= candidate;
                     let candidate_cell = candidate.trailing_zeros() as usize;
-                    let candidate_removed =
-                        (candidate | self.adjacency[candidate_cell]) & legal;
+                    let candidate_removed = (candidate | self.adjacency[candidate_cell]) & legal;
                     if candidate_removed & !removed != 0 {
                         continue;
                     }
                     let strictly_smaller = candidate_removed != removed;
                     let shared_dominator = candidate & opponent_legal != 0;
-                    let earlier_equivalent_private =
-                        !shared_dominator && candidate & earlier != 0;
+                    let earlier_equivalent_private = !shared_dominator && candidate & earlier != 0;
                     if strictly_smaller || shared_dominator || earlier_equivalent_private {
                         dominated |= bit;
                         break;
@@ -415,8 +436,8 @@ impl Board {
 
     fn private_independent_set_lower_bound(&self, mask: u64) -> u32 {
         let vertical_neighbors = (mask << self.n) | (mask >> self.n);
-        let horizontal_neighbors = ((mask & !self.left_column_mask) >> 1)
-            | ((mask & !self.right_column_mask) << 1);
+        let horizontal_neighbors =
+            ((mask & !self.left_column_mask) >> 1) | ((mask & !self.right_column_mask) << 1);
         let isolated = mask & !(vertical_neighbors | horizontal_neighbors);
         isolated.count_ones() + self.independent_set_lower_bound(mask & !isolated)
     }
@@ -453,11 +474,7 @@ impl Board {
     /// The caller supplies `shared = |current & opponent|` so the hot path can
     /// reuse the popcount that gates this test.
     #[inline]
-    fn private_reserve_cardinality_can_prove(
-        current: u64,
-        opponent: u64,
-        shared: u32,
-    ) -> bool {
+    fn private_reserve_cardinality_can_prove(current: u64, opponent: u64, shared: u32) -> bool {
         let current_count = current.count_ones();
         let opponent_count = opponent.count_ones();
         debug_assert!(shared <= current_count && shared <= opponent_count);
@@ -470,15 +487,9 @@ impl Board {
     /// Exact sufficient outcome bounds from untouchable private moves.
     /// Returns the outcome for the actor to move, the number of fixed-bound
     /// gates, and the number that needed the stronger greedy matching bound.
-    fn private_reserve_outcome(
-        &self,
-        current: u64,
-        opponent: u64,
-    ) -> (Option<bool>, u8, u8) {
-        let current_private_lb =
-            self.private_independent_set_lower_bound(current & !opponent);
-        let opponent_private_lb =
-            self.private_independent_set_lower_bound(opponent & !current);
+    fn private_reserve_outcome(&self, current: u64, opponent: u64) -> (Option<bool>, u8, u8) {
+        let current_private_lb = self.private_independent_set_lower_bound(current & !opponent);
+        let opponent_private_lb = self.private_independent_set_lower_bound(opponent & !current);
         let opponent_total_lb = self
             .independent_set_lower_bound(opponent)
             .max(opponent_private_lb);
@@ -587,12 +598,7 @@ impl Board {
     /// A color-swapping half-turn involution pairs every move with a legal
     /// response and restores the same relation after the pair.
     #[inline]
-    fn has_reflection_pairing_certificate(
-        &self,
-        legal_p1: u64,
-        legal_p2: u64,
-        turn: u8,
-    ) -> bool {
+    fn has_reflection_pairing_certificate(&self, legal_p1: u64, legal_p2: u64, turn: u8) -> bool {
         // Reflection preserves cardinality, so most non-pairing states can be
         // rejected before the eight-byte mask transform.
         if legal_p1.count_ones() != legal_p2.count_ones() {
@@ -612,11 +618,7 @@ impl Board {
         let pack = |p1: u64, p2: u64, side: u8| {
             ((p1 as u128) << (self.num_cells + 1)) | ((p2 as u128) << 1) | side as u128
         };
-        let mut best = pack(legal_p1, legal_p2, turn).min(pack(
-            legal_p2,
-            legal_p1,
-            turn ^ 1,
-        ));
+        let mut best = pack(legal_p1, legal_p2, turn).min(pack(legal_p2, legal_p1, turn ^ 1));
         // A non-square 3xn rectangle has only three non-identity geometric
         // symmetries. Express them with bit operations so canonicalization
         // avoids six eight-byte table transforms (P1 and P2 for each).
@@ -1288,6 +1290,7 @@ struct Stats {
     component_bag_local_duplicate_inserts: u64,
     component_bag_shared_queries: u64,
     component_bag_shared_hits: u64,
+    component_bag_persistent_hits: u64,
     component_bag_shared_inserts: u64,
     component_bag_shared_duplicate_inserts: u64,
     component_bag_raw_id_hits: u64,
@@ -1295,6 +1298,28 @@ struct Stats {
     component_signature_shared_queries: u64,
     component_signature_shared_hits: u64,
     component_signature_shared_inserts: u64,
+    component_native_calls: u64,
+    component_native_eligible: u64,
+    component_native_solved: u64,
+    component_native_states: u64,
+    component_native_memo_hits: u64,
+    component_native_transition_queries: u64,
+    component_native_transition_hits: u64,
+    component_native_transition_builds: u64,
+    component_native_transition_options: u64,
+    component_native_transition_deduplicated: u64,
+    component_native_value_option_queries: u64,
+    component_native_value_option_hits: u64,
+    component_native_closure_fallbacks: u64,
+    component_native_cancellations: u64,
+    scheduler_subtasks_generated: u64,
+    scheduler_subtasks_released: u64,
+    scheduler_subtasks_never_released: u64,
+    scheduler_abandoned_published: u64,
+    scheduler_stale_queued: u64,
+    scheduler_stale_results: u64,
+    scheduler_no_work_polls: u64,
+    scheduler_ready_high_water: u64,
     order: OrderStats,
 }
 
@@ -1333,18 +1358,42 @@ impl Stats {
         self.component_bag_hits += other.component_bag_hits;
         self.component_bag_local_hits += other.component_bag_local_hits;
         self.component_bag_inserts += other.component_bag_inserts;
-        self.component_bag_local_duplicate_inserts +=
-            other.component_bag_local_duplicate_inserts;
+        self.component_bag_local_duplicate_inserts += other.component_bag_local_duplicate_inserts;
         self.component_bag_shared_queries += other.component_bag_shared_queries;
         self.component_bag_shared_hits += other.component_bag_shared_hits;
+        self.component_bag_persistent_hits += other.component_bag_persistent_hits;
         self.component_bag_shared_inserts += other.component_bag_shared_inserts;
-        self.component_bag_shared_duplicate_inserts +=
-            other.component_bag_shared_duplicate_inserts;
+        self.component_bag_shared_duplicate_inserts += other.component_bag_shared_duplicate_inserts;
         self.component_bag_raw_id_hits += other.component_bag_raw_id_hits;
         self.component_bag_signature_hits += other.component_bag_signature_hits;
         self.component_signature_shared_queries += other.component_signature_shared_queries;
         self.component_signature_shared_hits += other.component_signature_shared_hits;
         self.component_signature_shared_inserts += other.component_signature_shared_inserts;
+        self.component_native_calls += other.component_native_calls;
+        self.component_native_eligible += other.component_native_eligible;
+        self.component_native_solved += other.component_native_solved;
+        self.component_native_states += other.component_native_states;
+        self.component_native_memo_hits += other.component_native_memo_hits;
+        self.component_native_transition_queries += other.component_native_transition_queries;
+        self.component_native_transition_hits += other.component_native_transition_hits;
+        self.component_native_transition_builds += other.component_native_transition_builds;
+        self.component_native_transition_options += other.component_native_transition_options;
+        self.component_native_transition_deduplicated +=
+            other.component_native_transition_deduplicated;
+        self.component_native_value_option_queries += other.component_native_value_option_queries;
+        self.component_native_value_option_hits += other.component_native_value_option_hits;
+        self.component_native_closure_fallbacks += other.component_native_closure_fallbacks;
+        self.component_native_cancellations += other.component_native_cancellations;
+        self.scheduler_subtasks_generated += other.scheduler_subtasks_generated;
+        self.scheduler_subtasks_released += other.scheduler_subtasks_released;
+        self.scheduler_subtasks_never_released += other.scheduler_subtasks_never_released;
+        self.scheduler_abandoned_published += other.scheduler_abandoned_published;
+        self.scheduler_stale_queued += other.scheduler_stale_queued;
+        self.scheduler_stale_results += other.scheduler_stale_results;
+        self.scheduler_no_work_polls += other.scheduler_no_work_polls;
+        self.scheduler_ready_high_water = self
+            .scheduler_ready_high_water
+            .max(other.scheduler_ready_high_water);
         self.order.merge(&other.order);
     }
 
@@ -1368,10 +1417,10 @@ impl Stats {
         self.component_bag_hits += endgame.component_bag_hits;
         self.component_bag_local_hits += endgame.component_bag_local_hits;
         self.component_bag_inserts += endgame.component_bag_inserts;
-        self.component_bag_local_duplicate_inserts +=
-            endgame.component_bag_local_duplicate_inserts;
+        self.component_bag_local_duplicate_inserts += endgame.component_bag_local_duplicate_inserts;
         self.component_bag_shared_queries += endgame.component_bag_shared_queries;
         self.component_bag_shared_hits += endgame.component_bag_shared_hits;
+        self.component_bag_persistent_hits += endgame.component_bag_persistent_hits;
         self.component_bag_shared_inserts += endgame.component_bag_shared_inserts;
         self.component_bag_shared_duplicate_inserts +=
             endgame.component_bag_shared_duplicate_inserts;
@@ -1380,6 +1429,21 @@ impl Stats {
         self.component_signature_shared_queries += endgame.component_signature_shared_queries;
         self.component_signature_shared_hits += endgame.component_signature_shared_hits;
         self.component_signature_shared_inserts += endgame.component_signature_shared_inserts;
+        self.component_native_calls += endgame.component_native_calls;
+        self.component_native_eligible += endgame.component_native_eligible;
+        self.component_native_solved += endgame.component_native_solved;
+        self.component_native_states += endgame.component_native_states;
+        self.component_native_memo_hits += endgame.component_native_memo_hits;
+        self.component_native_transition_queries += endgame.component_native_transition_queries;
+        self.component_native_transition_hits += endgame.component_native_transition_hits;
+        self.component_native_transition_builds += endgame.component_native_transition_builds;
+        self.component_native_transition_options += endgame.component_native_transition_options;
+        self.component_native_transition_deduplicated +=
+            endgame.component_native_transition_deduplicated;
+        self.component_native_value_option_queries += endgame.component_native_value_option_queries;
+        self.component_native_value_option_hits += endgame.component_native_value_option_hits;
+        self.component_native_closure_fallbacks += endgame.component_native_closure_fallbacks;
+        self.component_native_cancellations += endgame.component_native_cancellations;
     }
 }
 
@@ -1403,6 +1467,10 @@ struct Coordination {
     order_switches: AtomicUsize,
     pairing_certificate: bool,
     component_reduction: bool,
+    component_bag_policy: ComponentBagPolicy,
+    and_split_fanout: usize,
+    persistent_component_bags: bool,
+    component_native_one_large: bool,
 }
 
 const ADAPT_MIN_STATES: u64 = 1_000_000;
@@ -1418,6 +1486,10 @@ impl Coordination {
         initial_mode: u8,
         pairing_certificate: bool,
         component_reduction: bool,
+        component_bag_policy: ComponentBagPolicy,
+        and_split_fanout: usize,
+        persistent_component_bags: bool,
+        component_native_one_large: bool,
     ) -> Coordination {
         Coordination {
             searched: AtomicU64::new(0),
@@ -1437,6 +1509,10 @@ impl Coordination {
             order_switches: AtomicUsize::new(0),
             pairing_certificate,
             component_reduction,
+            component_bag_policy,
+            and_split_fanout,
+            persistent_component_bags,
+            component_native_one_large,
         }
     }
 
@@ -1488,20 +1564,15 @@ impl Coordination {
 
         let pref_wins = self.p2_preferred_wins.load(Ordering::Relaxed);
         let pref_miss = self.p2_preferred_miss.load(Ordering::Relaxed);
-        let mirror_misfire = pref_wins > 50_000
-            && pref_miss as f64 / pref_wins as f64 > 0.45;
+        let mirror_misfire = pref_wins > 50_000 && pref_miss as f64 / pref_wins as f64 > 0.45;
 
         match mode {
             ORDER_HEURISTIC
-                if strip
-                    && self.board_n >= 13
-                    && wd_ratio < ADAPT_WD_RATIO_THRESHOLD =>
+                if strip && self.board_n >= 13 && wd_ratio < ADAPT_WD_RATIO_THRESHOLD =>
             {
                 self.order_mode.store(ORDER_LEGACY, Ordering::Relaxed);
                 self.order_switches.fetch_add(1, Ordering::Relaxed);
-                eprintln!(
-                    "\norder: switched to legacy at {searched} states (wd/s={wd_ratio:.3})",
-                );
+                eprintln!("\norder: switched to legacy at {searched} states (wd/s={wd_ratio:.3})",);
             }
             ORDER_HEURISTIC if mirror_misfire || (strip && wd_ratio < ADAPT_WD_RATIO_THRESHOLD) => {
                 self.order_mode
@@ -1517,9 +1588,7 @@ impl Coordination {
             {
                 self.order_mode.store(ORDER_LEGACY, Ordering::Relaxed);
                 self.order_switches.fetch_add(1, Ordering::Relaxed);
-                eprintln!(
-                    "\norder: switched to legacy at {searched} states (wd/s={wd_ratio:.3})",
-                );
+                eprintln!("\norder: switched to legacy at {searched} states (wd/s={wd_ratio:.3})",);
             }
             _ => {}
         }
@@ -1551,8 +1620,14 @@ impl<'a, M: Memo> Solver<'a, M> {
         memo_min_legal: u32,
         order_stats: bool,
     ) -> Self {
-        let endgame =
-            (endgame_size > 0).then(|| EndgameEvaluator::new(endgame_size, shared_endgame));
+        let endgame = (endgame_size > 0).then(|| {
+            let mut evaluator = EndgameEvaluator::new(endgame_size, shared_endgame);
+            evaluator.set_component_bag_policy(coord.component_bag_policy);
+            if coord.persistent_component_bags {
+                evaluator.enable_shared_component_bags();
+            }
+            evaluator
+        });
         Solver {
             board,
             memo,
@@ -1588,10 +1663,7 @@ impl<'a, M: Memo> Solver<'a, M> {
             return;
         }
         let had_p2_preferred = turn == P2
-            && matches!(
-                ordering,
-                ActiveOrder::Heuristic { p2_mirror: true }
-            )
+            && matches!(ordering, ActiveOrder::Heuristic { p2_mirror: true })
             && self
                 .board
                 .p2_preferred(legal_mask, last_p1_move, true)
@@ -1819,17 +1891,36 @@ impl<'a, M: Memo> Solver<'a, M> {
             ComponentBagProbe::Miss(key) => Some(key),
         };
 
+        if self.coord.component_native_one_large {
+            let component_native = self
+                .endgame
+                .as_mut()
+                .expect("component-native search requires endgame evaluator")
+                .try_component_native_one_large(
+                    self.board.n,
+                    &self.board.adjacency,
+                    p1_legal,
+                    p2_legal,
+                    turn,
+                    &self.coord.cancel,
+                );
+            if let Some(wins) = component_native {
+                self.stats.endgame_hits += 1;
+                self.remember_component_bag(&mut component_bag_key, wins);
+                self.remember(key, p1_legal, p2_legal, wins);
+                return Some(wins);
+            }
+            if self.coord.cancel.load(Ordering::Relaxed) {
+                return None;
+            }
+        }
+
         let next_turn = 1 - turn;
         let ordering = self.coord.active_order();
 
         let board = self.board;
-        let dominated = board.dominated_move_bits(
-            turn,
-            legal_mask,
-            opponent_legal,
-            last_p1_move,
-            ordering,
-        );
+        let dominated =
+            board.dominated_move_bits(turn, legal_mask, opponent_legal, last_p1_move, ordering);
         if dominated != 0 {
             self.stats.dominance_nodes += 1;
             self.stats.dominance_pruned_moves += dominated.count_ones() as u64;
@@ -2193,7 +2284,9 @@ fn write_opening_certificate(
         let (child_p1, child_p2) = board.child_legals(p1_legal, p2_legal, P1, p1_bit);
         let child_key = board.shadow_key(child_p1, child_p2, P2);
         if lookup(child_key) != Some(true) {
-            return Err(format!("opening {p1_cell} has no certified winning P2 state"));
+            return Err(format!(
+                "opening {p1_cell} has no certified winning P2 state"
+            ));
         }
 
         let mut response = None;
@@ -2201,8 +2294,7 @@ fn write_opening_certificate(
         while p2_moves != 0 {
             let p2_bit = p2_moves & p2_moves.wrapping_neg();
             p2_moves ^= p2_bit;
-            let (target_p1, target_p2) =
-                board.child_legals(child_p1, child_p2, P2, p2_bit);
+            let (target_p1, target_p2) = board.child_legals(child_p1, child_p2, P2, p2_bit);
             let target_key = board.shadow_key(target_p1, target_p2, P1);
             if lookup(target_key) == Some(false) {
                 response = Some((p2_bit.trailing_zeros() as usize, target_key));
@@ -2222,7 +2314,11 @@ fn write_opening_certificate(
         json.push_str(&format!(
             "    {{\"p1_move\": {p1_cell}, \"p2_response\": {p2_cell}, \
              \"child_key\": \"0x{child_key:x}\", \"target_key\": \"0x{target_key:x}\"}}{}",
-            if index + 1 == openings.len() { "\n" } else { ",\n" }
+            if index + 1 == openings.len() {
+                "\n"
+            } else {
+                ",\n"
+            }
         ));
     }
     json.push_str("  ]\n}\n");
@@ -2247,11 +2343,8 @@ fn write_invariant_report(
         if board.vertical_reflect_mask(p1_legal & wings) != p2_legal & wings {
             continue;
         }
-        let middle_value = endgame::component_value_text(
-            board.n,
-            p1_legal & middle,
-            p2_legal & middle,
-        );
+        let middle_value =
+            endgame::component_value_text(board.n, p1_legal & middle, p2_legal & middle);
         if middle_value.as_deref() != Some("0") {
             continue;
         }
@@ -2384,6 +2477,7 @@ enum JobState {
         subtasks: Vec<SubTask>,
         next: usize,
         pending: usize,
+        outstanding: usize,
     },
     Done,
 }
@@ -2403,6 +2497,19 @@ struct SchedState {
     ready: VecDeque<Claim>,
     active: usize,
     result: Option<bool>,
+    stats: SchedulerStats,
+}
+
+#[derive(Default)]
+struct SchedulerStats {
+    subtasks_generated: u64,
+    subtasks_released: u64,
+    subtasks_never_released: u64,
+    abandoned_published: u64,
+    stale_queued: u64,
+    stale_results: u64,
+    no_work_polls: u64,
+    ready_high_water: u64,
 }
 
 struct Claim {
@@ -2441,11 +2548,13 @@ struct AndSplit<'a, M: Memo> {
     board: &'a Board,
     memo: &'a M,
     coord: &'a Coordination,
+    fanout: usize,
     state: Mutex<SchedState>,
 }
 
 impl<'a, M: Memo> AndSplit<'a, M> {
-    fn new(board: &'a Board, memo: &'a M, coord: &'a Coordination) -> Self {
+    fn new(board: &'a Board, memo: &'a M, coord: &'a Coordination, fanout: usize) -> Self {
+        assert!(fanout > 0, "AND-split fanout must be positive");
         let jobs: Vec<OpeningJob> = distinct_openings(board, coord.active_order())
             .into_iter()
             .map(|(key, p1, p2, opening_cell)| OpeningJob {
@@ -2462,11 +2571,13 @@ impl<'a, M: Memo> AndSplit<'a, M> {
             board,
             memo,
             coord,
+            fanout,
             state: Mutex::new(SchedState {
                 jobs,
                 ready: VecDeque::new(),
                 active,
                 result: None,
+                stats: SchedulerStats::default(),
             }),
         }
     }
@@ -2557,6 +2668,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                         subtasks,
                         next: 0,
                         pending,
+                        outstanding: 0,
                     };
                     return Advance::Working;
                 }
@@ -2581,28 +2693,39 @@ impl<'a, M: Memo> AndSplit<'a, M> {
         )
     }
 
-    fn enqueue_ready(state: &mut SchedState, job_idx: usize) {
-        let (generation, tasks) = match &mut state.jobs[job_idx].state {
-            JobState::Running {
-                generation,
-                subtasks,
-                next,
-                ..
-            } => {
-                let generation = *generation;
-                let start = *next;
-                *next = subtasks.len();
-                (generation, subtasks[start..].to_vec())
-            }
-            _ => return,
+    fn refill_ready(&self, state: &mut SchedState, job_idx: usize) {
+        let SchedState {
+            jobs, ready, stats, ..
+        } = state;
+        let JobState::Running {
+            generation,
+            subtasks,
+            next,
+            outstanding,
+            ..
+        } = &mut jobs[job_idx].state
+        else {
+            return;
         };
-        state
-            .ready
-            .extend(tasks.into_iter().map(|task| Claim {
+        if *next == 0 && *outstanding == 0 {
+            stats.subtasks_generated += subtasks.len() as u64;
+        }
+        let publish = self
+            .fanout
+            .saturating_sub(*outstanding)
+            .min(subtasks.len() - *next);
+        let end = *next + publish;
+        for &task in &subtasks[*next..end] {
+            ready.push_back(Claim {
                 job: job_idx,
-                generation,
+                generation: *generation,
                 task,
-            }));
+            });
+        }
+        *next = end;
+        *outstanding += publish;
+        stats.subtasks_released += publish as u64;
+        stats.ready_high_water = stats.ready_high_water.max(ready.len() as u64);
     }
 
     fn take_work(&self) -> Poll {
@@ -2616,6 +2739,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
             if Self::is_current_claim(&state, &claim) {
                 return Poll::Work(claim);
             }
+            state.stats.stale_queued += 1;
         }
         // Expand the next opening.
         for job_idx in 0..state.jobs.len() {
@@ -2672,7 +2796,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                     return Poll::Finished;
                 }
                 Advance::Working => {
-                    Self::enqueue_ready(&mut state, job_idx);
+                    self.refill_ready(&mut state, job_idx);
                     if let Some(claim) = state.ready.pop_front() {
                         return Poll::Work(claim);
                     }
@@ -2683,6 +2807,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
             self.set_result(&mut state, false);
             return Poll::Finished;
         }
+        state.stats.no_work_polls += 1;
         Poll::NoWorkYet
     }
 
@@ -2694,24 +2819,34 @@ impl<'a, M: Memo> AndSplit<'a, M> {
         let job_idx = claim.job;
         let (matches_gen, q_key) = match state.jobs[job_idx].state {
             JobState::Running {
-                generation,
-                q_key,
-                ..
+                generation, q_key, ..
             } => (generation == claim.generation, q_key),
             _ => (false, 0),
         };
         if !matches_gen {
+            state.stats.stale_results += 1;
             return; // stale result from an abandoned speculation
         }
+        if let JobState::Running {
+            ref mut outstanding,
+            ..
+        } = state.jobs[job_idx].state
+        {
+            debug_assert!(*outstanding > 0);
+            *outstanding -= 1;
+        }
         if p2_wins_child {
+            let mut still_pending = false;
             if let JobState::Running {
                 ref mut pending, ..
             } = state.jobs[job_idx].state
             {
                 *pending -= 1;
-                if *pending > 0 {
-                    return;
-                }
+                still_pending = *pending > 0;
+            }
+            if still_pending {
+                self.refill_ready(&mut state, job_idx);
+                return;
             }
             // Every P1 continuation refuted: the reply wins, opening refuted.
             self.memo.insert(q_key, false);
@@ -2724,6 +2859,17 @@ impl<'a, M: Memo> AndSplit<'a, M> {
         } else {
             // P1 has a winning continuation: speculated reply fails.
             self.memo.insert(q_key, true);
+            let (never_released, abandoned_published) = match &state.jobs[job_idx].state {
+                JobState::Running {
+                    subtasks,
+                    next,
+                    outstanding,
+                    ..
+                } => ((subtasks.len() - *next) as u64, *outstanding as u64),
+                _ => (0, 0),
+            };
+            state.stats.subtasks_never_released += never_released;
+            state.stats.abandoned_published += abandoned_published;
             let mut job = std::mem::replace(
                 &mut state.jobs[job_idx],
                 OpeningJob {
@@ -2745,7 +2891,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                     }
                 }
                 Advance::P1Wins => self.set_result(&mut state, true),
-                Advance::Working => Self::enqueue_ready(&mut state, job_idx),
+                Advance::Working => self.refill_ready(&mut state, job_idx),
             }
         }
     }
@@ -2769,7 +2915,12 @@ fn solve_parallel_and_split<M: Memo + Sync>(
 ) -> SolveOutput {
     let legal = board.all_cells_mask;
     let root_key = board.shadow_key(legal, legal, P1);
-    let sched = AndSplit::new(board, &memo, coord);
+    let fanout = if coord.and_split_fanout == 0 {
+        usize::MAX
+    } else {
+        coord.and_split_fanout
+    };
+    let sched = AndSplit::new(board, &memo, coord, fanout);
     let total = std::sync::Mutex::new(Stats::default());
 
     std::thread::scope(|scope| {
@@ -2804,9 +2955,7 @@ fn solve_parallel_and_split<M: Memo + Sync>(
                                 None => break,
                             }
                         }
-                        Poll::NoWorkYet => {
-                            std::thread::sleep(std::time::Duration::from_millis(1))
-                        }
+                        Poll::NoWorkYet => std::thread::sleep(std::time::Duration::from_millis(1)),
                         Poll::Finished => break,
                     }
                 }
@@ -2818,12 +2967,25 @@ fn solve_parallel_and_split<M: Memo + Sync>(
 
     let mut stats = total.into_inner().unwrap();
     stats.states_searched += 1;
-    let p1_wins = sched
-        .state
-        .into_inner()
-        .unwrap()
-        .result
-        .expect("and-split must resolve the root");
+    let sched_state = sched.state.into_inner().unwrap();
+    let terminal_never_released: u64 = sched_state
+        .jobs
+        .iter()
+        .filter_map(|job| match &job.state {
+            JobState::Running { subtasks, next, .. } => Some((subtasks.len() - *next) as u64),
+            _ => None,
+        })
+        .sum();
+    stats.scheduler_subtasks_generated = sched_state.stats.subtasks_generated;
+    stats.scheduler_subtasks_released = sched_state.stats.subtasks_released;
+    stats.scheduler_subtasks_never_released =
+        sched_state.stats.subtasks_never_released + terminal_never_released;
+    stats.scheduler_abandoned_published = sched_state.stats.abandoned_published;
+    stats.scheduler_stale_queued = sched_state.stats.stale_queued;
+    stats.scheduler_stale_results = sched_state.stats.stale_results;
+    stats.scheduler_no_work_polls = sched_state.stats.no_work_polls;
+    stats.scheduler_ready_high_water = sched_state.stats.ready_high_water;
+    let p1_wins = sched_state.result.expect("and-split must resolve the root");
     memo.insert(root_key, p1_wins);
     let (memo_entries, memo_evictions, entries) = finish_memo(memo, collect_entries);
     SolveOutput {
@@ -2849,6 +3011,15 @@ pub fn run(args: Vec<String>) {
     let mut root_split = false;
     let mut pairing_certificate = true;
     let mut component_reduction = true;
+    let mut search_profile = SearchProfile::Default;
+    let mut component_bag_min_components: Option<u8> = None;
+    let mut component_bag_min_live: Option<u8> = None;
+    let mut component_bag_two_component_max_live: Option<u8> = None;
+    let mut and_split_fanout = 0usize;
+    let mut component_bag_db_in: Option<PathBuf> = None;
+    let mut component_bag_db_out: Option<PathBuf> = None;
+    let mut component_bag_db_min_effective_live = 16usize;
+    let mut component_native_one_large = false;
     let mut move_order_spec: Option<MoveOrderSpec> = None;
     let mut order_stats = false;
     let mut opening_certificate_path: Option<PathBuf> = None;
@@ -2917,6 +3088,53 @@ pub fn run(args: Vec<String>) {
                 component_reduction = false;
                 i += 1;
             }
+            "--search-profile" => {
+                search_profile = SearchProfile::parse(&args[i + 1]);
+                i += 2;
+            }
+            "--component-bag-min-components" => {
+                component_bag_min_components = Some(
+                    args[i + 1]
+                        .parse()
+                        .expect("bad --component-bag-min-components"),
+                );
+                i += 2;
+            }
+            "--component-bag-min-live" => {
+                component_bag_min_live =
+                    Some(args[i + 1].parse().expect("bad --component-bag-min-live"));
+                i += 2;
+            }
+            "--component-bag-two-component-max-live" => {
+                component_bag_two_component_max_live = Some(
+                    args[i + 1]
+                        .parse()
+                        .expect("bad --component-bag-two-component-max-live"),
+                );
+                i += 2;
+            }
+            "--and-split-fanout" => {
+                and_split_fanout = args[i + 1].parse().expect("bad --and-split-fanout");
+                i += 2;
+            }
+            "--component-bag-db-in" => {
+                component_bag_db_in = Some(PathBuf::from(&args[i + 1]));
+                i += 2;
+            }
+            "--component-bag-db-out" => {
+                component_bag_db_out = Some(PathBuf::from(&args[i + 1]));
+                i += 2;
+            }
+            "--component-bag-db-min-effective-live" => {
+                component_bag_db_min_effective_live = args[i + 1]
+                    .parse()
+                    .expect("bad --component-bag-db-min-effective-live");
+                i += 2;
+            }
+            "--component-native-one-large" => {
+                component_native_one_large = true;
+                i += 1;
+            }
             "--move-order" => {
                 move_order_spec = Some(MoveOrderSpec::parse(&args[i + 1]));
                 i += 2;
@@ -2950,9 +3168,27 @@ pub fn run(args: Vec<String>) {
     }
     assert!(
         m > 0 && n > 0,
-        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--no-endgame-cache] [--component-reduction|--no-component-reduction] [--move-order auto|legacy|heuristic] [--order-stats] [--opening-certificate PATH] [--invariant-report PATH] [--position ROWS] [--turn P1|P2] [--tablebase-dir DIR] [--no-tablebase] [--root-split] [--no-pairing-certificate] [--progress]"
+        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--no-endgame-cache] [--component-reduction|--no-component-reduction] [--component-native-one-large] [--search-profile default|large-search] [--component-bag-min-components K] [--component-bag-min-live K] [--component-bag-two-component-max-live K] [--component-bag-db-in FILE] [--component-bag-db-out FILE] [--component-bag-db-min-effective-live K] [--and-split-fanout K] [--move-order auto|legacy|heuristic] [--order-stats] [--opening-certificate PATH] [--invariant-report PATH] [--position ROWS] [--turn P1|P2] [--tablebase-dir DIR] [--no-tablebase] [--root-split] [--no-pairing-certificate] [--progress]"
     );
     assert!(threads > 0, "--threads must be >= 1");
+    assert!(
+        component_bag_db_min_effective_live <= 64,
+        "--component-bag-db-min-effective-live must be <= 64"
+    );
+    assert!(
+        endgame_size > 0 || (component_bag_db_in.is_none() && component_bag_db_out.is_none()),
+        "component-bag databases require --endgame-size > 0"
+    );
+    assert!(
+        !component_native_one_large || endgame_size > 0,
+        "--component-native-one-large requires --endgame-size > 0"
+    );
+    if let Some(min_components) = component_bag_min_components {
+        assert!(
+            (2..=64).contains(&min_components),
+            "--component-bag-min-components must be in 2..=64"
+        );
+    }
     assert!(
         memo_kind == "open" || memo_kind == "hash" || memo_kind == "fixed",
         "--memo must be open, hash, or fixed"
@@ -2971,6 +3207,16 @@ pub fn run(args: Vec<String>) {
         MoveOrderSpec::Legacy => (false, ORDER_LEGACY),
         MoveOrderSpec::Heuristic => (false, ORDER_HEURISTIC),
     };
+    let mut component_bag_policy = search_profile.component_bag_policy();
+    if let Some(min_components) = component_bag_min_components {
+        component_bag_policy = component_bag_policy.with_min_components(min_components);
+    }
+    if let Some(min_live_cells) = component_bag_min_live {
+        component_bag_policy = component_bag_policy.with_min_live_cells(min_live_cells);
+    }
+    if let Some(max_live_cells) = component_bag_two_component_max_live {
+        component_bag_policy = component_bag_policy.with_two_component_max_live(max_live_cells);
+    }
     let coord = Coordination::new(
         adapt_order,
         m,
@@ -2978,6 +3224,10 @@ pub fn run(args: Vec<String>) {
         initial_order_mode,
         pairing_certificate,
         component_reduction,
+        component_bag_policy,
+        and_split_fanout,
+        component_bag_db_in.is_some() || component_bag_db_out.is_some(),
+        component_native_one_large,
     );
     let track_order = order_stats || adapt_order;
     let board = Board::new(m, n);
@@ -3012,10 +3262,20 @@ pub fn run(args: Vec<String>) {
         (Arc::new(SharedEndgameCache::new()), 0)
     };
     let endgame_cache_load_secs = cache_load_start.elapsed().as_secs_f64();
+    let component_bag_db_load_start = Instant::now();
+    let component_bag_db_loaded: Option<ComponentBagDbStats> =
+        component_bag_db_in.as_ref().map(|path| {
+            endgame::load_component_bag_db(path, &shared_endgame).unwrap_or_else(|err| {
+                panic!(
+                    "could not load component-bag database {}: {err}",
+                    path.display()
+                )
+            })
+        });
+    let component_bag_db_load_secs = component_bag_db_load_start.elapsed().as_secs_f64();
     let shared_endgame = (endgame_size > 0).then_some(shared_endgame);
-    let collect_entries = tablebase_enabled
-        || opening_certificate_path.is_some()
-        || invariant_report_path.is_some();
+    let collect_entries =
+        tablebase_enabled || opening_certificate_path.is_some() || invariant_report_path.is_some();
 
     let start = Instant::now();
     let empty_linear_second_player_win = m == 1 && n > 1;
@@ -3209,23 +3469,44 @@ pub fn run(args: Vec<String>) {
     } else {
         None
     };
-    let (endgame_cache_saved, endgame_cache_save_secs) = if endgame_size > 0 && endgame_cache_enabled {
-        if let Some(cache) = &shared_endgame {
-            let save_start = Instant::now();
-            let saved = match endgame::save_shared_cache(&tablebase_dir, cache, endgame_cache_loaded) {
-                Ok(saved) => saved,
-                Err(err) => {
-                    eprintln!("warning: could not save CGT component cache: {err}");
-                    None
-                }
-            };
-            (saved, save_start.elapsed().as_secs_f64())
+    let component_bag_db_save_start = Instant::now();
+    let component_bag_db_saved: Option<(PathBuf, ComponentBagDbStats)> =
+        component_bag_db_out.as_ref().map(|path| {
+            let stats = endgame::save_component_bag_db(
+                path,
+                shared_endgame
+                    .as_ref()
+                    .expect("component-bag database requires endgame evaluator"),
+                component_bag_db_min_effective_live,
+            )
+            .unwrap_or_else(|err| {
+                panic!(
+                    "could not save component-bag database {}: {err}",
+                    path.display()
+                )
+            });
+            (path.clone(), stats)
+        });
+    let component_bag_db_save_secs = component_bag_db_save_start.elapsed().as_secs_f64();
+    let (endgame_cache_saved, endgame_cache_save_secs) =
+        if endgame_size > 0 && endgame_cache_enabled {
+            if let Some(cache) = &shared_endgame {
+                let save_start = Instant::now();
+                let saved =
+                    match endgame::save_shared_cache(&tablebase_dir, cache, endgame_cache_loaded) {
+                        Ok(saved) => saved,
+                        Err(err) => {
+                            eprintln!("warning: could not save CGT component cache: {err}");
+                            None
+                        }
+                    };
+                (saved, save_start.elapsed().as_secs_f64())
+            } else {
+                (None, 0.0)
+            }
         } else {
             (None, 0.0)
-        }
-    } else {
-        (None, 0.0)
-    };
+        };
     let endgame_cache_entries = shared_endgame
         .as_ref()
         .map(|cache| cache.canonical_len())
@@ -3283,6 +3564,33 @@ pub fn run(args: Vec<String>) {
             String::new()
         },
     );
+    println!(
+        "search profile: {} (component-bag min-components {}, min-live {}, two-component-max-live {})",
+        search_profile.label(),
+        component_bag_policy.min_components(board.num_cells),
+        component_bag_policy.min_live_cells(),
+        component_bag_policy
+            .two_component_max_live()
+            .map_or_else(|| "off".to_string(), |value| value.to_string()),
+    );
+    if component_native_one_large {
+        println!("component native one-large: enabled");
+    }
+    if threads > 1 && !effective_root_split {
+        println!(
+            "and-split fanout: {}",
+            if and_split_fanout == 0 {
+                "unbounded".to_string()
+            } else {
+                and_split_fanout.to_string()
+            }
+        );
+    }
+    if let Some(loaded) = component_bag_db_loaded {
+        println!("component bag db loaded signatures: {}", loaded.signatures);
+        println!("component bag db loaded bags: {}", loaded.bags);
+        println!("component bag db load: {component_bag_db_load_secs:.6}s");
+    }
     println!("states searched: {}", output.stats.states_searched);
     println!("memo hits: {}", output.stats.memo_hits);
     if output.stats.front_cache_queries > 0 {
@@ -3331,7 +3639,68 @@ pub fn run(args: Vec<String>) {
             "endgame component evals: {}",
             output.stats.endgame_component_evaluations
         );
-        println!("component reduction calls: {}", output.stats.reduction_calls);
+        if output.stats.component_native_calls > 0 {
+            println!(
+                "component native calls: {}",
+                output.stats.component_native_calls
+            );
+            println!(
+                "component native eligible: {}",
+                output.stats.component_native_eligible
+            );
+            println!(
+                "component native solved: {}",
+                output.stats.component_native_solved
+            );
+            println!(
+                "component native states: {}",
+                output.stats.component_native_states
+            );
+            println!(
+                "component native memo hits: {}",
+                output.stats.component_native_memo_hits
+            );
+            println!(
+                "component native transition queries: {}",
+                output.stats.component_native_transition_queries
+            );
+            println!(
+                "component native transition hits: {}",
+                output.stats.component_native_transition_hits
+            );
+            println!(
+                "component native transition builds: {}",
+                output.stats.component_native_transition_builds
+            );
+            println!(
+                "component native transition options: {}",
+                output.stats.component_native_transition_options
+            );
+            println!(
+                "component native transition deduplicated: {}",
+                output.stats.component_native_transition_deduplicated
+            );
+            println!(
+                "component native value option queries: {}",
+                output.stats.component_native_value_option_queries
+            );
+            println!(
+                "component native value option hits: {}",
+                output.stats.component_native_value_option_hits
+            );
+            println!(
+                "component native closure fallbacks: {}",
+                output.stats.component_native_closure_fallbacks
+            );
+            println!(
+                "component native cancellations: {}",
+                output.stats.component_native_cancellations
+            );
+        }
+        println!(
+            "component reduction calls: {}",
+            output.stats.reduction_calls
+        );
         println!(
             "component reduction component evals: {}",
             output.stats.reduction_component_evaluations
@@ -3368,10 +3737,7 @@ pub fn run(args: Vec<String>) {
             "zero-sum cells removed: {}",
             output.stats.zero_sum_cells_removed
         );
-        println!(
-            "reductions to empty: {}",
-            output.stats.reductions_to_empty
-        );
+        println!("reductions to empty: {}", output.stats.reductions_to_empty);
         if output.stats.component_bag_queries > 0 {
             println!(
                 "component bag queries: {}",
@@ -3398,6 +3764,10 @@ pub fn run(args: Vec<String>) {
                 println!(
                     "component bag shared hits: {}",
                     output.stats.component_bag_shared_hits
+                );
+                println!(
+                    "component bag persistent hits: {}",
+                    output.stats.component_bag_persistent_hits
                 );
                 println!(
                     "component bag shared inserts: {}",
@@ -3442,6 +3812,40 @@ pub fn run(args: Vec<String>) {
     if tablebase_enabled && loaded_count > 0 {
         println!("tablebase loaded: {loaded_count} entries");
     }
+    if output.stats.scheduler_subtasks_generated > 0 {
+        println!(
+            "scheduler subtasks generated: {}",
+            output.stats.scheduler_subtasks_generated
+        );
+        println!(
+            "scheduler subtasks released: {}",
+            output.stats.scheduler_subtasks_released
+        );
+        println!(
+            "scheduler subtasks never released: {}",
+            output.stats.scheduler_subtasks_never_released
+        );
+        println!(
+            "scheduler abandoned published: {}",
+            output.stats.scheduler_abandoned_published
+        );
+        println!(
+            "scheduler stale queued: {}",
+            output.stats.scheduler_stale_queued
+        );
+        println!(
+            "scheduler stale results: {}",
+            output.stats.scheduler_stale_results
+        );
+        println!(
+            "scheduler no-work polls: {}",
+            output.stats.scheduler_no_work_polls
+        );
+        println!(
+            "scheduler ready high-water: {}",
+            output.stats.scheduler_ready_high_water
+        );
+    }
     println!("memo entries: {memo_entries}");
     println!("memo evictions: {memo_evictions}");
     println!("memo entries collected: {collected_entries}");
@@ -3462,6 +3866,18 @@ pub fn run(args: Vec<String>) {
             file_size as f64 / 1_048_576.0
         );
         println!("endgame cache save: {endgame_cache_save_secs:.6}s");
+    }
+    if let Some((path, saved)) = component_bag_db_saved {
+        let file_size = std::fs::metadata(&path).map(|meta| meta.len()).unwrap_or(0);
+        println!(
+            "component bag db saved: {} ({} signatures, {} bags, min-effective-live {}, {:.2} MB)",
+            path.display(),
+            saved.signatures,
+            saved.bags,
+            component_bag_db_min_effective_live,
+            file_size as f64 / 1_048_576.0,
+        );
+        println!("component bag db save: {component_bag_db_save_secs:.6}s");
     }
     let rate = output.stats.states_searched as f64 / elapsed.max(1e-9);
     println!("states per second: {:.0}", rate);
@@ -3521,9 +3937,7 @@ mod tests {
             .collect();
         for mask in 0..=board.all_cells_mask {
             assert!(board.independent_set_lower_bound(mask) <= exact[mask as usize]);
-            assert!(
-                board.private_independent_set_lower_bound(mask) <= exact[mask as usize]
-            );
+            assert!(board.private_independent_set_lower_bound(mask) <= exact[mask as usize]);
             assert!(board.independent_set_upper_bound_fixed(mask) >= exact[mask as usize]);
             assert!(board.independent_set_upper_bound_greedy(mask) >= exact[mask as usize]);
         }
@@ -3531,20 +3945,16 @@ mod tests {
             for opponent in 0..=board.all_cells_mask {
                 let shared = (current & opponent).count_ones();
                 let reserve_result = board.private_reserve_outcome(current, opponent);
-                if !Board::private_reserve_cardinality_can_prove(
-                    current,
-                    opponent,
-                    shared,
-                ) {
+                if !Board::private_reserve_cardinality_can_prove(current, opponent, shared) {
                     assert_eq!(reserve_result, (None, 0, 0));
                 }
                 match reserve_result.0 {
-                    Some(true) => assert!(
-                        exact[(current & !opponent) as usize] > exact[opponent as usize]
-                    ),
-                    Some(false) => assert!(
-                        exact[(opponent & !current) as usize] >= exact[current as usize]
-                    ),
+                    Some(true) => {
+                        assert!(exact[(current & !opponent) as usize] > exact[opponent as usize])
+                    }
+                    Some(false) => {
+                        assert!(exact[(opponent & !current) as usize] >= exact[current as usize])
+                    }
                     None => {}
                 }
             }
@@ -3607,9 +4017,7 @@ mod tests {
             best
         };
         let pack = |left: u64, right: u64, side: u8| {
-            ((left as u128) << (board.num_cells + 1))
-                | ((right as u128) << 1)
-                | side as u128
+            ((left as u128) << (board.num_cells + 1)) | ((right as u128) << 1) | side as u128
         };
         let normal = canonical_pair(p1, p2);
         let swapped = canonical_pair(p2, p1);
@@ -3692,8 +4100,7 @@ mod tests {
                 for turn in [P1, P2] {
                     let own = if turn == P1 { p1_legal } else { p2_legal };
                     let opponent = if turn == P1 { p2_legal } else { p1_legal };
-                    let dominated =
-                        board.dominated_move_bits(turn, own, opponent, None, ordering);
+                    let dominated = board.dominated_move_bits(turn, own, opponent, None, ordering);
                     if own != 0 {
                         assert_ne!(own & !dominated, 0);
                     }
@@ -3709,8 +4116,7 @@ mod tests {
                             let y = alternatives & alternatives.wrapping_neg();
                             alternatives ^= y;
                             let (y1, y2) = board.child_legals(p1_legal, p2_legal, turn, y);
-                            let (y_own, y_opponent) =
-                                if turn == P1 { (y1, y2) } else { (y2, y1) };
+                            let (y_own, y_opponent) = if turn == P1 { (y1, y2) } else { (y2, y1) };
                             if x_own & !y_own == 0 && y_opponent & !x_opponent == 0 {
                                 witnessed = true;
                                 break;
@@ -3794,11 +4200,7 @@ mod tests {
             p2_legal | (1u64 << 4),
             P1,
         ));
-        assert!(!board.has_reflection_pairing_certificate(
-            p1_legal,
-            p2_legal ^ (1u64 << 7),
-            P1,
-        ));
+        assert!(!board.has_reflection_pairing_certificate(p1_legal, p2_legal ^ (1u64 << 7), P1,));
     }
 
     #[test]
@@ -3822,8 +4224,7 @@ mod tests {
         let (after_p1, after_p2) = board.child_legals(p1_legal, p2_legal, P1, 1u64 << 0);
         assert_ne!(after_p2 & (1u64 << 8), 0);
 
-        let (paired_p1, paired_p2) =
-            board.child_legals(after_p1, after_p2, P2, 1u64 << 8);
+        let (paired_p1, paired_p2) = board.child_legals(after_p1, after_p2, P2, 1u64 << 8);
         assert_eq!(board.reflect_mask(paired_p1), paired_p2);
     }
 }

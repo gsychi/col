@@ -65,6 +65,7 @@ component bag inserts: 202
 component bag local duplicate inserts: 7
 component bag shared queries: 50
 component bag shared hits: 25
+component bag persistent hits: 15
 component bag shared inserts: 20
 component bag shared duplicate inserts: 5
 component bag raw id hits: 203
@@ -72,6 +73,31 @@ component bag signature hits: 204
 component signature shared queries: 40
 component signature shared hits: 30
 component signature shared inserts: 10
+component native calls: 90
+component native eligible: 80
+component native solved: 70
+component native states: 600
+component native memo hits: 500
+component native transition queries: 400
+component native transition hits: 300
+component native transition builds: 100
+component native transition options: 900
+component native transition deduplicated: 200
+component native value option queries: 75
+component native value option hits: 65
+component native closure fallbacks: 4
+component native cancellations: 3
+scheduler subtasks generated: 300
+scheduler subtasks released: 280
+scheduler subtasks never released: 20
+scheduler abandoned published: 8
+scheduler stale queued: 5
+scheduler stale results: 3
+scheduler no-work polls: 12
+scheduler ready high-water: 16
+component bag db loaded signatures: 500
+component bag db loaded bags: 400
+component bag db load: 0.125000s
 pairing certificate hits: 119
 pairing certificate checks: 120
 states per second: 121
@@ -114,6 +140,7 @@ time elapsed (solve): 1.250000s
         self.assertEqual(parsed["component_bag_local_duplicate_inserts"], 7)
         self.assertEqual(parsed["component_bag_shared_queries"], 50)
         self.assertEqual(parsed["component_bag_shared_hits"], 25)
+        self.assertEqual(parsed["component_bag_persistent_hits"], 15)
         self.assertEqual(parsed["component_bag_shared_inserts"], 20)
         self.assertEqual(parsed["component_bag_shared_duplicate_inserts"], 5)
         self.assertEqual(parsed["component_bag_raw_id_hits"], 203)
@@ -121,6 +148,31 @@ time elapsed (solve): 1.250000s
         self.assertEqual(parsed["component_signature_shared_queries"], 40)
         self.assertEqual(parsed["component_signature_shared_hits"], 30)
         self.assertEqual(parsed["component_signature_shared_inserts"], 10)
+        self.assertEqual(parsed["component_native_calls"], 90)
+        self.assertEqual(parsed["component_native_eligible"], 80)
+        self.assertEqual(parsed["component_native_solved"], 70)
+        self.assertEqual(parsed["component_native_states"], 600)
+        self.assertEqual(parsed["component_native_memo_hits"], 500)
+        self.assertEqual(parsed["component_native_transition_queries"], 400)
+        self.assertEqual(parsed["component_native_transition_hits"], 300)
+        self.assertEqual(parsed["component_native_transition_builds"], 100)
+        self.assertEqual(parsed["component_native_transition_options"], 900)
+        self.assertEqual(parsed["component_native_transition_deduplicated"], 200)
+        self.assertEqual(parsed["component_native_value_option_queries"], 75)
+        self.assertEqual(parsed["component_native_value_option_hits"], 65)
+        self.assertEqual(parsed["component_native_closure_fallbacks"], 4)
+        self.assertEqual(parsed["component_native_cancellations"], 3)
+        self.assertEqual(parsed["scheduler_subtasks_generated"], 300)
+        self.assertEqual(parsed["scheduler_subtasks_released"], 280)
+        self.assertEqual(parsed["scheduler_subtasks_never_released"], 20)
+        self.assertEqual(parsed["scheduler_abandoned_published"], 8)
+        self.assertEqual(parsed["scheduler_stale_queued"], 5)
+        self.assertEqual(parsed["scheduler_stale_results"], 3)
+        self.assertEqual(parsed["scheduler_no_work_polls"], 12)
+        self.assertEqual(parsed["scheduler_ready_high_water"], 16)
+        self.assertEqual(parsed["component_bag_db_loaded_signatures"], 500)
+        self.assertEqual(parsed["component_bag_db_loaded_bags"], 400)
+        self.assertEqual(parsed["component_bag_db_load_seconds"], 0.125)
         self.assertEqual(parsed["solve_seconds"], 1.25)
         self.assertEqual(parsed["peak_rss_bytes"], 122)
 
