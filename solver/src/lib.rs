@@ -9,7 +9,10 @@ mod endgame;
 mod tablebase;
 
 use dashmap::DashMap;
-use endgame::{EndgameEvaluation, EndgameEvaluator, EndgameStats, SharedEndgameCache};
+use endgame::{
+    ComponentBagKey, ComponentBagProbe, EndgameEvaluation, EndgameEvaluator, EndgameStats,
+    SharedEndgameCache,
+};
 use rustc_hash::{FxBuildHasher, FxHashMap, FxHashSet};
 use std::cell::RefCell;
 use std::collections::VecDeque;
@@ -20,6 +23,7 @@ use std::time::Instant;
 
 const P1: u8 = 0;
 const P2: u8 = 1;
+const RESERVE_CARDINALITY_GATE_SHARED: u32 = 8;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum MoveOrderSpec {
@@ -443,6 +447,24 @@ impl Board {
             }
         }
         mask.count_ones() - matching
+    }
+
+    /// A necessary cardinality condition for either private-reserve proof.
+    /// The caller supplies `shared = |current & opponent|` so the hot path can
+    /// reuse the popcount that gates this test.
+    #[inline]
+    fn private_reserve_cardinality_can_prove(
+        current: u64,
+        opponent: u64,
+        shared: u32,
+    ) -> bool {
+        let current_count = current.count_ones();
+        let opponent_count = opponent.count_ones();
+        debug_assert!(shared <= current_count && shared <= opponent_count);
+        let current_private = current_count - shared;
+        let opponent_private = opponent_count - shared;
+        current_private > opponent_count.div_ceil(2)
+            || opponent_private >= current_count.div_ceil(2)
     }
 
     /// Exact sufficient outcome bounds from untouchable private moves.
@@ -1236,6 +1258,7 @@ struct Stats {
     front_cache_hits: u64,
     dominance_nodes: u64,
     dominance_pruned_moves: u64,
+    reserve_cardinality_skips: u64,
     reserve_matching_checks: u64,
     reserve_greedy_checks: u64,
     reserve_win_hits: u64,
@@ -1258,6 +1281,11 @@ struct Stats {
     zero_components_removed: u64,
     zero_sum_cells_removed: u64,
     reductions_to_empty: u64,
+    component_bag_queries: u64,
+    component_bag_hits: u64,
+    component_bag_inserts: u64,
+    component_bag_raw_id_hits: u64,
+    component_bag_signature_hits: u64,
     order: OrderStats,
 }
 
@@ -1269,6 +1297,7 @@ impl Stats {
         self.front_cache_hits += other.front_cache_hits;
         self.dominance_nodes += other.dominance_nodes;
         self.dominance_pruned_moves += other.dominance_pruned_moves;
+        self.reserve_cardinality_skips += other.reserve_cardinality_skips;
         self.reserve_matching_checks += other.reserve_matching_checks;
         self.reserve_greedy_checks += other.reserve_greedy_checks;
         self.reserve_win_hits += other.reserve_win_hits;
@@ -1291,6 +1320,11 @@ impl Stats {
         self.zero_components_removed += other.zero_components_removed;
         self.zero_sum_cells_removed += other.zero_sum_cells_removed;
         self.reductions_to_empty += other.reductions_to_empty;
+        self.component_bag_queries += other.component_bag_queries;
+        self.component_bag_hits += other.component_bag_hits;
+        self.component_bag_inserts += other.component_bag_inserts;
+        self.component_bag_raw_id_hits += other.component_bag_raw_id_hits;
+        self.component_bag_signature_hits += other.component_bag_signature_hits;
         self.order.merge(&other.order);
     }
 
@@ -1310,6 +1344,11 @@ impl Stats {
         self.zero_components_removed += endgame.zero_components_removed;
         self.zero_sum_cells_removed += endgame.zero_sum_cells_removed;
         self.reductions_to_empty += endgame.reductions_to_empty;
+        self.component_bag_queries += endgame.component_bag_queries;
+        self.component_bag_hits += endgame.component_bag_hits;
+        self.component_bag_inserts += endgame.component_bag_inserts;
+        self.component_bag_raw_id_hits += endgame.component_bag_raw_id_hits;
+        self.component_bag_signature_hits += endgame.component_bag_signature_hits;
     }
 }
 
@@ -1557,6 +1596,16 @@ impl<'a, M: Memo> Solver<'a, M> {
         }
     }
 
+    #[inline]
+    fn remember_component_bag(&mut self, key: &mut Option<ComponentBagKey>, value: bool) {
+        if let Some(key) = key.take() {
+            self.endgame
+                .as_mut()
+                .expect("component-bag key requires endgame evaluator")
+                .insert_component_bag(key, value);
+        }
+    }
+
     fn take_stats(&mut self) -> Stats {
         let mut stats = std::mem::take(&mut self.stats);
         if let Some(endgame) = &self.endgame {
@@ -1627,6 +1676,7 @@ impl<'a, M: Memo> Solver<'a, M> {
             }
         }
         let mut key_changed = false;
+        let mut component_bag_candidate = false;
         if self.coord.component_reduction && !skip_reduction {
             let endgame = self
                 .endgame
@@ -1638,6 +1688,7 @@ impl<'a, M: Memo> Solver<'a, M> {
                 p1_legal,
                 p2_legal,
             );
+            component_bag_candidate = reduction.component_bag_candidate;
             if reduction.changed {
                 p1_legal = reduction.legal_p1;
                 p2_legal = reduction.legal_p2;
@@ -1687,9 +1738,21 @@ impl<'a, M: Memo> Solver<'a, M> {
         }
 
         let opponent_legal = if turn == P1 { p2_legal } else { p1_legal };
-        let (reserve_outcome, reserve_matching_checks, reserve_greedy_checks) = self
-            .board
-            .private_reserve_outcome(legal_mask, opponent_legal);
+        let shared_count = (legal_mask & opponent_legal).count_ones();
+        let reserve_can_prove = shared_count < RESERVE_CARDINALITY_GATE_SHARED
+            || Board::private_reserve_cardinality_can_prove(
+                legal_mask,
+                opponent_legal,
+                shared_count,
+            );
+        let (reserve_outcome, reserve_matching_checks, reserve_greedy_checks) = if reserve_can_prove
+        {
+            self.board
+                .private_reserve_outcome(legal_mask, opponent_legal)
+        } else {
+            self.stats.reserve_cardinality_skips += 1;
+            (None, 0, 0)
+        };
         self.stats.reserve_matching_checks += reserve_matching_checks as u64;
         self.stats.reserve_greedy_checks += reserve_greedy_checks as u64;
         if let Some(wins) = reserve_outcome {
@@ -1701,6 +1764,23 @@ impl<'a, M: Memo> Solver<'a, M> {
             self.remember(key, p1_legal, p2_legal, wins);
             return Some(wins);
         }
+
+        let component_bag_probe = if component_bag_candidate {
+            self.endgame
+                .as_mut()
+                .expect("component-bag candidate requires endgame evaluator")
+                .probe_component_bag(self.board.n, p1_legal, p2_legal, turn)
+        } else {
+            ComponentBagProbe::Ineligible
+        };
+        let mut component_bag_key = match component_bag_probe {
+            ComponentBagProbe::Ineligible => None,
+            ComponentBagProbe::Hit(wins) => {
+                self.remember(key, p1_legal, p2_legal, wins);
+                return Some(wins);
+            }
+            ComponentBagProbe::Miss(key) => Some(key),
+        };
 
         let next_turn = 1 - turn;
         let ordering = self.coord.active_order();
@@ -1740,6 +1820,7 @@ impl<'a, M: Memo> Solver<'a, M> {
                     last_p1_move,
                     ordering,
                 );
+                self.remember_component_bag(&mut component_bag_key, true);
                 self.remember(key, p1_legal, p2_legal, true);
                 return Some(true);
             }
@@ -1761,6 +1842,7 @@ impl<'a, M: Memo> Solver<'a, M> {
                         last_p1_move,
                         ordering,
                     );
+                    self.remember_component_bag(&mut component_bag_key, true);
                     self.remember(key, p1_legal, p2_legal, true);
                     return Some(true);
                 }
@@ -1791,11 +1873,13 @@ impl<'a, M: Memo> Solver<'a, M> {
                     last_p1_move,
                     ordering,
                 );
+                self.remember_component_bag(&mut component_bag_key, true);
                 self.remember(key, p1_legal, p2_legal, true);
                 return Some(true);
             }
         }
 
+        self.remember_component_bag(&mut component_bag_key, false);
         self.remember(key, p1_legal, p2_legal, false);
         Some(false)
     }
@@ -3172,6 +3256,10 @@ pub fn run(args: Vec<String>) {
         output.stats.dominance_pruned_moves
     );
     println!(
+        "reserve cardinality skips: {}",
+        output.stats.reserve_cardinality_skips
+    );
+    println!(
         "reserve matching checks: {}",
         output.stats.reserve_matching_checks
     );
@@ -3245,6 +3333,25 @@ pub fn run(args: Vec<String>) {
             "reductions to empty: {}",
             output.stats.reductions_to_empty
         );
+        if output.stats.component_bag_queries > 0 {
+            println!(
+                "component bag queries: {}",
+                output.stats.component_bag_queries
+            );
+            println!("component bag hits: {}", output.stats.component_bag_hits);
+            println!(
+                "component bag inserts: {}",
+                output.stats.component_bag_inserts
+            );
+            println!(
+                "component bag raw id hits: {}",
+                output.stats.component_bag_raw_id_hits
+            );
+            println!(
+                "component bag signature hits: {}",
+                output.stats.component_bag_signature_hits
+            );
+        }
         if endgame_cache_enabled {
             println!("endgame cache loaded: {endgame_cache_loaded} entries");
             if endgame_cache_loaded > 0 {
@@ -3345,7 +3452,16 @@ mod tests {
         }
         for current in 0..=board.all_cells_mask {
             for opponent in 0..=board.all_cells_mask {
-                match board.private_reserve_outcome(current, opponent).0 {
+                let shared = (current & opponent).count_ones();
+                let reserve_result = board.private_reserve_outcome(current, opponent);
+                if !Board::private_reserve_cardinality_can_prove(
+                    current,
+                    opponent,
+                    shared,
+                ) {
+                    assert_eq!(reserve_result, (None, 0, 0));
+                }
+                match reserve_result.0 {
                     Some(true) => assert!(
                         exact[(current & !opponent) as usize] > exact[opponent as usize]
                     ),
@@ -3356,6 +3472,25 @@ mod tests {
                 }
             }
         }
+    }
+
+    #[test]
+    fn private_reserve_cardinality_gate_respects_strict_boundaries() {
+        // Win equality is insufficient: 2 private cells cannot beat ceil(4/2).
+        let current: u64 = 0b01_1111;
+        let opponent: u64 = 0b10_0111;
+        let shared = (current & opponent).count_ones();
+        assert!(!Board::private_reserve_cardinality_can_prove(
+            current, opponent, shared
+        ));
+
+        // Loss equality is sufficient: 2 opponent-private cells can tie ceil(4/2).
+        let current: u64 = 0b00_1111;
+        let opponent: u64 = 0b11_0011;
+        let shared = (current & opponent).count_ones();
+        assert!(Board::private_reserve_cardinality_can_prove(
+            current, opponent, shared
+        ));
     }
 
     #[test]

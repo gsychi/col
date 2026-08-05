@@ -160,3 +160,181 @@ Verification after this round: 28 library tests, 15 proof-miner tests, doc
 tests, and 19 Python tests passed. This includes exhaustive interaction-component
 equivalence on all 3x3 legality-mask pairs, exact-value decomposition on all
 2x3 legality-mask pairs, and exhaustive reserve-bound soundness on 3x3 masks.
+
+## Evaluator Architecture Experiments - 2026-08-04
+
+These experiments started from the final exact-cutoff binary above (SHA-256
+`635ce5204a043cf9d976207009a97c98cb21bfcdc6cf124cff078e09c763567d`).
+They used the same one-thread, hash-memo, heuristic-order, cutoff-10, cold-cache
+configuration. Candidate and baseline always agreed on the P2 winner.
+
+### Kept: staged reserve-cardinality gate
+
+Before running the full private-reserve evaluator, the solver now applies a
+cheap necessary condition when at least eight moves are shared. If `C` and `O`
+are the actor and opponent legality masks, respectively, a reserve proof is
+possible only if at least one of
+
+```text
+|C \ O| > ceil(|O| / 2)
+|O \ C| >= ceil(|C| / 2)
+```
+
+holds. The first follows because the actor's private independent set cannot be
+larger than its private-cell count while the opponent has a checkerboard lower
+bound of `ceil(|O|/2)`; the second is symmetric. If neither condition holds,
+the existing reserve evaluator must return `(None, 0, 0)`, so skipping it is
+exact. The shared-count threshold affects cost only, not correctness. Threshold
+7 was 1.25% slower than threshold 8, and applying the condition unconditionally
+was 1.6% slower.
+
+The initial paired batch measured:
+
+| board | repeats | baseline | candidate | ratio | reserve calls skipped |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 3x11 | 11 | 0.678932s | 0.664414s | 1.022x | 73,217 |
+| 5x7 | 7 | 1.710396s | 1.691244s | 1.011x | 113,551 |
+| 3x13 | 3 | 15.195052s | 14.860407s | 1.023x | 903,429 |
+
+A second final-binary batch put the short-board effect closer to measurement
+noise: 1.004x on 3x11 and 0.999x on 5x7 over 11 repeats. Across all paired
+batches, the median within-pair ratios were 1.004x on 3x11, 1.003x on 5x7,
+and 1.047x on 3x13. The conservative conclusion is a small 3xn win and neutral
+5x7 performance. Every deterministic metric remained identical: states, memo
+hits, dominance, reserve proof hits/checks, endgame evaluation, reductions, and
+pairing certificates. The solver and Python benchmark JSON now also report the
+new skip count.
+
+The cardinality implication is checked on every 3x3 mask pair without the
+performance threshold, including explicit tests for the strict win boundary
+and non-strict loss boundary.
+
+### Rejected and fully reverted
+
+- **Fixed-height exact MIS DP.** Direct column DP and a compiled transfer
+  automaton were both tried. The no-shared evaluator fired 4,728 / 17,580 /
+  85,551 times on 3x11 / 5x7 / 3x13, but was timing-neutral because interaction
+  decomposition already solves the same states. Using exact DP inside the
+  reserve rule reduced 3x11 states by about 0.6% but made it 3-5% slower.
+- **Raw-state L0 cache.** A 16K two-way cache hit 12.2% on 3x11 but was 4.5%
+  slower; a 4K direct-mapped version was 0.5% slower on 3x11 and 1.7% slower on
+  5x7.
+- **Self-conjugate parity cancellation.** The theorem is exact and found 5 /
+  31 / 57 component pairs, but the 3x13 candidate was 4.1% slower.
+- **Incremental symmetry images.** Exhaustive sampled child-key checks passed,
+  but carrying four rectangle images made 5x7 5.6% slower.
+- **All-axis geometric pairing.** The additional reflection certificates found
+  no new hits in a full optimized 3x11 search.
+- **Simple shared-cell feature gate.** Skipping reserve analysis whenever the
+  shared count exceeded 10 added 55 states and was 1.3% slower on 3x11.
+
+Move-orbit profiling predicted only about 0.2% pruning, so it was not put on the
+hot path. Historical-tablebase analysis makes a gated component-bag cache the
+most promising next transposition experiment: cutoff-10 states collapsed by
+roughly 38-43% by bag identity in the old 3x9 corpus, before accounting for the
+cost of constructing component signatures.
+
+Final release binary SHA-256: `8131c159c44ea077e8f4838817ad310b348c2138eae44d01c0a0643721f3acd0`.
+Final verification passed 29 library tests, 15 proof-miner tests, doc tests,
+19 Python tests, and `cargo clippy --all-targets` (with pre-existing warnings).
+
+## Component-Native Transposition Cache - 2026-08-04
+
+This round used the previous final binary as its frozen architecture baseline:
+
+- Baseline SHA-256: `8131c159c44ea077e8f4838817ad310b348c2138eae44d01c0a0643721f3acd0`
+- Final component-native SHA-256: `2fd7b7dcb23b10e1ad78ff9ab3bfd86117bdd5e45e06f41dd209dbe5a527c72b`
+
+All reported comparisons were paired cold runs with hash memoization,
+heuristic ordering, endgame cutoff 10, component reduction, no tablebase, and
+no endgame cache. Every run preserved the P2 winner.
+
+### Why component bags were the first architectural target
+
+Profiling showed that fragmentation is the common case after the existing
+cutoffs miss. Fragmented positions were 75.7% of post-reduction misses on
+3x11, 81.8% on 5x7, and 95.0% on 3x13. Their median interaction-component
+size was one cell, while exact canonical component reuse was 92.5%, 93.0%,
+and 98.6%, respectively. On 3x13, 53.4% of observed fragmented positions
+already duplicated a previously seen exact component bag in a non-pruning
+profile.
+
+The retained cache is an exact secondary transposition table keyed by the
+position's disjoint game sum rather than its board embedding:
+
+1. The existing reducer supplies surviving interaction-component masks, so
+   the cache does not rescan the board.
+2. Each non-singleton component receives a color-preserving geometric
+   canonical ID. Full canonical signatures are stored and equality-checked;
+   hash collisions cannot alias components.
+3. IDs are interpreted relative to the actor to move, sorted as a multiset,
+   and retain multiplicity. Components are never color-swapped independently.
+4. Actor-private and opponent-private singleton components aggregate as an
+   exact integer score, while shared singletons aggregate by star parity.
+5. A bag hit backfills the ordinary board transposition table. A miss is
+   inserted only after the recursive search has completed with an exact
+   outcome; cancellation never publishes a partial result.
+
+Most bags have at most four non-singleton IDs. The final representation keeps
+those IDs inline and uses a fixed stack scratch array during sorting. This
+removes a heap allocation from the common lookup and stored-key paths.
+
+### Final results
+
+| workload | repeats | baseline states | final states | reduction | baseline median | final median | speedup |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 3x11, 1 thread | 7 | 1,004,117 | 859,377 | 14.4% | 0.598843s | 0.595931s | 1.005x |
+| 3x13, 1 thread | 3 | 19,346,555 | 9,358,902 | 51.6% | 16.178261s | 9.958879s | 1.625x |
+| 3x13, 8 threads | 5 | 20,543,008 | 11,789,099 | 42.6% | 4.232290s | 3.366470s | 1.257x |
+
+The parallel state counts vary slightly with scheduling, but all paired runs
+returned the same winner. The one-thread 3x13 bag table made 2,895,131 queries
+and 1,150,966 hits, a 39.8% exact cache-hit rate. Although key construction
+reduces raw states per second, halving the searched DAG produces the net 1.63x
+speedup.
+
+The trigger is deliberately adaptive:
+
+- Below 33 cells the cache is disabled. Final 3x9 and 5x5 controls have exactly
+  the baseline state counts and no bag queries.
+- From 33 through 38 cells it runs only on 3-row or 3-column strips and
+  requires at least four components. This retains the 3x11 state reduction.
+- At 39 cells and above it runs on all shapes and requires at least three
+  components. The lower threshold accounts for most of the 3x13 gain.
+- The 5x7 control is disabled after a prototype removed 19.9% of states but
+  was timing-neutral to slightly slower. Its final state count is again
+  exactly the baseline 2,380,489.
+
+Inline component IDs improved the first accepted bag implementation without
+changing any deterministic counter. Against that frozen version, it was
+1.064x faster on 3x11 over 11 paired runs and 1.243x faster on 3x13 over three
+paired runs. At eight threads it remained 1.032x faster over seven runs.
+
+### Rejected or superseded prototypes
+
+- Recomputing and allocating full component signatures removed 16.9% of 3x11
+  states but increased elapsed time by 14.1%. Reusing reducer masks,
+  allocation-free signatures, raw-component ID caching, and singleton
+  aggregation were all necessary before the cache paid for itself.
+- A three-component threshold on 3x11 removed more states but was about 1.2%
+  slower; four components is the better small-strip threshold.
+- A bit-parallel replacement for the generic component flood was neutral on
+  3x11 and made a one-run 3x13 rejection screen 10.1% slower. It fully flooded
+  oversized components that the current generic path abandons early, so it
+  was reverted.
+- A full column-symbol strip backend was not built because the current 3xn
+  engine already uses two bit masks, constant-time child updates, bitwise
+  rectangle symmetries, dead-column interval tests, and bit-parallel floods.
+  The remaining promising strip work is fused component classification and
+  reduction, not replacing the global state encoding.
+
+The cache maps are currently unbounded and worker-local. Parallel timing is
+positive, but peak RSS could not be collected in the sandbox; cache capping or
+shared immutable component IDs should be evaluated before substantially larger
+boards.
+
+Final verification passed 34 library tests, 20 proof-miner tests, doc tests,
+and 19 Python tests. The Rust tests include exhaustive actor-relative bag
+outcomes for every 2x4 legality-mask pair with at least three components,
+exhaustive agreement between fixed and allocating component signatures on all
+3x3 mask pairs, and explicit gate/invariance tests.

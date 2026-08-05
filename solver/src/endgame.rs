@@ -13,11 +13,32 @@ const DEAD: u8 = BLOCK_P1 | BLOCK_P2;
 const MAX_LOCAL_CELLS: usize = 14;
 const CACHE_VERSION: i64 = 1;
 const CACHE_FILENAME: &str = "cgt_components_rs.pkl";
+const COMPONENT_BAG_MIN_BOARD_CELLS: usize = 33;
+const COMPONENT_BAG_MIN_COMPONENTS: usize = 4;
+const COMPONENT_BAG_LARGE_BOARD_CELLS: usize = 39;
+const COMPONENT_BAG_LARGE_BOARD_MIN_COMPONENTS: usize = 3;
+const COMPONENT_BAG_INLINE_IDS: usize = 4;
 const ZERO_DYADIC: Dyadic = Dyadic { num: 0, shift: 0 };
 const ZERO_VALUE: Value = Value {
     number: ZERO_DYADIC,
     star: false,
 };
+
+fn component_bag_min_components(board_cells: usize) -> usize {
+    if board_cells >= COMPONENT_BAG_LARGE_BOARD_CELLS {
+        COMPONENT_BAG_LARGE_BOARD_MIN_COMPONENTS
+    } else {
+        COMPONENT_BAG_MIN_COMPONENTS
+    }
+}
+
+fn component_bag_enabled(board_cells: usize, board_columns: usize) -> bool {
+    if board_cells < COMPONENT_BAG_MIN_BOARD_CELLS {
+        return false;
+    }
+    let board_rows = board_cells / board_columns;
+    board_cells >= COMPONENT_BAG_LARGE_BOARD_CELLS || board_rows == 3 || board_columns == 3
+}
 
 #[derive(Clone, Copy, Default)]
 pub struct EndgameStats {
@@ -36,6 +57,11 @@ pub struct EndgameStats {
     pub zero_components_removed: u64,
     pub zero_sum_cells_removed: u64,
     pub reductions_to_empty: u64,
+    pub component_bag_queries: u64,
+    pub component_bag_hits: u64,
+    pub component_bag_inserts: u64,
+    pub component_bag_raw_id_hits: u64,
+    pub component_bag_signature_hits: u64,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
@@ -630,6 +656,11 @@ pub struct EndgameEvaluator {
     values: FxHashMap<LocalKey, Value>,
     shared: Option<Arc<SharedEndgameCache>>,
     cgt: CgtEngine,
+    component_signature_ids: FxHashMap<Vec<u16>, u32>,
+    raw_component_ids: FxHashMap<u128, u32>,
+    component_bag_outcomes: FxHashMap<ComponentBagKey, bool>,
+    reduction_components: [u64; 64],
+    reduction_component_count: u8,
     stats: EndgameStats,
 }
 
@@ -638,6 +669,44 @@ pub struct ComponentReduction {
     pub legal_p1: u64,
     pub legal_p2: u64,
     pub changed: bool,
+    pub component_bag_candidate: bool,
+}
+
+#[derive(Debug, Eq, Hash, PartialEq)]
+pub struct ComponentBagKey {
+    private_singleton_score: i8,
+    shared_singleton_parity: bool,
+    components: ComponentIds,
+}
+
+#[derive(Debug, Eq, Hash, PartialEq)]
+enum ComponentIds {
+    Inline {
+        len: u8,
+        ids: [u32; COMPONENT_BAG_INLINE_IDS],
+    },
+    Heap(Box<[u32]>),
+}
+
+impl ComponentIds {
+    fn from_sorted(ids: &[u32]) -> ComponentIds {
+        if ids.len() <= COMPONENT_BAG_INLINE_IDS {
+            let mut inline = [0; COMPONENT_BAG_INLINE_IDS];
+            inline[..ids.len()].copy_from_slice(ids);
+            ComponentIds::Inline {
+                len: ids.len() as u8,
+                ids: inline,
+            }
+        } else {
+            ComponentIds::Heap(ids.into())
+        }
+    }
+}
+
+pub enum ComponentBagProbe {
+    Ineligible,
+    Hit(bool),
+    Miss(ComponentBagKey),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -770,12 +839,114 @@ impl EndgameEvaluator {
             values: FxHashMap::default(),
             shared,
             cgt: CgtEngine::new(),
+            component_signature_ids: FxHashMap::default(),
+            raw_component_ids: FxHashMap::default(),
+            component_bag_outcomes: FxHashMap::default(),
+            reduction_components: [0; 64],
+            reduction_component_count: 0,
             stats: EndgameStats::default(),
         }
     }
 
     pub fn stats(&self) -> EndgameStats {
         self.stats
+    }
+
+    /// Query an exact actor-relative multiset key for a fragmented position.
+    /// Components are canonicalized geometrically but never color-swapped
+    /// independently. Duplicate component IDs remain in the sorted bag.
+    pub fn probe_component_bag(
+        &mut self,
+        n: usize,
+        legal_p1: u64,
+        legal_p2: u64,
+        turn: u8,
+    ) -> ComponentBagProbe {
+        let component_count = self.reduction_component_count as usize;
+        if component_count < COMPONENT_BAG_LARGE_BOARD_MIN_COMPONENTS {
+            return ComponentBagProbe::Ineligible;
+        }
+
+        self.stats.component_bag_queries += 1;
+        let (actor, opponent) = if turn == 0 {
+            (legal_p1, legal_p2)
+        } else {
+            (legal_p2, legal_p1)
+        };
+        let mut ids = [0u32; 64];
+        let mut id_count = 0usize;
+        let mut private_singleton_score = 0i8;
+        let mut shared_singleton_parity = false;
+        for index in 0..component_count {
+            let component = self.reduction_components[index];
+            if component.is_power_of_two() {
+                let actor_can_play = actor & component != 0;
+                let opponent_can_play = opponent & component != 0;
+                match (actor_can_play, opponent_can_play) {
+                    (true, true) => shared_singleton_parity ^= true,
+                    (true, false) => private_singleton_score += 1,
+                    (false, true) => private_singleton_score -= 1,
+                    (false, false) => unreachable!("component must contain a legal move"),
+                }
+                continue;
+            }
+            let raw_key = (((actor & component) as u128) << 63)
+                | (opponent & component) as u128;
+            let id = if let Some(&id) = self.raw_component_ids.get(&raw_key) {
+                self.stats.component_bag_raw_id_hits += 1;
+                id
+            } else {
+                let (signature, signature_len) =
+                    component_signature_fixed(n, component, actor, opponent);
+                let signature = &signature[..signature_len];
+                let id = if let Some(&id) = self.component_signature_ids.get(signature) {
+                    self.stats.component_bag_signature_hits += 1;
+                    id
+                } else {
+                    let id = self.component_signature_ids.len() as u32;
+                    self.component_signature_ids.insert(signature.to_vec(), id);
+                    id
+                };
+                self.raw_component_ids.insert(raw_key, id);
+                id
+            };
+            ids[id_count] = id;
+            id_count += 1;
+        }
+        ids[..id_count].sort_unstable();
+        let key = ComponentBagKey {
+            private_singleton_score,
+            shared_singleton_parity,
+            components: ComponentIds::from_sorted(&ids[..id_count]),
+        };
+        if let Some(&wins) = self.component_bag_outcomes.get(&key) {
+            self.stats.component_bag_hits += 1;
+            ComponentBagProbe::Hit(wins)
+        } else {
+            ComponentBagProbe::Miss(key)
+        }
+    }
+
+    pub fn insert_component_bag(&mut self, key: ComponentBagKey, wins: bool) {
+        if let Some(previous) = self.component_bag_outcomes.insert(key, wins) {
+            debug_assert_eq!(previous, wins, "component-bag outcome conflict");
+        } else {
+            self.stats.component_bag_inserts += 1;
+        }
+    }
+
+    fn retain_reduction_components(&mut self, components: &[u64], remove: u64) -> usize {
+        let mut count = 0usize;
+        for &component in components {
+            if component & remove != 0 {
+                debug_assert_eq!(component & !remove, 0);
+                continue;
+            }
+            self.reduction_components[count] = component;
+            count += 1;
+        }
+        self.reduction_component_count = count as u8;
+        count
     }
 
     /// Delete disconnected summands that are provably zero without requiring
@@ -788,6 +959,7 @@ impl EndgameEvaluator {
         legal_p2: u64,
     ) -> ComponentReduction {
         self.stats.reduction_calls += 1;
+        self.reduction_component_count = 0;
         let combined = legal_p1 | legal_p2;
         let open_cells = combined.count_ones();
         let effective_max_component_size =
@@ -801,6 +973,7 @@ impl EndgameEvaluator {
                 legal_p1,
                 legal_p2,
                 changed: false,
+                component_bag_candidate: false,
             };
         }
         // Dead columns partition a 3xn strip. If every resulting interval has
@@ -829,6 +1002,7 @@ impl EndgameEvaluator {
                     legal_p1,
                     legal_p2,
                     changed: false,
+                    component_bag_candidate: false,
                 };
             }
         }
@@ -854,6 +1028,7 @@ impl EndgameEvaluator {
                 legal_p1,
                 legal_p2,
                 changed: false,
+                component_bag_candidate: false,
             };
         }
         // Fully small positions are already handled exactly by `try_evaluate`;
@@ -866,6 +1041,7 @@ impl EndgameEvaluator {
                 legal_p1,
                 legal_p2,
                 changed: false,
+                component_bag_candidate: false,
             };
         }
 
@@ -921,10 +1097,14 @@ impl EndgameEvaluator {
         }
 
         if remove == 0 {
+            let component_bag_candidate = component_bag_enabled(adjacency.len(), n)
+                && self.retain_reduction_components(components, remove)
+                    >= component_bag_min_components(adjacency.len());
             return ComponentReduction {
                 legal_p1,
                 legal_p2,
                 changed: false,
+                component_bag_candidate,
             };
         }
         self.stats.zero_sum_cells_removed += remove.count_ones() as u64;
@@ -934,10 +1114,14 @@ impl EndgameEvaluator {
             self.stats.reductions_to_empty += 1;
         }
         self.stats.reduction_changes += 1;
+        let component_bag_candidate = component_bag_enabled(adjacency.len(), n)
+            && self.retain_reduction_components(components, remove)
+                >= component_bag_min_components(adjacency.len());
         ComponentReduction {
             legal_p1,
             legal_p2,
             changed: true,
+            component_bag_candidate,
         }
     }
 
@@ -1548,6 +1732,57 @@ fn component_signature(
     best.expect("component signature needs a live cell")
 }
 
+/// Allocation-free color-preserving component canonicalization for bag IDs.
+/// Only the winning signature is allocated, and only when it is first interned.
+fn component_signature_fixed(
+    n: usize,
+    component: u64,
+    actor: u64,
+    opponent: u64,
+) -> ([u16; 64], usize) {
+    let len = component.count_ones() as usize;
+    let mut best = [0u16; 64];
+    let mut candidate = [0u16; 64];
+    let mut have_best = false;
+    for transform in 0..8 {
+        let mut min_row = i16::MAX;
+        let mut min_col = i16::MAX;
+        let mut bits = component;
+        while bits != 0 {
+            let bit = bits & bits.wrapping_neg();
+            bits ^= bit;
+            let cell = bit.trailing_zeros() as usize;
+            let (row, col) =
+                transform_point(transform, (cell / n) as i16, (cell % n) as i16);
+            min_row = min_row.min(row);
+            min_col = min_col.min(col);
+        }
+
+        let mut out = 0usize;
+        let mut bits = component;
+        while bits != 0 {
+            let bit = bits & bits.wrapping_neg();
+            bits ^= bit;
+            let cell = bit.trailing_zeros() as usize;
+            let (row, col) =
+                transform_point(transform, (cell / n) as i16, (cell % n) as i16);
+            let row = (row - min_row) as u16;
+            let col = (col - min_col) as u16;
+            debug_assert!(row < 64 && col < 64);
+            candidate[out] =
+                (row << 8) | (col << 2) | global_tint(bit, actor, opponent) as u16;
+            out += 1;
+        }
+        debug_assert_eq!(out, len);
+        candidate[..len].sort_unstable();
+        if !have_best || candidate[..len] < best[..len] {
+            best[..len].copy_from_slice(&candidate[..len]);
+            have_best = true;
+        }
+    }
+    (best, len)
+}
+
 enum ComponentEval {
     Local(u64),
     KnownValue(Value),
@@ -1843,6 +2078,154 @@ mod tests {
     }
 
     #[test]
+    fn component_bag_key_is_actor_relative_and_component_order_independent() {
+        let n = 7;
+        let mut evaluator = EndgameEvaluator::new(0, None);
+
+        // Four isolated components: two shared, P1-only, and P2-only.
+        let p1 = (1u64 << 0) | (1u64 << 6) | (1u64 << 9);
+        let p2 = (1u64 << 0) | (1u64 << 6) | (1u64 << 18);
+        evaluator.retain_reduction_components(
+            &[1u64 << 0, 1u64 << 6, 1u64 << 9, 1u64 << 18],
+            0,
+        );
+        let key = match evaluator.probe_component_bag(n, p1, p2, 0) {
+            ComponentBagProbe::Miss(key) => key,
+            _ => panic!("first component bag must miss"),
+        };
+        evaluator.insert_component_bag(key, true);
+
+        // Move and permute the same three component games geometrically.
+        let moved_p1 = (1u64 << 0) | (1u64 << 6) | (1u64 << 11);
+        let moved_p2 = (1u64 << 0) | (1u64 << 6) | (1u64 << 16);
+        evaluator.retain_reduction_components(
+            &[1u64 << 0, 1u64 << 6, 1u64 << 11, 1u64 << 16],
+            0,
+        );
+        assert!(matches!(
+            evaluator.probe_component_bag(n, moved_p1, moved_p2, 0),
+            ComponentBagProbe::Hit(true)
+        ));
+
+        // Global color swap plus side-to-move swap retains the actor-relative bag.
+        evaluator.retain_reduction_components(
+            &[1u64 << 0, 1u64 << 6, 1u64 << 9, 1u64 << 18],
+            0,
+        );
+        assert!(matches!(
+            evaluator.probe_component_bag(n, p2, p1, 1),
+            ComponentBagProbe::Hit(true)
+        ));
+
+        // Independently recoloring one component is a different game bag.
+        evaluator.retain_reduction_components(
+            &[1u64 << 0, 1u64 << 6, 1u64 << 9, 1u64 << 18],
+            0,
+        );
+        assert!(matches!(
+            evaluator.probe_component_bag(n, p1 | (1u64 << 18), p2, 0),
+            ComponentBagProbe::Miss(_)
+        ));
+    }
+
+    #[test]
+    fn component_bag_gate_targets_large_boards_and_mid_size_strips() {
+        assert!(!component_bag_enabled(27, 9));
+        assert!(!component_bag_enabled(35, 7));
+        assert!(component_bag_enabled(33, 11));
+        assert!(component_bag_enabled(33, 3));
+        assert!(component_bag_enabled(39, 13));
+        assert_eq!(component_bag_min_components(33), 4);
+        assert_eq!(component_bag_min_components(39), 3);
+    }
+
+    #[test]
+    fn component_id_bag_has_a_unique_inline_boundary() {
+        assert!(matches!(
+            ComponentIds::from_sorted(&[1, 2, 3, 4]),
+            ComponentIds::Inline {
+                len: 4,
+                ids: [1, 2, 3, 4]
+            }
+        ));
+        assert!(matches!(
+            ComponentIds::from_sorted(&[1, 2, 3, 4, 5]),
+            ComponentIds::Heap(ids) if ids.as_ref() == [1, 2, 3, 4, 5]
+        ));
+    }
+
+    #[test]
+    fn fixed_component_signature_matches_allocating_reference() {
+        let n = 3;
+        let limit = 1u64 << 9;
+        for actor in 0..limit {
+            for opponent in 0..limit {
+                let component = actor | opponent;
+                if component == 0 {
+                    continue;
+                }
+                let expected = component_signature(n, component, actor, opponent, false);
+                let (actual, len) =
+                    component_signature_fixed(n, component, actor, opponent);
+                assert_eq!(&actual[..len], expected.as_slice());
+            }
+        }
+    }
+
+    #[test]
+    fn component_bag_outcomes_are_exact_exhaustively_on_two_by_four() {
+        let n = 4;
+        let adjacency = grid_adjacency(2, n);
+        let limit = 1u64 << 8;
+        let mut bag_evaluator = EndgameEvaluator::new(0, None);
+        let mut value_evaluator = EndgameEvaluator::new(MAX_LOCAL_CELLS as u32, None);
+        for legal_p1 in 0..limit {
+            for legal_p2 in 0..limit {
+                let mut components = [0u64; 8];
+                let mut component_count = 0usize;
+                let mut remaining = legal_p1 | legal_p2;
+                while remaining != 0 {
+                    components[component_count] = take_component(
+                        &adjacency,
+                        legal_p1,
+                        legal_p2,
+                        &mut remaining,
+                    );
+                    component_count += 1;
+                }
+                if component_count < COMPONENT_BAG_LARGE_BOARD_MIN_COMPONENTS {
+                    continue;
+                }
+
+                let mut total = Value::zero();
+                for &component in &components[..component_count] {
+                    let (shape, p1, p2) = local_shape_from_masks(
+                        n,
+                        legal_p1 & component,
+                        legal_p2 & component,
+                    );
+                    total = total.add(value_evaluator.component_value_local(&shape, p1, p2));
+                }
+                for turn in [0, 1] {
+                    bag_evaluator
+                        .retain_reduction_components(&components[..component_count], 0);
+                    let actor_value = if turn == 0 { total } else { total.neg() };
+                    let expected = first_player_wins(actor_value);
+                    match bag_evaluator.probe_component_bag(n, legal_p1, legal_p2, turn) {
+                        ComponentBagProbe::Hit(actual) => assert_eq!(actual, expected),
+                        ComponentBagProbe::Miss(key) => {
+                            bag_evaluator.insert_component_bag(key, expected)
+                        }
+                        ComponentBagProbe::Ineligible => {
+                            panic!("three-component position must be bag eligible")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
     fn interaction_components_preserve_exact_value_exhaustively_on_two_by_three() {
         let n = 3;
         let adjacency = grid_adjacency(2, n);
@@ -2122,6 +2505,7 @@ mod tests {
         assert_eq!(evaluator.stats().conjugate_pairs_removed, 1);
         assert_eq!(evaluator.stats().reduction_multi_oversized, 1);
     }
+
 
     #[test]
     fn nonzero_small_component_beside_oversized_component_is_unchanged() {

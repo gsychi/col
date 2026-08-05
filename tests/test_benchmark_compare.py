@@ -34,6 +34,7 @@ front cache queries: 1000
 front cache hits: 250
 dominance nodes: 80
 dominance pruned moves: 160
+reserve cardinality skips: 75
 reserve matching checks: 170
 reserve greedy checks: 140
 reserve win hits: 30
@@ -57,6 +58,11 @@ conjugate pairs removed: 115
 zero components removed: 116
 zero-sum cells removed: 117
 reductions to empty: 118
+component bag queries: 200
+component bag hits: 201
+component bag inserts: 202
+component bag raw id hits: 203
+component bag signature hits: 204
 pairing certificate hits: 119
 pairing certificate checks: 120
 states per second: 121
@@ -72,6 +78,7 @@ time elapsed (solve): 1.250000s
         self.assertEqual(parsed["front_cache_hits"], 250)
         self.assertEqual(parsed["dominance_nodes"], 80)
         self.assertEqual(parsed["dominance_pruned_moves"], 160)
+        self.assertEqual(parsed["reserve_cardinality_skips"], 75)
         self.assertEqual(parsed["reserve_matching_checks"], 170)
         self.assertEqual(parsed["reserve_greedy_checks"], 140)
         self.assertEqual(parsed["reserve_win_hits"], 30)
@@ -91,6 +98,11 @@ time elapsed (solve): 1.250000s
         self.assertEqual(parsed["zero_components_removed"], 116)
         self.assertEqual(parsed["zero_sum_cells_removed"], 117)
         self.assertEqual(parsed["reductions_to_empty"], 118)
+        self.assertEqual(parsed["component_bag_queries"], 200)
+        self.assertEqual(parsed["component_bag_hits"], 201)
+        self.assertEqual(parsed["component_bag_inserts"], 202)
+        self.assertEqual(parsed["component_bag_raw_id_hits"], 203)
+        self.assertEqual(parsed["component_bag_signature_hits"], 204)
         self.assertEqual(parsed["solve_seconds"], 1.25)
         self.assertEqual(parsed["peak_rss_bytes"], 122)
 

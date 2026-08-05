@@ -32,6 +32,7 @@ METRIC_PATTERNS = {
     "front_cache_hits": re.compile(r"^front cache hits:\s+(\d+)$"),
     "dominance_nodes": re.compile(r"^dominance nodes:\s+(\d+)$"),
     "dominance_pruned_moves": re.compile(r"^dominance pruned moves:\s+(\d+)$"),
+    "reserve_cardinality_skips": re.compile(r"^reserve cardinality skips:\s+(\d+)$"),
     "reserve_matching_checks": re.compile(r"^reserve matching checks:\s+(\d+)$"),
     "reserve_greedy_checks": re.compile(r"^reserve greedy checks:\s+(\d+)$"),
     "reserve_win_hits": re.compile(r"^reserve win hits:\s+(\d+)$"),
@@ -69,6 +70,13 @@ METRIC_PATTERNS = {
     "zero_components_removed": re.compile(r"^zero components removed:\s+(\d+)$"),
     "zero_sum_cells_removed": re.compile(r"^zero-sum cells removed:\s+(\d+)$"),
     "reductions_to_empty": re.compile(r"^reductions to empty:\s+(\d+)$"),
+    "component_bag_queries": re.compile(r"^component bag queries:\s+(\d+)$"),
+    "component_bag_hits": re.compile(r"^component bag hits:\s+(\d+)$"),
+    "component_bag_inserts": re.compile(r"^component bag inserts:\s+(\d+)$"),
+    "component_bag_raw_id_hits": re.compile(r"^component bag raw id hits:\s+(\d+)$"),
+    "component_bag_signature_hits": re.compile(
+        r"^component bag signature hits:\s+(\d+)$"
+    ),
     "pairing_certificate_hits": re.compile(r"^pairing certificate hits:\s+(\d+)$"),
     "pairing_certificate_checks": re.compile(r"^pairing certificate checks:\s+(\d+)$"),
     "states_per_second": re.compile(r"^states per second:\s+(\d+)$"),
@@ -107,6 +115,7 @@ class RunResult:
     front_cache_hits: int | None = None
     dominance_nodes: int | None = None
     dominance_pruned_moves: int | None = None
+    reserve_cardinality_skips: int | None = None
     reserve_matching_checks: int | None = None
     reserve_greedy_checks: int | None = None
     reserve_win_hits: int | None = None
@@ -130,6 +139,11 @@ class RunResult:
     zero_components_removed: int | None = None
     zero_sum_cells_removed: int | None = None
     reductions_to_empty: int | None = None
+    component_bag_queries: int | None = None
+    component_bag_hits: int | None = None
+    component_bag_inserts: int | None = None
+    component_bag_raw_id_hits: int | None = None
+    component_bag_signature_hits: int | None = None
     pairing_certificate_hits: int | None = None
     pairing_certificate_checks: int | None = None
     states_per_second: int | None = None
