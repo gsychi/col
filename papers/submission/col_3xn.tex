@@ -1,0 +1,775 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,array,enumitem,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\newcommand{\figdir}{../figures}
+\input{\figdir/colstyle.tex}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Nb}{N}
+\newcommand{\Ebar}{\bar E_4}
+\newcommand{\Kc}{K_{\mathrm{corner}}}
+\newcommand{\Ktwo}{K_{\mathrm{outer2}}}
+\newcommand{\Kfour}{K_{\mathrm{outer4}}}
+\newcommand{\Tm}{T_{\mathrm{middle1}}}
+\newcommand{\lf}{\mathrel{\triangleleft}}
+
+\title{Every empty $3\times n$ Col board is a second-player win}
+\author{Gordon Chi}
+\date{\today}
+
+\begin{document}
+\begin{abstract}
+Col is the partisan placement game in which two players alternately colour
+vertices of a graph, a player may never colour a vertex adjacent to one of
+their own colour, and the player unable to move loses. We prove that for every
+$n\ge1$ the empty $3\times n$ grid has game value $0$, so the second player
+wins. Even widths follow from a half-turn mirror strategy. Odd widths use a
+one-sided comparison principle that bounds a Col position above by a disjoint
+sum of small ``gadget'' positions whenever the cut edges carry no White
+legality on both sides. Widths $4k+1$ are covered by a periodic tiling.
+Widths $4k+3$ follow by strong induction: three base widths, and a six-case
+analysis of Blue's first move in which exactly one case recurses, through a
+dead separator column, to a strictly narrower board of the same family. The
+finite inputs are eleven gadget inequalities and three base widths, each
+certified by a replayable response graph. We give the full written argument, a
+seam table and a neighbourhood table that make the width-independence
+checkable by hand, and a description of the search-free verifier. The whole
+theorem, including every finite certificate, is formalised in Lean~4 without
+external libraries; the formal proof uses a streamlined window form of the
+same induction that needs no dyadic numbers.
+\end{abstract}
+\maketitle
+
+\section{Introduction}
+
+\emph{Col} was introduced in Conway's \emph{On Numbers and Games}
+\cite{ONAG}, where it is attributed to Colin Vout, and it is a standard
+example in combinatorial game theory \cite{WW,Siegel,LIP}. Two players, Blue
+(Left) and White (Right), alternately place a stone of their own colour on an
+empty vertex of a graph; a player may not place a stone orthogonally adjacent
+to a stone of the same colour. Under normal play the player who cannot move
+loses. \Cref{fig:rules} shows the rule and a position.
+
+\begin{figure}[ht]
+\centering
+\colfig{rules_forbidden}\hspace{1.5cm}\colfig{rules_legality}
+\caption{Left: the only restriction in Col. Right: a position on the
+$3\times5$ board after four moves (numbered). Each empty cell is shaded by who
+may still play there; see the legend in \cref{fig:legend}.}
+\label{fig:rules}
+\end{figure}
+
+Empty rectangular boards are natural test cases. Rectangles with an even
+side admit a fixed-point-free half-turn and are second-player wins by
+mirroring. For odd-by-odd rectangles no such symmetry exists, since the centre
+cell is fixed (\cref{fig:odd}), and the problem becomes delicate.
+
+\begin{theorem}\label{thm:main}
+For every integer $n\ge1$, the empty $3\times n$ Col board $H_n$ satisfies
+$H_n=0$. Equivalently, the second player wins, whoever moves first.
+\end{theorem}
+
+The proof is computer-assisted in a precise and limited sense. A finite list of
+local game inequalities (\cref{tab:gadgets}) and three base widths are
+certified by explicit response graphs that a short program replays without
+search. Everything unbounded is proved in the text: the comparison principle,
+the mirror strategy, colour symmetry, the width-independence of the tilings,
+and the induction. The finite sweep over widths up to $203$ that the verifier
+also runs is a regression test and plays no logical role. Finally, the entire
+argument is machine-checked in the Lean~4 proof assistant
+(\cref{sec:lean}), with the finite certificates re-checked inside Lean.
+
+\begin{figure}[ht]
+\centering
+\colfig{roadmap}
+\caption{Structure of the proof of \cref{thm:main}.}
+\label{fig:roadmap}
+\end{figure}
+
+\subsection*{Organisation}
+\Cref{sec:prelim} fixes conventions. \Cref{sec:comparison} proves the
+comparison principle. \Cref{sec:even} treats even widths, \cref{sec:gadgets}
+the gadgets and their certificates, \cref{sec:4k1} widths $4k+1$, and
+\cref{sec:4k3} widths $4k+3$. \Cref{sec:locality} proves that the finitely
+many local checks cover every width. \Cref{sec:verify} describes the
+certificate verifier, \cref{sec:lean} the Lean formalisation, and
+\cref{sec:discussion} discusses open problems.
+
+\section{Preliminaries}\label{sec:prelim}
+
+\subsection{Legality sets}
+We index cells of the $3\times n$ board by $(r,c)$ with row $r\in\{0,1,2\}$
+(top to bottom) and column $c\in\{0,\dots,n-1\}$. For a cell $v$ let $\Nb[v]$
+be $v$ together with its orthogonal neighbours. Since the rule depends on a
+cell's colour only through legality, a Col position on a graph is determined,
+for game purposes, by the pair $(A,B)$ of sets of cells legal for Blue and for
+White. Moves act as follows:
+\[
+\text{Blue at }v\in A:\ (A,B)\mapsto (A\setminus \Nb[v],\ B\setminus\{v\}),\qquad
+\text{White at }w\in B:\ (A,B)\mapsto (A\setminus\{w\},\ B\setminus \Nb[w]).
+\]
+Any pair $(A,B)$ of vertex sets defines a game by these rules, and we call such
+a pair a \emph{position} even if no sequence of stones produces it. Gadgets are
+positions of this kind. We draw positions as \emph{permission diagrams}
+(\cref{fig:legend}): each cell is legal for both players, Blue only, White
+only, or neither. These are permissions, not stones.
+
+\begin{figure}[ht]
+\centering
+\colfig{legend}
+\caption{Legend for all board figures. Blue is the Left (positive) player.}
+\label{fig:legend}
+\end{figure}
+
+\subsection{Game conventions}
+We use the standard theory of short partisan games \cite{ONAG,Siegel}. Blue is
+Left and White is Right. For games $G,H$: $G+H$ is the disjoint sum, $-G$
+swaps the roles, and $G\le H$ means that Right, moving second, wins $H-G$.
+In particular $G\le0$ means Blue loses moving first; $G<0$ means White wins
+whoever moves first; $G=0$ means the second player wins. We write
+$G\lf 0$ for ``not $0\le G$'', that is, White moving first wins. Recall that
+$G\le 0$ iff every Left option $G^L$ satisfies $G^L\lf 0$, and $G^L\lf0$ holds
+if $G^L$ has a Right option $G^{LR}\le0$ or if $G^L<0$.
+Dyadic rationals are games in the usual way, and $1=\{0\mid\ \}$,
+$\tfrac14=\{0\mid\tfrac12\}$.
+
+A Col position on a disjoint union of graphs is the disjoint sum of its
+restrictions. Swapping every Blue permission with every White permission sends
+the position $(A,B)$ to $(B,A)$, which is its negative. The empty board has
+$A=B$ and so equals its own negative:
+
+\begin{lemma}[colour symmetry]\label{lem:selfconj}
+$H_n=-H_n$. Hence $H_n\le 0$ implies $H_n=0$.
+\end{lemma}
+
+\begin{figure}[ht]
+\centering
+\colfig{game_tree}
+\caption{The complete Blue-first game tree of the $1\times 3$ strip, up to
+mirror symmetry. Every Blue opening has a White reply after which Blue is
+stuck. The strip is also a second-player win when White moves first, so it
+has value $0$; this is the case $n=1$ of \cref{thm:main}.}
+\label{fig:tree}
+\end{figure}
+
+\section{The comparison principle}\label{sec:comparison}
+
+The central tool compares a position with a sum of smaller positions obtained
+by cutting the board, provided the cut cannot help White.
+
+\begin{definition}
+Let $\Gamma$ be a graph and $P=(A,B)$ a position on $\Gamma$. A \emph{virtual
+decomposition} of $P$ consists of a partition of the vertices into blocks,
+with the virtual graph $\Gamma^*\subseteq\Gamma$ obtained by deleting every
+edge between different blocks, and a position $T=(A^*,B^*)$ on $\Gamma^*$,
+such that
+\begin{enumerate}[label=(C\arabic*)]
+\item $A\subseteq A^*$ (Blue keeps every move),
+\item $B^*\subseteq B$ (White gains no move), and
+\item no deleted edge has both endpoints in $B^*$.
+\end{enumerate}
+We write $T=\sum_i T_i$ for the resulting disjoint sum of block positions.
+\end{definition}
+
+\begin{theorem}[comparison principle]\label{thm:comparison}
+If $T$ is a virtual decomposition of $P$, then $P\le T$.
+\end{theorem}
+
+\begin{proof}
+We show that Blue, moving first, loses $P+(-T)$. In $-T$ the players'
+roles are exchanged: a Blue move of $-T$ is a White placement in $T$, and a
+White move of $-T$ is a Blue placement in $T$. White keeps the invariant that
+the current positions $P=(A,B)$ and $T=(A^*,B^*)$ satisfy (C1)--(C3).
+
+If Blue plays $v\in A$ in $P$, then $v\in A^*$ by (C1), and White answers in
+$-T$ with the Blue placement at $v$ in $T$. Afterwards
+$A\setminus\Nb_\Gamma[v]\subseteq A^*\setminus\Nb_{\Gamma^*}[v]$ because
+$\Nb_{\Gamma^*}[v]\subseteq\Nb_\Gamma[v]$, and
+$B^*\setminus\{v\}\subseteq B\setminus\{v\}$. Condition (C3) persists because
+$B^*$ only shrank.
+
+If Blue plays in $-T$, this is a White placement at some $w\in B^*$, and
+White answers by playing $w$ in $P$, which is legal by (C2). Then
+$A\setminus\{w\}\subseteq A^*\setminus\{w\}$. For (C2), let
+$u\in B^*\setminus\Nb_{\Gamma^*}[w]$. Then $u\in B$, and $u\notin\Nb_\Gamma[w]$:
+otherwise $uw$ is a deleted edge with both endpoints in $B^*$, contradicting
+(C3). Hence $u\in B\setminus\Nb_\Gamma[w]$. Condition (C3) persists.
+
+White therefore always has a reply. The game is finite, so Blue eventually
+cannot move and loses. Hence $P-T\le0$.
+\end{proof}
+
+\begin{corollary}\label{cor:bound}
+Let $T=\sum_iT_i$ be a virtual decomposition of $P$ and suppose
+$T_i\le b_i$ for dyadic rationals $b_i$. If $\sum b_i\le 0$ then Blue, moving
+first, loses $P$. If $\sum b_i<0$ then $P<0$, so White also wins moving first.
+\end{corollary}
+
+\begin{proof}
+By \cref{thm:comparison} and monotonicity of addition,
+$P\le T\le\sum b_i$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\colfig{sum_intuition}
+\caption{Why sums of nonpositive games are nonpositive: White replies in the
+component Blue just played in.}
+\label{fig:sum}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\colfig{comparison_schematic}
+\caption{A virtual decomposition, from Case 3 of \cref{sec:4k3} on $3\times15$.
+Top: the actual position after Blue's opening and White's reply. Bottom: the
+three virtual blocks. Each block may give Blue extra permissions and White
+fewer, and at each red seam at most one side is White-legal in every row.}
+\label{fig:comparison}
+\end{figure}
+
+\begin{remark}
+\Cref{thm:comparison} is one-sided. Cutting edges does not in general preserve
+value, and (C3) is essential: an edge with White-legal endpoints on both sides
+is a restriction on White that the virtual game would forget.
+\end{remark}
+
+\subsection{Seams and ports}
+In all our decompositions the blocks are intervals of consecutive columns, so
+only horizontal edges between the last column of one block and the first
+column of the next are deleted. For a block position, its \emph{left and right
+White ports} are the White-legality patterns of its first and last columns,
+written top to bottom as binary words. Condition (C3) at a seam says exactly
+that the right port of the left block and the left port of the right block
+have disjoint supports (\cref{fig:seams}).
+
+\begin{figure}[ht]
+\centering
+\colfig{seams}
+\caption{A compatible seam (left) and an incompatible one (right).}
+\label{fig:seams}
+\end{figure}
+
+\section{Even widths}\label{sec:even}
+
+\begin{proposition}\label{prop:even}
+If $n$ is even then $H_n=0$.
+\end{proposition}
+
+\begin{proof}
+The half-turn $\sigma(r,c)=(2-r,\,n-1-c)$ is a graph automorphism of the
+$3\times n$ grid with no fixed cell, since a fixed cell would need
+$c=(n-1)/2$. Let the second player answer every move at $v$ by the move at
+$\sigma(v)$. We claim that after each answer the position satisfies
+$B=\sigma(A)$ (for $A,B$ the Blue and White legal sets, when Blue moved first;
+symmetrically otherwise). This holds initially. If Blue plays $v\in A$ then
+$\sigma(v)\in B$, and $\sigma(v)\ne v$, so $\sigma(v)$ is still White-legal
+after Blue's move. After both moves the new sets are
+$A'=A\setminus(\Nb[v]\cup\{\sigma v\})$ and
+$B'=B\setminus(\{v\}\cup\Nb[\sigma v])$, and $\sigma(A')=B'$ because $\sigma$
+maps $\Nb[v]$ to $\Nb[\sigma v]$ and is an involution. The second player
+always has a reply and so wins. Note that $v$ and $\sigma(v)$ may be adjacent;
+this is harmless because they receive different colours.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\colfig{mirror_even}\hspace{1cm}\colfig{odd_center}
+\caption{Left: the half-turn strategy on $3\times 6$; stones $2,4,6$ are
+White's rotated answers to $1,3,5$. Right: on odd widths the centre cell is
+fixed, and the strategy breaks down.}
+\label{fig:odd}
+\end{figure}
+
+\section{Gadgets and their certificates}\label{sec:gadgets}
+
+\subsection{The gadgets}
+A \emph{gadget} is a position on a $3\times w$ board, given by Blue and White
+legality masks. We encode a mask by the integer $\sum 2^{rw+c}$ over its legal
+cells. \Cref{tab:gadgets} lists the gadgets and bounds used;
+\cref{fig:gallery,fig:opened} draw them. Gadgets with a local move are the
+local positions after Blue's opening and White's reply, with White possibly
+forgoing further permissions.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}l c r r c c l@{}}
+\toprule
+Gadget & $w$ & Blue mask & White mask & ports L/R & bound & used in\\
+\midrule
+$E_4$ & 4 & 4095 & 2023 & 101/010 & $\le0$ & $4k+1$; Cases 1, 3, 4, 5\\
+$\Ebar$ & 4 & 4095 & 3710 & 010/101 & $\le0$ & Cases 2, 3, 4, 6\\
+$F_1$ & 1 & 7 & 5 & 101/101 & $\le0$ & $4k+1$\\
+$\Kc$ & 3 & 244 & 94 & 011/100 & $\le0$ & Case 2\\
+$\Ktwo$ & 7 & 2080241 & 2039675 & 100/101 & $\le0$ & Case 3\\
+$\Kfour$ & 7 & 1046471 & 515951 & 101/100 & $\le0$ & Case 4\\
+$\Tm$ & 6 & 253500 & 130844 & 001/010 & $\le0$ & Case 5\\
+$J_5$ & 5 & 32767 & 21845 & 101/101 & $\le0$ & Case 5\\
+$Z_7$ & 7 & 2097022 & 2088828 & 001/101 & $\le0$ & Case 6\\
+$C_3$ & 3 & 511 & 503 & 101/111 & $\le\tfrac14$ & Case 1\\
+$E_4^{(r,c)}$, $r+c$ odd & 4 & \multicolumn{2}{c}{$4095\setminus\Nb[v]$,\ $2023\setminus\{v\}$} & $\subseteq$101/010 & $\le-1$ & Case 1\\
+\bottomrule
+\end{tabular}
+\caption{The gadget inequalities. $\Kfour$ is the left--right reflection of
+$\Ktwo$. The row-2 opened $E_4$ bounds are the top--bottom reflections of the
+row-0 ones. A second version of $Z_7$ (White mask 2097020, right port 111)
+appears only in the stored base assemblies, at a physical board edge.}
+\label{tab:gadgets}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\colfig{gadget_gallery}
+\caption{The gadgets, with their certified bounds. Dots beside each gadget
+show its White ports (orange: White-legal). Stones mark the local moves already
+played. For $Z_7$ Blue's stone lies in the column just to its left.}
+\label{fig:gallery}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\colfig{e4_parity}\\[4pt]
+\colfig{opened_e4}
+\caption{Top: the six odd-parity cells of $E_4$ (dots), those with $r+c$
+odd. Bottom: after Blue opens any of them, the remaining position is at most
+$-1$.}
+\label{fig:opened}
+\end{figure}
+
+\subsection{Certificates}\label{sec:certs}
+A claim $G+q\le0$, with $G$ a gadget and $q$ a dyadic rational, is certified by
+a \emph{response graph}: a finite set $\mathcal S$ of positions of the form
+$X+q'$, containing $G+q$, together with a map that assigns to every Left option
+of every member of $\mathcal S$ a Right option of that option lying in
+$\mathcal S$ (or a terminal position in which Left has no move). By induction on
+the finite game, every member of $\mathcal S$ is $\le0$. Checking a response
+graph requires only generating Left options and testing membership; no search
+is performed. The bound $C_3\le\tfrac14$ is certified as $C_3-\tfrac14\le0$
+and $E_4^{(r,c)}\le-1$ as $E_4^{(r,c)}+1\le0$.
+
+\section{Widths congruent to 1 modulo 4}\label{sec:4k1}
+
+\begin{proposition}\label{prop:4k1}
+$H_{4k+1}=0$ for every $k\ge0$.
+\end{proposition}
+
+\begin{proof}
+Decompose the empty board into $k$ copies of $E_4$ followed by $F_1$
+(\cref{fig:4k1}). (C1) holds because every block is Blue-legal everywhere,
+and (C2) trivially. The seams are $E_4|E_4$ ($010$ against $101$) and
+$E_4|F_1$ ($010$ against $101$), so (C3) holds. By \cref{cor:bound},
+$H_{4k+1}\le0$, and \cref{lem:selfconj} gives equality.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\colfig{tiling_4k1}
+\caption{The tiling $E_4^kF_1$, here for $n=13$.}
+\label{fig:4k1}
+\end{figure}
+
+\section{Widths congruent to 3 modulo 4}\label{sec:4k3}
+
+\subsection{Base cases}
+The boards $H_3$, $H_7$, $H_{11}$ are certified directly. For each of their
+$4$, $8$ and $12$ openings up to symmetry, the data give a White reply and a
+virtual decomposition by certified tiles (the gadgets above and nine further
+ordinary tiles), checked by the same comparison conditions.
+\Cref{fig:base3} shows the replies on $3\times3$. The six-case step below
+does not apply to these widths: at $n=7$ it would fail at $(1,1)$ and
+$(1,3)$, and at $n=11$ at $(1,5)$.
+
+\begin{figure}[ht]
+\centering
+\colfig{base3}
+\caption{The four openings of $3\times 3$ up to symmetry and White's certified
+replies.}
+\label{fig:base3}
+\end{figure}
+
+\subsection{The inductive step}
+Let $n=4k+3$ with $k\ge3$, and assume $H_m=0$ for every $m<n$ with
+$m\equiv3\pmod4$. By \cref{lem:selfconj} it suffices to show $H_n\le0$,
+that is, $H_n^L\lf0$ for every Blue opening $H_n^L$.
+
+\subsubsection*{Normalisation}
+The top--bottom and left--right reflections are automorphisms of the board
+that preserve checkerboard parity $r+c \bmod 2$ (the latter because
+$n-1=4k+2$ is even). We may therefore assume that Blue opens at $(r,c)$ with
+$r\in\{0,1\}$ and $0\le c\le 2k+1$ (\cref{fig:norm}). Every such opening
+falls in exactly one of six cases (\cref{fig:casemap}): odd $r+c$ (Case 1);
+$r=0$ and $c=0$ (Case 2), $c\equiv2$ (Case 3), or $c\equiv0$, $c\ge4$
+(Case 4) modulo 4; $r=1$ and $c\equiv1$ (Case 5) or $c\equiv3$ (Case 6)
+modulo 4.
+
+\begin{figure}[ht]
+\centering
+\colfig{normalization}
+\caption{Normalisation on $3\times15$: by the two reflections every opening
+is equivalent to one in the shaded region.}
+\label{fig:norm}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\colfig{case_map}
+\caption{The case used for each normalised opening on $3\times23$.}
+\label{fig:casemap}
+\end{figure}
+
+In each case we give a decomposition of the position and apply
+\cref{cor:bound}; \cref{sec:locality} verifies conditions (C1)--(C3) for all
+$k$. Figures \ref{fig:case1}--\ref{fig:case6} show each case on $3\times19$
+($k=4$). In every figure the top board is the actual position and the bottom
+board the virtual decomposition, with seams dashed.
+
+\subsubsection*{Case 1: $r+c$ odd}
+Use $E_4^kC_3$ with no White reply. Since $c\le2k+1<4k$, Blue opened block
+$j=\lfloor c/4\rfloor$ at the local cell $(r,c-4j)$, which has odd parity
+because $4j$ is even. With $r\in\{0,1\}$ this local cell is one of
+$(0,1),(0,3),(1,0),(1,2)$, and that block becomes $E_4^{(r,c-4j)}\le-1$. The
+other $E_4$ blocks are $\le0$ and $C_3\le\frac14$, so the position is at most
+$-1+\frac14=-\frac34<0$ (\cref{fig:numberline}), and White, to move, wins.
+
+\begin{figure}[ht]
+\centering
+\colfig{example_case1}
+\caption{Case 1, Blue at $(0,5)$ on $3\times19$.}
+\label{fig:case1}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\colfig{number_line}
+\caption{The bookkeeping in Case 1.}
+\label{fig:numberline}
+\end{figure}
+
+\subsubsection*{Case 2: corner $(0,0)$}
+White replies at $(2,2)$. Decompose as $\Kc\,\Ebar^k$; the widths sum to
+$3+4k=n$.
+
+\subsubsection*{Case 3: $r=0$, $c=4a+2$}
+White replies at $(2,c-2)$. Decompose as $E_4^a\,\Ktwo\,\Ebar^b$ with
+$b=k-a-1$; the widths sum to $4a+7+4b=n$. From $4a+2\le2k+1$ we get
+$b\ge(2k-3)/4>0$, so $b\ge1$.
+
+\subsubsection*{Case 4: $r=0$, $c=4a+4$}
+White replies at $(2,c+2)$. Decompose as $E_4^a\,\Kfour\,\Ebar^b$ with
+$b=k-a-1$. Here $a\ge0$, and $4a+4\le 2k+1$ gives $b\ge(2k-1)/4>0$, so
+$b\ge1$.
+
+\subsubsection*{Case 5: $r=1$, $c=4a+1$}
+White replies at $(0,c-1)$. Decompose as $E_4^a\,\Tm\,E_4^b\,J_5$ with
+$b=k-a-2$; the widths sum to $4a+6+4b+5=n$. From $c\le 2k+1$,
+$a\le\lfloor k/2\rfloor\le k-2$ for $k\ge3$, so $b\ge0$.
+
+In Cases 2--5 every block is $\le 0$, so after White's reply Blue, to move,
+loses by \cref{cor:bound}. Hence $H_n^L$ has a Right option $\le0$.
+
+\begin{figure}[ht]
+\centering
+\colfig{example_case2}\\[6pt]
+\colfig{example_case3}
+\caption{Case 2, Blue at $(0,0)$; Case 3, Blue at $(0,6)$ ($a=1$, $b=2$).}
+\label{fig:case23}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\colfig{example_case4}\\[6pt]
+\colfig{example_case5}
+\caption{Case 4, Blue at $(0,8)$ ($a=1$, $b=2$); Case 5, Blue at $(1,5)$
+($a=1$, $b=1$).}
+\label{fig:case45}
+\end{figure}
+
+\subsubsection*{Case 6: $r=1$, $c\equiv3\pmod 4$ (the recursive case)}
+White replies at $(0,c+1)$. Blue's stone at $(1,c)$ makes all three cells of
+column $c$ Blue-illegal. White's reply makes $(0,c)$ White-illegal, and White
+voluntarily gives up $(2,c)$, which is allowed by (C2). Column $c$ is then a
+\emph{dead separator} (\cref{fig:deadzoom}): it carries no permissions in the
+virtual position, so it contributes the game $0$, and no deleted edge at it
+has a White-legal endpoint in that column.
+
+On the left, restore every Blue permission lost in columns $0,\dots,c-1$,
+which is allowed by (C1). The left block is then exactly the empty board
+$H_c$. On the right the width is $s=n-c-1\equiv3\pmod4$, with
+$s\ge 4k+2-(2k+1)\ge7$, and we decompose it as $Z_7\,\Ebar^{(s-7)/4}$.
+Since $3\le c<n$ and $c\equiv3\pmod 4$, either $c\in\{3,7,11\}$ (base cases) or
+$c\ge15$ and the induction hypothesis applies. Either way $H_c=0$, and
+\[
+\text{position after White's reply}\ \le\ H_c+0+Z_7+\sum\Ebar\ \le\ 0 .
+\]
+
+\begin{figure}[ht]
+\centering
+\colfig{case6_zoom}
+\caption{The dead separator column of Case 6.}
+\label{fig:deadzoom}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\colfig{example_case6}\\[6pt]
+\colfig{example_case6_big}
+\caption{Case 6. Top: Blue at $(1,7)$ on $3\times19$ recurses to $H_7$.
+Bottom: Blue at $(1,11)$ on $3\times23$ recurses to $H_{11}$.}
+\label{fig:case6}
+\end{figure}
+
+\subsubsection*{Conclusion of the step}
+Every normalised opening is covered. In Cases 2--6 White's stated reply leads
+to a position $\le0$. In Case 1 the position after Blue's move is already
+negative. Thus $H_n\le0$, and $H_n=0$ by \cref{lem:selfconj}. Together with
+\cref{prop:even,prop:4k1}, this proves \cref{thm:main}.
+
+\begin{figure}[ht]
+\centering
+\colfig{recursion_chain}
+\caption{Dependencies among the widths $n\equiv3\pmod4$. Each arrow is a
+Case 6 call to a narrower board; only the widths $3,7,11$ are certified
+directly.}
+\label{fig:recursion}
+\end{figure}
+
+\section{Width independence}\label{sec:locality}
+
+The decompositions above depend on $k$, $a$ and $b$. We show that
+conditions (C1)--(C3) reduce to finitely many checks independent of these
+parameters.
+
+\begin{lemma}[locality]\label{lem:locality}
+In each case, (C1)--(C3) hold for all admissible parameters provided that:
+\begin{enumerate}[label=(\roman*)]
+\item every block not containing the opening or the reply has full Blue mask;
+\item the exceptional block's masks satisfy (C1) and (C2) against the actual
+local position; and
+\item every seam that occurs is compatible, and every cell of $\Nb[w]$ for
+the White reply $w$ that lies outside the exceptional block is White-illegal
+in the virtual position.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The actual position differs from the empty board only in the cells
+$\Nb[v]\cup\{w\}$, removed from $A$, and $\{v\}\cup \Nb[w]$, removed from $B$
+(in Case 1 there is no $w$). For a block other than the exceptional one, (C1)
+holds by (i). For (C2), a virtual White cell of such a block is White-legal
+in the actual position unless it equals $v$ or lies in $\Nb[w]$. The cell $v$
+lies in the exceptional block, and the cells of $\Nb[w]$ outside it are
+White-illegal virtually by (iii). The exceptional block is (ii), and (C3) is
+the seam part of (iii).
+\end{proof}
+
+Condition (i) holds because $E_4$, $\Ebar$, $F_1$, $J_5$ and $C_3$ have full
+Blue masks, and the left block of Case 6 is the empty $H_c$. Condition (ii)
+is a finite check for each of the gadgets with local moves. It is satisfied by
+construction, since each gadget's root is the local position after the moves
+with some White permissions removed. \Cref{tab:seams,tab:neigh} list every
+seam and every cross-block neighbour of a White reply.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Seam (left $|$ right) & ports & where\\
+\midrule
+$E_4\,|\,E_4$, $E_4\,|\,F_1$, $E_4\,|\,J_5$, $E_4\,|\,C_3$ & $010\,|\,101$ & $4k+1$; Cases 1, 5\\
+$E_4^{(r,c)}\,|\,E_4$ or $C_3$ & $\subseteq010\,|\,101$ & Case 1\\
+$E_4\,|\,E_4^{(r,c)}$ & $010\,|\subseteq101$ & Case 1\\
+$\Ebar\,|\,\Ebar$ & $101\,|\,010$ & Cases 2, 3, 4, 6\\
+$\Kc\,|\,\Ebar$ & $100\,|\,010$ & Case 2\\
+$E_4\,|\,\Ktwo$,\quad $\Ktwo\,|\,\Ebar$ & $010\,|\,100$,\quad $101\,|\,010$ & Case 3\\
+$E_4\,|\,\Kfour$,\quad $\Kfour\,|\,\Ebar$ & $010\,|\,101$,\quad $100\,|\,010$ & Case 4\\
+$E_4\,|\,\Tm$,\quad $\Tm\,|\,E_4$ or $J_5$ & $010\,|\,001$,\quad $010\,|\,101$ & Case 5\\
+$H_c\,|\,$dead$\,|\,Z_7$,\quad $Z_7\,|\,\Ebar$ & $\cdot\,|\,000\,|\,\cdot$,\quad $101\,|\,010$ & Case 6\\
+\bottomrule
+\end{tabular}
+\caption{Every seam in the six cases and the $4k+1$ tiling. In each row the
+two ports have disjoint supports.}
+\label{tab:seams}
+\end{table}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}l l l l@{}}
+\toprule
+Case & reply $w$ (local) & neighbour outside block & White-illegal because\\
+\midrule
+2 & $(2,2)$ in $\Kc$ & $(2,3)$, first column of $\Ebar$ & left port $010$\\
+3 & $(2,0)$ in $\Ktwo$ & $(2,4a-1)$, last column of $E_4$ ($a\ge1$) & right port $010$\\
+4 & $(2,6)$ in $\Kfour$ & $(2,4a+7)$, first column of $\Ebar$ & left port $010$\\
+5 & $(0,0)$ in $\Tm$ & $(0,4a-1)$, last column of $E_4$ ($a\ge1$) & right port $010$\\
+6 & $(0,0)$ in $Z_7$ & $(0,c)$, dead column & dead\\
+\bottomrule
+\end{tabular}
+\caption{Neighbours of White's reply lying outside the exceptional block.}
+\label{tab:neigh}
+\end{table}
+
+\section{Verification}\label{sec:verify}
+
+The package in \texttt{proofs/construction/three\_row} of the accompanying
+repository contains the certificates and a single standard-library Python
+verifier, \texttt{verify.py}. It performs no game search and runs in a few
+seconds. It checks:
+\begin{enumerate}[label=(\arabic*)]
+\item SHA-256 hashes of the 34 certificate files;
+\item a search-free replay of 21 ordinary response graphs ($20{,}575$
+checkpoints, $82{,}899$ edges) and 12 dyadic ones ($1{,}064$ checkpoints,
+$3{,}130$ edges), including reflections rebuilt from their sources;
+\item the binding of each of the 17 gadget roles to its exact root, ports and
+bound;
+\item the stored base assemblies for widths $3$, $7$, $11$;
+\item as a regression test, all $6{,}651$ assemblies for widths up to $203$,
+including $5{,}280$ normalised openings of the six-case step;
+\item the local windows (13 plus 2 supplementary row-2 windows) and the 25
+seam types, all of which already occur by $n=19$.
+\end{enumerate}
+A separate script applies 15 targeted corruptions, such as a wrong reply, a
+flipped port bit, or a weakened $C_3$ bound. The verifier rejects every one
+for the expected reason.
+
+\section{Formal verification in Lean}\label{sec:lean}
+
+The theorem is formalised in Lean~4, using only Lean's core library. The
+development is in the directory \texttt{proofs/lean} of the accompanying
+repository. The final
+statement is phrased with the literal rules of Col:
+\begin{quote}\small
+\texttt{theorem three\_by\_n\_stones (n : Nat) :}\\
+\texttt{\ \ StoneLoses (board n) (fun \_ => False) (fun \_ => False)}
+\end{quote}
+Here \texttt{StoneLoses R M O} means that the player to move, owning the
+stones \texttt{M}, loses against the owner of the stones \texttt{O}, where a
+placement is legal if the cell of \texttt{R} is empty and not orthogonally
+adjacent to a stone of the mover's colour. Starting from no stones, it states
+that the first player loses on every empty $3\times n$ board, whichever colour
+starts. The development consists of five modules.
+
+\begin{description}[font=\normalfont\ttfamily, leftmargin=1.5em, style=nextline]
+\item[Game] The legality-set model and an inductive predicate
+\texttt{Loses}, whose proofs are finite winning strategies for the second
+player. It proves the comparison principle (\cref{thm:comparison}, for an
+arbitrary subgraph and cut condition), invariance under relabelling of cells,
+and the sum rule for non-adjacent regions.
+\item[Cert] An encoding of $3\times w$ positions as natural numbers, a
+search-free checker for closed certificate sets, and its soundness theorem:
+every position in an accepted set is a loss for the player to move.
+\item[Blocks] Seams between blocks, repeated $E_4$ and $\bar E_4$ bricks, and
+a general \emph{window step} that turns a local domination check around
+Blue's opening and White's reply into a proof of the whole position. It is the
+locality lemma (\cref{lem:locality}) in general form.
+\item[Main] The mirror strategy, the reflections used for normalisation, the
+$E_4^kF_1$ tiling, the six cases, and the strong induction.
+\item[Stones] The equivalence between the stone rules and the legality-set
+model.
+\end{description}
+
+\subsection*{A streamlined induction}
+The formal proof follows \cref{sec:4k3} but handles all six cases in one
+shape (\cref{fig:leanscheme}): the position after Blue's opening and White's
+reply is compared with $E_4^a\,W\,\bar E_4^{\,b}$, and in Case 6 with
+$H_c\,W\,\bar E_4^{\,b}$. The window $W$ is simply the actual local position
+after the two moves. White gives up only the seam cells that the neighbouring
+ports require: the middle cell of each edge column next to an $E_4$ or
+$\bar E_4$, and the whole first column next to $H_c$ (\cref{fig:leanwindows},
+\cref{tab:leanwindows}). Two changes remove all numerical bookkeeping:
+\begin{itemize}
+\item In Case 1, White replies explicitly at local $(1,4)$ of a
+seven-column window starting at the opened brick. The bound
+$-1+\tfrac14<0$ is not needed.
+\item In Case 5, a seven-column window replaces $\Tm\,E_4^b\,J_5$.
+\end{itemize}
+With these windows the step already holds for $n=11$ (Case 6 then recurses
+to $H_3$), so the only base cases are the whole boards $3\times3$ and
+$3\times7$. The even widths and the $4k+1$ tiling are formalised exactly as in
+\cref{sec:even,sec:4k1}.
+
+\begin{figure}[ht]
+\centering
+\colfig{lean_scheme}
+\caption{The shape of every case in the Lean proof, shown for Case 3 on
+$3\times19$: bricks $E_4^a$, one window containing both moves, and bricks
+$\bar E_4^{\,b}$.}
+\label{fig:leanscheme}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\colfig{lean_windows}
+\caption{The nine window gadgets of the Lean proof. Each is the actual local
+position after Blue's opening and White's reply, minus the seam cells White
+gives up.}
+\label{fig:leanwindows}
+\end{figure}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}l c c c c r@{}}
+\toprule
+Window & width & opening (local) & reply (local) & left neighbour & checkpoints\\
+\midrule
+Case 1 & 7 & $(0,1),(0,3),(1,0),(1,2)$ & $(1,4)$ & $E_4^a$ & 1456, 1056, 1314, 910\\
+Case 2 & 3 & $(0,0)$ & $(2,2)$ & board edge & 7\\
+Case 3 & 7 & $(0,2)$ & $(2,0)$ & $E_4^a$ & 1478\\
+Case 4 & 7 & $(0,4)$ & $(2,6)$ & $E_4^a$ & 1253\\
+Case 5 & 7 & $(1,1)$ & $(0,0)$ & $E_4^a$ & 891\\
+Case 6 & 8 & $(1,0)$ & $(0,1)$ & $H_c$ & 4844\\
+\midrule
+$E_4$, $\bar E_4$, $F_1$ & 4, 4, 1 & & & & 152, 155, 3\\
+$H_3$, $H_7$ & 3, 7 & & & & 40, 9819\\
+\bottomrule
+\end{tabular}
+\caption{The certificates checked inside Lean. The right neighbour of every
+window is $\bar E_4^{\,b}$.}
+\label{tab:leanwindows}
+\end{table}
+
+\subsection*{Trusted base}
+Everything except the 14 certificate checks is verified by Lean's kernel. The
+certificate checks are evaluated by compiled code through Lean's
+\texttt{native\_decide}, so the trusted base consists of the Lean kernel, the
+Lean compiler, and the axioms \texttt{propext}, \texttt{Classical.choice} and
+\texttt{Quot.sound}. The certificates were produced by a separate exhaustive
+search, which is not trusted: soundness depends only on the checker. The
+build takes about 20 seconds on a laptop.
+
+\section{Discussion}\label{sec:discussion}
+
+The recursive Case 6 is the heart of the argument. A single middle-row stone,
+together with a reply and one voluntary concession by White, isolates an
+ordinary empty board, which reduces the problem to a narrower width in the
+same residue class. We do not know an analogue for five rows. There a single
+stone does not kill a column, and experiments suggest that fixed boundary
+states are not numerically stable when neutral columns are inserted. The
+cases $5\times n$ for odd $n$, and general odd-by-odd rectangles, remain open.
+
+\subsection*{Verification status}
+Every part of the proof is machine-checked: the certificates by the Python
+verifier of \cref{sec:verify}, and the complete theorem, including its
+certificates, by the Lean formalisation of \cref{sec:lean}.
+
+\begin{thebibliography}{9}
+\bibitem{WW} E.~R. Berlekamp, J.~H. Conway, R.~K. Guy,
+\emph{Winning Ways for Your Mathematical Plays}, 2nd ed., A K Peters, 2001--2004.
+\bibitem{ONAG} J.~H. Conway, \emph{On Numbers and Games}, Academic Press,
+1976; 2nd ed., A K Peters, 2001.
+\bibitem{LIP} M.~H. Albert, R.~J. Nowakowski, D.~Wolfe, \emph{Lessons in
+Play: An Introduction to Combinatorial Game Theory}, A K Peters, 2007.
+\bibitem{Siegel} A.~N. Siegel, \emph{Combinatorial Game Theory}, Graduate
+Studies in Mathematics 146, American Mathematical Society, 2013.
+\end{thebibliography}
+
+\end{document}

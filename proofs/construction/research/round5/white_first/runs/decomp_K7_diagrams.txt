@@ -1,0 +1,204 @@
+open (0,1) bound -1 seam 1|2 pieces ['0', '-1']
+    w. | woooo
+    bw | booob
+    .b | oooow
+    bo | booob
+    ob | ooooo
+open (0,1) bound -1 seam 2|3 pieces ['-1', '0']
+    w.w | booo
+    bwb | ooob
+    .bo | boow
+    bob | ooob
+    ooo | booo
+open (0,2) bound -1/2 seam 2|3 pieces ['0', '-1/2']
+    ow. | wooo
+    bo. | ooob
+    .bo | boow
+    bob | ooob
+    ooo | booo
+open (0,2) bound -1/4 seam 1|2 pieces ['1/2', '-3/4']
+    ow | .wooo
+    bo | .ooob
+    .b | oooow
+    bo | booob
+    ob | ooooo
+open (0,3) bound -1 seam 1|2 pieces ['1', '-2']
+    ob | w.woo
+    bo | bwoob
+    .b | oooow
+    bo | booob
+    ob | ooooo
+open (0,3) bound -1 seam 2|3 pieces ['0', '-1']
+    oow | .woo
+    bob | woob
+    .bo | boow
+    bob | ooob
+    ooo | booo
+open (0,4) bound -1/2 seam 3|4 pieces ['1/2', '-1']
+    ooow | .wo
+    booo | .ob
+    .bob | oow
+    booo | bob
+    ooob | ooo
+open (0,4) bound -1/4 seam 2|3 pieces ['1/2', '-3/4']
+    ooo | ..wo
+    bob | owob
+    .bo | boow
+    bob | ooob
+    ooo | booo
+open (0,5) bound -1 seam 3|4 pieces ['1', '-2']
+    ooob | w.w
+    booo | bwb
+    .bob | oow
+    booo | bob
+    ooob | ooo
+open (0,5) bound -1 seam 4|5 pieces ['0', '-1']
+    oooow | .w
+    booob | wb
+    .booo | bw
+    booob | ob
+    ooooo | bo
+open (1,0) bound -1/2 seam 0|1 pieces ['-1/2', '0']
+    w | booooo
+    . | woooob
+    . | boooow
+    b | ooooob
+    o | booooo
+open (1,0) bound -1/2 seam 1|2 pieces ['0', '-1/2']
+    wb | ooooo
+    .w | booob
+    .b | oooow
+    bo | booob
+    ob | ooooo
+open (1,1) bound -5/8+* seam 1|2 pieces ['*', '-5/8']
+    o. | ooooo
+    .. | wooob
+    .. | oooow
+    bo | booob
+    ob | ooooo
+open (1,1) bound -1/4 seam 1|2 pieces ['-1/2', '1/4']
+    ow | boooo
+    .. | wooob
+    .. | oooow
+    bo | booob
+    ob | ooooo
+open (1,2) bound -1 seam 1|2 pieces ['1', '-2']
+    ob | woooo
+    bw | .woob
+    .b | wooow
+    bo | booob
+    ob | ooooo
+open (1,2) bound -1 seam 2|3 pieces ['-1', '0']
+    oow | booo
+    bw. | woob
+    .bw | boow
+    bob | ooob
+    ooo | booo
+open (1,3) bound -1/2 seam 2|3 pieces ['1/4', '-3/4']
+    ooo | .ooo
+    bow | .wob
+    .bo | .oow
+    bob | ooob
+    ooo | booo
+open (1,3) bound -1/2 seam 3|4 pieces ['1/4', '-3/4']
+    ooo. | ooo
+    bow. | wob
+    .bo. | oow
+    booo | bob
+    ooob | ooo
+open (1,4) bound -1 seam 3|4 pieces ['1', '-2']
+    ooob | woo
+    boow | .wb
+    .bob | wow
+    booo | bob
+    ooob | ooo
+open (1,4) bound -1 seam 4|5 pieces ['-1', '0']
+    oooow | bo
+    boow. | wb
+    .boow | bw
+    booob | ob
+    ooooo | bo
+open (1,5) bound -5/8+* seam 4|5 pieces ['3/8', '-1+*']
+    ooooo | .o
+    booow | ..
+    .booo | .w
+    booob | ob
+    ooooo | bo
+open (1,5) bound -1/4 seam 4|5 pieces ['5/4', '-3/2']
+    oooob | wo
+    booow | ..
+    .booo | .w
+    booob | ob
+    ooooo | bo
+open (1,6) bound -1/2 seam 4|5 pieces ['1/2', '-1']
+    ooooo | bw
+    booob | w.
+    .booo | bw
+    booob | ob
+    ooooo | bo
+open (1,6) bound -1/2 seam 5|6 pieces ['1', '-3/2']
+    ooooob | w
+    boooow | .
+    .booob | w
+    booooo | b
+    ooooob | o
+open (2,1) bound -1 seam 1|2 pieces ['0', '-1']
+    ob | ooooo
+    bw | booob
+    .. | wooow
+    bw | booob
+    ob | ooooo
+open (2,1) bound -1 seam 2|3 pieces ['-1', '0']
+    ooo | booo
+    bwb | ooob
+    ..w | boow
+    bwb | ooob
+    ooo | booo
+open (2,2) bound -3/4 seam 1|2 pieces ['0', '-3/4']
+    ob | ooooo
+    bo | .ooob
+    .. | .woow
+    bo | .ooob
+    ob | ooooo
+open (2,2) bound -1/2 seam 2|3 pieces ['0', '-1/2']
+    ooo | booo
+    bo. | ooob
+    ... | woow
+    bo. | ooob
+    ooo | booo
+open (2,3) bound -1 seam 1|2 pieces ['1', '-2']
+    ob | ooooo
+    bo | bwoob
+    .b | w.wow
+    bo | bwoob
+    ob | ooooo
+open (2,3) bound -1 seam 2|3 pieces ['0', '-1']
+    ooo | booo
+    bob | woob
+    .bw | .wow
+    bob | woob
+    ooo | booo
+open (2,4) bound -3/4 seam 4|5 pieces ['1/4', '-1']
+    ooooo | bo
+    booo. | ob
+    .bow. | ww
+    booo. | ob
+    ooooo | bo
+open (2,4) bound -1/2 seam 2|3 pieces ['1/2', '-1']
+    ooo | booo
+    bob | owob
+    .bo | ..ww
+    bob | owob
+    ooo | booo
+open (2,5) bound -1 seam 3|4 pieces ['1', '-2']
+    ooob | ooo
+    booo | bwb
+    .bob | w.w
+    booo | bwb
+    ooob | ooo
+open (2,5) bound -1 seam 4|5 pieces ['0', '-1']
+    ooooo | bo
+    booob | wb
+    .boow | .w
+    booob | wb
+    ooooo | bo

@@ -35,6 +35,11 @@ DEFAULT_BOARDS = tuple(
 )
 
 MEDIAN_FIELDS = (
+    "tiling_queries",
+    "tiling_matching_tiles",
+    "tiling_successful_covers",
+    "tiling_dfs_cutoffs",
+    "tiling_query_seconds",
     "wall_seconds",
     "solve_seconds",
     "states",
@@ -79,6 +84,11 @@ MEDIAN_FIELDS = (
     "component_bag_shared_duplicate_inserts",
     "component_bag_raw_id_hits",
     "component_bag_signature_hits",
+    "component_charge_queries",
+    "component_charge_win_hits",
+    "component_charge_loss_hits",
+    "component_charge_fixed_checks",
+    "component_charge_greedy_checks",
     "component_signature_shared_queries",
     "component_signature_shared_hits",
     "component_signature_shared_inserts",

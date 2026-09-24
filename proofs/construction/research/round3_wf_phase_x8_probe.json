@@ -1,0 +1,92 @@
+[
+  {
+    "k": 8,
+    "p": 5,
+    "t": 1,
+    "Q": "X",
+    "raw_result": {
+      "actor_wins": null,
+      "blue": 1099503165439,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1879385,
+      "seconds": 5.94190125,
+      "states": 5000000,
+      "turn": 0,
+      "white": 549736910431,
+      "width": 8
+    }
+  },
+  {
+    "k": 8,
+    "p": 5,
+    "t": 3,
+    "Q": "X",
+    "raw_result": {
+      "actor_wins": null,
+      "blue": 1098966302719,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1845340,
+      "seconds": 6.064146625,
+      "states": 5000000,
+      "turn": 0,
+      "white": 410418937471,
+      "width": 8
+    }
+  },
+  {
+    "k": 8,
+    "p": 6,
+    "t": 2,
+    "Q": "X",
+    "raw_result": {
+      "actor_wins": null,
+      "blue": 1099498979327,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1986729,
+      "seconds": 5.914304167,
+      "states": 5000000,
+      "turn": 0,
+      "white": 548650598015,
+      "width": 8
+    }
+  },
+  {
+    "k": 8,
+    "p": 7,
+    "t": 1,
+    "Q": "X",
+    "raw_result": {
+      "actor_wins": null,
+      "blue": 1099503140863,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1889402,
+      "seconds": 6.019897708,
+      "states": 5000000,
+      "turn": 0,
+      "white": 549730598527,
+      "width": 8
+    }
+  },
+  {
+    "k": 8,
+    "p": 7,
+    "t": 3,
+    "Q": "X",
+    "raw_result": {
+      "actor_wins": null,
+      "blue": 1097355689983,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1939345,
+      "seconds": 5.8560187500000005,
+      "states": 5000000,
+      "turn": 0,
+      "white": 546509422207,
+      "width": 8
+    }
+  }
+]

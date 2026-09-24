@@ -1,0 +1,45 @@
+{
+  "cap_width": 2,
+  "half_turn": true,
+  "legal_ports": true,
+  "white_wins_abstract_controller": false,
+  "counts": {
+    "states": 629,
+    "port_events": 4,
+    "cap_openings": 669,
+    "mirror_terminals": 1
+  },
+  "initial_losing_port_prefix": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      3,
+      2
+    ]
+  ],
+  "first_nonport_witness": {
+    "event": "blue",
+    "vertex": 0,
+    "white_options": [
+      1,
+      2,
+      7,
+      8,
+      9,
+      11,
+      14,
+      15,
+      16
+    ]
+  }
+}

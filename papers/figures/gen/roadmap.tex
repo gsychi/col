@@ -1,0 +1,16 @@
+\begin{tikzpicture}[scale=1.000, every node/.style={transform shape}]
+\node[rootbox] (root) at (0,0) {empty $3\times n$ board: is it a second-player win?};
+\node[leafbox] (even) at (-4.6,-1.6) {$n$ even\\half-turn mirror};
+\node[leafbox] (one) at (0,-1.6) {$n=4k+1$\\tiling $E_4^kF_1$};
+\node[leafbox] (three) at (4.6,-1.6) {$n=4k+3$\\bases $3,7,11$ + induction};
+\node[smallbox] (c1) at (1.3,-3.3) {Case 1\\odd parity};
+\node[smallbox] (c25) at (4.1,-3.3) {Cases 2--5\\explicit reply + tiling};
+\node[smallbox] (c6) at (6.9,-3.3) {Case 6\\dead column\\+ smaller board};
+\draw[-{Stealth}] (root) -- (even);
+\draw[-{Stealth}] (root) -- (one);
+\draw[-{Stealth}] (root) -- (three);
+\draw[-{Stealth}] (three) -- (c1);
+\draw[-{Stealth}] (three) -- (c25);
+\draw[-{Stealth}] (three) -- (c6);
+\draw[-{Stealth}, dashed, red!65!black] (c6.east) to[out=0, in=0, looseness=1.4] node[right, font=\tiny, align=left] {strong\\induction} (three.east);
+\end{tikzpicture}

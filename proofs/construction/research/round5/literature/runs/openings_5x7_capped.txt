@@ -1,0 +1,1 @@
+5x7 openings: killed at the 1800 s cap, no output; peak RSS 1.08 GB

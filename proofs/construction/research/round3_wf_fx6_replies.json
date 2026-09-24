@@ -1,0 +1,442 @@
+[
+  {
+    "white_reply": [
+      0,
+      0
+    ],
+    "root": [
+      1072434942,
+      532167580
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1072434942,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 2880,
+      "seconds": 0.017819583,
+      "states": 9368,
+      "turn": 0,
+      "white": 532167580,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      0,
+      1
+    ],
+    "root": [
+      1072434941,
+      532167448
+    ],
+    "result": {
+      "actor_wins": true,
+      "blue": 1072434941,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 9,
+      "seconds": 0.000500041,
+      "states": 84,
+      "turn": 0,
+      "white": 532167448,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      0,
+      2
+    ],
+    "root": [
+      1072434939,
+      532167313
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1072434939,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 822,
+      "seconds": 0.005723,
+      "states": 3638,
+      "turn": 0,
+      "white": 532167313,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      0,
+      3
+    ],
+    "root": [
+      1072434935,
+      532167043
+    ],
+    "result": {
+      "actor_wins": true,
+      "blue": 1072434935,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 23,
+      "seconds": 0.000426208,
+      "states": 110,
+      "turn": 0,
+      "white": 532167043,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      0,
+      4
+    ],
+    "root": [
+      1072434927,
+      532167559
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1072434927,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 3435,
+      "seconds": 0.01178475,
+      "states": 11145,
+      "turn": 0,
+      "white": 532167559,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      1,
+      1
+    ],
+    "root": [
+      1072434815,
+      532159005
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1072434815,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 54,
+      "seconds": 0.001497166,
+      "states": 747,
+      "turn": 0,
+      "white": 532159005,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      1,
+      2
+    ],
+    "root": [
+      1072434943,
+      532166683
+    ],
+    "result": {
+      "actor_wins": true,
+      "blue": 1072434943,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 14,
+      "seconds": 0.000562166,
+      "states": 104,
+      "turn": 0,
+      "white": 532166683,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      1,
+      3
+    ],
+    "root": [
+      1072434431,
+      532166807
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1072434431,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 1959,
+      "seconds": 0.013363041,
+      "states": 6697,
+      "turn": 0,
+      "white": 532166807,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      1,
+      5
+    ],
+    "root": [
+      1072432895,
+      532165535
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1072432895,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 3212,
+      "seconds": 0.011038416,
+      "states": 10383,
+      "turn": 0,
+      "white": 532165535,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      2,
+      0
+    ],
+    "root": [
+      1072434943,
+      532155295
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1072434943,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 102,
+      "seconds": 0.002166875,
+      "states": 915,
+      "turn": 0,
+      "white": 532155295,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      2,
+      1
+    ],
+    "root": [
+      1072434943,
+      531630879
+    ],
+    "result": {
+      "actor_wins": true,
+      "blue": 1072434943,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 4,
+      "seconds": 0.000382208,
+      "states": 22,
+      "turn": 0,
+      "white": 531630879,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      3,
+      1
+    ],
+    "root": [
+      1071910655,
+      497032095
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1071910655,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 113,
+      "seconds": 0.002083792,
+      "states": 1101,
+      "turn": 0,
+      "white": 497032095,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      3,
+      2
+    ],
+    "root": [
+      1072434943,
+      461388703
+    ],
+    "result": {
+      "actor_wins": true,
+      "blue": 1072434943,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 30,
+      "seconds": 0.001721875,
+      "states": 302,
+      "turn": 0,
+      "white": 461388703,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      3,
+      3
+    ],
+    "root": [
+      1070337791,
+      394804127
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1070337791,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 2347,
+      "seconds": 0.010111209,
+      "states": 7823,
+      "turn": 0,
+      "white": 394804127,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      3,
+      5
+    ],
+    "root": [
+      1064046335,
+      523778975
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1064046335,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 3670,
+      "seconds": 0.01292025,
+      "states": 12310,
+      "turn": 0,
+      "white": 523778975,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      4,
+      0
+    ],
+    "root": [
+      1055657727,
+      481835935
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1055657727,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 3235,
+      "seconds": 0.010409208,
+      "states": 9599,
+      "turn": 0,
+      "white": 481835935,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      4,
+      1
+    ],
+    "root": [
+      1038880511,
+      414202783
+    ],
+    "result": {
+      "actor_wins": true,
+      "blue": 1038880511,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 23,
+      "seconds": 0.000748125,
+      "states": 156,
+      "turn": 0,
+      "white": 414202783,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      4,
+      2
+    ],
+    "root": [
+      1005326079,
+      296237983
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 1005326079,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 1473,
+      "seconds": 0.0065875,
+      "states": 5484,
+      "turn": 0,
+      "white": 296237983,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      4,
+      3
+    ],
+    "root": [
+      938217215,
+      60308383
+    ],
+    "result": {
+      "actor_wins": true,
+      "blue": 938217215,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 66,
+      "seconds": 0.0012405,
+      "states": 497,
+      "turn": 0,
+      "white": 60308383,
+      "width": 6
+    }
+  },
+  {
+    "white_reply": [
+      4,
+      4
+    ],
+    "root": [
+      803999487,
+      129514399
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 803999487,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 4153,
+      "seconds": 0.013365958,
+      "states": 12690,
+      "turn": 0,
+      "white": 129514399,
+      "width": 6
+    }
+  }
+]

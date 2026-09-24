@@ -1,0 +1,18 @@
+{
+  "actor_wins": null,
+  "external_timeout": true,
+  "command": [
+    "/private/tmp/col-3x15-fragment/target/release/research",
+    "15",
+    "60000000",
+    "24",
+    "0",
+    "B.............B/.............../W.............W",
+    "0",
+    "legacy",
+    "-",
+    "0",
+    "separator"
+  ],
+  "wall_seconds": 100.03274624980986
+}

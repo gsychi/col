@@ -1,0 +1,12 @@
+test_all_openings_and_random_legal_play (__main__.ProofTests.test_all_openings_and_random_legal_play) ... ok
+test_bad_local_reply_rejected_even_with_updated_checksum (__main__.ProofTests.test_bad_local_reply_rejected_even_with_updated_checksum) ... ok
+test_full_proof (__main__.ProofTests.test_full_proof) ... ok
+test_illegal_first_white_move_rejected (__main__.ProofTests.test_illegal_first_white_move_rejected) ... ok
+test_missing_block_rejected (__main__.ProofTests.test_missing_block_rejected) ... ok
+test_overlapping_blocks_rejected (__main__.ProofTests.test_overlapping_blocks_rejected) ... ok
+test_white_bridge_rejected (__main__.ProofTests.test_white_bridge_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.940s
+
+OK

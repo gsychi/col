@@ -1,0 +1,1 @@
+VERIFIED 176 finite construction embeddings, including all 40 one-Blue-stone 5x8 positions.

@@ -1,0 +1,35 @@
+% Shared colours and TikZ styles for the 3 x n Col papers.
+\usepackage{tikz}
+\usetikzlibrary{patterns,arrows.meta,positioning,decorations.pathreplacing,calc,fit,shapes.geometric}
+
+\definecolor{colboth}{RGB}{255,255,255}
+\definecolor{colblue}{RGB}{176,206,245}
+\definecolor{colbluedark}{RGB}{28,86,176}
+\definecolor{colwhite}{RGB}{252,214,160}
+\definecolor{colwhitedark}{RGB}{214,128,20}
+\definecolor{coldead}{RGB}{150,150,150}
+\definecolor{case1}{RGB}{252,187,161}
+\definecolor{case2}{RGB}{199,233,192}
+\definecolor{case3}{RGB}{198,219,239}
+\definecolor{case4}{RGB}{218,218,235}
+\definecolor{case5}{RGB}{254,230,206}
+\definecolor{case6}{RGB}{247,182,210}
+
+\tikzset{
+  gridline/.style={draw=black!30, line width=0.3pt},
+  boardline/.style={draw=black!80, line width=0.7pt},
+  blockline/.style={line width=1.1pt},
+  blocklabel/.style={font=\scriptsize},
+  boundlabel/.style={font=\tiny},
+  seam/.style={draw=red!70!black, line width=1pt, densely dashed},
+  bluestone/.style={circle, fill=colbluedark, draw=colbluedark!70!black, line width=0.4pt, inner sep=0pt},
+  whitestone/.style={circle, fill=white, draw=black, line width=0.9pt, inner sep=0pt},
+  basebox/.style={draw, rounded corners, fill=case2, font=\small, minimum width=1.5cm, minimum height=0.6cm},
+  stepbox/.style={draw, rounded corners, fill=case3, font=\small, minimum width=1.5cm, minimum height=0.6cm},
+  rootbox/.style={draw, rounded corners, fill=black!6, font=\small, inner sep=5pt},
+  leafbox/.style={draw, rounded corners, fill=case3, font=\small, align=center, inner sep=4pt},
+  smallbox/.style={draw, rounded corners, fill=case5, font=\scriptsize, align=center, inner sep=3pt},
+}
+
+\usepackage{adjustbox}
+\newcommand{\colfig}[1]{\begin{adjustbox}{max width=\linewidth}\input{\figdir/gen/#1.tex}\end{adjustbox}}

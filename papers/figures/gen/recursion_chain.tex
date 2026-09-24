@@ -1,0 +1,19 @@
+\begin{tikzpicture}[scale=1.000, every node/.style={transform shape}]
+\node[basebox] (n3) at (0.000,0) {$3\times3$};
+\node[basebox] (n7) at (2.100,0) {$3\times7$};
+\node[basebox] (n11) at (4.200,0) {$3\times11$};
+\node[stepbox] (n15) at (6.300,0) {$3\times15$};
+\node[stepbox] (n19) at (8.400,0) {$3\times19$};
+\node[stepbox] (n23) at (10.500,0) {$3\times23$};
+\draw[-{Stealth}, black!55] (n15.north) to[bend right=27] (n3.north);
+\draw[-{Stealth}, black!55] (n15.north) to[bend right=22] (n7.north);
+\draw[-{Stealth}, black!55] (n19.north) to[bend right=32] (n3.north);
+\draw[-{Stealth}, black!55] (n19.north) to[bend right=27] (n7.north);
+\draw[-{Stealth}, black!55] (n19.north) to[bend right=22] (n11.north);
+\draw[-{Stealth}, black!55] (n23.north) to[bend right=37] (n3.north);
+\draw[-{Stealth}, black!55] (n23.north) to[bend right=32] (n7.north);
+\draw[-{Stealth}, black!55] (n23.north) to[bend right=27] (n11.north);
+\draw[-{Stealth}, black!55] (n23.north) to[bend right=22] (n15.north);
+\node[font=\scriptsize, text=black!60] at (2.1,-0.75) {certified base cases};
+\node[font=\scriptsize, text=black!60] at (8.4,-0.75) {six-case step (arrows: Case 6 uses a narrower board)};
+\end{tikzpicture}

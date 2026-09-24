@@ -1,0 +1,18 @@
+[
+  {
+    "label": "adjacent_X_J_cap",
+    "width": 3,
+    "A": 32294,
+    "B": 10786,
+    "value": "1/2",
+    "star": false
+  },
+  {
+    "label": "allblue_T_cap",
+    "width": 4,
+    "A": 1044877,
+    "B": 500103,
+    "value": "0",
+    "star": false
+  }
+]

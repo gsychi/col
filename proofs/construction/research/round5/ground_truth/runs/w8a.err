@@ -1,0 +1,7 @@
+LAUNCH: pid 41805 started Wed Sep 23 16:27:42 2026 cap 3700s cmd /tmp/ground_truth/colout5 -S 14 -t 21 -T 22 -j 1 -L 3600
+    [DR_8 B -1/2] 121s kids 0/39 nodes 13062397 tt 1857180 vc 725670
+RESTARTED (killed by me: memory thrash with large tables)
+LAUNCH: pid 44989 started Wed Sep 23 16:30:32 2026 cap 3700s cmd /tmp/ground_truth/colout5 -S 14 -t 20 -T 20 -j 1 -L 3600
+  DR_8 t=-1/2 P nodes=151906290+97286270 136.9s
+  DV_8 t=0 P nodes=38096336+10064679 32.1s
+LAUNCH: exit status 0 after 170 s

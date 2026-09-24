@@ -1,0 +1,172 @@
+{
+  "summary": {
+    "new": {
+      "certificates": 8,
+      "checkpoints": 491123,
+      "edges": 3520038
+    },
+    "reused": {
+      "certificates": 1,
+      "checkpoints": 4682,
+      "edges": 21950
+    },
+    "total": {
+      "certificates": 9,
+      "checkpoints": 495805,
+      "edges": 3541988
+    }
+  },
+  "artifacts": [
+    {
+      "path": "round4_bridge_certificates/center3_blue.json.gz",
+      "height": 5,
+      "width": 3,
+      "root": [
+        31278,
+        32628,
+        0,
+        1
+      ],
+      "checkpoints": 103,
+      "edges": 317,
+      "reused": false,
+      "schema": "canonical-dyadic-response-dag-v1",
+      "root_actor": "Blue",
+      "verified_claim": "The named root actor loses when starting at the recorded root."
+    },
+    {
+      "path": "round4_bridge_certificates/center3_white2_child_blue.json.gz",
+      "height": 5,
+      "width": 3,
+      "root": [
+        31274,
+        32592,
+        0,
+        1
+      ],
+      "checkpoints": 102,
+      "edges": 306,
+      "reused": false,
+      "schema": "canonical-dyadic-response-dag-v1",
+      "root_actor": "Blue",
+      "verified_claim": "The named root actor loses when starting at the recorded root."
+    },
+    {
+      "path": "round4_bridge_certificates/center5_w0_blue.json.gz",
+      "height": 5,
+      "width": 5,
+      "root": [
+        33408894,
+        33550300,
+        0,
+        1
+      ],
+      "checkpoints": 4606,
+      "edges": 21375,
+      "reused": false,
+      "schema": "canonical-dyadic-response-dag-v1",
+      "root_actor": "Blue",
+      "verified_claim": "The named root actor loses when starting at the recorded root."
+    },
+    {
+      "path": "round4_bridge_certificates/center5_w0_white.json.gz",
+      "height": 5,
+      "width": 5,
+      "root": [
+        33550300,
+        33408894,
+        0,
+        1
+      ],
+      "checkpoints": 17800,
+      "edges": 87305,
+      "reused": false,
+      "schema": "canonical-dyadic-response-dag-v1",
+      "root_actor": "White",
+      "verified_claim": "The named root actor loses when starting at the recorded root."
+    },
+    {
+      "path": "round4_bridge_certificates/center5_w1_blue0_child_white.json.gz",
+      "height": 5,
+      "width": 5,
+      "root": [
+        33550264,
+        33408860,
+        0,
+        1
+      ],
+      "checkpoints": 9727,
+      "edges": 49418,
+      "reused": false,
+      "schema": "canonical-dyadic-response-dag-v1",
+      "root_actor": "White",
+      "verified_claim": "The named root actor loses when starting at the recorded root."
+    },
+    {
+      "path": "round4_bridge_certificates/center5_w6_blue0_child_white.json.gz",
+      "height": 5,
+      "width": 5,
+      "root": [
+        33548060,
+        33408796,
+        0,
+        1
+      ],
+      "checkpoints": 2210,
+      "edges": 8936,
+      "reused": false,
+      "schema": "canonical-dyadic-response-dag-v1",
+      "root_actor": "White",
+      "verified_claim": "The named root actor loses when starting at the recorded root."
+    },
+    {
+      "path": "round4_bridge_certificates/center5_w7_blue0_child_white.json.gz",
+      "height": 5,
+      "width": 5,
+      "root": [
+        33549882,
+        33408860,
+        0,
+        1
+      ],
+      "checkpoints": 8952,
+      "edges": 45539,
+      "reused": false,
+      "schema": "canonical-dyadic-response-dag-v1",
+      "root_actor": "White",
+      "verified_claim": "The named root actor loses when starting at the recorded root."
+    },
+    {
+      "path": "round4_bridge_certificates/center7_blue.json.gz",
+      "height": 5,
+      "width": 7,
+      "root": [
+        34342501374,
+        34359607164
+      ],
+      "checkpoints": 447623,
+      "edges": 3306842,
+      "reused": false,
+      "schema": "zero-offset-response-dag-v1",
+      "root_actor": "Blue",
+      "verified_claim": "The named root actor loses when starting at the recorded root."
+    },
+    {
+      "path": "round3_corner_certificates/ordinary5_center_bad_reply.json.gz",
+      "height": 5,
+      "width": 5,
+      "root": [
+        33550192,
+        33408856,
+        0,
+        1
+      ],
+      "checkpoints": 4682,
+      "edges": 21950,
+      "reused": true,
+      "schema": "canonical-dyadic-response-dag-v1",
+      "root_actor": "White",
+      "verified_claim": "The named root actor loses when starting at the recorded root."
+    }
+  ]
+}

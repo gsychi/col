@@ -157,6 +157,11 @@ pub struct EndgameStats {
     pub component_bag_shared_duplicate_inserts: u64,
     pub component_bag_raw_id_hits: u64,
     pub component_bag_signature_hits: u64,
+    pub component_charge_queries: u64,
+    pub component_charge_win_hits: u64,
+    pub component_charge_loss_hits: u64,
+    pub component_charge_fixed_checks: u64,
+    pub component_charge_greedy_checks: u64,
     pub component_signature_shared_queries: u64,
     pub component_signature_shared_hits: u64,
     pub component_signature_shared_inserts: u64,
@@ -903,6 +908,15 @@ struct ComponentNativeDecoded {
     adjacency: [u64; 64],
 }
 
+#[derive(Clone, Copy)]
+struct ComponentChargeGeometry {
+    checkerboard: u64,
+    left_column: u64,
+    right_column: u64,
+    fixed_matching: [u64; 4],
+    n: usize,
+}
+
 pub struct EndgameEvaluator {
     max_component_size: u32,
     shapes: FxHashMap<u64, LocalShape>,
@@ -912,6 +926,8 @@ pub struct EndgameEvaluator {
     cgt: CgtEngine,
     component_signature_ids: FxHashMap<Vec<u16>, u32>,
     raw_component_ids: FxHashMap<u128, u32>,
+    component_charge_geometry: Option<ComponentChargeGeometry>,
+    enable_component_charge_bounds: bool,
     component_bag_outcomes: FxHashMap<ComponentBagKey, bool>,
     share_component_bags: bool,
     component_bag_policy: ComponentBagPolicy,
@@ -1741,6 +1757,8 @@ impl EndgameEvaluator {
             cgt: CgtEngine::new(),
             component_signature_ids: FxHashMap::default(),
             raw_component_ids: FxHashMap::default(),
+            component_charge_geometry: None,
+            enable_component_charge_bounds: false,
             component_bag_outcomes: FxHashMap::default(),
             share_component_bags: false,
             component_bag_policy: ComponentBagPolicy::default(),
@@ -1771,6 +1789,18 @@ impl EndgameEvaluator {
         self.component_bag_policy = policy;
     }
 
+    /// Enable the experimental numeric-charge certificate. Select it before
+    /// the first bag query so its actor-relative summary path is consistent.
+    pub fn enable_component_charge_bounds(&mut self) {
+        assert!(
+            self.component_signature_ids.is_empty()
+                && self.raw_component_ids.is_empty()
+                && self.component_bag_outcomes.is_empty(),
+            "component charge bounds must be enabled before the first bag query"
+        );
+        self.enable_component_charge_bounds = true;
+    }
+
     /// Enable exact cross-worker component interning and solved-bag reuse.
     /// This must happen before the evaluator assigns any worker-local IDs.
     pub fn enable_shared_component_bags(&mut self) {
@@ -1784,6 +1814,54 @@ impl EndgameEvaluator {
             "shared component bags must be enabled before the first bag query"
         );
         self.share_component_bags = self.shared.is_some();
+    }
+
+    fn component_charge_outcome(
+        &mut self,
+        n: usize,
+        small_value: Value,
+        residual_actor: u64,
+        residual_opponent: u64,
+    ) -> Option<bool> {
+        if !self.enable_component_charge_bounds || residual_actor | residual_opponent == 0 {
+            return None;
+        }
+        self.stats.component_charge_queries += 1;
+        let geometry = *self
+            .component_charge_geometry
+            .get_or_insert_with(|| ComponentChargeGeometry::new(n));
+        debug_assert_eq!(geometry.n, n);
+        let actor_private = residual_actor & !residual_opponent;
+        let opponent_count = residual_opponent.count_ones();
+        // This optimistic cardinality limit is necessary for any realization
+        // of our lower bound, and cheaply rejects most cache misses.
+        let possible_lower =
+            i64::from(actor_private.count_ones()) - i64::from(opponent_count.div_ceil(2));
+        if small_value.number.add(Dyadic::from_int(possible_lower)) <= Dyadic::zero() {
+            return None;
+        }
+
+        let actor_private_lb = geometry.private_independent_set_lower_bound(actor_private);
+        let mut lower = i64::from(actor_private_lb) - i64::from(opponent_count);
+        let mut lower_value = small_value.number.add(Dyadic::from_int(lower));
+        if lower_value <= Dyadic::zero() {
+            self.stats.component_charge_fixed_checks += 1;
+            lower = i64::from(actor_private_lb)
+                - i64::from(geometry.independent_set_upper_bound_fixed(residual_opponent));
+            lower_value = small_value.number.add(Dyadic::from_int(lower));
+        }
+        if lower_value <= Dyadic::zero() {
+            self.stats.component_charge_greedy_checks += 1;
+            lower = i64::from(actor_private_lb)
+                - i64::from(geometry.independent_set_upper_bound_greedy(residual_opponent));
+            lower_value = small_value.number.add(Dyadic::from_int(lower));
+        }
+        if lower_value > Dyadic::zero() {
+            self.stats.component_charge_win_hits += 1;
+            Some(true)
+        } else {
+            None
+        }
     }
 
     /// Query an exact actor-relative key for a fragmented position. Every
@@ -1819,6 +1897,8 @@ impl EndgameEvaluator {
         } else {
             Value::zero()
         };
+        let mut residual_actor = 0u64;
+        let mut residual_opponent = 0u64;
         let mut ids = [0u32; 64];
         let mut id_count = 0usize;
         for index in 0..component_count {
@@ -1855,6 +1935,10 @@ impl EndgameEvaluator {
                     small_value = small_value.add(value);
                 }
                 continue;
+            }
+            if self.enable_component_charge_bounds {
+                residual_actor |= actor & component;
+                residual_opponent |= opponent & component;
             }
             let raw_key = (((actor & component) as u128) << 63) | (opponent & component) as u128;
             let id = if let Some(&id) = self.raw_component_ids.get(&raw_key) {
@@ -1904,8 +1988,9 @@ impl EndgameEvaluator {
         if let Some(&wins) = self.component_bag_outcomes.get(&key) {
             self.stats.component_bag_hits += 1;
             self.stats.component_bag_local_hits += 1;
-            ComponentBagProbe::Hit(wins)
-        } else if self.share_component_bags {
+            return ComponentBagProbe::Hit(wins);
+        }
+        if self.share_component_bags {
             self.stats.component_bag_shared_queries += 1;
             if let Some(outcome) = self
                 .shared
@@ -1920,10 +2005,13 @@ impl EndgameEvaluator {
                 }
                 self.component_bag_outcomes.insert(key, outcome.wins);
                 self.stats.component_bag_inserts += 1;
-                ComponentBagProbe::Hit(outcome.wins)
-            } else {
-                ComponentBagProbe::Miss(key)
+                return ComponentBagProbe::Hit(outcome.wins);
             }
+        }
+        if let Some(wins) =
+            self.component_charge_outcome(n, small_value, residual_actor, residual_opponent)
+        {
+            ComponentBagProbe::Hit(wins)
         } else {
             ComponentBagProbe::Miss(key)
         }
@@ -3074,6 +3162,81 @@ fn component_signature_fixed(
     (best, len)
 }
 
+impl ComponentChargeGeometry {
+    fn new(n: usize) -> ComponentChargeGeometry {
+        let mut geometry = ComponentChargeGeometry {
+            checkerboard: 0,
+            left_column: 0,
+            right_column: 0,
+            fixed_matching: [0; 4],
+            n,
+        };
+        for cell in 0..64 {
+            let row = cell / n;
+            let col = cell % n;
+            let bit = 1u64 << cell;
+            if (row + col) & 1 == 0 {
+                geometry.checkerboard |= bit;
+            }
+            if col == 0 {
+                geometry.left_column |= bit;
+            }
+            if col + 1 == n {
+                geometry.right_column |= bit;
+            }
+            if col + 1 < n {
+                geometry.fixed_matching[col & 1] |= bit;
+            }
+            if cell + n < 64 {
+                geometry.fixed_matching[2 + (row & 1)] |= bit;
+            }
+        }
+        geometry
+    }
+
+    #[inline]
+    fn neighbors(self, mask: u64) -> u64 {
+        let horizontal = ((mask & !self.left_column) >> 1) | ((mask & !self.right_column) << 1);
+        horizontal | (mask << self.n) | (mask >> self.n)
+    }
+
+    fn independent_set_lower_bound(self, mask: u64) -> u32 {
+        let first = (mask & self.checkerboard).count_ones();
+        first.max(mask.count_ones() - first)
+    }
+
+    fn private_independent_set_lower_bound(self, mask: u64) -> u32 {
+        let isolated = mask & !self.neighbors(mask);
+        isolated.count_ones() + self.independent_set_lower_bound(mask & !isolated)
+    }
+
+    fn independent_set_upper_bound_fixed(self, mask: u64) -> u32 {
+        let horizontal = (mask & (mask >> 1) & self.fixed_matching[0])
+            .count_ones()
+            .max((mask & (mask >> 1) & self.fixed_matching[1]).count_ones());
+        let vertical = (mask & (mask >> self.n) & self.fixed_matching[2])
+            .count_ones()
+            .max((mask & (mask >> self.n) & self.fixed_matching[3]).count_ones());
+        mask.count_ones() - horizontal.max(vertical)
+    }
+
+    fn independent_set_upper_bound_greedy(self, mask: u64) -> u32 {
+        let mut left = mask & self.checkerboard;
+        let mut available_right = mask & !self.checkerboard;
+        let mut matching = 0u32;
+        while left != 0 && available_right != 0 {
+            let bit = left & left.wrapping_neg();
+            left ^= bit;
+            let neighbors = self.neighbors(bit) & available_right;
+            if neighbors != 0 {
+                available_right ^= neighbors & neighbors.wrapping_neg();
+                matching += 1;
+            }
+        }
+        mask.count_ones() - matching
+    }
+}
+
 fn decode_component_native_signature(signature: &[u16]) -> ComponentNativeDecoded {
     assert!(
         !signature.is_empty() && signature.len() <= 63,
@@ -3415,6 +3578,33 @@ mod tests {
             }
         }
         adjacency
+    }
+
+    fn brute_independent_set(adjacency: &[u64], vertices: u64) -> u8 {
+        let mut best = 0u32;
+        let mut subset = vertices;
+        loop {
+            if subset.count_ones() > best {
+                let mut independent = true;
+                let mut bits = subset;
+                while bits != 0 {
+                    let bit = bits & bits.wrapping_neg();
+                    bits ^= bit;
+                    if adjacency[bit.trailing_zeros() as usize] & subset != 0 {
+                        independent = false;
+                        break;
+                    }
+                }
+                if independent {
+                    best = subset.count_ones();
+                }
+            }
+            if subset == 0 {
+                break;
+            }
+            subset = (subset - 1) & vertices;
+        }
+        best as u8
     }
 
     fn temp_cache_dir() -> PathBuf {
@@ -3931,6 +4121,21 @@ mod tests {
     }
 
     #[test]
+    fn component_charge_cheap_bounds_are_sound_exhaustively_on_two_by_three() {
+        let n = 3;
+        let adjacency = grid_adjacency(2, n);
+        let geometry = ComponentChargeGeometry::new(n);
+        let limit = 1u64 << 6;
+        for mask in 0..limit {
+            let exact = brute_independent_set(&adjacency, mask);
+            assert!(geometry.independent_set_lower_bound(mask) <= u32::from(exact));
+            assert!(geometry.private_independent_set_lower_bound(mask) <= u32::from(exact));
+            assert!(geometry.independent_set_upper_bound_fixed(mask) >= u32::from(exact));
+            assert!(geometry.independent_set_upper_bound_greedy(mask) >= u32::from(exact));
+        }
+    }
+
+    #[test]
     fn fixed_component_signature_matches_allocating_reference() {
         let n = 3;
         let limit = 1u64 << 9;
@@ -3953,6 +4158,7 @@ mod tests {
         let adjacency = grid_adjacency(2, n);
         let limit = 1u64 << 8;
         let mut bag_evaluator = EndgameEvaluator::new(0, None);
+        bag_evaluator.enable_component_charge_bounds();
         let mut value_evaluator = EndgameEvaluator::new(MAX_LOCAL_CELLS as u32, None);
         for legal_p1 in 0..limit {
             for legal_p2 in 0..limit {
@@ -3990,6 +4196,12 @@ mod tests {
                 }
             }
         }
+        assert!(bag_evaluator.stats.component_charge_queries > 0);
+        assert!(
+            bag_evaluator.stats.component_charge_win_hits
+                + bag_evaluator.stats.component_charge_loss_hits
+                > 0
+        );
     }
 
     #[test]

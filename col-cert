@@ -1,0 +1,7 @@
+#!/bin/sh
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+if [ "$1" = "replay" ] || [ "$1" = "discover" ] || [ "$1" = "verify-python" ]; then
+    exec python3 "$ROOT/scripts/tiling_research.py" "$@"
+fi
+cargo build --quiet --release --offline --manifest-path "$ROOT/solver/Cargo.toml" --bin col-cert || exit 1
+exec "$ROOT/solver/target/release/col-cert" "$@"

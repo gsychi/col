@@ -1,0 +1,58 @@
+[
+  {
+    "actor_wins": false,
+    "blue": 7573222,
+    "budget": 2000000,
+    "height": 5,
+    "memo_hits": 52,
+    "seconds": 0.002781042,
+    "states": 583,
+    "turn": 0,
+    "white": 2333427,
+    "width": 5,
+    "label": "RX_3-1/2",
+    "status": "Completed"
+  },
+  {
+    "actor_wins": false,
+    "blue": 7573222,
+    "budget": 2000000,
+    "height": 5,
+    "memo_hits": 4,
+    "seconds": 0.000984583,
+    "states": 67,
+    "turn": 1,
+    "white": 2333427,
+    "width": 5,
+    "label": "RX_3-1/2",
+    "status": "Completed"
+  },
+  {
+    "actor_wins": true,
+    "blue": 8386768798,
+    "budget": 2000000,
+    "height": 5,
+    "memo_hits": 16393,
+    "seconds": 0.054236042,
+    "states": 49554,
+    "turn": 0,
+    "white": 3823611855,
+    "width": 7,
+    "label": "RX_5-1/2",
+    "status": "Completed"
+  },
+  {
+    "actor_wins": true,
+    "blue": 8386768798,
+    "budget": 2000000,
+    "height": 5,
+    "memo_hits": 15938,
+    "seconds": 0.074117125,
+    "states": 67974,
+    "turn": 1,
+    "white": 3823611855,
+    "width": 7,
+    "label": "RX_5-1/2",
+    "status": "Completed"
+  }
+]

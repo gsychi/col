@@ -1,0 +1,134 @@
+[
+  {
+    "w": 5,
+    "t": 1,
+    "r": 0,
+    "interface": "U",
+    "root": [
+      33537884,
+      15723050
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 33537884,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 657,
+      "seconds": 0.007758,
+      "states": 3454,
+      "turn": 0,
+      "white": 15723050,
+      "width": 5
+    }
+  },
+  {
+    "w": 5,
+    "t": 1,
+    "r": 1,
+    "interface": "J",
+    "root": [
+      33536798,
+      15723018
+    ],
+    "result": {
+      "actor_wins": true,
+      "blue": 33536798,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 15,
+      "seconds": 0.001109625,
+      "states": 183,
+      "turn": 0,
+      "white": 15723018,
+      "width": 5
+    }
+  },
+  {
+    "w": 5,
+    "t": 1,
+    "r": 2,
+    "interface": "D",
+    "root": [
+      33502047,
+      15723050
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 33502047,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 323,
+      "seconds": 0.003685417,
+      "states": 1844,
+      "turn": 0,
+      "white": 15723050,
+      "width": 5
+    }
+  },
+  {
+    "w": 5,
+    "t": 3,
+    "r": 0,
+    "interface": "U",
+    "root": [
+      33406940,
+      11070446
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 33406940,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 3192,
+      "seconds": 0.011479084,
+      "states": 9088,
+      "turn": 0,
+      "white": 11070446,
+      "width": 5
+    }
+  },
+  {
+    "w": 5,
+    "t": 3,
+    "r": 1,
+    "interface": "J",
+    "root": [
+      33405854,
+      11070414
+    ],
+    "result": {
+      "actor_wins": true,
+      "blue": 33405854,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 51,
+      "seconds": 0.001090542,
+      "states": 340,
+      "turn": 0,
+      "white": 11070414,
+      "width": 5
+    }
+  },
+  {
+    "w": 5,
+    "t": 3,
+    "r": 2,
+    "interface": "D",
+    "root": [
+      33371103,
+      11070446
+    ],
+    "result": {
+      "actor_wins": false,
+      "blue": 33371103,
+      "budget": 3000000,
+      "height": 5,
+      "memo_hits": 1660,
+      "seconds": 0.006972416,
+      "states": 5213,
+      "turn": 0,
+      "white": 11070446,
+      "width": 5
+    }
+  }
+]

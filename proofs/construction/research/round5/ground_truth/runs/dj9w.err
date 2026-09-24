@@ -1,0 +1,1 @@
+LAUNCH: pid 86766 started Wed Sep 23 17:59:02 2026 cap 10900s cmd /tmp/ground_truth/colout5 -S 14 -t 20 -T 22 -j 2 -L 10800

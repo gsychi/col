@@ -1,0 +1,342 @@
+[
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      0,
+      0
+    ],
+    "a": 32664,
+    "b": 15600,
+    "value": {
+      "number": "1",
+      "star": false
+    }
+  },
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      0,
+      1
+    ],
+    "a": 32665,
+    "b": 15584,
+    "value": {
+      "number": "3/2",
+      "star": false
+    }
+  },
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      1,
+      1
+    ],
+    "a": 32649,
+    "b": 15425,
+    "value": {
+      "number": "3/2",
+      "star": false
+    }
+  },
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      1,
+      2
+    ],
+    "a": 32665,
+    "b": 15555,
+    "value": {
+      "number": "1",
+      "star": false
+    }
+  },
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      2,
+      0
+    ],
+    "a": 32665,
+    "b": 15411,
+    "value": {
+      "number": "1",
+      "star": false
+    }
+  },
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      2,
+      1
+    ],
+    "a": 32537,
+    "b": 14371,
+    "value": {
+      "number": "3/2",
+      "star": false
+    }
+  },
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      3,
+      1
+    ],
+    "a": 31641,
+    "b": 4211,
+    "value": {
+      "number": "1",
+      "star": false
+    }
+  },
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      3,
+      2
+    ],
+    "a": 30617,
+    "b": 12531,
+    "value": {
+      "number": "1",
+      "star": false
+    }
+  },
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      4,
+      0
+    ],
+    "a": 28569,
+    "b": 3315,
+    "value": {
+      "number": "1",
+      "star": false
+    }
+  },
+  {
+    "interface": "U",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      4,
+      1
+    ],
+    "a": 24473,
+    "b": 2291,
+    "value": {
+      "number": "3/2",
+      "star": false
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      0,
+      0
+    ],
+    "a": 32664,
+    "b": 30160,
+    "value": {
+      "number": "-1/2",
+      "star": false
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      0,
+      1
+    ],
+    "a": 32665,
+    "b": 30144,
+    "value": {
+      "number": "1",
+      "star": false
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      1,
+      1
+    ],
+    "a": 32649,
+    "b": 30017,
+    "value": {
+      "number": "0",
+      "star": false
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      2,
+      0
+    ],
+    "a": 32665,
+    "b": 29971,
+    "value": {
+      "number": "0",
+      "star": false
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      2,
+      1
+    ],
+    "a": 32537,
+    "b": 28675,
+    "value": {
+      "number": "5/2",
+      "star": false
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      2,
+      2
+    ],
+    "a": 32409,
+    "b": 29779,
+    "value": {
+      "number": "-1/2",
+      "star": false
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      3,
+      1
+    ],
+    "a": 31641,
+    "b": 20819,
+    "value": {
+      "number": "0",
+      "star": false
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      4,
+      0
+    ],
+    "a": 28569,
+    "b": 17875,
+    "value": {
+      "number": "0",
+      "star": false
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      4,
+      1
+    ],
+    "a": 24473,
+    "b": 467,
+    "value": {
+      "number": "2",
+      "star": true
+    }
+  },
+  {
+    "interface": "R",
+    "blue": [
+      0,
+      2
+    ],
+    "white": [
+      4,
+      2
+    ],
+    "a": 16281,
+    "b": 5587,
+    "value": {
+      "number": "-1/2",
+      "star": false
+    }
+  }
+]

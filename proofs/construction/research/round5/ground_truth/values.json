@@ -1,0 +1,1010 @@
+{
+ "DD_1": {
+  "family": "DD",
+  "width": 1,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DD_2": {
+  "family": "DD",
+  "width": 2,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DD_3": {
+  "family": "DD",
+  "width": 3,
+  "value": "-1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DD_4": {
+  "family": "DD",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DD_5": {
+  "family": "DD",
+  "width": 5,
+  "value": "-1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DD_6": {
+  "family": "DD",
+  "width": 6,
+  "value": "0",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DD_7": {
+  "family": "DD",
+  "width": 7,
+  "value": "-1",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DU_1": {
+  "family": "DU",
+  "width": 1,
+  "value": "-1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DU_2": {
+  "family": "DU",
+  "width": 2,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DU_3": {
+  "family": "DU",
+  "width": 3,
+  "value": "-1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DU_4": {
+  "family": "DU",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DU_5": {
+  "family": "DU",
+  "width": 5,
+  "value": "-1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DU_6": {
+  "family": "DU",
+  "width": 6,
+  "value": "0",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DU_7": {
+  "family": "DU",
+  "width": 7,
+  "value": "-1",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DV_1": {
+  "family": "DV",
+  "width": 1,
+  "value": "2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DV_2": {
+  "family": "DV",
+  "width": 2,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DV_3": {
+  "family": "DV",
+  "width": 3,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DV_4": {
+  "family": "DV",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DV_5": {
+  "family": "DV",
+  "width": 5,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DV_6": {
+  "family": "DV",
+  "width": 6,
+  "value": "0",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DR_1": {
+  "family": "DR",
+  "width": 1,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DR_2": {
+  "family": "DR",
+  "width": 2,
+  "value": "-1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DR_3": {
+  "family": "DR",
+  "width": 3,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DR_4": {
+  "family": "DR",
+  "width": 4,
+  "value": "-1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DR_5": {
+  "family": "DR",
+  "width": 5,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DR_6": {
+  "family": "DR",
+  "width": 6,
+  "value": "-1/2",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DX_1": {
+  "family": "DX",
+  "width": 1,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DX_2": {
+  "family": "DX",
+  "width": 2,
+  "value": "-1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DX_3": {
+  "family": "DX",
+  "width": 3,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DX_4": {
+  "family": "DX",
+  "width": 4,
+  "value": "-1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DX_5": {
+  "family": "DX",
+  "width": 5,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DX_6": {
+  "family": "DX",
+  "width": 6,
+  "value": "-1/4",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DJ_1": {
+  "family": "DJ",
+  "width": 1,
+  "value": "-1/2+*",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DJ_2": {
+  "family": "DJ",
+  "width": 2,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DJ_3": {
+  "family": "DJ",
+  "width": 3,
+  "value": "-3/4",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DJ_4": {
+  "family": "DJ",
+  "width": 4,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DJ_5": {
+  "family": "DJ",
+  "width": 5,
+  "value": "-5/8",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DJ_6": {
+  "family": "DJ",
+  "width": 6,
+  "value": "0",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "RX_1": {
+  "family": "RX",
+  "width": 1,
+  "value": "1/2+*",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "RX_2": {
+  "family": "RX",
+  "width": 2,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "RX_3": {
+  "family": "RX",
+  "width": 3,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "RX_4": {
+  "family": "RX",
+  "width": 4,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "RX_5": {
+  "family": "RX",
+  "width": 5,
+  "value": "1/2+*",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "RX_6": {
+  "family": "RX",
+  "width": 6,
+  "value": "1",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "VX_1": {
+  "family": "VX",
+  "width": 1,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "VX_2": {
+  "family": "VX",
+  "width": 2,
+  "value": "2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "VX_3": {
+  "family": "VX",
+  "width": 3,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "VX_4": {
+  "family": "VX",
+  "width": 4,
+  "value": "3/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "VX_5": {
+  "family": "VX",
+  "width": 5,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "VX_6": {
+  "family": "VX",
+  "width": 6,
+  "value": "3/2",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XX_1": {
+  "family": "XX",
+  "width": 1,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XX_2": {
+  "family": "XX",
+  "width": 2,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XX_3": {
+  "family": "XX",
+  "width": 3,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XX_4": {
+  "family": "XX",
+  "width": 4,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XX_5": {
+  "family": "XX",
+  "width": 5,
+  "value": "5/8",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XX_6": {
+  "family": "XX",
+  "width": 6,
+  "value": "1",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XU_1": {
+  "family": "XU",
+  "width": 1,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XU_2": {
+  "family": "XU",
+  "width": 2,
+  "value": "-1/4",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XU_3": {
+  "family": "XU",
+  "width": 3,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XU_4": {
+  "family": "XU",
+  "width": 4,
+  "value": "-1/4",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XU_5": {
+  "family": "XU",
+  "width": 5,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XU_6": {
+  "family": "XU",
+  "width": 6,
+  "value": "-1/4",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XJ_1": {
+  "family": "XJ",
+  "width": 1,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XJ_2": {
+  "family": "XJ",
+  "width": 2,
+  "value": "*",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XJ_3": {
+  "family": "XJ",
+  "width": 3,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XJ_4": {
+  "family": "XJ",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XJ_5": {
+  "family": "XJ",
+  "width": 5,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "XJ_6": {
+  "family": "XJ",
+  "width": 6,
+  "value": "1/4",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "D_1": {
+  "family": "D",
+  "width": 1,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "D_2": {
+  "family": "D",
+  "width": 2,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "D_3": {
+  "family": "D",
+  "width": 3,
+  "value": "-1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "D_4": {
+  "family": "D",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "D_5": {
+  "family": "D",
+  "width": 5,
+  "value": "-1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "D_6": {
+  "family": "D",
+  "width": 6,
+  "value": "0",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "U_1": {
+  "family": "U",
+  "width": 1,
+  "value": "-1/4",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "U_2": {
+  "family": "U",
+  "width": 2,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "U_3": {
+  "family": "U",
+  "width": 3,
+  "value": "-1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "U_4": {
+  "family": "U",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "U_5": {
+  "family": "U",
+  "width": 5,
+  "value": "-1/4",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "U_6": {
+  "family": "U",
+  "width": 6,
+  "value": "0",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "V_1": {
+  "family": "V",
+  "width": 1,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "V_2": {
+  "family": "V",
+  "width": 2,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "V_3": {
+  "family": "V",
+  "width": 3,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "V_4": {
+  "family": "V",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "V_5": {
+  "family": "V",
+  "width": 5,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "V_6": {
+  "family": "V",
+  "width": 6,
+  "value": "0",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "X_1": {
+  "family": "X",
+  "width": 1,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "X_2": {
+  "family": "X",
+  "width": 2,
+  "value": "*",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "X_3": {
+  "family": "X",
+  "width": 3,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "X_4": {
+  "family": "X",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "X_5": {
+  "family": "X",
+  "width": 5,
+  "value": "1/2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "X_6": {
+  "family": "X",
+  "width": 6,
+  "value": "1/4",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "R_1": {
+  "family": "R",
+  "width": 1,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "R_2": {
+  "family": "R",
+  "width": 2,
+  "value": "*",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "R_3": {
+  "family": "R",
+  "width": 3,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "R_4": {
+  "family": "R",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "R_5": {
+  "family": "R",
+  "width": 5,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "R_6": {
+  "family": "R",
+  "width": 6,
+  "value": "1/4",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "J_1": {
+  "family": "J",
+  "width": 1,
+  "value": "*",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "J_2": {
+  "family": "J",
+  "width": 2,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "J_3": {
+  "family": "J",
+  "width": 3,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "J_4": {
+  "family": "J",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "J_5": {
+  "family": "J",
+  "width": 5,
+  "value": "*",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "J_6": {
+  "family": "J",
+  "width": 6,
+  "value": "0",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DT_1": {
+  "family": "DT",
+  "width": 1,
+  "value": "2",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DT_2": {
+  "family": "DT",
+  "width": 2,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DT_3": {
+  "family": "DT",
+  "width": 3,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DT_4": {
+  "family": "DT",
+  "width": 4,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DT_5": {
+  "family": "DT",
+  "width": 5,
+  "value": "1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "DT_6": {
+  "family": "DT",
+  "width": 6,
+  "value": "0",
+  "sources": [
+   "colout"
+  ],
+  "status": "EVIDENCE"
+ },
+ "M_3": {
+  "family": "M",
+  "width": 3,
+  "value": "-1",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ },
+ "M_5": {
+  "family": "M",
+  "width": 5,
+  "value": "0",
+  "sources": [
+   "colval"
+  ],
+  "status": "EVIDENCE"
+ }
+}

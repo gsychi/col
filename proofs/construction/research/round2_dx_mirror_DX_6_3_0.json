@@ -1,0 +1,14 @@
+{
+  "pair": "DX",
+  "width": 6,
+  "cap_width": 3,
+  "half_turn": false,
+  "white_wins_restricted_policy": "Unknown",
+  "counters": {
+    "states": 1000001,
+    "ordinary_moves": 1126724,
+    "defect_moves": 2485905,
+    "terminal_mirror": 13645
+  },
+  "root_witness": null
+}

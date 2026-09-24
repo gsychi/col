@@ -1,0 +1,15 @@
+{
+  "claim": "all full-Blue 5x4 White-permission masks classified",
+  "masks": 1048576,
+  "safe_masks": 175,
+  "unsafe_masks": 1048401,
+  "minimal_safe": 14,
+  "maximal_unsafe": 88,
+  "certificates": 102,
+  "checkpoints": 250923,
+  "response_edges": 1106312,
+  "horizontal_safe_joins": 0,
+  "vertical_safe_joins": 0,
+  "seconds": 7.727840989000015
+}
+VERIFIED: exhaustive 5x4 full-Blue catalog and no safe straight 5x4-to-5x4 seam.

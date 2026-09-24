@@ -1,0 +1,16 @@
+{
+  "v1": {
+    "source_archive": "v1-source.zip",
+    "source_sha256": "b56590b9eb298ba14170602bef795f826397ad4b2db2bd6c2534aa9321079712",
+    "binary_sha256": "f30ad3da10ca6da15f9caf09c54171e92a2583cb99e92cc8d1d7af4c88664719"
+  },
+  "v2": {
+    "source_archive": "v2-source.zip",
+    "source_sha256": "806da3b3b43d7e316bfd21c33f75ad0eb8823f2978524de6d87a7fde3cf4500e",
+    "binary_sha256": "b1691adc84f27ac8c22fe010e117ee4bbf29ea4904459d119984b221087395fd"
+  },
+  "production_files": {
+    "solver/src/lib.rs": "04f9ae886bb79b80a74d069d9e9620f22a6864b09c939f6d3759eb2bf9678072",
+    "solver/src/endgame.rs": "8552c2708110a431205e0fc26e8e43f9450256938eee9d11436cebffcfc87f9a"
+  }
+}

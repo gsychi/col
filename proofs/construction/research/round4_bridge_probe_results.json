@@ -1,0 +1,20 @@
+{
+  "status": "original discovery log; M3<0 and M7<=0 subsequently independently certified in round4_bridge_check.py; M7 White-first remains unknown",
+  "program": "round4_bridge_probe.cpp",
+  "queries": [
+    {
+      "command_arguments": [3, 7, 0, 3000000],
+      "blue_mask": 31278,
+      "white_mask": 32628,
+      "blue_first": {"result": "loss", "visits": 422, "memo_entries": 206},
+      "white_first": {"result": "win", "visits": 1628, "memo_entries": 976, "witness_cell": 2}
+    },
+    {
+      "command_arguments": [7, 17, 0, 15000000],
+      "blue_mask": 34342501374,
+      "white_mask": 34359607164,
+      "blue_first": {"result": "loss", "visits": 4602005, "memo_entries": 1184628},
+      "white_first": {"result": "unknown", "visits": 15000001, "memo_entries": 5503761}
+    }
+  ]
+}

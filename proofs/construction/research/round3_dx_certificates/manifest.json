@@ -1,0 +1,288 @@
+[
+  {
+    "file": "row0_U_reply_none_le.json.gz",
+    "root": [
+      32665,
+      15603,
+      0,
+      1
+    ],
+    "nodes": 133,
+    "edges": 385
+  },
+  {
+    "file": "row0_U_reply_none_ge.json.gz",
+    "root": [
+      15603,
+      32665,
+      0,
+      1
+    ],
+    "nodes": 120,
+    "edges": 367
+  },
+  {
+    "file": "row0_R_reply_none_le.json.gz",
+    "root": [
+      32665,
+      30163,
+      1,
+      1
+    ],
+    "nodes": 250,
+    "edges": 798
+  },
+  {
+    "file": "row0_R_reply_none_ge.json.gz",
+    "root": [
+      30163,
+      32665,
+      -1,
+      1
+    ],
+    "nodes": 114,
+    "edges": 329
+  },
+  {
+    "file": "row1_V_reply_none_le.json.gz",
+    "root": [
+      32395,
+      30167,
+      2,
+      1
+    ],
+    "nodes": 328,
+    "edges": 1207
+  },
+  {
+    "file": "row1_V_reply_none_ge.json.gz",
+    "root": [
+      30167,
+      32395,
+      -2,
+      1
+    ],
+    "nodes": 226,
+    "edges": 819
+  },
+  {
+    "file": "row1_J_reply_none_le.json.gz",
+    "root": [
+      32395,
+      15571,
+      -1,
+      2
+    ],
+    "nodes": 195,
+    "edges": 711
+  },
+  {
+    "file": "row1_J_reply_none_ge.json.gz",
+    "root": [
+      15571,
+      32395,
+      1,
+      2
+    ],
+    "nodes": 173,
+    "edges": 532
+  },
+  {
+    "file": "row2_D_reply_none_le.json.gz",
+    "root": [
+      30239,
+      15603,
+      0,
+      1
+    ],
+    "nodes": 86,
+    "edges": 260
+  },
+  {
+    "file": "row2_D_reply_none_ge.json.gz",
+    "root": [
+      15603,
+      30239,
+      0,
+      1
+    ],
+    "nodes": 96,
+    "edges": 326
+  },
+  {
+    "file": "row2_X_reply_none_le.json.gz",
+    "root": [
+      30239,
+      29911,
+      1,
+      1
+    ],
+    "nodes": 135,
+    "edges": 425
+  },
+  {
+    "file": "row2_X_reply_none_ge.json.gz",
+    "root": [
+      29911,
+      30239,
+      -1,
+      1
+    ],
+    "nodes": 79,
+    "edges": 220
+  },
+  {
+    "file": "row0_R_reply_0_0_le.json.gz",
+    "root": [
+      32664,
+      30160,
+      1,
+      2
+    ],
+    "nodes": 157,
+    "edges": 499
+  },
+  {
+    "file": "row0_R_reply_0_0_ge.json.gz",
+    "root": [
+      30160,
+      32664,
+      -1,
+      2
+    ],
+    "nodes": 136,
+    "edges": 368
+  },
+  {
+    "file": "row0_R_reply_2_2_le.json.gz",
+    "root": [
+      32409,
+      29779,
+      1,
+      2
+    ],
+    "nodes": 163,
+    "edges": 530
+  },
+  {
+    "file": "row0_R_reply_2_2_ge.json.gz",
+    "root": [
+      29779,
+      32409,
+      -1,
+      2
+    ],
+    "nodes": 90,
+    "edges": 277
+  },
+  {
+    "file": "row0_R_reply_4_2_le.json.gz",
+    "root": [
+      16281,
+      5587,
+      1,
+      2
+    ],
+    "nodes": 141,
+    "edges": 480
+  },
+  {
+    "file": "row0_R_reply_4_2_ge.json.gz",
+    "root": [
+      5587,
+      16281,
+      -1,
+      2
+    ],
+    "nodes": 98,
+    "edges": 284
+  },
+  {
+    "file": "checker_D_C_le.json.gz",
+    "root": [
+      16059,
+      30167,
+      1,
+      1
+    ],
+    "nodes": 374,
+    "edges": 1475
+  },
+  {
+    "file": "checker_D_C_ge.json.gz",
+    "root": [
+      30167,
+      16059,
+      -1,
+      1
+    ],
+    "nodes": 203,
+    "edges": 750
+  },
+  {
+    "file": "checker_Cbar_X_le.json.gz",
+    "root": [
+      31991,
+      12218,
+      0,
+      1
+    ],
+    "nodes": 252,
+    "edges": 895
+  },
+  {
+    "file": "checker_Cbar_X_ge.json.gz",
+    "root": [
+      12218,
+      31991,
+      0,
+      1
+    ],
+    "nodes": 162,
+    "edges": 559
+  },
+  {
+    "file": "checker_D_Cbar_le.json.gz",
+    "root": [
+      30623,
+      15603,
+      -1,
+      1
+    ],
+    "nodes": 181,
+    "edges": 685
+  },
+  {
+    "file": "checker_D_Cbar_ge.json.gz",
+    "root": [
+      15603,
+      30623,
+      1,
+      1
+    ],
+    "nodes": 205,
+    "edges": 772
+  },
+  {
+    "file": "checker_C_X_le.json.gz",
+    "root": [
+      28350,
+      15859,
+      -1,
+      1
+    ],
+    "nodes": 232,
+    "edges": 807
+  },
+  {
+    "file": "checker_C_X_ge.json.gz",
+    "root": [
+      15859,
+      28350,
+      1,
+      1
+    ],
+    "nodes": 276,
+    "edges": 1007
+  }
+]

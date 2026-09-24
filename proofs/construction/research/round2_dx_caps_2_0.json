@@ -1,0 +1,64 @@
+{
+  "cap_width": 2,
+  "half_turn": false,
+  "white_wins_abstract_controller": false,
+  "counts": {
+    "states": 34,
+    "port_events": 10,
+    "cap_openings": 27,
+    "mirror_terminals": 2
+  },
+  "initial_losing_port_prefix": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      3,
+      2
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      4,
+      2
+    ]
+  ],
+  "first_nonport_witness": {
+    "event": "blue",
+    "vertex": 0,
+    "white_options": [
+      7,
+      8,
+      11,
+      15,
+      16
+    ]
+  }
+}

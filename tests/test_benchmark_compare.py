@@ -70,6 +70,11 @@ component bag shared inserts: 20
 component bag shared duplicate inserts: 5
 component bag raw id hits: 203
 component bag signature hits: 204
+component charge queries: 205
+component charge win hits: 206
+component charge loss hits: 207
+component charge fixed checks: 208
+component charge greedy checks: 209
 component signature shared queries: 40
 component signature shared hits: 30
 component signature shared inserts: 10
@@ -145,6 +150,11 @@ time elapsed (solve): 1.250000s
         self.assertEqual(parsed["component_bag_shared_duplicate_inserts"], 5)
         self.assertEqual(parsed["component_bag_raw_id_hits"], 203)
         self.assertEqual(parsed["component_bag_signature_hits"], 204)
+        self.assertEqual(parsed["component_charge_queries"], 205)
+        self.assertEqual(parsed["component_charge_win_hits"], 206)
+        self.assertEqual(parsed["component_charge_loss_hits"], 207)
+        self.assertEqual(parsed["component_charge_fixed_checks"], 208)
+        self.assertEqual(parsed["component_charge_greedy_checks"], 209)
         self.assertEqual(parsed["component_signature_shared_queries"], 40)
         self.assertEqual(parsed["component_signature_shared_hits"], 30)
         self.assertEqual(parsed["component_signature_shared_inserts"], 10)

@@ -1,0 +1,97 @@
+[
+  {
+    "name": "cap_minus_quarter_blue",
+    "checkpoints": 85,
+    "edges": 272
+  },
+  {
+    "name": "cap_minus_quarter_white",
+    "checkpoints": 98,
+    "edges": 238
+  },
+  {
+    "name": "economical_bulk_blue",
+    "checkpoints": 150,
+    "edges": 464
+  },
+  {
+    "name": "economical_bulk_white",
+    "checkpoints": 68,
+    "edges": 174
+  },
+  {
+    "name": "phase_connector_blue",
+    "checkpoints": 137,
+    "edges": 395
+  },
+  {
+    "name": "phase_connector_white",
+    "checkpoints": 110,
+    "edges": 291
+  },
+  {
+    "name": "original_bulk_blue",
+    "checkpoints": 152,
+    "edges": 470
+  },
+  {
+    "name": "original_bulk_white",
+    "checkpoints": 77,
+    "edges": 192
+  },
+  {
+    "name": "opened_bulk_plus_one_blue",
+    "checkpoints": 101,
+    "edges": 307
+  },
+  {
+    "name": "opened_bulk_plus_one_white",
+    "checkpoints": 77,
+    "edges": 225
+  },
+  {
+    "name": "opened_bulk_c3_plus_one_blue",
+    "checkpoints": 109,
+    "edges": 332
+  },
+  {
+    "name": "opened_bulk_c3_plus_one_white",
+    "checkpoints": 66,
+    "edges": 180
+  },
+  {
+    "name": "opened_bulk_middle0_plus_one_blue",
+    "checkpoints": 92,
+    "edges": 270
+  },
+  {
+    "name": "opened_bulk_middle0_plus_one_white",
+    "checkpoints": 82,
+    "edges": 237
+  },
+  {
+    "name": "opened_bulk_middle2_plus_one_blue",
+    "checkpoints": 83,
+    "edges": 259
+  },
+  {
+    "name": "opened_bulk_middle2_plus_one_white",
+    "checkpoints": 61,
+    "edges": 171
+  },
+  {
+    "name": "three_by_three_edge_plus_two_blue",
+    "checkpoints": 36,
+    "edges": 80
+  },
+  {
+    "name": "three_by_three_edge_plus_two_white",
+    "checkpoints": 40,
+    "edges": 102
+  },
+  {
+    "name": "five_row_extrusion_refutation",
+    "checkpoints": 541,
+    "edges": 1830
+  }
+]

@@ -1,0 +1,482 @@
+[
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wbbbb",
+    "support": 1,
+    "value": [
+      "2",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wobbb",
+    "support": 3,
+    "value": [
+      "1",
+      true
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wbobb",
+    "support": 5,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "woobb",
+    "support": 7,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wbbob",
+    "support": 9,
+    "value": [
+      "3/2",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wobob",
+    "support": 11,
+    "value": [
+      "1/2",
+      true
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wboob",
+    "support": 13,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wooob",
+    "support": 15,
+    "value": [
+      "1/4",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wbbbo",
+    "support": 17,
+    "value": [
+      "2",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wobbo",
+    "support": 19,
+    "value": [
+      "1",
+      true
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wbobo",
+    "support": 21,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "woobo",
+    "support": 23,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wbboo",
+    "support": 25,
+    "value": [
+      "3/2",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "woboo",
+    "support": 27,
+    "value": [
+      "1/2",
+      true
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "wbooo",
+    "support": 29,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 1,
+    "far": "X",
+    "near": "woooo",
+    "support": 31,
+    "value": [
+      "1/4",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wbbbb",
+    "support": 1,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wobbb",
+    "support": 3,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wbobb",
+    "support": 5,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "woobb",
+    "support": 7,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wbbob",
+    "support": 9,
+    "value": [
+      "0",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wobob",
+    "support": 11,
+    "value": [
+      "-1/2",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wboob",
+    "support": 13,
+    "value": [
+      "0",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wooob",
+    "support": 15,
+    "value": [
+      "-1/2",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wbbbo",
+    "support": 17,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wobbo",
+    "support": 19,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wbobo",
+    "support": 21,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "woobo",
+    "support": 23,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wbboo",
+    "support": 25,
+    "value": [
+      "0",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "woboo",
+    "support": 27,
+    "value": [
+      "-1/2",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "wbooo",
+    "support": 29,
+    "value": [
+      "0",
+      false
+    ]
+  },
+  {
+    "width": 2,
+    "far": "D",
+    "near": "woooo",
+    "support": 31,
+    "value": [
+      "-1/2",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wbbbb",
+    "support": 1,
+    "value": [
+      "7/4",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wobbb",
+    "support": 3,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wbobb",
+    "support": 5,
+    "value": [
+      "3/2",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "woobb",
+    "support": 7,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wbbob",
+    "support": 9,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wobob",
+    "support": 11,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wboob",
+    "support": 13,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wooob",
+    "support": 15,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wbbbo",
+    "support": 17,
+    "value": [
+      "3/2",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wobbo",
+    "support": 19,
+    "value": [
+      "3/4",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wbobo",
+    "support": 21,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "woobo",
+    "support": 23,
+    "value": [
+      "1/2",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wbboo",
+    "support": 25,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "woboo",
+    "support": 27,
+    "value": [
+      "1/4",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "wbooo",
+    "support": 29,
+    "value": [
+      "1",
+      false
+    ]
+  },
+  {
+    "width": 3,
+    "far": "X",
+    "near": "woooo",
+    "support": 31,
+    "value": [
+      "1/4",
+      false
+    ]
+  }
+]

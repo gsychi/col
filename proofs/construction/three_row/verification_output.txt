@@ -1,0 +1,151 @@
+Certificates replayed (search-free):
+  K_outer4_H_of_tile_09197aa9813a      ordinary 3x7 root=[1046471, 515951] 1478 checkpoints, 5511 edges (H-reflection of tile_09197aa9813a)
+  atlas_3x5_W21845                     ordinary 3x5 root=[32767, 21845] 490 checkpoints, 1829 edges (file)
+  cap_minus_quarter_blue               numeric  3x3 root=[511, 503, -1, 4] 85 checkpoints, 272 edges (file)
+  cap_minus_quarter_white              numeric  3x3 root=[503, 511, 1, 4] 98 checkpoints, 238 edges (file)
+  opened_bulk_2_1_plus_one_blue_V_of_opened_bulk_plus_one_blue numeric  3x4 root=[2271, 1511, 1, 1] 101 checkpoints, 307 edges (V-reflection of opened_bulk_plus_one_blue)
+  opened_bulk_2_3_plus_one_blue_V_of_opened_bulk_c3_plus_one_blue numeric  3x4 root=[895, 2023, 1, 1] 109 checkpoints, 332 edges (V-reflection of opened_bulk_c3_plus_one_blue)
+  opened_bulk_c3_plus_one_blue         numeric  3x4 root=[3955, 2023, 1, 1] 109 checkpoints, 332 edges (file)
+  opened_bulk_c3_plus_one_white        numeric  3x4 root=[2023, 3955, -1, 1] 66 checkpoints, 180 edges (file)
+  opened_bulk_middle0_plus_one_blue    numeric  3x4 root=[3790, 2023, 1, 1] 92 checkpoints, 270 edges (file)
+  opened_bulk_middle0_plus_one_white   numeric  3x4 root=[2023, 3790, -1, 1] 82 checkpoints, 237 edges (file)
+  opened_bulk_middle2_plus_one_blue    numeric  3x4 root=[2843, 1959, 1, 1] 83 checkpoints, 259 edges (file)
+  opened_bulk_middle2_plus_one_white   numeric  3x4 root=[1959, 2843, -1, 1] 61 checkpoints, 171 edges (file)
+  opened_bulk_plus_one_blue            numeric  3x4 root=[4056, 2021, 1, 1] 101 checkpoints, 307 edges (file)
+  opened_bulk_plus_one_white           numeric  3x4 root=[2021, 4056, -1, 1] 77 checkpoints, 225 edges (file)
+  tile_09197aa9813a                    ordinary 3x7 root=[2080241, 2039675] 1478 checkpoints, 5511 edges (file)
+  tile_09fb65f2292a                    ordinary 3x7 root=[1962471, 2085831] 1098 checkpoints, 4089 edges (file)
+  tile_09fb65f2292a_H                  ordinary 3x7 root=[1962483, 2095473] 1098 checkpoints, 4089 edges (H-reflection of tile_09fb65f2292a)
+  tile_2398ea84ec04                    ordinary 3x7 root=[2096609, 2086851] 1438 checkpoints, 5402 edges (file)
+  tile_468c39840ab4                    ordinary 3x7 root=[1965027, 572342] 918 checkpoints, 3771 edges (file)
+  tile_4d9d5d12cc0f                    ordinary 3x2 root=[60, 24] 4 checkpoints, 6 edges (file)
+  tile_501c8151efe6                    ordinary 3x3 root=[321, 457] 5 checkpoints, 6 edges (file)
+  tile_501c8151efe6_H                  ordinary 3x3 root=[324, 484] 5 checkpoints, 6 edges (H-reflection of tile_501c8151efe6)
+  tile_55c55441362e                    ordinary 3x7 root=[1558494, 2084732] 1026 checkpoints, 3798 edges (file)
+  tile_675ea04f7dff                    ordinary 3x4 root=[4095, 3710] 155 checkpoints, 474 edges (file)
+  tile_76ba798e4bc4                    ordinary 3x7 root=[2097022, 2097020] 4883 checkpoints, 21033 edges (file)
+  tile_7de2134cc103                    ordinary 3x3 root=[201, 392] 5 checkpoints, 8 edges (file)
+  tile_8532d5d099db                    ordinary 3x3 root=[244, 94] 7 checkpoints, 14 edges (file)
+  tile_8b16696647a7                    ordinary 3x7 root=[1046471, 516079] 1252 checkpoints, 5052 edges (file)
+  tile_da4864d83b99                    ordinary 3x3 root=[420, 224] 5 checkpoints, 8 edges (file)
+  tile_e06eb7fc2dd6                    ordinary 3x1 root=[7, 5] 3 checkpoints, 3 edges (file)
+  tile_e4d37d528005                    ordinary 3x4 root=[4095, 2023] 152 checkpoints, 470 edges (file)
+  tmiddle1                             ordinary 3x6 root=[253500, 130844] 231 checkpoints, 714 edges (file)
+  z7                                   ordinary 3x7 root=[2097022, 2088828] 4844 checkpoints, 21105 edges (file)
+Roles:
+  E4           3x4 A=4095 B=2023 ports 101/010 bound<=0 via tile_e4d37d528005
+  E4bar        3x4 A=4095 B=3710 ports 010/101 bound<=0 via tile_675ea04f7dff
+  F1           3x1 A=7 B=5 ports 101/101 bound<=0 via tile_e06eb7fc2dd6
+  K_corner     3x3 A=244 B=94 ports 011/100 bound<=0 via tile_8532d5d099db
+  K_outer2     3x7 A=2080241 B=2039675 ports 100/101 bound<=0 via tile_09197aa9813a
+  K_outer4     3x7 A=1046471 B=515951 ports 101/100 bound<=0 via K_outer4_H_of_tile_09197aa9813a
+  T_middle1    3x6 A=253500 B=130844 ports 001/010 bound<=0 via tmiddle1
+  J5           3x5 A=32767 B=21845 ports 101/101 bound<=0 via atlas_3x5_W21845
+  Z7           3x7 A=2097022 B=2088828 ports 001/101 bound<=0 via z7
+  Z7_end       3x7 A=2097022 B=2097020 ports 001/111 bound<=0 via tile_76ba798e4bc4
+  C3           3x3 A=511 B=503 ports 101/111 bound<=1/4 via cap_minus_quarter_blue
+  E4_open_0_1  3x4 A=4056 B=2021 ports 101/010 bound<=-1 via opened_bulk_plus_one_blue opening=(0, 1)
+  E4_open_0_3  3x4 A=3955 B=2023 ports 101/010 bound<=-1 via opened_bulk_c3_plus_one_blue opening=(0, 3)
+  E4_open_1_0  3x4 A=3790 B=2023 ports 101/010 bound<=-1 via opened_bulk_middle0_plus_one_blue opening=(1, 0)
+  E4_open_1_2  3x4 A=2843 B=1959 ports 101/010 bound<=-1 via opened_bulk_middle2_plus_one_blue opening=(1, 2)
+  E4_open_2_1  3x4 A=2271 B=1511 ports 101/010 bound<=-1 via opened_bulk_2_1_plus_one_blue_V_of_opened_bulk_plus_one_blue opening=(2, 1)
+  E4_open_2_3  3x4 A=895 B=2023 ports 101/010 bound<=-1 via opened_bulk_2_3_plus_one_blue_V_of_opened_bulk_c3_plus_one_blue opening=(2, 3)
+Seam table (right port of left block & left port of right block = 0; first width where adjacent):
+          DEAD | Z7           000 & 001   n=15
+          DEAD | Z7_end       000 & 001   n=15
+            E4 | C3           010 & 101   n=15
+            E4 | E4           010 & 101   n=9
+            E4 | E4_open_0_1  010 & 101   n=15
+            E4 | E4_open_0_3  010 & 101   n=15
+            E4 | E4_open_1_0  010 & 101   n=15
+            E4 | E4_open_1_2  010 & 101   n=15
+            E4 | F1           010 & 101   n=5
+            E4 | J5           010 & 101   n=15
+            E4 | K_outer2     010 & 100   n=15
+            E4 | K_outer4     010 & 101   n=19
+            E4 | T_middle1    010 & 001   n=15
+   E4_open_0_1 | E4           010 & 101   n=15
+   E4_open_0_3 | E4           010 & 101   n=15
+   E4_open_1_0 | E4           010 & 101   n=15
+   E4_open_1_2 | E4           010 & 101   n=15
+         E4bar | E4bar        101 & 010   n=15
+           H_c | DEAD         111 & 000   n=15
+      K_corner | E4bar        100 & 010   n=15
+      K_outer2 | E4bar        101 & 010   n=15
+      K_outer4 | E4bar        100 & 010   n=15
+     T_middle1 | E4           010 & 101   n=15
+     T_middle1 | J5           010 & 101   n=15
+            Z7 | E4bar        101 & 010   n=15
+Left-end blocks: ['E4', 'E4_open_0_1', 'E4_open_0_3', 'E4_open_1_0', 'E4_open_1_2', 'F1', 'H_c', 'K_corner', 'K_outer2', 'K_outer4', 'T_middle1']; right-end blocks: ['C3', 'E4bar', 'F1', 'J5', 'Z7_end']
+Local windows (columns relative to the opening; first width/opening where seen):
+  case 1: n=15 opening=(0,1): E4_open_0_1[-1..+2]
+  case 1: n=15 opening=(0,3): E4_open_0_3[-3..+0], E4[+1..+4]
+  case 1: n=15 opening=(1,0): off-board[-1..-1], E4_open_1_0[+0..+3]
+  case 1: n=15 opening=(1,2): E4_open_1_2[-2..+1]
+  case 1: n=15 opening=(1,4): E4[-4..-1], E4_open_1_0[+0..+3]
+  case 1-row2: n=15 opening=(2,1): E4_open_2_1[-1..+2]
+  case 1-row2: n=15 opening=(2,3): E4_open_2_3[-3..+0], E4[+1..+4]
+  case 2: n=15 opening=(0,0): off-board[-1..-1], K_corner[+0..+2], E4bar[+3..+6]
+  case 3: n=15 opening=(0,2): off-board[-3..-3], K_outer2[-2..+4]
+  case 3: n=15 opening=(0,6): E4[-6..-3], K_outer2[-2..+4]
+  case 4: n=15 opening=(0,4): K_outer4[-4..+2], E4bar[+3..+6]
+  case 5: n=15 opening=(1,1): off-board[-2..-2], T_middle1[-1..+4]
+  case 5: n=15 opening=(1,5): E4[-5..-2], T_middle1[-1..+4]
+  case 6: n=15 opening=(1,3): H_c[-1..-1], DEAD[+0..+0], Z7[+1..+7]
+  case 6: n=15 opening=(1,7): H_c[-1..-1], DEAD[+0..+0], Z7_end[+1..+7]
+{
+  "result": "VERIFIED: every finite input and assembly of empty_3xn_theorem.md",
+  "ordinary_certificates": 21,
+  "ordinary_checkpoints": 20575,
+  "ordinary_edges": 82899,
+  "numeric_certificates": 12,
+  "numeric_checkpoints": 1064,
+  "numeric_edges": 3130,
+  "derived_by_reflection": [
+    "K_outer4_H_of_tile_09197aa9813a",
+    "opened_bulk_2_1_plus_one_blue_V_of_opened_bulk_plus_one_blue",
+    "opened_bulk_2_3_plus_one_blue_V_of_opened_bulk_c3_plus_one_blue",
+    "tile_09fb65f2292a_H",
+    "tile_501c8151efe6_H"
+  ],
+  "roles_bound": 17,
+  "odd_E4_openings_bound_le_minus_1": 6,
+  "base_widths_representatives": {
+    "3": 4,
+    "7": 8,
+    "11": 12
+  },
+  "max_width": 203,
+  "widths": {
+    "even": 101,
+    "4k+1": 51,
+    "base": 3,
+    "4k+3_induction": 48
+  },
+  "normalized_openings_checked": 5280,
+  "openings_per_case": {
+    "1": 2640,
+    "2": 48,
+    "3": 648,
+    "4": 624,
+    "5": 672,
+    "6": 648
+  },
+  "supplementary_row2_case1_assemblies": 1320,
+  "assemblies_checked": 6651,
+  "case6_recursive_calls": 648,
+  "local_windows_per_case": {
+    "1": 5,
+    "2": 1,
+    "3": 2,
+    "4": 1,
+    "5": 2,
+    "6": 2,
+    "1-row2": 2
+  },
+  "seam_types": 25,
+  "z7_repeatable_also_checked_at_physical_edge": 1,
+  "elapsed_seconds": 9.55
+}
+six-case scheme at n=7: 2 normalized openings fail -> [((1, 1), 'case 5 at n=7, c=1: b = k-a-2 = -1 < 0'), ((1, 3), 'case 6 at n=7, c=3: right width s = 3 is not >= 7 and 3 mod 4')]
+six-case scheme at n=11: 1 normalized openings fail -> [((1, 5), 'case 5 at n=11, c=5: b = k-a-2 = -1 < 0')]

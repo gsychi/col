@@ -1,0 +1,797 @@
+[
+  {
+    "name": "left_column0_row1_upper",
+    "root": [
+      5,
+      1,
+      [
+        24,
+        20,
+        1,
+        2
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "left_column0_row1_lower",
+    "root": [
+      5,
+      1,
+      [
+        20,
+        24,
+        -1,
+        2
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "left_column0_row3_upper",
+    "root": [
+      5,
+      1,
+      [
+        2,
+        20,
+        1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "left_column0_row3_lower",
+    "root": [
+      5,
+      1,
+      [
+        20,
+        2,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "left_column0_row4_upper",
+    "root": [
+      5,
+      1,
+      [
+        2,
+        4,
+        0,
+        1
+      ]
+    ],
+    "nodes": 2,
+    "edges": 1
+  },
+  {
+    "name": "left_column0_row4_lower",
+    "root": [
+      5,
+      1,
+      [
+        4,
+        2,
+        0,
+        1
+      ]
+    ],
+    "nodes": 2,
+    "edges": 1
+  },
+  {
+    "name": "left_column1_row0_upper",
+    "root": [
+      5,
+      2,
+      [
+        996,
+        408,
+        0,
+        1
+      ]
+    ],
+    "nodes": 22,
+    "edges": 44
+  },
+  {
+    "name": "left_column1_row0_lower",
+    "root": [
+      5,
+      2,
+      [
+        408,
+        996,
+        0,
+        1
+      ]
+    ],
+    "nodes": 16,
+    "edges": 32
+  },
+  {
+    "name": "left_column1_row1_upper",
+    "root": [
+      5,
+      2,
+      [
+        960,
+        400,
+        1,
+        1
+      ]
+    ],
+    "nodes": 9,
+    "edges": 17
+  },
+  {
+    "name": "left_column1_row1_lower",
+    "root": [
+      5,
+      2,
+      [
+        400,
+        960,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 8,
+    "edges": 12
+  },
+  {
+    "name": "left_column1_row2_upper",
+    "root": [
+      5,
+      2,
+      [
+        838,
+        408,
+        0,
+        1
+      ]
+    ],
+    "nodes": 19,
+    "edges": 40
+  },
+  {
+    "name": "left_column1_row2_lower",
+    "root": [
+      5,
+      2,
+      [
+        408,
+        838,
+        0,
+        1
+      ]
+    ],
+    "nodes": 16,
+    "edges": 32
+  },
+  {
+    "name": "left_column1_row3_upper",
+    "root": [
+      5,
+      2,
+      [
+        14,
+        24,
+        0,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 5
+  },
+  {
+    "name": "left_column1_row3_lower",
+    "root": [
+      5,
+      2,
+      [
+        24,
+        14,
+        0,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "left_column1_row4_upper",
+    "root": [
+      5,
+      2,
+      [
+        110,
+        408,
+        0,
+        1
+      ]
+    ],
+    "nodes": 18,
+    "edges": 34
+  },
+  {
+    "name": "left_column1_row4_lower",
+    "root": [
+      5,
+      2,
+      [
+        408,
+        110,
+        0,
+        1
+      ]
+    ],
+    "nodes": 16,
+    "edges": 32
+  },
+  {
+    "name": "right_penultimate_row0_upper",
+    "root": [
+      5,
+      2,
+      [
+        984,
+        614,
+        1,
+        1
+      ]
+    ],
+    "nodes": 46,
+    "edges": 112
+  },
+  {
+    "name": "right_penultimate_row0_lower",
+    "root": [
+      5,
+      2,
+      [
+        614,
+        984,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 32,
+    "edges": 80
+  },
+  {
+    "name": "right_penultimate_row1_upper",
+    "root": [
+      5,
+      2,
+      [
+        960,
+        608,
+        1,
+        1
+      ]
+    ],
+    "nodes": 9,
+    "edges": 17
+  },
+  {
+    "name": "right_penultimate_row1_lower",
+    "root": [
+      5,
+      2,
+      [
+        608,
+        960,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 6,
+    "edges": 8
+  },
+  {
+    "name": "right_penultimate_row2_upper",
+    "root": [
+      5,
+      2,
+      [
+        907,
+        614,
+        1,
+        1
+      ]
+    ],
+    "nodes": 39,
+    "edges": 101
+  },
+  {
+    "name": "right_penultimate_row2_lower",
+    "root": [
+      5,
+      2,
+      [
+        614,
+        907,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 32,
+    "edges": 80
+  },
+  {
+    "name": "central_white2_blue0_upper",
+    "root": [
+      5,
+      1,
+      [
+        24,
+        16,
+        -1,
+        2
+      ]
+    ],
+    "nodes": 4,
+    "edges": 5
+  },
+  {
+    "name": "central_white2_blue0_lower",
+    "root": [
+      5,
+      1,
+      [
+        16,
+        24,
+        1,
+        2
+      ]
+    ],
+    "nodes": 3,
+    "edges": 3
+  },
+  {
+    "name": "central_white2_blue1_upper",
+    "root": [
+      5,
+      1,
+      [
+        24,
+        17,
+        1,
+        2
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "central_white2_blue1_lower",
+    "root": [
+      5,
+      1,
+      [
+        17,
+        24,
+        -1,
+        2
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "central_white1_blue0_upper",
+    "root": [
+      5,
+      1,
+      [
+        28,
+        8,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 5
+  },
+  {
+    "name": "central_white1_blue0_lower",
+    "root": [
+      5,
+      1,
+      [
+        8,
+        28,
+        1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "central_white1_blue2_upper",
+    "root": [
+      5,
+      1,
+      [
+        17,
+        8,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "central_white1_blue2_lower",
+    "root": [
+      5,
+      1,
+      [
+        8,
+        17,
+        1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "central_white1_blue3_upper",
+    "root": [
+      5,
+      1,
+      [
+        1,
+        0,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 2,
+    "edges": 1
+  },
+  {
+    "name": "central_white1_blue3_lower",
+    "root": [
+      5,
+      1,
+      [
+        0,
+        1,
+        1,
+        1
+      ]
+    ],
+    "nodes": 2,
+    "edges": 1
+  },
+  {
+    "name": "central_white1_blue4_upper",
+    "root": [
+      5,
+      1,
+      [
+        5,
+        8,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "central_white1_blue4_lower",
+    "root": [
+      5,
+      1,
+      [
+        8,
+        5,
+        1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "v_reply0_upper",
+    "root": [
+      5,
+      1,
+      [
+        24,
+        20,
+        1,
+        2
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "v_reply0_lower",
+    "root": [
+      5,
+      1,
+      [
+        20,
+        24,
+        -1,
+        2
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "v_reply2_upper",
+    "root": [
+      5,
+      1,
+      [
+        24,
+        17,
+        1,
+        2
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "v_reply2_lower",
+    "root": [
+      5,
+      1,
+      [
+        17,
+        24,
+        -1,
+        2
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "v_reply4_upper",
+    "root": [
+      5,
+      1,
+      [
+        8,
+        5,
+        1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "v_reply4_lower",
+    "root": [
+      5,
+      1,
+      [
+        5,
+        8,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 4,
+    "edges": 4
+  },
+  {
+    "name": "corner_phase_x4_upper",
+    "root": [
+      5,
+      4,
+      [
+        1046270,
+        520164,
+        -1,
+        2
+      ]
+    ],
+    "nodes": 4086,
+    "edges": 19750
+  },
+  {
+    "name": "corner_phase_x4_lower",
+    "root": [
+      5,
+      4,
+      [
+        520164,
+        1046270,
+        1,
+        2
+      ]
+    ],
+    "nodes": 2252,
+    "edges": 8652
+  },
+  {
+    "name": "phase_d3_p2_r2_upper",
+    "root": [
+      5,
+      3,
+      [
+        32447,
+        29783,
+        0,
+        1
+      ]
+    ],
+    "nodes": 245,
+    "edges": 876
+  },
+  {
+    "name": "phase_u3_p2_r2_upper",
+    "root": [
+      5,
+      3,
+      [
+        32443,
+        29783,
+        0,
+        1
+      ]
+    ],
+    "nodes": 242,
+    "edges": 839
+  },
+  {
+    "name": "phase_j3_p2_r2_upper",
+    "root": [
+      5,
+      3,
+      [
+        32415,
+        29783,
+        0,
+        1
+      ]
+    ],
+    "nodes": 184,
+    "edges": 566
+  },
+  {
+    "name": "phase_r4_p2_r2_upper",
+    "root": [
+      5,
+      4,
+      [
+        1047287,
+        500143,
+        0,
+        1
+      ]
+    ],
+    "nodes": 1460,
+    "edges": 6529
+  },
+  {
+    "name": "phase_v4_p2_r2_upper",
+    "root": [
+      5,
+      4,
+      [
+        1047167,
+        500135,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 2293,
+    "edges": 10941
+  },
+  {
+    "name": "phase_r4_p3_r1_upper",
+    "root": [
+      5,
+      4,
+      [
+        1048183,
+        517927,
+        0,
+        1
+      ]
+    ],
+    "nodes": 1302,
+    "edges": 5575
+  },
+  {
+    "name": "phase_v4_p3_r1_upper",
+    "root": [
+      5,
+      4,
+      [
+        1048191,
+        517927,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 2531,
+    "edges": 12168
+  },
+  {
+    "name": "phase_x4_p3_r1_upper",
+    "root": [
+      5,
+      4,
+      [
+        1046143,
+        517927,
+        0,
+        1
+      ]
+    ],
+    "nodes": 1652,
+    "edges": 7089
+  },
+  {
+    "name": "phase_r4_p3_r3_upper",
+    "root": [
+      5,
+      4,
+      [
+        1015543,
+        468975,
+        0,
+        1
+      ]
+    ],
+    "nodes": 1310,
+    "edges": 5960
+  },
+  {
+    "name": "phase_v4_p3_r3_upper",
+    "root": [
+      5,
+      4,
+      [
+        1015423,
+        468967,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 2077,
+    "edges": 10123
+  },
+  {
+    "name": "phase_x4_p3_r3_upper",
+    "root": [
+      5,
+      4,
+      [
+        1013503,
+        468967,
+        0,
+        1
+      ]
+    ],
+    "nodes": 1258,
+    "edges": 5696
+  }
+]

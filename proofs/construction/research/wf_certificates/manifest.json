@@ -1,0 +1,182 @@
+[
+  {
+    "name": "dd1_blue",
+    "root": [
+      5,
+      1,
+      [
+        27,
+        21,
+        0,
+        1
+      ]
+    ],
+    "nodes": 7,
+    "edges": 9
+  },
+  {
+    "name": "dd1_white",
+    "root": [
+      5,
+      1,
+      [
+        21,
+        27,
+        0,
+        1
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "dd3_blue",
+    "root": [
+      5,
+      3,
+      [
+        32447,
+        30167,
+        0,
+        1
+      ]
+    ],
+    "nodes": 261,
+    "edges": 934
+  },
+  {
+    "name": "dd3_white_center_endpoint_child",
+    "root": [
+      5,
+      3,
+      [
+        32447,
+        29975,
+        0,
+        1
+      ]
+    ],
+    "nodes": 245,
+    "edges": 876
+  },
+  {
+    "name": "du1_plus_eighth_blue",
+    "root": [
+      5,
+      1,
+      [
+        26,
+        21,
+        1,
+        8
+      ]
+    ],
+    "nodes": 11,
+    "edges": 18
+  },
+  {
+    "name": "dj1_plus_three_eighths_blue",
+    "root": [
+      5,
+      1,
+      [
+        25,
+        21,
+        3,
+        8
+      ]
+    ],
+    "nodes": 11,
+    "edges": 17
+  },
+  {
+    "name": "dt2_blue",
+    "root": [
+      5,
+      2,
+      [
+        1007,
+        409,
+        0,
+        1
+      ]
+    ],
+    "nodes": 50,
+    "edges": 126
+  },
+  {
+    "name": "dt2_white",
+    "root": [
+      5,
+      2,
+      [
+        409,
+        1007,
+        0,
+        1
+      ]
+    ],
+    "nodes": 24,
+    "edges": 49
+  },
+  {
+    "name": "white_center_cap_minus_value_blue",
+    "root": [
+      5,
+      1,
+      [
+        27,
+        17,
+        -1,
+        1
+      ]
+    ],
+    "nodes": 7,
+    "edges": 9
+  },
+  {
+    "name": "white_center_cap_minus_value_white",
+    "root": [
+      5,
+      1,
+      [
+        17,
+        27,
+        1,
+        1
+      ]
+    ],
+    "nodes": 5,
+    "edges": 6
+  },
+  {
+    "name": "white_corner_cap_minus_value_blue",
+    "root": [
+      5,
+      1,
+      [
+        26,
+        20,
+        -1,
+        2
+      ]
+    ],
+    "nodes": 9,
+    "edges": 15
+  },
+  {
+    "name": "white_corner_cap_minus_value_white",
+    "root": [
+      5,
+      1,
+      [
+        20,
+        26,
+        1,
+        2
+      ]
+    ],
+    "nodes": 7,
+    "edges": 10
+  }
+]

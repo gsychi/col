@@ -1,0 +1,19 @@
+{
+  "height": 1,
+  "width": 6,
+  "blue": 63,
+  "safe_white_masks": [
+    63
+  ],
+  "minimal_safe_white_masks": [
+    63
+  ],
+  "maximal_unsafe_white_masks": [
+    31,
+    47,
+    55,
+    59,
+    61,
+    62
+  ]
+}

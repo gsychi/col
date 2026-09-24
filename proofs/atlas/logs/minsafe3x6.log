@@ -1,0 +1,2 @@
+mask=225975 safe=1 checkpoints=1908 edges=7869 minimax_calls=115223 memo_entries=40380
+mask=243003 safe=1 checkpoints=2055 edges=8508 minimax_calls=176950 memo_entries=61989

@@ -6,8 +6,5 @@
 #
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 BIN="$ROOT/solver/target/release/col-rs"
-if [ ! -x "$BIN" ]; then
-  echo "Building solver (first run)..." >&2
-  (cd "$ROOT/solver" && cargo build --release) || exit 1
-fi
+cargo build --quiet --release --offline --manifest-path "$ROOT/solver/Cargo.toml" --bin col-rs || exit 1
 exec "$BIN" "$@"

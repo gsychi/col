@@ -1,0 +1,22 @@
+\begin{tikzpicture}[scale=1.300, every node/.style={transform shape}]
+\fill[colboth] (0.000,0.000) rectangle ++(0.500,-0.500);
+\fill[colboth] (0.500,0.000) rectangle ++(0.500,-0.500);
+\fill[colboth] (1.000,0.000) rectangle ++(0.500,-0.500);
+\draw[gridline] (0.500,0.000) -- ++(0,-0.500);
+\draw[gridline] (1.000,0.000) -- ++(0,-0.500);
+\draw[boardline] (0.000,0.000) rectangle ++(1.500,-0.500);
+\node[bluestone, minimum size=0.390cm] at (0.750,-0.250) {};
+\node[font=\small, text=red!70!black] at (0.25,-0.25) {$\times$};
+\node[font=\small, text=red!70!black] at (1.25,-0.25) {$\times$};
+\node[font=\scriptsize, align=center] at (0.75,-0.95) {Blue may not\\play beside Blue};
+\fill[colboth] (3.000,0.000) rectangle ++(0.500,-0.500);
+\fill[colboth] (3.500,0.000) rectangle ++(0.500,-0.500);
+\fill[colboth] (4.000,0.000) rectangle ++(0.500,-0.500);
+\draw[gridline] (3.500,0.000) -- ++(0,-0.500);
+\draw[gridline] (4.000,0.000) -- ++(0,-0.500);
+\draw[boardline] (3.000,0.000) rectangle ++(1.500,-0.500);
+\node[bluestone, minimum size=0.390cm] at (3.750,-0.250) {};
+\node[whitestone, minimum size=0.390cm] at (3.250,-0.250) {};
+\node[font=\small, text=green!45!black] at (4.25,-0.25) {\checkmark};
+\node[font=\scriptsize, align=center] at (3.75,-0.95) {White may play\\beside Blue};
+\end{tikzpicture}

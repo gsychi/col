@@ -1,0 +1,180 @@
+{
+  "format": "col-adaptive-index-benchmark-v1",
+  "queries": 25,
+  "matched": 2,
+  "variants": 63080,
+  "index_seconds": {
+    "linear": 0.5241941250860691,
+    "indexed": 0.8473901660181582
+  },
+  "wall_seconds": {
+    "linear": [
+      1.891115705948323,
+      2.2243127492256463,
+      2.1955209961161017
+    ],
+    "indexed": [
+      0.003201376646757126,
+      0.001726246438920498,
+      0.001859456766396761
+    ]
+  },
+  "median_seconds": {
+    "linear": 2.1955209961161017,
+    "indexed": 0.001859456766396761
+  },
+  "measurements": "Identical original checkpoint sets, same 25 whole-board tile queries, three runs with alternating order. Includes empty 3x13, successful 3x19 response, and all 23 symmetry-distinct responses to the 3x23 center. Timings exclude source verification and index construction.",
+  "positions": [
+    {
+      "width": 13,
+      "a": "0x7fffffffff",
+      "b": "0x7fffffffff",
+      "cover": true
+    },
+    {
+      "width": 19,
+      "a": "0x1ffdffff1fffe7f",
+      "b": "0x1fffffff3fffc7f",
+      "cover": true
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff7fe",
+      "b": "0x1ffffffffbff7ffffc",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff7fd",
+      "b": "0x1ffffffffbfefffff8",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff7fb",
+      "b": "0x1ffffffffbfdfffff1",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff7f7",
+      "b": "0x1ffffffffbfbffffe3",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff7ef",
+      "b": "0x1ffffffffbf7ffffc7",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff7df",
+      "b": "0x1ffffffffbefffff8f",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff7bf",
+      "b": "0x1ffffffffbdfffff1f",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff77f",
+      "b": "0x1ffffffffbbffffe3f",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff6ff",
+      "b": "0x1ffffffffb7ffffc7f",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff5ff",
+      "b": "0x1ffffffffafffff8ff",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff3ff",
+      "b": "0x1ffffffff9fffff1ff",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff7ff",
+      "b": "0x1ffffffffbffffe3ff",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1ff7ff7ff",
+      "b": "0x1fffffbffbfe7ffffe",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fefff7ff",
+      "b": "0x1fffff7ffbfc7ffffd",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fdfff7ff",
+      "b": "0x1ffffefffbf8fffffb",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fbfff7ff",
+      "b": "0x1ffffdfffbf1fffff7",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1f7fff7ff",
+      "b": "0x1ffffbfffbe3ffffef",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1effff7ff",
+      "b": "0x1ffff7fffbc7ffffdf",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1dffff7ff",
+      "b": "0x1fffeffffb8fffffbf",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1bffff7ff",
+      "b": "0x1fffdffffb1fffff7f",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff17ffff7ff",
+      "b": "0x1fffbffffa3ffffeff",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff0fffff7ff",
+      "b": "0x1fff7ffff87ffffdff",
+      "cover": false
+    },
+    {
+      "width": 23,
+      "a": "0x1ffdfffff1fffff7ff",
+      "b": "0x1ffefffff8fffffbff",
+      "cover": false
+    }
+  ],
+  "query_speedup": 1180.732478319764
+}

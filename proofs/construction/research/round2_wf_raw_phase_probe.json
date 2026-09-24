@@ -1,0 +1,150 @@
+{
+  "validation": [
+    {
+      "actor_wins": false,
+      "blue": 32447,
+      "budget": 10000000,
+      "height": 5,
+      "memo_hits": 11,
+      "seconds": 0.000158625,
+      "states": 26,
+      "turn": 0,
+      "white": 30167,
+      "width": 3
+    },
+    {
+      "actor_wins": false,
+      "blue": 1047287,
+      "budget": 10000000,
+      "height": 5,
+      "memo_hits": 50,
+      "seconds": 0.00182125,
+      "states": 473,
+      "turn": 0,
+      "white": 500143,
+      "width": 4
+    }
+  ],
+  "queries": [
+    {
+      "family": "R",
+      "width": 6,
+      "p": 3,
+      "t": 1,
+      "reachable_in_conditional_assembly": true,
+      "raw_result": {
+        "actor_wins": false,
+        "blue": 1073737183,
+        "budget": 10000000,
+        "height": 5,
+        "memo_hits": 47329,
+        "seconds": 0.118584166,
+        "states": 159634,
+        "turn": 0,
+        "white": 536443063,
+        "width": 6
+      },
+      "status": "experimental_not_independently_certified"
+    },
+    {
+      "family": "X",
+      "width": 6,
+      "p": 3,
+      "t": 1,
+      "reachable_in_conditional_assembly": false,
+      "raw_result": {
+        "actor_wins": true,
+        "blue": 1073606143,
+        "budget": 10000000,
+        "height": 5,
+        "memo_hits": 80923,
+        "seconds": 0.153425125,
+        "states": 227252,
+        "turn": 0,
+        "white": 536574103,
+        "width": 6
+      },
+      "status": "experimental_not_independently_certified"
+    },
+    {
+      "family": "R",
+      "width": 6,
+      "p": 3,
+      "t": 3,
+      "reachable_in_conditional_assembly": true,
+      "raw_result": {
+        "actor_wins": false,
+        "blue": 1071640543,
+        "budget": 10000000,
+        "height": 5,
+        "memo_hits": 89462,
+        "seconds": 0.192494542,
+        "states": 287953,
+        "turn": 0,
+        "white": 394887103,
+        "width": 6
+      },
+      "status": "experimental_not_independently_certified"
+    },
+    {
+      "family": "X",
+      "width": 6,
+      "p": 3,
+      "t": 3,
+      "reachable_in_conditional_assembly": false,
+      "raw_result": {
+        "actor_wins": true,
+        "blue": 1071509503,
+        "budget": 10000000,
+        "height": 5,
+        "memo_hits": 71721,
+        "seconds": 0.143862083,
+        "states": 213914,
+        "turn": 0,
+        "white": 395018143,
+        "width": 6
+      },
+      "status": "experimental_not_independently_certified"
+    },
+    {
+      "family": "R",
+      "width": 6,
+      "p": 4,
+      "t": 2,
+      "reachable_in_conditional_assembly": true,
+      "raw_result": {
+        "actor_wins": false,
+        "blue": 1073672159,
+        "budget": 10000000,
+        "height": 5,
+        "memo_hits": 67311,
+        "seconds": 0.153623541,
+        "states": 214365,
+        "turn": 0,
+        "white": 532183999,
+        "width": 6
+      },
+      "status": "experimental_not_independently_certified"
+    },
+    {
+      "family": "X",
+      "width": 6,
+      "p": 4,
+      "t": 2,
+      "reachable_in_conditional_assembly": true,
+      "raw_result": {
+        "actor_wins": false,
+        "blue": 1073541119,
+        "budget": 10000000,
+        "height": 5,
+        "memo_hits": 48069,
+        "seconds": 0.093187583,
+        "states": 124460,
+        "turn": 0,
+        "white": 532183967,
+        "width": 6
+      },
+      "status": "experimental_not_independently_certified"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+LAUNCH: pid 41801 started Wed Sep 23 16:27:42 2026 cap 10900s cmd /tmp/ground_truth/colout5 -S 14 -t 22 -T 24 -j 4 -L 10800 -W /tmp/ground_truth/vals_dj9.bin
+    [DJ_9 B -3/8] 123s kids 0/44 nodes 66756661 tt 5874984 vc 1246504
+RESTARTED (killed by me: memory thrash with large tables)
+LAUNCH: pid 44985 started Wed Sep 23 16:30:32 2026 cap 10900s cmd /tmp/ground_truth/colout5 -S 14 -t 21 -T 22 -j 4 -L 10800 -W /tmp/ground_truth/vals_dj9.bin
+    [DJ_9 B -3/8] 121s kids 0/44 nodes 888868235 tt 16775229 vc 3621223
+    [DJ_9 B -3/8] 241s kids 0/44 nodes 2066908172 tt 16777216 vc 4374743
+    [DJ_9 B -3/8] 361s kids 0/44 nodes 2728962318 tt 16777216 vc 4635155
+    [DJ_9 B -3/8] 481s kids 0/44 nodes 3819825325 tt 16777216 vc 5077726
+    [DJ_9 B -3/8] 601s kids 0/44 nodes 5264045294 tt 16777216 vc 5531853
+    [DJ_9 B -3/8] 721s kids 0/44 nodes 6156427925 tt 16777216 vc 5702792
+    [DJ_9 B -3/8] 841s kids 0/44 nodes 7159126376 tt 16777216 vc 5950707
+    [DJ_9 B -3/8] 961s kids 0/44 nodes 7990825510 tt 16777216 vc 6099894
+    [DJ_9 B -3/8] 1082s kids 0/44 nodes 9213795145 tt 16777216 vc 6251489
+    [DJ_9 B -3/8] 1202s kids 0/44 nodes 10631720356 tt 16777216 vc 6365209
+    [DJ_9 B -3/8] 1322s kids 0/44 nodes 12138024542 tt 16777216 vc 6531589
+    [DJ_9 B -3/8] 1442s kids 0/44 nodes 13514913730 tt 16777216 vc 6619608
+    [DJ_9 B -3/8] 1562s kids 0/44 nodes 14791182403 tt 16777216 vc 6715481
+    [DJ_9 B -3/8] 1682s kids 0/44 nodes 16271711086 tt 16777216 vc 6805550
+    [DJ_9 B -3/8] 1802s kids 0/44 nodes 17529575744 tt 16777216 vc 6854069
+    [DJ_9 B -3/8] 1922s kids 0/44 nodes 18830781400 tt 16777216 vc 6965927
+    [DJ_9 B -3/8] 2042s kids 1/44 nodes 20153744210 tt 16777216 vc 7038762
+    [DJ_9 B -3/8] 2162s kids 1/44 nodes 21335187349 tt 16777216 vc 7072792
+    [DJ_9 B -3/8] 2283s kids 1/44 nodes 22591597756 tt 16777216 vc 7100916
+    [DJ_9 B -3/8] 2403s kids 1/44 nodes 23952902229 tt 16777216 vc 7133777
+    [DJ_9 B -3/8] 2523s kids 1/44 nodes 25195625756 tt 16777216 vc 7155033
+    [DJ_9 B -3/8] 2643s kids 1/44 nodes 26647287538 tt 16777216 vc 7179908
+    [DJ_9 B -3/8] 2763s kids 1/44 nodes 27864064859 tt 16777216 vc 7194624
+    [DJ_9 B -3/8] 2883s kids 1/44 nodes 29093916641 tt 16777216 vc 7210201
+    [DJ_9 B -3/8] 3003s kids 1/44 nodes 29699206969 tt 16777216 vc 7220216
+    [DJ_9 B -3/8] 3123s kids 1/44 nodes 29999817690 tt 16777216 vc 7227835
+    [DJ_9 B -3/8] 3243s kids 1/44 nodes 30653674151 tt 16777216 vc 7238468
+    [DJ_9 B -3/8] 3363s kids 1/44 nodes 31646374727 tt 16777216 vc 7254589
+    [DJ_9 B -3/8] 3484s kids 1/44 nodes 32604813015 tt 16777216 vc 7266669
+    [DJ_9 B -3/8] 3604s kids 1/44 nodes 33412134807 tt 16777216 vc 7277023
+    [DJ_9 B -3/8] 3724s kids 1/44 nodes 34407102483 tt 16777216 vc 7289970
+    [DJ_9 B -3/8] 3844s kids 1/44 nodes 34942854761 tt 16777216 vc 7297488
+    [DJ_9 B -3/8] 3964s kids 1/44 nodes 35083133405 tt 16777216 vc 7299487
+    [DJ_9 B -3/8] 4084s kids 1/44 nodes 35451887554 tt 16777216 vc 7305267
+    [DJ_9 B -3/8] 4204s kids 1/44 nodes 36327275553 tt 16777216 vc 7316651
+    [DJ_9 B -3/8] 4324s kids 1/44 nodes 37614496129 tt 16777216 vc 7334021
+    [DJ_9 B -3/8] 4445s kids 1/44 nodes 38813822529 tt 16777216 vc 7345965
+    [DJ_9 B -3/8] 4565s kids 1/44 nodes 40136246122 tt 16777216 vc 7360654
+    [DJ_9 B -3/8] 4685s kids 1/44 nodes 40842640556 tt 16777216 vc 7370227
+    [DJ_9 B -3/8] 4805s kids 1/44 nodes 42059559579 tt 16777216 vc 7380783
+    [DJ_9 B -3/8] 4925s kids 1/44 nodes 43143748832 tt 16777216 vc 7392930
+    [DJ_9 B -3/8] 5045s kids 1/44 nodes 43258665382 tt 16777216 vc 7394342
+KILLED EXTERNALLY at ~5045 s (no exit line); Blue-first at -3/8 INCONCLUSIVE, 1/44 root children done, 43 G nodes

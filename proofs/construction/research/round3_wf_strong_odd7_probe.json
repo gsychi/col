@@ -1,0 +1,110 @@
+[
+  {
+    "family": "DU",
+    "original_width": 7,
+    "offset": "+1/2",
+    "status": "experimental_not_certified",
+    "result": {
+      "actor_wins": null,
+      "blue": 139774474190655,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1938980,
+      "seconds": 6.295179792,
+      "states": 5000000,
+      "turn": 0,
+      "white": 139704681953663,
+      "width": 10
+    }
+  },
+  {
+    "family": "DU",
+    "original_width": 7,
+    "offset": "+1/2",
+    "status": "experimental_not_certified",
+    "result": {
+      "actor_wins": null,
+      "blue": 139774474190655,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1978362,
+      "seconds": 6.291849083,
+      "states": 5000000,
+      "turn": 1,
+      "white": 139704681953663,
+      "width": 10
+    }
+  },
+  {
+    "family": "DJ",
+    "original_width": 7,
+    "offset": "+1/2",
+    "status": "experimental_not_certified",
+    "result": {
+      "actor_wins": null,
+      "blue": 139774474125183,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1922947,
+      "seconds": 6.080751333,
+      "states": 5000000,
+      "turn": 0,
+      "white": 139704682019199,
+      "width": 10
+    }
+  },
+  {
+    "family": "DJ",
+    "original_width": 7,
+    "offset": "+1/2",
+    "status": "experimental_not_certified",
+    "result": {
+      "actor_wins": null,
+      "blue": 139774474125183,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1875819,
+      "seconds": 6.473746041,
+      "states": 5000000,
+      "turn": 1,
+      "white": 139704682019199,
+      "width": 10
+    }
+  },
+  {
+    "family": "DD",
+    "original_width": 7,
+    "offset": "+1/2",
+    "status": "experimental_not_certified",
+    "result": {
+      "actor_wins": null,
+      "blue": 139774407081855,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1801197,
+      "seconds": 6.273438292,
+      "states": 5000000,
+      "turn": 0,
+      "white": 139704681953663,
+      "width": 10
+    }
+  },
+  {
+    "family": "DD",
+    "original_width": 7,
+    "offset": "+1/2",
+    "status": "experimental_not_certified",
+    "result": {
+      "actor_wins": null,
+      "blue": 139774407081855,
+      "budget": 5000000,
+      "height": 5,
+      "memo_hits": 1912984,
+      "seconds": 6.609672125,
+      "states": 5000000,
+      "turn": 1,
+      "white": 139704681953663,
+      "width": 10
+    }
+  }
+]
