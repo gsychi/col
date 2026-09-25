@@ -22,8 +22,10 @@ Every adjacent pair up to reflection, all equal to `1`:
 | 3×11 | 16 | all 1 |
 | 5×7 | 17 | all 1 |
 | 3×13 | 19 | all 1 |
-| 5×9 | 22 | running; first 8 all 1 |
-| 7×7 | 24 | queued |
+| 5×9 | 22 | 21 are 1; `B20_W10` INCONCLUSIVE at 600 s (skipped, over the ~150 s budget) |
+| 7×7 | 24 | not run |
+
+5×9 logs: `runs/d5x9*.out`. Proof attempts: `PROOF_ATTEMPTS.md`.
 
 Reproduce with:
 
