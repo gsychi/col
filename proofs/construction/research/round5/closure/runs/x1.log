@@ -1,0 +1,81 @@
+  new family #0 KD values(w6,w7)=(1,0)  w7=ooooooo/booooob/.boooow/booooob/ooooooo
+check F0/0 q=1 (exact) att 1  [families 1, queue 1, exact 0 timeouts 0 searches 0, 2s]
+  new family #1 piece values(w6,w7)=(3,3)  w7=oooooob/booooob/.boooob/booooob/oooooob
+  new family #2 piece values(w6,w7)=(1,1/2)  w7=ooooooo/boooooo/.booooo/boooooo/ooooooo
+  new family #3 piece values(w6,w7)=(1,2)  w7=oooooob/boooooo/.boooob/boooooo/oooooob
+  new family #4 piece values(w6,w7)=(3/2,1/2)  w7=ooooooo/booooob/.booooo/booooob/ooooooo
+  F0/0 q=1 CLOSED by table: table: 280 openings, 0 white-first widths (346s)
+check F0/1 q=0 (exact) att 2  [families 5, queue 4, exact 6239 timeouts 0 searches 29828, 349s]
+  new family #5 piece values(w6,w7)=(-1,-1)  w7=owooooo/w.wooob/owoooow/oooooob/ooooooo
+  new family #6 piece values(w6,w7)=(1/2,5/8)  w7=bwooooo/..wooob/owoooow/booooob/boooooo
+  new family #7 piece values(w6,w7)=(-1/2,-1)  w7=owooooo/..wooob/owoooow/booooob/ooooooo
+  new family #8 piece values(w6,w7)=(-1,-1/2)  w7=bwooooo/w.wooob/owoooow/oooooob/boooooo
+  new family #9 piece values(w6,w7)=(-3/2,-2)  w7=woooooo/.woooob/wooooow/oooooob/ooooooo
+  new family #10 piece values(w6,w7)=(3/8,1)  w7=.oooooo/.woooob/.ooooow/booooob/boooooo
+  new family #11 piece values(w6,w7)=(-1/2,1/2)  w7=.oooooo/.woooob/.ooooow/oooooob/boooooo
+  new family #12 piece values(w6,w7)=(-3/2,-2)  w7=ooooooo/owoooob/w.wooow/owoooob/ooooooo
+  new family #13 piece values(w6,w7)=(1,1)  w7=boooooo/bwoooob/..wooow/bwoooob/boooooo
+  new family #14 piece values(w6,w7)=(-1/2,0)  w7=boooooo/owoooob/..wooow/owoooob/boooooo
+  new family #15 piece values(w6,w7)=(-3/2,-2)  w7=ooooooo/bwoooob/w.wooow/bwoooob/ooooooo
+  new family #16 piece values(w6,w7)=(2,2)  w7=oooooob/boooowb/.boow../boooowb/oooooob
+  new family #17 piece values(w6,w7)=(-1/2,-1)  w7=ooooooo/boooowo/.boow.w/boooowo/ooooooo
+  new family #18 piece values(w6,w7)=(1/2,1)  w7=oooooob/boooowo/.boow../boooowo/oooooob
+  new family #19 piece values(w6,w7)=(-1/2,-1)  w7=ooooooo/boooowb/.boow.w/boooowb/ooooooo
+    F0/1 q=0 FAIL B w=13 (2,6)
+  new family #20 piece values(w6,w7)=(-1,-1)  w7=ooooooo/wooooob/.woooow/wooooob/ooooooo
+  new family #21 piece values(w6,w7)=(1,1)  w7=boooooo/.ooooob/.woooow/.ooooob/boooooo
+  new family #22 piece values(w6,w7)=(0,-3/4)  w7=ooooooo/.ooooob/.woooow/.ooooob/ooooooo
+  new family #23 piece values(w6,w7)=(11/8,2)  w7=oooooo./boooow./.boooo./booooob/oooooob
+  new family #24 piece values(w6,w7)=(-1/2,-1)  w7=oooooow/boooow./.boooow/boooooo/ooooooo
+  new family #25 piece values(w6,w7)=(1/2,3/2)  w7=oooooo./boooow./.boooo./boooooo/oooooob
+  F0/1 q=0 table: 1 failure(s), first B w=13 (2,6)
+  new family #26 piece values(w6,w7)=(0,1)  w7=boooooo/oooooob/booooow/oooooob/ooooooo
+  new family #27 piece values(w6,w7)=(0,1)  w7=boooooo/oooooob/booooow/oooooob/boooooo
+  new family #28 piece values(w6,w7)=(1,1)  w7=oooooob/boooooo/.booooo/boooooo/ooooooo
+  new family #29 piece values(w6,w7)=(1,1)  w7=ooooooo/boooooo/.boooob/boooooo/ooooooo
+  new family #30 piece values(w6,w7)=(1,1)  w7=.booooo/booooob/booooow/oooooob/ooooooo
+  new family #31 piece values(w6,w7)=(1,3/2)  w7=.booooo/booooob/booooow/oooooob/boooooo
+  new family #32 piece values(w6,w7)=(1,3/2)  w7=boooooo/.boooob/booooow/oooooob/ooooooo
+  new family #33 piece values(w6,w7)=(1,2)  w7=boooooo/.boooob/booooow/oooooob/boooooo
+  new family #34 piece values(w6,w7)=(0,-1/2)  w7=ooooooo/oooooob/oooooow/oooooob/ooooooo
+  new family #35 piece values(w6,w7)=(1,1/2)  w7=ooooooo/booooob/oooooow/booooob/boooooo
+  new family #36 piece values(w6,w7)=(1/2,-1/2)  w7=ooooooo/booooob/oooooow/booooob/ooooooo
+  new family #37 piece values(w6,w7)=(0,0)  w7=ooooooo/oooooob/oooooow/oooooob/boooooo
+  new family #38 piece values(w6,w7)=(2,2)  w7=boooooo/booooob/booooow/booooob/boooooo
+  new family #39 piece values(w6,w7)=(3,5/2)  w7=ooooooo/booooob/.boooob/booooob/oooooob
+  new family #40 piece values(w6,w7)=(1,2)  w7=ooooooo/boooooo/.boooob/boooooo/oooooob
+  new family #41 piece values(w6,w7)=(5/2,5/2)  w7=oooooob/booooob/.booooo/booooob/oooooob
+  new family #42 piece values(w6,w7)=(1,2)  w7=oooooob/boooooo/.booooo/boooooo/oooooob
+  new family #43 piece values(w6,w7)=(1,1)  w7=boooooo/oooooob/oooooow/booooob/boooooo
+  new family #44 piece values(w6,w7)=(1/2,0)  w7=boooooo/oooooob/oooooow/booooob/ooooooo
+  new family #45 piece values(w6,w7)=(0,1)  w7=boooooo/oooooob/oooooow/oooooob/boooooo
+  new family #46 piece values(w6,w7)=(2,3/2)  w7=ooooooo/booooob/booooow/booooob/boooooo
+  new family #47 piece values(w6,w7)=(0,-1/2)  w7=ooooooo/booooob/oooooow/oooooob/ooooooo
+  new family #48 piece values(w6,w7)=(1,2)  w7=boooooo/oooooob/booooow/booooob/boooooo
+  new family #49 piece values(w6,w7)=(2,3)  w7=oooooob/boooooo/.boooob/booooob/oooooob
+  F0/1 q=0 rcut failed at rcut w=9
+  F0/1 FAILED at every bound level: table: table: 1 failure(s), first B w=13 (2,6); rcut: rcut failed at rcut w=9
+check F3/0 q=1 (exact) att 3  [families 50, queue 3, exact 13408 timeouts 0 searches 76084, 643s]
+    F3/0 q=1 FAIL B w=8 (2,4)
+  F3/0 q=1 table: 1 failure(s), first B w=8 (2,4)
+  new family #50 piece values(w6,w7)=(2,1)  w7=booooob/ooooooo/booooob/ooooooo/oooooob
+  new family #51 piece values(w6,w7)=(2,3/2)  w7=booooob/ooooooo/booooob/ooooooo/booooob
+  new family #52 piece values(w6,w7)=(1/2,1)  w7=oooooob/ooooooo/oooooob/ooooooo/oooooob
+  new family #53 piece values(w6,w7)=(3/2,2)  w7=oooooob/boooooo/oooooob/boooooo/booooob
+  new family #54 piece values(w6,w7)=(1/2,3/2)  w7=oooooob/boooooo/oooooob/boooooo/oooooob
+  new family #55 piece values(w6,w7)=(1,1)  w7=oooooob/ooooooo/oooooob/ooooooo/booooob
+  new family #56 piece values(w6,w7)=(1,1/2)  w7=ooooooo/boooooo/.booooo/booooob/ooooooo
+  new family #57 piece values(w6,w7)=(3,3)  w7=booooob/boooooo/booooob/boooooo/booooob
+  new family #58 piece values(w6,w7)=(2,5/2)  w7=.boooob/boooooo/booooob/ooooooo/oooooob
+  new family #59 piece values(w6,w7)=(5/2,5/2)  w7=.boooob/boooooo/booooob/ooooooo/booooob
+  new family #60 piece values(w6,w7)=(5/2,2)  w7=booooob/ooooooo/oooooob/boooooo/booooob
+  new family #61 piece values(w6,w7)=(1,3/2)  w7=booooob/ooooooo/oooooob/boooooo/oooooob
+  new family #62 piece values(w6,w7)=(2,1)  w7=booooob/ooooooo/oooooob/ooooooo/booooob
+  new family #63 piece values(w6,w7)=(5/2,5/2)  w7=oooooob/boooooo/booooob/boooooo/booooob
+  new family #64 piece values(w6,w7)=(5/2,2)  w7=booooob/.booooo/booooob/ooooooo/oooooob
+  F3/0 q=1 rcut failed at rcut w=8
+  F3/0 FAILED at every bound level: table: table: 1 failure(s), first B w=8 (2,4); rcut: rcut failed at rcut w=8
+check F3/1 q=2 (exact) att 4  [families 65, queue 2, exact 13594 timeouts 0 searches 77086, 831s]
+  F3/1 q=2 CLOSED by table: table: 308 openings, 0 white-first widths (0s)
+check F4/0 q=3/2 (exact) att 5  [families 65, queue 11, exact 13594 timeouts 0 searches 77086, 831s]
+    F4/0 q=3/2 FAIL W w=8 (target 2)

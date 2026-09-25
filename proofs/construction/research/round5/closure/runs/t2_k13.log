@@ -203,3 +203,16 @@ w=11 opening (1,3) beta 0: one-round none; two-round FAILED  (0 second Blue move
   new family #200 piece beta(even,odd)=(4,3)  w7=bbooooo/b.booob/bboooow/booooob/boooooo
   new family #201 piece beta(even,odd)=(3,3)  w7=bbooooo/b.booob/bboooow/oooooob/boooooo
   new family #202 piece beta(even,odd)=(1,1)  w7=obooooo/b.booob/oboooow/booooob/ooooooo
+  new family #203 piece beta(even,odd)=(1,2)  w7=ooooooo/oboooob/b.booow/oboooob/ooooooo
+  new family #204 piece beta(even,odd)=(3,4)  w7=boooooo/bboooob/b.booow/bboooob/boooooo
+  new family #205 piece beta(even,odd)=(1,2)  w7=boooooo/oboooob/b.booow/oboooob/boooooo
+  new family #206 piece beta(even,odd)=(2,3)  w7=ooooooo/bboooob/b.booow/bboooob/ooooooo
+  new family #207 piece beta(even,odd)=(3,2)  w7=ooooooo/booooob/bboooow/b.booob/bbooooo
+  new family #208 piece beta(even,odd)=(3,2)  w7=ooooooo/oooooob/bboooow/b.booob/bbooooo
+  new family #209 piece beta(even,odd)=(3,2)  w7=boooooo/booooob/oboooow/b.booob/bbooooo
+  new family #210 piece beta(even,odd)=(3,2)  w7=boooooo/oooooob/oboooow/b.booob/bbooooo
+  new family #211 piece beta(even,odd)=(3,3)  w7=ooooooo/booooob/booooow/bboooob/b.boooo
+  new family #212 piece beta(even,odd)=(1,2)  w7=ooooooo/oooooob/booooow/oboooob/b.boooo
+  new family #213 piece beta(even,odd)=(3,3)  w7=boooooo/booooob/oooooow/bboooob/b.boooo
+  new family #214 piece beta(even,odd)=(1,2)  w7=boooooo/oooooob/oooooow/oboooob/b.boooo
+w=13 opening (1,3) beta 0: one-round none; two-round FAILED  (0 second Blue moves), families 215, searches 228785, 1615s

@@ -1,0 +1,265 @@
+  new family #0 KD values(w6,w7)=(1,0)  w7=ooooooo/booooob/.boooow/booooob/ooooooo
+w=15 opening (2,6) q=0 diagnosis:
+  new family #1 piece values(w6,w7)=(-3/2,-2)  w7=ooooooo/owoooob/w.wooow/owoooob/ooooooo
+  new family #2 piece values(w6,w7)=(1,1)  w7=boooooo/bwoooob/..wooow/bwoooob/boooooo
+  new family #3 piece values(w6,w7)=(-1/2,0)  w7=boooooo/owoooob/..wooow/owoooob/boooooo
+  new family #4 piece values(w6,w7)=(-3/2,-2)  w7=ooooooo/bwoooob/w.wooow/bwoooob/ooooooo
+  new family #5 piece values(w6,w7)=(-3/4,-1)  w7=boooooo/owoooob/w.wooow/owoooob/ooooooo
+  new family #6 piece values(w6,w7)=(-3/2,-2)  w7=ooooooo/bwoooob/w.wooow/owoooob/ooooooo
+  new family #7 piece values(w6,w7)=(-3/4,-1)  w7=boooooo/bwoooob/w.wooow/owoooob/ooooooo
+  new family #8 piece values(w6,w7)=(-1,-1)  w7=ooooooo/owoooob/..wooow/owoooob/ooooooo
+  new family #9 piece values(w6,w7)=(-3/4,-1/2)  w7=boooooo/owoooob/..wooow/owoooob/ooooooo
+  new family #10 piece values(w6,w7)=(-1/2,-1)  w7=ooooooo/bwoooob/..wooow/owoooob/ooooooo
+  new family #11 piece values(w6,w7)=(0,0)  w7=boooooo/bwoooob/..wooow/owoooob/ooooooo
+  new family #12 piece values(w6,w7)=(-3/4,-1)  w7=boooooo/owoooob/w.wooow/bwoooob/ooooooo
+  new family #13 piece values(w6,w7)=(-3/4,-1)  w7=boooooo/bwoooob/w.wooow/bwoooob/ooooooo
+  new family #14 piece values(w6,w7)=(-1/2,-1/2)  w7=boooooo/owoooob/..wooow/bwoooob/ooooooo
+  new family #15 piece values(w6,w7)=(-1/2,-1)  w7=ooooooo/bwoooob/..wooow/bwoooob/ooooooo
+  new family #16 piece values(w6,w7)=(1/4,0)  w7=boooooo/bwoooob/..wooow/bwoooob/ooooooo
+  new family #17 piece values(w6,w7)=(-1/2,0)  w7=boooooo/owoooob/w.wooow/owoooob/boooooo
+  new family #18 piece values(w6,w7)=(-1/4,0)  w7=boooooo/bwoooob/w.wooow/owoooob/boooooo
+  new family #19 piece values(w6,w7)=(1/4,1/2)  w7=boooooo/bwoooob/..wooow/owoooob/boooooo
+  new family #20 piece values(w6,w7)=(0,0)  w7=boooooo/bwoooob/w.wooow/bwoooob/boooooo
+  new family #21 piece values(w6,w7)=(-1,-1)  w7=ooooooo/wooooob/.woooow/wooooob/ooooooo
+  new family #22 piece values(w6,w7)=(1,1)  w7=boooooo/.ooooob/.woooow/.ooooob/boooooo
+  new family #23 piece values(w6,w7)=(0,-3/4)  w7=ooooooo/.ooooob/.woooow/.ooooob/ooooooo
+  new family #24 piece values(w6,w7)=(-1,-1/2)  w7=boooooo/wooooob/.woooow/wooooob/boooooo
+  new family #25 piece values(w6,w7)=(-1,-3/4)  w7=boooooo/wooooob/.woooow/wooooob/ooooooo
+  new family #26 piece values(w6,w7)=(-1/2,-3/4)  w7=ooooooo/.ooooob/.woooow/wooooob/ooooooo
+  new family #27 piece values(w6,w7)=(0,0)  w7=boooooo/.ooooob/.woooow/wooooob/ooooooo
+  new family #28 piece values(w6,w7)=(-1/2,-5/8)  w7=boooooo/wooooob/.woooow/.ooooob/ooooooo
+  new family #29 piece values(w6,w7)=(1/2,1/8)  w7=boooooo/.ooooob/.woooow/.ooooob/ooooooo
+  new family #30 piece values(w6,w7)=(0,1/4)  w7=boooooo/.ooooob/.woooow/wooooob/boooooo
+  new family #31 piece values(w6,w7)=(-1,-1)  w7=ooooooo/oooooob/wooooow/oooooob/ooooooo
+  new family #32 piece values(w6,w7)=(1,1)  w7=boooooo/booooob/wooooow/booooob/boooooo
+  new family #33 piece values(w6,w7)=(-1/4,1/2)  w7=boooooo/oooooob/wooooow/oooooob/boooooo
+  new family #34 piece values(w6,w7)=(0,-1)  w7=ooooooo/booooob/wooooow/booooob/ooooooo
+  new family #35 piece values(w6,w7)=(-1/2,0)  w7=boooooo/oooooob/wooooow/oooooob/ooooooo
+  new family #36 piece values(w6,w7)=(0,-1)  w7=ooooooo/booooob/wooooow/oooooob/ooooooo
+  new family #37 piece values(w6,w7)=(1/2,0)  w7=boooooo/booooob/wooooow/oooooob/ooooooo
+  new family #38 piece values(w6,w7)=(0,0)  w7=boooooo/oooooob/wooooow/booooob/ooooooo
+  new family #39 piece values(w6,w7)=(1,0)  w7=boooooo/booooob/wooooow/booooob/ooooooo
+  new family #40 piece values(w6,w7)=(1/2,1)  w7=boooooo/booooob/wooooow/oooooob/boooooo
+  new family #41 piece values(w6,w7)=(2,2)  w7=oooooob/boooowb/.boow../boooowb/oooooob
+  new family #42 piece values(w6,w7)=(-1/2,-1)  w7=ooooooo/boooowo/.boow.w/boooowo/ooooooo
+  new family #43 piece values(w6,w7)=(1/2,1)  w7=oooooob/boooowo/.boow../boooowo/oooooob
+  new family #44 piece values(w6,w7)=(-1/2,-1)  w7=ooooooo/boooowb/.boow.w/boooowb/ooooooo
+  new family #45 piece values(w6,w7)=(5/4,1)  w7=ooooooo/boooowb/.boow../boooowb/oooooob
+  new family #46 piece values(w6,w7)=(5/4,3/2)  w7=oooooob/boooowo/.boow../boooowb/oooooob
+  new family #47 piece values(w6,w7)=(1,1)  w7=ooooooo/boooowo/.boow../boooowb/oooooob
+  new family #48 piece values(w6,w7)=(1,1)  w7=oooooob/boooowb/.boow.w/boooowb/oooooob
+  new family #49 piece values(w6,w7)=(1/4,0)  w7=ooooooo/boooowb/.boow.w/boooowb/oooooob
+  new family #50 piece values(w6,w7)=(3/4,1)  w7=oooooob/boooowo/.boow.w/boooowb/oooooob
+  new family #51 piece values(w6,w7)=(1/4,0)  w7=ooooooo/boooowo/.boow.w/boooowb/oooooob
+  new family #52 piece values(w6,w7)=(1/2,1/2)  w7=ooooooo/boooowb/.boow../boooowo/oooooob
+  new family #53 piece values(w6,w7)=(1/4,1/2)  w7=ooooooo/boooowo/.boow../boooowo/oooooob
+  new family #54 piece values(w6,w7)=(1/4,0)  w7=ooooooo/boooowb/.boow.w/boooowo/oooooob
+  new family #55 piece values(w6,w7)=(1/2,1)  w7=oooooob/boooowo/.boow.w/boooowo/oooooob
+  new family #56 piece values(w6,w7)=(1/4,0)  w7=ooooooo/boooowo/.boow.w/boooowo/oooooob
+  new family #57 piece values(w6,w7)=(1/2,0)  w7=ooooooo/boooowb/.boow../boooowb/ooooooo
+  new family #58 piece values(w6,w7)=(1/2,0)  w7=ooooooo/boooowo/.boow../boooowb/ooooooo
+  new family #59 piece values(w6,w7)=(-1/2,-1)  w7=ooooooo/boooowo/.boow.w/boooowb/ooooooo
+  new family #60 piece values(w6,w7)=(0,0)  w7=ooooooo/boooowo/.boow../boooowo/ooooooo
+  reply none: best 0 [5:1/2][10F3:-1/2]
+  reply (0,2): best 1/2 [5:1][10F3:-1/2]
+  reply (1,2): best 3/2 [5:3][10F4:-3/2]
+  reply (2,2): best 1/2 [7:3/4][8F33:-1/4]
+  reply (3,2): best 3/2 [5:3][10F4:-3/2]
+  reply (4,2): best 1/2 [5:1][10F3:-1/2]
+  reply (0,3): best 3/2 [5:3][10F4:-3/2]
+  reply (1,3): best 1/2 [7:3/4][8F33:-1/4]
+  reply (2,3): best 3/2 [5:3][10F4:-3/2]
+  reply (3,3): best 1/2 [7:3/4][8F33:-1/4]
+  reply (4,3): best 3/2 [5:3][10F4:-3/2]
+  reply (0,4): best 1/2 [5:1][10F3:-1/2]
+  reply (1,4): best 3/2 [5:3][10F4:-3/2]
+  reply (2,4): best 1/4 [6:1][9F23:-3/4]
+  reply (3,4): best 3/2 [5:3][10F4:-3/2]
+  reply (4,4): best 1/2 [5:1][10F3:-1/2]
+  new family #61 piece values(w6,w7)=(0,-1)  w7=.booooo/bwoooob/w.wooow/owoooob/ooooooo
+  new family #62 piece values(w6,w7)=(5/4,1)  w7=.booooo/bwoooob/..wooow/bwoooob/boooooo
+  new family #63 piece values(w6,w7)=(1/2,1/2)  w7=.booooo/bwoooob/..wooow/owoooob/boooooo
+  new family #64 piece values(w6,w7)=(0,-1)  w7=.booooo/bwoooob/w.wooow/bwoooob/ooooooo
+  new family #65 piece values(w6,w7)=(1/2,0)  w7=.booooo/bwoooob/..wooow/owoooob/ooooooo
+  new family #66 piece values(w6,w7)=(1,0)  w7=.booooo/bwoooob/..wooow/bwoooob/ooooooo
+  new family #67 piece values(w6,w7)=(1/4,0)  w7=.booooo/bwoooob/w.wooow/owoooob/boooooo
+  new family #68 piece values(w6,w7)=(1/4,0)  w7=.booooo/bwoooob/w.wooow/bwoooob/boooooo
+  reply (0,5): best 11/8 [6:2][9F28:-5/8]
+  new family #69 piece values(w6,w7)=(-1/4,0)  w7=boooooo/..oooob/..wooow/owoooob/ooooooo
+  new family #70 piece values(w6,w7)=(1/2,1)  w7=boooooo/..oooob/..wooow/bwoooob/boooooo
+  new family #71 piece values(w6,w7)=(-1/4,1/2)  w7=boooooo/..oooob/..wooow/owoooob/boooooo
+  new family #72 piece values(w6,w7)=(0,0)  w7=boooooo/..oooob/..wooow/bwoooob/ooooooo
+  reply (1,5): best 1/4 [5:1/2][10F71:-1/4]
+  reply (2,5): best 3/2 [5:2][10F15:-1/2]
+  reply (3,5): best 1/4 [5:1/2][10F71:-1/4]
+  reply (4,5): best 11/8 [6:2][9F28:-5/8]
+  new family #73 piece values(w6,w7)=(-1/2,0)  w7=b.boooo/o.oooob/w.wooow/owoooob/ooooooo
+  new family #74 piece values(w6,w7)=(5/4,2)  w7=b.boooo/b.oooob/..wooow/bwoooob/boooooo
+  new family #75 piece values(w6,w7)=(0,1)  w7=b.boooo/o.oooob/..wooow/owoooob/boooooo
+  new family #76 piece values(w6,w7)=(-1/2,0)  w7=b.boooo/b.oooob/w.wooow/bwoooob/ooooooo
+  new family #77 piece values(w6,w7)=(-1/2,0)  w7=b.boooo/b.oooob/w.wooow/owoooob/ooooooo
+  new family #78 piece values(w6,w7)=(-1/4,1/2)  w7=b.boooo/o.oooob/..wooow/owoooob/ooooooo
+  new family #79 piece values(w6,w7)=(1/4,1)  w7=b.boooo/b.oooob/..wooow/owoooob/ooooooo
+  new family #80 piece values(w6,w7)=(-1/2,0)  w7=b.boooo/o.oooob/w.wooow/bwoooob/ooooooo
+  new family #81 piece values(w6,w7)=(0,1/2)  w7=b.boooo/o.oooob/..wooow/bwoooob/ooooooo
+  new family #82 piece values(w6,w7)=(1/2,1)  w7=b.boooo/b.oooob/..wooow/bwoooob/ooooooo
+  new family #83 piece values(w6,w7)=(-1/4,1)  w7=b.boooo/o.oooob/w.wooow/owoooob/boooooo
+  new family #84 piece values(w6,w7)=(0,1)  w7=b.boooo/b.oooob/w.wooow/owoooob/boooooo
+  new family #85 piece values(w6,w7)=(1/2,3/2)  w7=b.boooo/b.oooob/..wooow/owoooob/boooooo
+  new family #86 piece values(w6,w7)=(1/4,1)  w7=b.boooo/o.oooob/w.wooow/bwoooob/boooooo
+  new family #87 piece values(w6,w7)=(1/4,1)  w7=b.boooo/b.oooob/w.wooow/bwoooob/boooooo
+  new family #88 piece values(w6,w7)=(3/4,3/2)  w7=b.boooo/o.oooob/..wooow/bwoooob/boooooo
+  new family #89 piece values(w6,w7)=(0,-1/2)  w7=.booooo/.ooooob/.woooow/wooooob/ooooooo
+  new family #90 piece values(w6,w7)=(1,1/4)  w7=.booooo/.ooooob/.woooow/.ooooob/boooooo
+  new family #91 piece values(w6,w7)=(1/4,-1/2)  w7=.booooo/.ooooob/.woooow/.ooooob/ooooooo
+  new family #92 piece values(w6,w7)=(0,-1/2)  w7=.booooo/.ooooob/.woooow/wooooob/boooooo
+  new family #93 piece values(w6,w7)=(9/4,3)  w7=oooob.b/boooo.b/.boow../boooowb/oooooob
+  new family #94 piece values(w6,w7)=(1/2,1)  w7=oooob.b/boooo.o/.boow.w/boooowo/ooooooo
+  new family #95 piece values(w6,w7)=(1,2)  w7=oooob.b/boooo.o/.boow../boooowo/oooooob
+  new family #96 piece values(w6,w7)=(1/2,1)  w7=oooob.b/boooo.b/.boow.w/boooowb/ooooooo
+  new family #97 piece values(w6,w7)=(7/4,5/2)  w7=oooob.b/boooo.o/.boow../boooowb/oooooob
+  new family #98 piece values(w6,w7)=(5/4,2)  w7=oooob.b/boooo.b/.boow.w/boooowb/oooooob
+  new family #99 piece values(w6,w7)=(5/4,2)  w7=oooob.b/boooo.o/.boow.w/boooowb/oooooob
+  new family #100 piece values(w6,w7)=(3/2,5/2)  w7=oooob.b/boooo.b/.boow../boooowo/oooooob
+  new family #101 piece values(w6,w7)=(1,2)  w7=oooob.b/boooo.b/.boow.w/boooowo/oooooob
+  new family #102 piece values(w6,w7)=(3/4,2)  w7=oooob.b/boooo.o/.boow.w/boooowo/oooooob
+  new family #103 piece values(w6,w7)=(3/2,2)  w7=oooob.b/boooo.b/.boow../boooowb/ooooooo
+  new family #104 piece values(w6,w7)=(1,3/2)  w7=oooob.b/boooo.o/.boow../boooowb/ooooooo
+  new family #105 piece values(w6,w7)=(1/2,1)  w7=oooob.b/boooo.o/.boow.w/boooowb/ooooooo
+  new family #106 piece values(w6,w7)=(5/4,2)  w7=oooob.b/boooo.b/.boow../boooowo/ooooooo
+  new family #107 piece values(w6,w7)=(3/4,3/2)  w7=oooob.b/boooo.o/.boow../boooowo/ooooooo
+  new family #108 piece values(w6,w7)=(1/2,1)  w7=oooob.b/boooo.b/.boow.w/boooowo/ooooooo
+  reply (0,6): best 1/4 [6:3/4][9F91:-1/2]
+  new family #109 piece values(w6,w7)=(0,-1)  w7=obooooo/b.booob/w.wooow/owoooob/ooooooo
+  new family #110 piece values(w6,w7)=(5/2,2)  w7=bbooooo/b.booob/..wooow/bwoooob/boooooo
+  new family #111 piece values(w6,w7)=(2,3/2)  w7=bbooooo/b.booob/..wooow/owoooob/boooooo
+  new family #112 piece values(w6,w7)=(0,-1)  w7=obooooo/b.booob/w.wooow/bwoooob/ooooooo
+  new family #113 piece values(w6,w7)=(1,0)  w7=bbooooo/b.booob/w.wooow/owoooob/ooooooo
+  new family #114 piece values(w6,w7)=(3/4,0)  w7=obooooo/b.booob/..wooow/owoooob/ooooooo
+  new family #115 piece values(w6,w7)=(7/4,1)  w7=bbooooo/b.booob/..wooow/owoooob/ooooooo
+  new family #116 piece values(w6,w7)=(1,0)  w7=bbooooo/b.booob/w.wooow/bwoooob/ooooooo
+  new family #117 piece values(w6,w7)=(1,0)  w7=obooooo/b.booob/..wooow/bwoooob/ooooooo
+  new family #118 piece values(w6,w7)=(2,1)  w7=bbooooo/b.booob/..wooow/bwoooob/ooooooo
+  new family #119 piece values(w6,w7)=(1/2,0)  w7=obooooo/b.booob/w.wooow/owoooob/boooooo
+  new family #120 piece values(w6,w7)=(3/2,1)  w7=bbooooo/b.booob/w.wooow/owoooob/boooooo
+  new family #121 piece values(w6,w7)=(1,1/2)  w7=obooooo/b.booob/..wooow/owoooob/boooooo
+  new family #122 piece values(w6,w7)=(1/2,0)  w7=obooooo/b.booob/w.wooow/bwoooob/boooooo
+  new family #123 piece values(w6,w7)=(3/2,1)  w7=bbooooo/b.booob/w.wooow/bwoooob/boooooo
+  new family #124 piece values(w6,w7)=(3/2,1)  w7=obooooo/b.booob/..wooow/bwoooob/boooooo
+  new family #125 piece values(w6,w7)=(0,1/4)  w7=boooooo/.boooob/.woooow/wooooob/ooooooo
+  new family #126 piece values(w6,w7)=(1,3/2)  w7=boooooo/.boooob/.woooow/.ooooob/boooooo
+  new family #127 piece values(w6,w7)=(1/2,1/2+*)  w7=boooooo/.boooob/.woooow/.ooooob/ooooooo
+  new family #128 piece values(w6,w7)=(0,1/2)  w7=boooooo/.boooob/.woooow/wooooob/boooooo
+  new family #129 piece values(w6,w7)=(7/2,3)  w7=ooooobb/booob.b/.boow../boooowb/oooooob
+  new family #130 piece values(w6,w7)=(1,0)  w7=ooooobo/booob.b/.boow.w/boooowo/ooooooo
+  new family #131 piece values(w6,w7)=(3,5/2)  w7=ooooobb/booob.b/.boow../boooowo/oooooob
+  new family #132 piece values(w6,w7)=(1,0)  w7=ooooobo/booob.b/.boow.w/boooowb/ooooooo
+  new family #133 piece values(w6,w7)=(5/2,2)  w7=ooooobo/booob.b/.boow../boooowb/oooooob
+  new family #134 piece values(w6,w7)=(5/2,2)  w7=ooooobb/booob.b/.boow.w/boooowb/oooooob
+  new family #135 piece values(w6,w7)=(3/2,1)  w7=ooooobo/booob.b/.boow.w/boooowb/oooooob
+  new family #136 piece values(w6,w7)=(2,3/2)  w7=ooooobo/booob.b/.boow../boooowo/oooooob
+  new family #137 piece values(w6,w7)=(5/2,2)  w7=ooooobb/booob.b/.boow.w/boooowo/oooooob
+  new family #138 piece values(w6,w7)=(3/2,1)  w7=ooooobo/booob.b/.boow.w/boooowo/oooooob
+  new family #139 piece values(w6,w7)=(3,2)  w7=ooooobb/booob.b/.boow../boooowb/ooooooo
+  new family #140 piece values(w6,w7)=(2,1)  w7=ooooobo/booob.b/.boow../boooowb/ooooooo
+  new family #141 piece values(w6,w7)=(2,1)  w7=ooooobb/booob.b/.boow.w/boooowb/ooooooo
+  new family #142 piece values(w6,w7)=(11/4,2)  w7=ooooobb/booob.b/.boow../boooowo/ooooooo
+  new family #143 piece values(w6,w7)=(7/4,1)  w7=ooooobo/booob.b/.boow../boooowo/ooooooo
+  new family #144 piece values(w6,w7)=(2,1)  w7=ooooobb/booob.b/.boow.w/boooowo/ooooooo
+  reply (1,6): best 3/2 [6:1][9F128:1/2]
+  reply (3,6): best 3/2 [6:1][9F128:1/2]
+  reply (4,6): best 1/4 [6:3/4][9F91:-1/2]
+  new family #145 piece values(w6,w7)=(0,1/2)  w7=b.boooo/wboooob/.woooow/wooooob/ooooooo
+  new family #146 piece values(w6,w7)=(2,11/4)  w7=b.boooo/.boooob/.woooow/.ooooob/boooooo
+  new family #147 piece values(w6,w7)=(3/2,15/8)  w7=b.boooo/.boooob/.woooow/.ooooob/ooooooo
+  new family #148 piece values(w6,w7)=(0,3/4)  w7=b.boooo/wboooob/.woooow/wooooob/boooooo
+  new family #149 piece values(w6,w7)=(1,3/2)  w7=b.boooo/.boooob/.woooow/wooooob/ooooooo
+  new family #150 piece values(w6,w7)=(1/2,7/8)  w7=b.boooo/wboooob/.woooow/.ooooob/ooooooo
+  new family #151 piece values(w6,w7)=(1,7/4)  w7=b.boooo/.boooob/.woooow/wooooob/boooooo
+  new family #152 piece values(w6,w7)=(1,7/4)  w7=b.boooo/wboooob/.woooow/.ooooob/boooooo
+  new family #153 piece values(w6,w7)=(3/4,0)  w7=.booooo/booooob/wooooow/oooooob/ooooooo
+  new family #154 piece values(w6,w7)=(3/2,1)  w7=.booooo/booooob/wooooow/booooob/boooooo
+  new family #155 piece values(w6,w7)=(1,1)  w7=.booooo/booooob/wooooow/oooooob/boooooo
+  new family #156 piece values(w6,w7)=(1,0)  w7=.booooo/booooob/wooooow/booooob/ooooooo
+  new family #157 piece values(w6,w7)=(9/4,2)  w7=ooooob./boooowb/.boow../boooowb/oooooob
+  new family #158 piece values(w6,w7)=(1,0)  w7=ooooob./boooowb/.boow.w/boooowo/ooooooo
+  new family #159 piece values(w6,w7)=(3/2,3/2)  w7=ooooob./boooowb/.boow../boooowo/oooooob
+  new family #160 piece values(w6,w7)=(1,0)  w7=ooooob./boooowb/.boow.w/boooowb/ooooooo
+  new family #161 piece values(w6,w7)=(5/4,1)  w7=ooooob./boooowb/.boow.w/boooowb/oooooob
+  new family #162 piece values(w6,w7)=(5/4,1)  w7=ooooob./boooowb/.boow.w/boooowo/oooooob
+  new family #163 piece values(w6,w7)=(2,1)  w7=ooooob./boooowb/.boow../boooowb/ooooooo
+  new family #164 piece values(w6,w7)=(3/2,1)  w7=ooooob./boooowb/.boow../boooowo/ooooooo
+  reply (0,7): best 11/8 [7:3/8][8F155:1]
+  new family #165 piece values(w6,w7)=(3/4,-1/2)  w7=obooooo/..booob/..oooow/wooooob/ooooooo
+  new family #166 piece values(w6,w7)=(2,5/4)  w7=bbooooo/..booob/..oooow/.ooooob/boooooo
+  new family #167 piece values(w6,w7)=(3/4,-3/8)  w7=obooooo/..booob/..oooow/.ooooob/ooooooo
+  new family #168 piece values(w6,w7)=(3/2,1/2)  w7=bbooooo/..booob/..oooow/wooooob/boooooo
+  new family #169 piece values(w6,w7)=(3/2,3/8)  w7=bbooooo/..booob/..oooow/wooooob/ooooooo
+  new family #170 piece values(w6,w7)=(3/2,3/8)  w7=bbooooo/..booob/..oooow/.ooooob/ooooooo
+  new family #171 piece values(w6,w7)=(3/4,0)  w7=obooooo/..booob/..oooow/wooooob/boooooo
+  new family #172 piece values(w6,w7)=(5/4,1/2)  w7=obooooo/..booob/..oooow/.ooooob/boooooo
+  new family #173 piece values(w6,w7)=(0,1)  w7=boooooo/.boooob/.ooooow/oooooob/ooooooo
+  new family #174 piece values(w6,w7)=(1,2)  w7=boooooo/.boooob/.ooooow/booooob/boooooo
+  new family #175 piece values(w6,w7)=(0,3/2)  w7=boooooo/.boooob/.ooooow/oooooob/boooooo
+  new family #176 piece values(w6,w7)=(1,1)  w7=boooooo/.boooob/.ooooow/booooob/ooooooo
+  new family #177 piece values(w6,w7)=(3/2,2)  w7=oooooob/boooo../.boow../boooowb/oooooob
+  new family #178 piece values(w6,w7)=(3/4,1)  w7=oooooob/boooo../.boow../boooowo/ooooooo
+  new family #179 piece values(w6,w7)=(3/4,3/2)  w7=oooooob/boooo../.boow../boooowo/oooooob
+  new family #180 piece values(w6,w7)=(1,1)  w7=oooooob/boooo../.boow../boooowb/ooooooo
+  reply (1,7): best 1/4 [7:1/4][8F175:0]
+  new family #181 piece values(w6,w7)=(0,1/2)  w7=ooooooo/wboooob/..booow/wboooob/ooooooo
+  new family #182 piece values(w6,w7)=(2,5/2)  w7=boooooo/.boooob/..booow/.boooob/boooooo
+  new family #183 piece values(w6,w7)=(1,3/2)  w7=ooooooo/.boooob/..booow/.boooob/ooooooo
+  new family #184 piece values(w6,w7)=(0,1/2)  w7=boooooo/wboooob/..booow/wboooob/boooooo
+  new family #185 piece values(w6,w7)=(0,1/2)  w7=boooooo/wboooob/..booow/wboooob/ooooooo
+  new family #186 piece values(w6,w7)=(1/2,1)  w7=ooooooo/.boooob/..booow/wboooob/ooooooo
+  new family #187 piece values(w6,w7)=(1,3/2)  w7=boooooo/.boooob/..booow/wboooob/ooooooo
+  new family #188 piece values(w6,w7)=(1/2,1)  w7=boooooo/wboooob/..booow/.boooob/ooooooo
+  new family #189 piece values(w6,w7)=(3/2,2)  w7=boooooo/.boooob/..booow/.boooob/ooooooo
+  new family #190 piece values(w6,w7)=(1,3/2)  w7=boooooo/.boooob/..booow/wboooob/boooooo
+  new family #191 piece values(w6,w7)=(2,2)  w7=boooooo/booooob/.boooow/booooob/boooooo
+  new family #192 piece values(w6,w7)=(2,1)  w7=boooooo/booooob/.boooow/booooob/ooooooo
+  reply (2,7): best 3/2 [6:1][9F184:1/2]
+  reply (3,7): best 1/4 [7:1/4][8F175:0]
+  reply (4,7): best 11/8 [7:3/8][8F155:1]
+  new family #193 piece values(w6,w7)=(0,1)  w7=b.boooo/oboooob/wooooow/oooooob/ooooooo
+  new family #194 piece values(w6,w7)=(2,2)  w7=b.boooo/bboooob/wooooow/booooob/boooooo
+  new family #195 piece values(w6,w7)=(1/2,3/2)  w7=b.boooo/oboooob/wooooow/oooooob/boooooo
+  new family #196 piece values(w6,w7)=(3/2,3/2)  w7=b.boooo/bboooob/wooooow/booooob/ooooooo
+  new family #197 piece values(w6,w7)=(1,3/2)  w7=b.boooo/bboooob/wooooow/oooooob/ooooooo
+  new family #198 piece values(w6,w7)=(1,1)  w7=b.boooo/oboooob/wooooow/booooob/ooooooo
+  new family #199 piece values(w6,w7)=(1,2)  w7=b.boooo/bboooob/wooooow/oooooob/boooooo
+  new family #200 piece values(w6,w7)=(1,2)  w7=b.boooo/oboooob/wooooow/booooob/boooooo
+  reply (0,8): best 1/2 [8F43:1/2][7:0]
+  new family #201 piece values(w6,w7)=(1,0)  w7=obooooo/b.booob/wboooow/oooooob/ooooooo
+  new family #202 piece values(w6,w7)=(5/2,2)  w7=bbooooo/b.booob/wboooow/booooob/boooooo
+  new family #203 piece values(w6,w7)=(5/2,2)  w7=bbooooo/b.booob/wboooow/oooooob/boooooo
+  new family #204 piece values(w6,w7)=(1,0)  w7=obooooo/b.booob/wboooow/booooob/ooooooo
+  new family #205 piece values(w6,w7)=(2,1)  w7=bbooooo/b.booob/wboooow/oooooob/ooooooo
+  new family #206 piece values(w6,w7)=(2,1)  w7=bbooooo/b.booob/wboooow/booooob/ooooooo
+  new family #207 piece values(w6,w7)=(3/2,1)  w7=obooooo/b.booob/wboooow/oooooob/boooooo
+  new family #208 piece values(w6,w7)=(3/2,1)  w7=obooooo/b.booob/wboooow/booooob/boooooo
+  reply (1,8): best 3/2 [7:1/2][8F204:1]
+  new family #209 piece values(w6,w7)=(0,1)  w7=ooooooo/oboooob/..booow/oboooob/ooooooo
+  new family #210 piece values(w6,w7)=(2,3)  w7=boooooo/bboooob/..booow/bboooob/boooooo
+  new family #211 piece values(w6,w7)=(0,1)  w7=boooooo/oboooob/..booow/oboooob/boooooo
+  new family #212 piece values(w6,w7)=(3/2,2)  w7=ooooooo/bboooob/..booow/bboooob/ooooooo
+  new family #213 piece values(w6,w7)=(0,1)  w7=boooooo/oboooob/..booow/oboooob/ooooooo
+  new family #214 piece values(w6,w7)=(1,3/2)  w7=ooooooo/bboooob/..booow/oboooob/ooooooo
+  new family #215 piece values(w6,w7)=(1,2)  w7=boooooo/bboooob/..booow/oboooob/ooooooo
+  new family #216 piece values(w6,w7)=(1,7/4)  w7=boooooo/oboooob/..booow/bboooob/ooooooo
+  new family #217 piece values(w6,w7)=(2,5/2)  w7=boooooo/bboooob/..booow/bboooob/ooooooo
+  new family #218 piece values(w6,w7)=(1,2)  w7=boooooo/bboooob/..booow/oboooob/boooooo
+  reply (2,8): best 1/4 [7:1/4][8F211:0]
+  reply (3,8): best 3/2 [7:1/2][8F204:1]
+  reply (4,8): best 1/2 [8F43:1/2][7:0]
+  reply (0,9): best 3/2 [8F44:-1/2][7:2]
+  reply (1,9): best 3/4 [7:1/4][3:1][5:-1/2]
+  reply (2,9): best 3/2 [8F44:-1/2][7:2]
+  reply (3,9): best 3/4 [7:1/4][3:1][5:-1/2]
+  reply (4,9): best 3/2 [8F44:-1/2][7:2]
+  reply (0,10): best 1/2 [8F43:1/2][7:0]
+  reply (1,10): best 3/2 [8F44:-1/2][7:2]
+  reply (2,10): best 1/2 [8F43:1/2][7:0]
+  reply (3,10): best 3/2 [8F44:-1/2][7:2]
+  reply (4,10): best 1/2 [8F43:1/2][7:0]

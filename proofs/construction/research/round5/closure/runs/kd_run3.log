@@ -1,0 +1,25 @@
+  new family #0 KD beta(even,odd)=(1,0)  w7=ooooooo/booooob/.boooow/booooob/ooooooo
+check F0 parity 0 (beta 1)  [families 1, queue 1, searches 0, 3s]
+  new family #1 piece beta(even,odd)=(3,3)  w7=oooooob/booooob/.boooob/booooob/oooooob
+  new family #2 piece beta(even,odd)=(2,3)  w7=ooooob./booooob/.boooob/boooooo/oooooob
+  new family #3 piece beta(even,odd)=(1,2)  w7=oooooo./boooob./.boooob/boooooo/oooooob
+  new family #4 piece beta(even,odd)=(3,2)  w7=oooooow/booooob/.booob./booooob/oooooob
+  new family #5 piece beta(even,odd)=(1,2)  w7=oooooow/boooooo/.boooob/boooob./oooooob
+  new family #6 piece beta(even,odd)=(4,3)  w7=ooooob./booooob/.boooob/booooob/oooooob
+  new family #7 piece beta(even,odd)=(1,2)  w7=oooob../boooobo/.boooob/boooooo/oooooob
+  new family #8 piece beta(even,odd)=(3,4)  w7=oooooob/boooob./.boooob/booooob/oooooob
+  new family #9 piece beta(even,odd)=(3,3)  w7=oooooob/booooo./.booob./booooob/oooooob
+  new family #10 piece beta(even,odd)=(2,3)  w7=oooob.b/boooobw/.boooob/boooooo/oooooob
+  new family #11 piece beta(even,odd)=(4,3)  w7=ooooobb/booob../.booobb/boooooo/oooooob
+  new family #12 piece beta(even,odd)=(3,3)  w7=oooooob/booooob/.booob./booooob/oooooob
+  new family #13 piece beta(even,odd)=(2,3)  w7=oooooob/boooobw/.boob.b/boooobo/oooooob
+  new family #14 piece beta(even,odd)=(4,3)  w7=oooooob/booooow/.booobb/booob.b/ooooobb
+  new family #15 piece beta(even,odd)=(2,3)  w7=oooooob/booooow/.boooob/boooobo/oooob.b
+  new family #16 piece beta(even,odd)=(4,5)  w7=oooob.b/boooobb/.boooob/booooob/oooooob
+  F0/0 FAILED: no rule at w=12 opening (1,11)
+check F0 parity 1 (beta 0)  [families 17, queue 0, searches 157, 9s]
+  F0/1 FAILED: no rule at w=9 opening (1,3)
+
+SUMMARY families 17; required (family,parity) closed 0, failed 2, pending 0; searches 11289
+  F0/0 beta 1 status -1  no rule at w=12 opening (1,11)   ooooooo/booooob/.boooow/booooob/ooooooo
+  F0/1 beta 0 status -1  no rule at w=9 opening (1,3)   ooooooo/booooob/.boooow/booooob/ooooooo

@@ -1,0 +1,4 @@
+loaded 30741 exact values from /workspace/proofs/construction/research/round5/closure/runs/xc_values.txt
+loaded 14118 integer hints from /workspace/proofs/construction/research/round5/closure/runs/bounds_cache.txt
+loaded 86802 integer hints from /workspace/proofs/construction/research/round5/closure/runs/bounds_cache_t2.txt
+loaded 87000 integer hints from /workspace/proofs/construction/research/round5/closure/runs/bounds_cache_r5.txt
