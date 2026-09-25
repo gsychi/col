@@ -174,6 +174,7 @@ static std::map<std::string, int> famIndex;
 static int g_maxFam = 300;
 static std::deque<std::pair<int,int>> work;   // (family, parity)
 
+static bool g_twoRound = false;
 static bool g_allowNew = true;
 static int g_newBudget = 1 << 30;
 static int get_family(const Fam& f, const std::string& name) {
@@ -442,7 +443,7 @@ static void check_family(int id, int p) {
     std::vector<int> widths;
     for (int w = 8; w <= 18; ++w) if ((w & 1) == p) widths.push_back(w);
     std::vector<std::pair<int,int>> allNeeds;
-    int rules = 0;
+    int rules = 0, twoRoundUsed = 0;
     for (int w : widths) {
         Strip s = member(fams[id].f, w);
         for (int c = 0; c < w; ++c)
@@ -450,7 +451,19 @@ static void check_family(int id, int p) {
                 if (!((s[c].a >> r) & 1)) continue;
                 Rule rule;
                 std::vector<std::pair<int,int>> nd;
-                if (!find_rule(s, r, c, beta, rule, nd)) {
+                bool got = find_rule(s, r, c, beta, rule, nd);
+                if (!got && g_twoRound) {
+                    std::string d2;
+                    int nx2 = 0;
+                    got = find_rule_two_round(s, r, c, beta, d2, nd, nx2);
+                    if (got) {
+                        ++twoRoundUsed;
+                        std::printf("    F%d/%d w=%d opening (%d,%d): two-round %s (%d second moves)\n", id, p, w, r, c,
+                                    d2.c_str(), nx2);
+                        std::fflush(stdout);
+                    }
+                }
+                if (!got) {
                     fams[id].status[p] = -1;
                     fams[id].why[p] = "no rule at w=" + std::to_string(w) + " opening (" + std::to_string(r) + "," +
                                       std::to_string(c) + ")";
@@ -463,14 +476,129 @@ static void check_family(int id, int p) {
             }
     }
     fams[id].status[p] = 2;
-    fams[id].why[p] = std::to_string(rules) + " openings handled";
+    fams[id].why[p] = std::to_string(rules) + " openings handled (" + std::to_string(twoRoundUsed) + " two-round)";
     for (auto [nid, q] : allNeeds) require(nid, q);
     std::printf("  F%d/%d beta=%d CLOSED at this level (%d openings)\n", id, p, beta, rules);
     std::fflush(stdout);
 }
 
+// ------------------------------------------------------------ exact values (test mode)
+struct XV { i64 num = 0; bool star = false; bool ok = false; };
+static std::map<std::string, XV> g_exact;
+static int mover_wins(const Board& bd, Mask mover, Mask opp, i64 q, bool s) {
+    int w = bd.w;
+    if (__builtin_popcountll(mover | opp) <= 30) {
+        static std::map<int, std::unique_ptr<Board>> boards;
+        static std::map<int, std::unique_ptr<Search>> searches;
+        auto& bp = boards[w];
+        if (!bp) bp.reset(new Board(5, w));
+        auto& sp = searches[w];
+        if (!sp) sp.reset(new Search(*bp, *g_vc, *g_tt, g_smax));
+        return sp->win(mover, opp, q, s, 0);
+    }
+    g_deadline = since_start() + g_limit;
+    return root_win(bd, *g_vc, *g_tt, g_smax, g_threads, mover, opp, q, s, "x").win;
+}
+static XV exact_value(const Strip& s) {
+    std::string k = canon(s);
+    auto it = g_exact.find(k);
+    if (it != g_exact.end()) {
+        // canonical form may be a mirror image; values are invariant under the geometric symmetries
+        return it->second;
+    }
+    int w = int(s.size());
+    Board bd(5, w);
+    Mask A = 0, B = 0;
+    for (int c = 0; c < w; ++c)
+        for (int r = 0; r < 5; ++r) {
+            if ((s[c].a >> r) & 1) A |= Mask(1) << (r * w + c);
+            if ((s[c].b >> r) & 1) B |= Mask(1) << (r * w + c);
+        }
+    XV res;
+    if (!(A | B)) { res.ok = true; g_exact[k] = res; return res; }
+    Search probe(bd, *g_vc, *g_tt, g_smax);
+    i64 lo = -i64(probe.alpha_upper(B)) * ONE - ONE, hi = i64(probe.alpha_upper(A)) * ONE + ONE;
+    i64 t = simplest(true, lo, true, true, hi, true);
+    for (int step = 0; step < 64; ++step) {
+        ++g_queries;
+        int b = mover_wins(bd, A, B, -t, false);
+        int wr = b < 0 ? -1 : mover_wins(bd, B, A, t, false);
+        if (b < 0 || wr < 0) break;
+        if (!b && !wr) { res.num = t; res.ok = true; break; }
+        if (b && wr) {
+            int b2 = mover_wins(bd, A, B, -t, true), w2 = mover_wins(bd, B, A, t, true);
+            if (b2 == 0 && w2 == 0) { res.num = t; res.star = true; res.ok = true; }
+            break;
+        }
+        if (b) lo = t; else hi = t;
+        t = simplest(true, lo, true, true, hi, true);
+    }
+    g_exact[k] = res;
+    return res;
+}
+static std::string xvstr(XV v) { return v.ok ? valstr(Val{v.num, v.star}) : "?"; }
+static std::map<std::string, std::pair<XV, XV>> g_famExact;   // family key -> exact values at widths 6, 7
+static bool piece_exact(const Strip& piece, XV& out) {
+    int n = int(piece.size());
+    if (n <= 7) { out = exact_value(piece); return out.ok; }
+    for (int c = 3; c < n - 3; ++c) if (piece[c].a != FC || piece[c].b != FC) return false;
+    Fam f;
+    for (int i = 0; i < 3; ++i) { f.L[i] = piece[i]; f.R[i] = piece[n - 3 + i]; }
+    std::string k = fkey(f);
+    auto it = g_famExact.find(k);
+    if (it == g_famExact.end()) it = g_famExact.emplace(k, std::make_pair(exact_value(member(f, 6)), exact_value(member(f, 7)))).first;
+    out = (n & 1) ? it->second.second : it->second.first;
+    return out.ok;
+}
+// Best exact sums for an opening: for each reply (or none), the minimum over cuts.
+static void exact_rule_test(const Strip& s, int r, int c) {
+    int w = int(s.size());
+    Strip s1 = s;
+    if (!bmove(s1, r, c)) return;
+    if (w <= 9) std::printf("  child value (White to move) = %s\n", xvstr(exact_value(s1)).c_str());
+    const int RW = std::min(c, w - 1 - c) <= 6 ? 4 : 2;
+    std::vector<std::pair<int,int>> replies{{-1, -1}};
+    for (int cc = std::max(0, c - RW); cc <= std::min(w - 1, c + RW); ++cc)
+        for (int rr = 0; rr < 5; ++rr) if ((s1[cc].b >> rr) & 1) replies.push_back({rr, cc});
+    std::vector<std::vector<int>> seamSets;
+    std::vector<int> sl;
+    for (int j = c - RW; j <= c + RW - 1; ++j) if (j >= 0 && j <= w - 2) sl.push_back(j);
+    for (int j : sl) seamSets.push_back({j});
+    for (std::size_t i = 0; i < sl.size(); ++i) for (std::size_t k = i + 1; k < sl.size(); ++k) seamSets.push_back({sl[i], sl[k]});
+    bool anyOk = false;
+    for (auto [rr, cc] : replies) {
+        Strip s2 = s1;
+        if (rr >= 0) wmove(s2, rr, cc);
+        XV best; std::string bestDesc;
+        for (auto& seams : seamSets)
+            for (auto& s3 : drop_variants(s2, seams, 0)) {
+                std::vector<int> cuts = seams; cuts.push_back(w - 1);
+                int prev = 0; XV sum; sum.ok = true; std::string desc;
+                for (int j : cuts) {
+                    Strip piece(s3.begin() + prev, s3.begin() + j + 1);
+                    XV v;
+                    if (!piece_exact(piece, v)) { sum.ok = false; break; }
+                    sum.num += v.num; sum.star ^= v.star;
+                    desc += "[" + std::to_string(int(piece.size())) + ":" + xvstr(v) + "]";
+                    prev = j + 1;
+                }
+                if (!sum.ok) continue;
+                if (!best.ok || sum.num < best.num || (sum.num == best.num && !sum.star && best.star)) { best = sum; bestDesc = desc; }
+            }
+        bool ok = best.ok && (rr < 0 ? best.num < 0 : (best.num < 0 || (best.num == 0 && !best.star)));
+        anyOk |= ok;
+        if (rr < 0 || ok || replies.size() < 40)
+            std::printf("  reply %s: best cut sum %s %s%s\n", rr < 0 ? "none" : ("(" + std::to_string(rr) + "," + std::to_string(cc) + ")").c_str(),
+                        xvstr(best).c_str(), bestDesc.c_str(), ok ? "  OK" : "");
+    }
+    std::printf("  => %s\n", anyOk ? "CLOSES with exact bounds" : "no exact one-round rule");
+    std::fflush(stdout);
+}
+
 static int g_tr = -1, g_tc = -1;
+static std::vector<int> g_test3;
 static std::vector<int> g_test2;
+#ifndef CLOSURE_NO_MAIN
 int main(int argc, char** argv) {
     std::string root = "KD";
     for (int i = 1; i < argc; ++i) {
@@ -479,6 +607,12 @@ int main(int argc, char** argv) {
         else if (a == "-L") g_limit = std::atof(argv[++i]);
         else if (a == "-C") g_cachePath = argv[++i];
         else if (a == "-M") g_maxFam = std::atoi(argv[++i]);
+        else if (a == "-2") g_twoRound = true;
+        else if (a == "-T3") {
+            g_tr = std::atoi(argv[++i]); g_tc = std::atoi(argv[++i]);
+            std::stringstream ws(argv[++i]); std::string t;
+            while (std::getline(ws, t, ',')) g_test3.push_back(std::atoi(t.c_str()));
+        }
         else if (a == "-T2") {
             g_tr = std::atoi(argv[++i]); g_tc = std::atoi(argv[++i]);
             std::stringstream ws(argv[++i]); std::string t;
@@ -497,6 +631,13 @@ int main(int argc, char** argv) {
     f.R[0] = N; f.R[1] = N; f.R[2] = letter("obwbo");
     if (root == "KD") { Strip s = member(f, 8); wmove(s, 2, 0); for (int i = 0; i < 3; ++i) f.L[i] = s[i]; }
     int rid = get_family(f, root);
+    if (!g_test3.empty()) {
+        for (int w : g_test3) {
+            std::printf("w=%d opening (%d,%d), target 0 [%.0fs, searches %" PRIu64 "]\n", w, g_tr, g_tc, since_start(), g_queries);
+            exact_rule_test(member(fams[rid].f, w), g_tr, g_tc);
+        }
+        return 0;
+    }
     if (!g_test2.empty()) {
         // test mode: two-round rule for opening (g_tr, g_tc) of the root at the listed widths
         for (int w : g_test2) {
@@ -543,3 +684,4 @@ int main(int argc, char** argv) {
     save_cache();
     return failed ? 1 : 0;
 }
+#endif  // CLOSURE_NO_MAIN
