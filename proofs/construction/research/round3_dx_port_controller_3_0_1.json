@@ -1,0 +1,14 @@
+{
+  "cap_width": 3,
+  "half_turn": false,
+  "legal_ports": true,
+  "white_wins_abstract_controller": "Unknown",
+  "counts": {
+    "states": 1000001,
+    "port_events": 5,
+    "cap_openings": 3376551,
+    "mirror_terminals": 14639
+  },
+  "initial_losing_port_prefix": [],
+  "first_nonport_witness": null
+}

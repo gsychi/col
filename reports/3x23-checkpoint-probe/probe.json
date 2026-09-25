@@ -1,0 +1,55 @@
+{
+  "height": 3,
+  "width": 23,
+  "opening": 34,
+  "blue_mask": "0x1ffdfffff1fffff7ff",
+  "white_mask": "0x1ffffffffbffffffff",
+  "turn": 1,
+  "probes": [
+    {
+      "mode": "signed_checkpoints",
+      "variants": 5012,
+      "index_seconds": 0.0395499998703599,
+      "query_seconds": 0.25155329098924994,
+      "result": {
+        "outcome": "unknown"
+      },
+      "metrics": {
+        "queries": 70,
+        "matching_tiles": 6688,
+        "covers": 13,
+        "query_seconds": 0.25115659181028605
+      }
+    },
+    {
+      "mode": "all_original_checkpoints",
+      "variants": 63080,
+      "index_seconds": 0.5362347075715661,
+      "query_seconds": 4.437863875180483,
+      "result": {
+        "outcome": "unknown"
+      },
+      "metrics": {
+        "queries": 69,
+        "matching_tiles": 2353,
+        "covers": 0,
+        "query_seconds": 4.437494379002601
+      }
+    },
+    {
+      "mode": "all_checkpoints",
+      "variants": 67021,
+      "index_seconds": 0.5730533748865128,
+      "query_seconds": 4.698001500219107,
+      "result": {
+        "outcome": "unknown"
+      },
+      "metrics": {
+        "queries": 70,
+        "matching_tiles": 7114,
+        "covers": 13,
+        "query_seconds": 4.697252289857715
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+...../..o../.....  value after three mirrored pairs: *
+.../.../.o./.../...  value after three mirrored pairs: *
+o.....o/b..o..w/o.....o  value after three mirrored pairs: *
+owobo/...../..o../...../owobo  value after three mirrored pairs: *
+oo.....oo/ob..o..wo/oo.....oo  value after three mirrored pairs: *
+oowoboo/o.....o/b..o..w/o.....o/oowoboo  value after three mirrored pairs: *

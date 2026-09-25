@@ -1,0 +1,4364 @@
+{
+  "format": "col-tiling-discovery-v1",
+  "boards": [
+    {
+      "before": {
+        "board": "3x19",
+        "direct": false,
+        "covered_representatives": 19,
+        "uncovered": [
+          [
+            1,
+            7
+          ]
+        ]
+      },
+      "after": {
+        "board": "3x19",
+        "direct": false,
+        "covered_representatives": 19,
+        "uncovered": [
+          [
+            1,
+            7
+          ]
+        ]
+      },
+      "attempts": 40,
+      "admitted_tiles": 0
+    },
+    {
+      "before": {
+        "board": "3x23",
+        "direct": false,
+        "covered_representatives": 22,
+        "uncovered": [
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            11
+          ]
+        ]
+      },
+      "after": {
+        "board": "3x23",
+        "direct": false,
+        "covered_representatives": 22,
+        "uncovered": [
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            11
+          ]
+        ]
+      },
+      "attempts": 40,
+      "admitted_tiles": 0
+    },
+    {
+      "before": {
+        "board": "3x27",
+        "direct": false,
+        "covered_representatives": 26,
+        "uncovered": [
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            11
+          ]
+        ]
+      },
+      "after": {
+        "board": "3x27",
+        "direct": false,
+        "covered_representatives": 26,
+        "uncovered": [
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            11
+          ]
+        ]
+      },
+      "attempts": 40,
+      "admitted_tiles": 0
+    },
+    {
+      "before": {
+        "board": "3x31",
+        "direct": false,
+        "covered_representatives": 29,
+        "uncovered": [
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            1,
+            15
+          ]
+        ]
+      },
+      "after": {
+        "board": "3x31",
+        "direct": false,
+        "covered_representatives": 29,
+        "uncovered": [
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            1,
+            15
+          ]
+        ]
+      },
+      "attempts": 40,
+      "admitted_tiles": 0
+    },
+    {
+      "before": {
+        "board": "5x9",
+        "direct": false,
+        "covered_representatives": 0,
+        "uncovered": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ]
+        ]
+      },
+      "after": {
+        "board": "5x9",
+        "direct": false,
+        "covered_representatives": 0,
+        "uncovered": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ]
+        ]
+      },
+      "attempts": 40,
+      "admitted_tiles": 4
+    },
+    {
+      "before": {
+        "board": "7x7",
+        "direct": false,
+        "covered_representatives": 0,
+        "uncovered": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            3,
+            3
+          ]
+        ]
+      },
+      "after": {
+        "board": "7x7",
+        "direct": false,
+        "covered_representatives": 0,
+        "uncovered": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            3,
+            3
+          ]
+        ]
+      },
+      "attempts": 40,
+      "admitted_tiles": 2
+    }
+  ],
+  "attempts": [
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2088958,
+      "white_mask": 1048380,
+      "context": {
+        "opening": 26,
+        "response": 0,
+        "start_column": 0,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 7029,
+      "seconds": 0.002545583061873913
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 510,
+      "white_mask": 240,
+      "context": {
+        "opening": 26,
+        "response": 0,
+        "start_column": 0,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 19,
+      "seconds": 8.624978363513947e-06
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 510,
+      "white_mask": 208,
+      "context": {
+        "opening": 26,
+        "response": 0,
+        "start_column": 0,
+        "left": 0,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 11,
+      "seconds": 4.082918167114258e-06
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2088957,
+      "white_mask": 1048248,
+      "context": {
+        "opening": 26,
+        "response": 1,
+        "start_column": 0,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 6068,
+      "seconds": 0.0022897920571267605
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 509,
+      "white_mask": 232,
+      "context": {
+        "opening": 26,
+        "response": 1,
+        "start_column": 0,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 26,
+      "seconds": 9.832903742790222e-06
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 509,
+      "white_mask": 200,
+      "context": {
+        "opening": 26,
+        "response": 1,
+        "start_column": 0,
+        "left": 0,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.7909485399723053e-06
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2088955,
+      "white_mask": 1047985,
+      "context": {
+        "opening": 26,
+        "response": 2,
+        "start_column": 0,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 2695,
+      "seconds": 0.0009652907028794289
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 260093,
+      "white_mask": 126808,
+      "context": {
+        "opening": 26,
+        "response": 2,
+        "start_column": 1,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 906,
+      "seconds": 0.00032562483102083206
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2088951,
+      "white_mask": 1047459,
+      "context": {
+        "opening": 26,
+        "response": 3,
+        "start_column": 0,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 5380,
+      "seconds": 0.0020837923511862755
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 260091,
+      "white_mask": 126672,
+      "context": {
+        "opening": 26,
+        "response": 3,
+        "start_column": 1,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 649,
+      "seconds": 0.00023612473160028458
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2088943,
+      "white_mask": 1046407,
+      "context": {
+        "opening": 26,
+        "response": 4,
+        "start_column": 0,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 2591,
+      "seconds": 0.0009481245651841164
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962486,
+      "white_mask": 2087804,
+      "context": {
+        "opening": 26,
+        "response": 4,
+        "start_column": 4,
+        "left": 2,
+        "right": 2
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.007577583193778992
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962486,
+      "white_mask": 1047356,
+      "context": {
+        "opening": 26,
+        "response": 4,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.007395249791443348
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962486,
+      "white_mask": 1039164,
+      "context": {
+        "opening": 26,
+        "response": 4,
+        "start_column": 4,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 4228,
+      "seconds": 0.001581207849085331
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 260087,
+      "white_mask": 126402,
+      "context": {
+        "opening": 26,
+        "response": 4,
+        "start_column": 1,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 621,
+      "seconds": 0.00022700009867548943
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227574,
+      "white_mask": 130460,
+      "context": {
+        "opening": 26,
+        "response": 4,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 4730,
+      "seconds": 0.00176145788282156
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227574,
+      "white_mask": 128412,
+      "context": {
+        "opening": 26,
+        "response": 4,
+        "start_column": 4,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 1788,
+      "seconds": 0.0006506252102553844
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 478,
+      "white_mask": 240,
+      "context": {
+        "opening": 26,
+        "response": 4,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 18,
+      "seconds": 7.166992872953415e-06
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2088927,
+      "white_mask": 1044367,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 0,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 6380,
+      "seconds": 0.0023506246507167816
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962485,
+      "white_mask": 2087544,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 2,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 13577,
+      "seconds": 0.0050171250477433205
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962485,
+      "white_mask": 1047096,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 3058,
+      "seconds": 0.0011230423115193844
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962485,
+      "white_mask": 1038904,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 1571,
+      "seconds": 0.0005668750964105129
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962485,
+      "white_mask": 2071288,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 5,
+        "right": 2
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.007945457939058542
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962485,
+      "white_mask": 1030840,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 4208,
+      "seconds": 0.0015382501296699047
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962485,
+      "white_mask": 1022648,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 2147,
+      "seconds": 0.0007778750732541084
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962485,
+      "white_mask": 2071160,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 7,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 2674,
+      "seconds": 0.0010062498040497303
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962485,
+      "white_mask": 1030712,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 1913,
+      "seconds": 0.000719249714165926
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962485,
+      "white_mask": 1022520,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 964,
+      "seconds": 0.0003527076914906502
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 260079,
+      "white_mask": 125894,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 1,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 927,
+      "seconds": 0.0003398340195417404
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227573,
+      "white_mask": 130328,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 568,
+      "seconds": 0.00021083327010273933
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227573,
+      "white_mask": 128280,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 335,
+      "seconds": 0.0001238747499883175
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227573,
+      "white_mask": 126296,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 734,
+      "seconds": 0.00033408310264348984
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227573,
+      "white_mask": 124248,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 460,
+      "seconds": 0.00016399985179305077
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227573,
+      "white_mask": 126232,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 333,
+      "seconds": 0.00011891685426235199
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227573,
+      "white_mask": 124184,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 203,
+      "seconds": 7.200008258223534e-05
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 477,
+      "white_mask": 224,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 14,
+      "seconds": 5.125068128108978e-06
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 477,
+      "white_mask": 168,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 21,
+      "seconds": 7.291790097951889e-06
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 477,
+      "white_mask": 160,
+      "context": {
+        "opening": 26,
+        "response": 5,
+        "start_column": 4,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 9,
+      "seconds": 2.7921050786972046e-06
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962483,
+      "white_mask": 2087281,
+      "context": {
+        "opening": 26,
+        "response": 6,
+        "start_column": 4,
+        "left": 2,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 4283,
+      "seconds": 0.0015358338132500648
+    },
+    {
+      "board": "3x19",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962483,
+      "white_mask": 1046833,
+      "context": {
+        "opening": 26,
+        "response": 6,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 2570,
+      "seconds": 0.0010327082127332687
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962483,
+      "white_mask": 1038641,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 683,
+      "seconds": 0.00025345804169774055
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962483,
+      "white_mask": 2071024,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 5,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 3005,
+      "seconds": 0.0011295829899609089
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962483,
+      "white_mask": 1030576,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 1359,
+      "seconds": 0.0005391249433159828
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962483,
+      "white_mask": 1022384,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 723,
+      "seconds": 0.00026745768263936043
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962483,
+      "white_mask": 2070896,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 7,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 1217,
+      "seconds": 0.00043949997052550316
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962483,
+      "white_mask": 1030448,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 769,
+      "seconds": 0.00045274989679455757
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962483,
+      "white_mask": 1022256,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 410,
+      "seconds": 0.00016666622832417488
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2080382,
+      "white_mask": 1031998,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 7,
+        "left": 4,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 11268,
+      "seconds": 0.0045903329737484455
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2080382,
+      "white_mask": 1023806,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 7,
+        "left": 4,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 2147,
+      "seconds": 0.0008079167455434799
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097023,
+      "white_mask": 2088959,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 2
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.007885582745075226
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097023,
+      "white_mask": 1048511,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 5
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.008018790744245052
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097023,
+      "white_mask": 1040319,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 9250,
+      "seconds": 0.003687041811645031
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097023,
+      "white_mask": 2072575,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 2
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.007763042114675045
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097023,
+      "white_mask": 1032127,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 12813,
+      "seconds": 0.005670167040079832
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097023,
+      "white_mask": 1023935,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 6849,
+      "seconds": 0.003026540856808424
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 1031998,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 11,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 6553,
+      "seconds": 0.002718334086239338
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 1023806,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 11,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 3469,
+      "seconds": 0.0012784171849489212
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 2088831,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 2
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.007905832957476377
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 1048383,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 13774,
+      "seconds": 0.006125334184616804
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 1040191,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 5949,
+      "seconds": 0.002639917191118002
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 2072574,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 12,
+        "left": 5,
+        "right": 2
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.008765084203332663
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 1032126,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 12,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 12813,
+      "seconds": 0.004964082967489958
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 1023934,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 12,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 6849,
+      "seconds": 0.0027264999225735664
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 2072446,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 12,
+        "left": 7,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 16885,
+      "seconds": 0.0077217500656843185
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 2097023,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 16,
+        "left": 2,
+        "right": 0
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.008853250183165073
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 2080766,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 16,
+        "left": 5,
+        "right": 0
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.007724374998360872
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 2097151,
+      "white_mask": 2080638,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 16,
+        "left": 7,
+        "right": 0
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.008704416919499636
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227571,
+      "white_mask": 130193,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 257,
+      "seconds": 0.0001577087678015232
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227571,
+      "white_mask": 128145,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 141,
+      "seconds": 8.329097181558609e-05
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227571,
+      "white_mask": 126160,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 404,
+      "seconds": 0.00018858304247260094
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227571,
+      "white_mask": 124112,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 155,
+      "seconds": 6.708316504955292e-05
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227571,
+      "white_mask": 126096,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 161,
+      "seconds": 6.283307448029518e-05
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227571,
+      "white_mask": 124048,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 4,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 84,
+      "seconds": 5.191611126065254e-05
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 244857,
+      "white_mask": 255608,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 5,
+        "left": 5,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 1827,
+      "seconds": 0.0007029171101748943
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 244857,
+      "white_mask": 126552,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 5,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 758,
+      "seconds": 0.0002871667966246605
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 244857,
+      "white_mask": 124504,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 5,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 359,
+      "seconds": 0.00013612490147352219
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 244857,
+      "white_mask": 255544,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 5,
+        "left": 7,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 443,
+      "seconds": 0.00017120782285928726
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 244857,
+      "white_mask": 126488,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 5,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 268,
+      "seconds": 0.00012012477964162827
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 244857,
+      "white_mask": 124440,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 5,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 138,
+      "seconds": 5.320785567164421e-05
+    },
+    {
+      "board": "3x23",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262079,
+      "white_mask": 131039,
+      "context": {
+        "opening": 30,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 11268,
+      "seconds": 0.004338833037763834
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262079,
+      "white_mask": 128991,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 2147,
+      "seconds": 0.0008329167030751705
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262079,
+      "white_mask": 126943,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 2759,
+      "seconds": 0.0010451669804751873
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262079,
+      "white_mask": 124895,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 1581,
+      "seconds": 0.0006004585884511471
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 255998,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.008172083180397749
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 126942,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 2759,
+      "seconds": 0.0010100421495735645
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 124894,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 1581,
+      "seconds": 0.0005732080899178982
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 130975,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 9059,
+      "seconds": 0.003492875024676323
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 128927,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 1377,
+      "seconds": 0.0005048750899732113
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 126878,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 12,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 1448,
+      "seconds": 0.0005351253785192966
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 124830,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 12,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 798,
+      "seconds": 0.00033408403396606445
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 255934,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 13,
+        "left": 7,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 2617,
+      "seconds": 0.0009809578768908978
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 258046,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 21,
+        "left": 5,
+        "right": 0
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.007472541183233261
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 262143,
+      "white_mask": 257982,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 21,
+        "left": 7,
+        "right": 0
+      },
+      "status": "winning",
+      "states": 3261,
+      "seconds": 0.0011979998089373112
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 5,
+      "blue_mask": 28217,
+      "white_mask": 15144,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 5,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 166,
+      "seconds": 6.212480366230011e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 5,
+      "blue_mask": 28217,
+      "white_mask": 14632,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 5,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 75,
+      "seconds": 2.770824357867241e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 5,
+      "blue_mask": 28217,
+      "white_mask": 15112,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 5,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 64,
+      "seconds": 2.233404666185379e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 5,
+      "blue_mask": 28217,
+      "white_mask": 14600,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 5,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 30,
+      "seconds": 1.058308407664299e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 5,
+      "blue_mask": 32767,
+      "white_mask": 15342,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 815,
+      "seconds": 0.0002970830537378788
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 5,
+      "blue_mask": 32767,
+      "white_mask": 14830,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 411,
+      "seconds": 0.00015012500807642937
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 5,
+      "blue_mask": 32767,
+      "white_mask": 15310,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 13,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 400,
+      "seconds": 0.0001449999399483204
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 5,
+      "blue_mask": 32767,
+      "white_mask": 14798,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 13,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 200,
+      "seconds": 7.229205220937729e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 4,
+      "blue_mask": 3790,
+      "white_mask": 3694,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 7,
+        "left": 4,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 217,
+      "seconds": 7.679173722863197e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 4,
+      "blue_mask": 3790,
+      "white_mask": 1766,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 7,
+        "left": 4,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 63,
+      "seconds": 2.1999701857566833e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 4,
+      "blue_mask": 3790,
+      "white_mask": 1638,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 7,
+        "left": 4,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 31,
+      "seconds": 5.8749690651893616e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 4,
+      "blue_mask": 4095,
+      "white_mask": 3694,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 11,
+        "left": 7,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 158,
+      "seconds": 5.5833254009485245e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 4,
+      "blue_mask": 4095,
+      "white_mask": 1766,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 11,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 73,
+      "seconds": 2.50842422246933e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 4,
+      "blue_mask": 4095,
+      "white_mask": 1638,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 11,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 41,
+      "seconds": 1.3832934200763702e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 422,
+      "white_mask": 178,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 7,
+        "left": 4,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 8,
+      "seconds": 2.6673078536987305e-06
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 422,
+      "white_mask": 146,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 7,
+        "left": 4,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 2.083834260702133e-06
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 503,
+      "white_mask": 479,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 217,
+      "seconds": 7.316702976822853e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 503,
+      "white_mask": 251,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 63,
+      "seconds": 2.2250227630138397e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 503,
+      "white_mask": 219,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 31,
+      "seconds": 9.875278919935226e-06
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 503,
+      "white_mask": 415,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 83,
+      "seconds": 2.7750153094530106e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 503,
+      "white_mask": 187,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 51,
+      "seconds": 1.71661376953125e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 503,
+      "white_mask": 155,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 23,
+      "seconds": 7.7076256275177e-06
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 178,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 11,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 23,
+      "seconds": 7.834285497665405e-06
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 146,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 11,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.4580007195472717e-06
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 471,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 87,
+      "seconds": 2.845795825123787e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 243,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 38,
+      "seconds": 1.3167038559913635e-05
+    },
+    {
+      "board": "3x27",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 211,
+      "context": {
+        "opening": 34,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 19,
+      "seconds": 6.4158812165260315e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 414,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 12,
+        "left": 5,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 83,
+      "seconds": 3.6499928683042526e-05
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 186,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 12,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 51,
+      "seconds": 1.8500257283449173e-05
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 154,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 12,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 23,
+      "seconds": 7.832888513803482e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 406,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 12,
+        "left": 7,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 25,
+      "seconds": 8.916016668081284e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 503,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 28,
+        "left": 2,
+        "right": 0
+      },
+      "status": "winning",
+      "states": 114,
+      "seconds": 3.8667116314172745e-05
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 446,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 28,
+        "left": 5,
+        "right": 0
+      },
+      "status": "winning",
+      "states": 107,
+      "seconds": 3.54996882379055e-05
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 438,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 28,
+        "left": 7,
+        "right": 0
+      },
+      "status": "winning",
+      "states": 36,
+      "seconds": 1.1999625712633133e-05
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 59,
+      "white_mask": 29,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 8,
+      "seconds": 2.250075340270996e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 59,
+      "white_mask": 21,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 8,
+        "left": 0,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.5832483768463135e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 59,
+      "white_mask": 13,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.708976924419403e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 59,
+      "white_mask": 5,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 8,
+        "left": 4,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.125037670135498e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 38,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 18,
+      "seconds": 5.584210157394409e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 12,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.62515789270401e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 4,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.125037670135498e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 25,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.5827827155590057e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 17,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 12,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.084059476852417e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 8,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 12,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.0835938155651093e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 0,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 12,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 2,
+      "seconds": 5.41098415851593e-07
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 34,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 13,
+        "left": 7,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 9,
+      "seconds": 2.7497299015522003e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 46,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 29,
+        "left": 5,
+        "right": 0
+      },
+      "status": "winning",
+      "states": 20,
+      "seconds": 6.00004568696022e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 2,
+      "blue_mask": 63,
+      "white_mask": 42,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 29,
+        "left": 7,
+        "right": 0
+      },
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.2498501241207123e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 1,
+      "blue_mask": 7,
+      "white_mask": 2,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.125037670135498e-06
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 1,
+      "blue_mask": 7,
+      "white_mask": 0,
+      "context": {
+        "opening": 38,
+        "response": 6,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 2,
+      "seconds": 5.41098415851593e-07
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962487,
+      "white_mask": 2087779,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 2,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 12233,
+      "seconds": 0.005108457989990711
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962487,
+      "white_mask": 1047331,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 3268,
+      "seconds": 0.007300457917153835
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962487,
+      "white_mask": 1039139,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 1641,
+      "seconds": 0.000593333039432764
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962487,
+      "white_mask": 2071522,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 5,
+        "right": 2
+      },
+      "status": "unknown",
+      "states": 20001,
+      "seconds": 0.007345875259488821
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962487,
+      "white_mask": 1031074,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 4058,
+      "seconds": 0.0014795414172112942
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962487,
+      "white_mask": 1022882,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 1997,
+      "seconds": 0.0007185828872025013
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962487,
+      "white_mask": 2071394,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 7,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 2561,
+      "seconds": 0.0009556249715387821
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962487,
+      "white_mask": 1030946,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 1984,
+      "seconds": 0.0007124999538064003
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 7,
+      "blue_mask": 1962487,
+      "white_mask": 1022754,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 971,
+      "seconds": 0.0003494592383503914
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227575,
+      "white_mask": 130435,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 2,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 555,
+      "seconds": 0.0002009999006986618
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227575,
+      "white_mask": 128387,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 2,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 322,
+      "seconds": 0.00011620810255408287
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227575,
+      "white_mask": 126402,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 652,
+      "seconds": 0.00023504206910729408
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227575,
+      "white_mask": 124354,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 5,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 391,
+      "seconds": 0.00014258315786719322
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227575,
+      "white_mask": 126338,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 7,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 318,
+      "seconds": 0.00018008286133408546
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 227575,
+      "white_mask": 124290,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 4,
+        "left": 7,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 186,
+      "seconds": 6.637489423155785e-05
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 244859,
+      "white_mask": 255728,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 5,
+        "left": 5,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 2731,
+      "seconds": 0.0009734593331813812
+    },
+    {
+      "board": "3x31",
+      "height": 3,
+      "width": 6,
+      "blue_mask": 244859,
+      "white_mask": 126672,
+      "context": {
+        "opening": 38,
+        "response": 7,
+        "start_column": 5,
+        "left": 5,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 597,
+      "seconds": 0.00021191732957959175
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 31,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 0
+      },
+      "status": "certified",
+      "states": 58,
+      "seconds": 9.433319792151451e-05,
+      "tile": "certificates/mined_9bad31094272aa93beb2.json.gz"
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 30,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 1
+      },
+      "status": "winning",
+      "states": 42,
+      "seconds": 1.9457656890153885e-05
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 29,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 10,
+      "seconds": 3.0831433832645416e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 28,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 3
+      },
+      "status": "winning",
+      "states": 10,
+      "seconds": 2.9169023036956787e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 27,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 4
+      },
+      "status": "certified",
+      "states": 52,
+      "seconds": 7.641687989234924e-05,
+      "tile": "certificates/mined_f2805067a48f3158f417.json.gz"
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 26,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 22,
+      "seconds": 1.1874828487634659e-05
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 25,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 6
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.9171275198459625e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 24,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.6670674085617065e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 23,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 8
+      },
+      "status": "winning",
+      "states": 40,
+      "seconds": 1.3000331819057465e-05
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 22,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 9
+      },
+      "status": "winning",
+      "states": 35,
+      "seconds": 1.00000761449337e-05
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 21,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 10
+      },
+      "status": "winning",
+      "states": 8,
+      "seconds": 2.250075340270996e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 20,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 11
+      },
+      "status": "winning",
+      "states": 8,
+      "seconds": 2.291053533554077e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 19,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 12
+      },
+      "status": "winning",
+      "states": 34,
+      "seconds": 1.037493348121643e-05
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 18,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 13
+      },
+      "status": "winning",
+      "states": 15,
+      "seconds": 4.082918167114258e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 17,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 14
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.125037670135498e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 16,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 15
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.1669471859931946e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 15,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 16
+      },
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.7499703466892242e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 14,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 17
+      },
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.1660310924053192e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 13,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 18
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.666136085987091e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 12,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 19
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.62515789270401e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 11,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 20
+      },
+      "status": "winning",
+      "states": 9,
+      "seconds": 2.7082860469818115e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 10,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 21
+      },
+      "status": "winning",
+      "states": 9,
+      "seconds": 2.624932676553726e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 9,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 22
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.25030055642128e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 8,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 23
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.000240445137024e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 7,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 24
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.7918646335601807e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 6,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 25
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.5827827155590057e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 5,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 26
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.084059476852417e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 4,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 27
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.084059476852417e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 3,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 28
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.084059476852417e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 2,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 29
+      },
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.166015863418579e-06
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 1,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 30
+      },
+      "status": "winning",
+      "states": 2,
+      "seconds": 5.00120222568512e-07
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 1,
+      "blue_mask": 31,
+      "white_mask": 0,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 31
+      },
+      "status": "winning",
+      "states": 2,
+      "seconds": 4.996545612812042e-07
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 2,
+      "blue_mask": 1023,
+      "white_mask": 1023,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 0
+      },
+      "status": "certified",
+      "states": 588,
+      "seconds": 0.0009715002961456776,
+      "tile": "certificates/mined_d24c08b3b943581905de.json.gz"
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 2,
+      "blue_mask": 1023,
+      "white_mask": 1021,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 1
+      },
+      "status": "winning",
+      "states": 94,
+      "seconds": 3.941589966416359e-05
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 2,
+      "blue_mask": 1023,
+      "white_mask": 1015,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 2
+      },
+      "status": "certified",
+      "states": 687,
+      "seconds": 0.0010968749411404133,
+      "tile": "certificates/mined_9b93bf31e9dc9569b8da.json.gz"
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 2,
+      "blue_mask": 1023,
+      "white_mask": 1013,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 3
+      },
+      "status": "winning",
+      "states": 86,
+      "seconds": 3.587501123547554e-05
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 2,
+      "blue_mask": 1023,
+      "white_mask": 991,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 4
+      },
+      "status": "winning",
+      "states": 349,
+      "seconds": 0.00012737512588500977
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 2,
+      "blue_mask": 1023,
+      "white_mask": 989,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 64,
+      "seconds": 2.2625084966421127e-05
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 2,
+      "blue_mask": 1023,
+      "white_mask": 983,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 6
+      },
+      "status": "winning",
+      "states": 188,
+      "seconds": 6.475020200014114e-05
+    },
+    {
+      "board": "5x9",
+      "height": 5,
+      "width": 2,
+      "blue_mask": 1023,
+      "white_mask": 981,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 51,
+      "seconds": 1.7833895981311798e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 127,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 0
+      },
+      "status": "certified",
+      "states": 225,
+      "seconds": 0.00025058304890990257,
+      "tile": "certificates/mined_c1deefb397193f0ae3e9.json.gz"
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 126,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 1
+      },
+      "status": "winning",
+      "states": 241,
+      "seconds": 8.200015872716904e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 125,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 2
+      },
+      "status": "winning",
+      "states": 38,
+      "seconds": 1.1832918971776962e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 124,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 3
+      },
+      "status": "winning",
+      "states": 38,
+      "seconds": 1.1499971151351929e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 123,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 4
+      },
+      "status": "winning",
+      "states": 170,
+      "seconds": 5.358317866921425e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 122,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 5
+      },
+      "status": "winning",
+      "states": 105,
+      "seconds": 3.137486055493355e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 121,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 6
+      },
+      "status": "winning",
+      "states": 19,
+      "seconds": 5.959067493677139e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 120,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 7
+      },
+      "status": "winning",
+      "states": 19,
+      "seconds": 5.9157609939575195e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 119,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 8
+      },
+      "status": "certified",
+      "states": 175,
+      "seconds": 0.00020966725423932076,
+      "tile": "certificates/mined_c0642d6fcc32764f8af3.json.gz"
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 118,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 9
+      },
+      "status": "winning",
+      "states": 102,
+      "seconds": 3.720913082361221e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 117,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 10
+      },
+      "status": "winning",
+      "states": 30,
+      "seconds": 8.916947990655899e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 116,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 11
+      },
+      "status": "winning",
+      "states": 30,
+      "seconds": 8.708331733942032e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 115,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 12
+      },
+      "status": "winning",
+      "states": 40,
+      "seconds": 1.2333039194345474e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 114,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 13
+      },
+      "status": "winning",
+      "states": 40,
+      "seconds": 1.1624768376350403e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 113,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 14
+      },
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.4580007195472717e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 112,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 15
+      },
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.2498501241207123e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 111,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 16
+      },
+      "status": "winning",
+      "states": 65,
+      "seconds": 1.9542407244443893e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 110,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 17
+      },
+      "status": "winning",
+      "states": 65,
+      "seconds": 1.9249971956014633e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 109,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 18
+      },
+      "status": "winning",
+      "states": 20,
+      "seconds": 5.959067493677139e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 108,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 19
+      },
+      "status": "winning",
+      "states": 20,
+      "seconds": 5.959067493677139e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 107,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 20
+      },
+      "status": "winning",
+      "states": 62,
+      "seconds": 1.8791761249303818e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 106,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 21
+      },
+      "status": "winning",
+      "states": 62,
+      "seconds": 1.8458813428878784e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 105,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 22
+      },
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.292000085115433e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 104,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 23
+      },
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.166737198829651e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 103,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 24
+      },
+      "status": "winning",
+      "states": 20,
+      "seconds": 5.875248461961746e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 102,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 25
+      },
+      "status": "winning",
+      "states": 20,
+      "seconds": 5.958136171102524e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 101,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 26
+      },
+      "status": "winning",
+      "states": 12,
+      "seconds": 3.416091203689575e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 100,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 27
+      },
+      "status": "winning",
+      "states": 12,
+      "seconds": 3.375113010406494e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 99,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 28
+      },
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.250090569257736e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 98,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 29
+      },
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.166737198829651e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 97,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 30
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.6670674085617065e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 96,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 31
+      },
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.6670674085617065e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 95,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 32
+      },
+      "status": "winning",
+      "states": 183,
+      "seconds": 6.283307448029518e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 94,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 33
+      },
+      "status": "winning",
+      "states": 213,
+      "seconds": 6.600003689527512e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 93,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 34
+      },
+      "status": "winning",
+      "states": 31,
+      "seconds": 9.042210876941681e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 92,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 35
+      },
+      "status": "winning",
+      "states": 31,
+      "seconds": 9.042210876941681e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 91,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 36
+      },
+      "status": "winning",
+      "states": 195,
+      "seconds": 5.8374833315610886e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 90,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 37
+      },
+      "status": "winning",
+      "states": 84,
+      "seconds": 2.4957582354545593e-05
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 89,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 38
+      },
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.292000085115433e-06
+    },
+    {
+      "board": "7x7",
+      "height": 7,
+      "width": 1,
+      "blue_mask": 127,
+      "white_mask": 88,
+      "context": {
+        "seed": true,
+        "left": 0,
+        "right": 39
+      },
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.166737198829651e-06
+    }
+  ],
+  "limits": {
+    "seconds_per_board": 3.0,
+    "tile_seconds": 0.2,
+    "max_states": 20000,
+    "max_candidates_per_board": 40,
+    "max_tile_cells": 21
+  },
+  "elapsed_seconds": 11.006935541983694,
+  "peak_rss_native": 45907968,
+  "peak_rss_units": "bytes",
+  "claim": "Finite checked tiles and covers only; unresolved cases remain unknown."
+}

@@ -1,0 +1,14 @@
+VERIFIED alternating_5x4 = 3/4
+VERIFIED opening_1 = -1
+VERIFIED opening_3 = -1
+VERIFIED opening_4 = -1
+VERIFIED opening_6 = -1
+VERIFIED opening_9 = -1
+VERIFIED opening_11 = -1
+VERIFIED opening_8 = 1/2
+VERIFIED opening_0 has outcome N; no numerical value asserted
+VERIFIED opening_2 has outcome N; no numerical value asserted
+VERIFIED opening_5 has outcome N; no numerical value asserted
+VERIFIED opening_7 has outcome N; no numerical value asserted
+VERIFIED opening_10 has outcome N; no numerical value asserted
+NUMERIC/FUZZY CHECKPOINTS 44818 RESPONSE EDGES 204816

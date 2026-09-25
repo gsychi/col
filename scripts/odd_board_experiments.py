@@ -10,6 +10,7 @@ import os
 import platform
 import re
 import subprocess
+import signal
 import sys
 import time
 from dataclasses import asdict, dataclass
@@ -95,6 +96,15 @@ METRIC_PATTERNS = {
     "component_bag_raw_id_hits": re.compile(r"^component bag raw id hits:\s+(\d+)$"),
     "component_bag_signature_hits": re.compile(
         r"^component bag signature hits:\s+(\d+)$"
+    ),
+    "component_charge_queries": re.compile(r"^component charge queries:\s+(\d+)$"),
+    "component_charge_win_hits": re.compile(r"^component charge win hits:\s+(\d+)$"),
+    "component_charge_loss_hits": re.compile(r"^component charge loss hits:\s+(\d+)$"),
+    "component_charge_fixed_checks": re.compile(
+        r"^component charge fixed checks:\s+(\d+)$"
+    ),
+    "component_charge_greedy_checks": re.compile(
+        r"^component charge greedy checks:\s+(\d+)$"
     ),
     "component_signature_shared_queries": re.compile(
         r"^component signature shared queries:\s+(\d+)$"
@@ -199,6 +209,11 @@ class RunResult:
     ok: bool
     returncode: int
     wall_seconds: float
+    tiling_queries: int | None = None
+    tiling_matching_tiles: int | None = None
+    tiling_successful_covers: int | None = None
+    tiling_dfs_cutoffs: int | None = None
+    tiling_query_seconds: float | None = None
     winner: str | None = None
     states: int | None = None
     memo_hits: int | None = None
@@ -242,6 +257,11 @@ class RunResult:
     component_bag_shared_duplicate_inserts: int | None = None
     component_bag_raw_id_hits: int | None = None
     component_bag_signature_hits: int | None = None
+    component_charge_queries: int | None = None
+    component_charge_win_hits: int | None = None
+    component_charge_loss_hits: int | None = None
+    component_charge_fixed_checks: int | None = None
+    component_charge_greedy_checks: int | None = None
     component_signature_shared_queries: int | None = None
     component_signature_shared_hits: int | None = None
     component_signature_shared_inserts: int | None = None
@@ -424,6 +444,11 @@ def solver_command(
 def parse_output(output: str) -> dict[str, int | float | str]:
     parsed: dict[str, int | float | str] = {}
     for line in output.splitlines():
+        if line.startswith("tiling metrics: "):
+            metrics = json.loads(line.removeprefix("tiling metrics: "))
+            for field in ("queries", "matching_tiles", "successful_covers", "dfs_cutoffs", "query_seconds"):
+                parsed["tiling_" + field] = metrics[field]
+            continue
         for name, pattern in METRIC_PATTERNS.items():
             match = pattern.match(line.strip())
             if match is None:
@@ -466,18 +491,44 @@ def run_one(
     timed_command = command
     if darwin_extended_time_available():
         timed_command = ["/usr/bin/time", "-l", *command]
+    elif os.name == "posix":
+        # A fresh helper has exactly one child, so RUSAGE_CHILDREN gives this
+        # solver's peak rather than the cumulative maximum of previous runs.
+        # This also works when macOS's time -l sysctl probe is sandbox-blocked.
+        measure = (
+            "import resource, subprocess, sys; "
+            "r = subprocess.run(sys.argv[1:]); "
+            "rss = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss; "
+            "rss = int(rss if sys.platform == 'darwin' else rss * 1024); "
+            "print(str(rss) + ' maximum resident set size', flush=True); "
+            "sys.exit(r.returncode if r.returncode >= 0 else 128-r.returncode)"
+        )
+        timed_command = [sys.executable, "-c", measure, *command]
 
     started = time.perf_counter()
     try:
-        completed = subprocess.run(
+        with subprocess.Popen(
             timed_command,
             cwd=REPO_ROOT,
             text=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            timeout=args.timeout,
-            check=False,
-        )
+            start_new_session=os.name == "posix",
+        ) as process:
+            try:
+                stdout, _ = process.communicate(timeout=args.timeout)
+            except subprocess.TimeoutExpired:
+                # Kill the measurement helper and its solver together.
+                if os.name == "posix":
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                else:
+                    process.kill()
+                process.communicate()
+                raise
+            completed = subprocess.CompletedProcess(timed_command, process.returncode, stdout)
     except subprocess.TimeoutExpired as exc:
         return RunResult(
             board=board.label,

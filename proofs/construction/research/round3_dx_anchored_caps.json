@@ -1,0 +1,80 @@
+[
+  {
+    "blue": [
+      0,
+      2
+    ],
+    "interface": "U",
+    "a": 32665,
+    "b": 15603,
+    "value": {
+      "number": "0",
+      "star": false
+    }
+  },
+  {
+    "blue": [
+      0,
+      2
+    ],
+    "interface": "R",
+    "a": 32665,
+    "b": 30163,
+    "value": {
+      "number": "-1",
+      "star": false
+    }
+  },
+  {
+    "blue": [
+      1,
+      2
+    ],
+    "interface": "V",
+    "a": 32395,
+    "b": 30167,
+    "value": {
+      "number": "-2",
+      "star": false
+    }
+  },
+  {
+    "blue": [
+      1,
+      2
+    ],
+    "interface": "J",
+    "a": 32395,
+    "b": 15571,
+    "value": {
+      "number": "1/2",
+      "star": false
+    }
+  },
+  {
+    "blue": [
+      2,
+      2
+    ],
+    "interface": "D",
+    "a": 30239,
+    "b": 15603,
+    "value": {
+      "number": "0",
+      "star": false
+    }
+  },
+  {
+    "blue": [
+      2,
+      2
+    ],
+    "interface": "X",
+    "a": 30239,
+    "b": 29911,
+    "value": {
+      "number": "-1",
+      "star": false
+    }
+  }
+]

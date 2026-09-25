@@ -1,0 +1,5092 @@
+{
+  "seconds": 0.2584024593234062,
+  "collect_seconds": 0.17948716692626476,
+  "unique_contracts": 1380,
+  "attempts": [
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6a18",
+      "b": "0x1800",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 6,
+      "seconds": 6.9998204708099365e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3a838",
+      "b": "0xe008",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 36,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 11,
+      "seconds": 5.875248461961746e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e38",
+      "b": "0x1004",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 9,
+      "seconds": 4.250090569257736e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e38",
+      "b": "0x3100",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.875233232975006e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e38",
+      "b": "0x3300",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 19,
+      "seconds": 7.62520357966423e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37871",
+      "b": "0xc008",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 14,
+      "seconds": 5.334150046110153e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37871",
+      "b": "0x1c400",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 19,
+      "seconds": 6.833113729953766e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37871",
+      "b": "0x1cc00",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 33,
+      "seconds": 1.1750031262636185e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3b878",
+      "b": "0xc00c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 36,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 14,
+      "seconds": 5.041249096393585e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc78",
+      "b": "0x1c610",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 62,
+      "seconds": 2.3041851818561554e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc78",
+      "b": "0x1ce10",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 133,
+      "seconds": 4.841713234782219e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc78",
+      "b": "0x3c630",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 160,
+      "seconds": 5.899975076317787e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de0f1",
+      "b": "0x70018",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 37,
+      "seconds": 1.258309930562973e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0xf1820",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 104,
+      "seconds": 3.645801916718483e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0xf3820",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 220,
+      "seconds": 7.99582339823246e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0x1f1860",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 4,
+      "status": "winning",
+      "states": 290,
+      "seconds": 0.00011479202657938004
+    },
+    {
+      "height": 3,
+      "width": 3,
+      "a": "0x1a6",
+      "b": "0x90",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 54,
+        "start_column": 11,
+        "left": 6,
+        "right": 7
+      },
+      "hits": 3,
+      "status": "winning",
+      "states": 6,
+      "seconds": 2.3329630494117737e-06
+    },
+    {
+      "height": 3,
+      "width": 3,
+      "a": "0x1a6",
+      "b": "0xb0",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 54,
+        "start_column": 11,
+        "left": 6,
+        "right": 5
+      },
+      "hits": 3,
+      "status": "winning",
+      "states": 8,
+      "seconds": 2.874992787837982e-06
+    },
+    {
+      "height": 3,
+      "width": 4,
+      "a": "0x736",
+      "b": "0xf64",
+      "context": {
+        "path": [
+          8,
+          58
+        ],
+        "response": 14,
+        "start_column": 8,
+        "left": 2,
+        "right": 3
+      },
+      "hits": 3,
+      "status": "certified",
+      "states": 133,
+      "seconds": 0.0002377089112997055,
+      "tile": "certificates/mined_e442171dbe9cf838daeb.json.gz",
+      "nodes": 22,
+      "edges": 43
+    },
+    {
+      "height": 3,
+      "width": 4,
+      "a": "0xece",
+      "b": "0x664",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 54,
+        "start_column": 11,
+        "left": 6,
+        "right": 7
+      },
+      "hits": 3,
+      "status": "winning",
+      "states": 31,
+      "seconds": 1.3708602637052536e-05
+    },
+    {
+      "height": 3,
+      "width": 4,
+      "a": "0xece",
+      "b": "0x6e4",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 54,
+        "start_column": 11,
+        "left": 6,
+        "right": 5
+      },
+      "hits": 3,
+      "status": "winning",
+      "states": 63,
+      "seconds": 2.2708438336849213e-05
+    },
+    {
+      "height": 3,
+      "width": 4,
+      "a": "0xece",
+      "b": "0xe6c",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 54,
+        "start_column": 11,
+        "left": 6,
+        "right": 2
+      },
+      "hits": 3,
+      "status": "winning",
+      "states": 201,
+      "seconds": 0.0001265415921807289
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0xfcfb7",
+      "b": "0x1f9b22",
+      "context": {
+        "path": [
+          8,
+          58
+        ],
+        "response": 14,
+        "start_column": 5,
+        "left": 7,
+        "right": 3
+      },
+      "hits": 3,
+      "status": "winning",
+      "states": 1573,
+      "seconds": 0.0005617076531052589
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0xfcfb7",
+      "b": "0x1f9ba2",
+      "context": {
+        "path": [
+          8,
+          58
+        ],
+        "response": 14,
+        "start_column": 5,
+        "left": 5,
+        "right": 3
+      },
+      "hits": 3,
+      "status": "winning",
+      "states": 5758,
+      "seconds": 0.003640166949480772
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1fbe7e",
+      "b": "0xf9f3c",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 54,
+        "start_column": 11,
+        "left": 6,
+        "right": 7
+      },
+      "hits": 3,
+      "status": "winning",
+      "states": 2147,
+      "seconds": 0.000769125297665596
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1fbe7e",
+      "b": "0xfbf3c",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 54,
+        "start_column": 11,
+        "left": 6,
+        "right": 5
+      },
+      "hits": 3,
+      "status": "winning",
+      "states": 11268,
+      "seconds": 0.004085875116288662
+    },
+    {
+      "height": 3,
+      "width": 3,
+      "a": "0x1a6",
+      "b": "0x0",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 35,
+        "start_column": 11,
+        "left": 4,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 2,
+      "seconds": 7.916241884231567e-07
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x4a18",
+      "b": "0x808",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.4998950064182281e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x4a18",
+      "b": "0xa08",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 6,
+      "seconds": 2.125278115272522e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6218",
+      "b": "0x2108",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 56,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 6,
+      "seconds": 2.0419247448444366e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6218",
+      "b": "0x2308",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 56,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 8,
+      "seconds": 2.7082860469818115e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6818",
+      "b": "0x3808",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 36,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 8,
+      "seconds": 2.874992787837982e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6a10",
+      "b": "0x3800",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 8,
+      "seconds": 2.4996697902679443e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6a10",
+      "b": "0x3a00",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 20,
+      "seconds": 6.958376616239548e-06
+    },
+    {
+      "height": 3,
+      "width": 4,
+      "a": "0xd8c",
+      "b": "0x300",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 35,
+        "start_column": 10,
+        "left": 0,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.8333084881305695e-06
+    },
+    {
+      "height": 3,
+      "width": 4,
+      "a": "0xe8e",
+      "b": "0x200",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 36,
+        "start_column": 11,
+        "left": 4,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.4579854905605316e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6a18",
+      "b": "0x108",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.375097781419754e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6a18",
+      "b": "0x308",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.8328428268432617e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x4e38",
+      "b": "0xc",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 4,
+      "seconds": 1.375097781419754e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x4e38",
+      "b": "0x20c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 9,
+      "seconds": 3.125052899122238e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e30",
+      "b": "0x3000",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 6,
+      "seconds": 1.8747523427009583e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e30",
+      "b": "0x3200",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.999805241823196e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x32c38",
+      "b": "0x2418",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.999805241823196e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x32c38",
+      "b": "0x2c18",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 26,
+      "seconds": 9.417068213224411e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x32c38",
+      "b": "0x22438",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 85,
+      "seconds": 2.987496554851532e-05
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6c38",
+      "b": "0x300c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 36,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.792120307683945e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e18",
+      "b": "0x1804",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.916917532682419e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e18",
+      "b": "0x3900",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 19,
+      "seconds": 6.666872650384903e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e18",
+      "b": "0x3b00",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 32,
+      "seconds": 1.1042226105928421e-05
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x761c",
+      "b": "0x1c04",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 36,
+        "start_column": 10,
+        "left": 0,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.832858055830002e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x38c38",
+      "b": "0x18618",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 56,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 31,
+      "seconds": 1.1167023330926895e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x38c38",
+      "b": "0x18e18",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 56,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 63,
+      "seconds": 2.3334287106990814e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x38c38",
+      "b": "0x38638",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 56,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 217,
+      "seconds": 7.66669400036335e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3a838",
+      "b": "0x2e028",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 36,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 43,
+      "seconds": 1.508370041847229e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac30",
+      "b": "0x1e400",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 37,
+      "seconds": 1.3125129044055939e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac30",
+      "b": "0x1ec00",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 94,
+      "seconds": 3.200024366378784e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac30",
+      "b": "0x3e420",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 96,
+      "seconds": 3.3416785299777985e-05
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e38",
+      "b": "0x10c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 9,
+      "seconds": 3.125052899122238e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e38",
+      "b": "0x30c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.624947905540466e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e38",
+      "b": "0x1840",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.708992153406143e-06
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e38",
+      "b": "0x1860",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 17,
+      "seconds": 5.791895091533661e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x1ac38",
+      "b": "0xe638",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 60,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 198,
+      "seconds": 6.970809772610664e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x27871",
+      "b": "0x4018",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 58,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 13,
+      "seconds": 4.37488779425621e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x27871",
+      "b": "0x4818",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 58,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 26,
+      "seconds": 9.167008101940155e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x2ac38",
+      "b": "0x6218",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 59,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 33,
+      "seconds": 1.1583324521780014e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x2ac38",
+      "b": "0x6238",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 59,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 44,
+      "seconds": 1.4834105968475342e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x2ac38",
+      "b": "0x6a18",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 59,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 76,
+      "seconds": 8.520809933543205e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x35831",
+      "b": "0xe000",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.584194928407669e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x35831",
+      "b": "0xf001",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 19,
+      "seconds": 6.666872650384903e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37861",
+      "b": "0x1c000",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 12,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.7909485399723053e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37861",
+      "b": "0x1c800",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 12,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 26,
+      "seconds": 9.041745215654373e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3a438",
+      "b": "0x1e218",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 37,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 86,
+      "seconds": 3.0250288546085358e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac18",
+      "b": "0x3e608",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 14,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 126,
+      "seconds": 4.28343191742897e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac28",
+      "b": "0x1e200",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 13,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 38,
+      "seconds": 1.3084150850772858e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac28",
+      "b": "0x1ea00",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 13,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 86,
+      "seconds": 2.9208604246377945e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac28",
+      "b": "0x3e200",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 13,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 70,
+      "seconds": 2.350006252527237e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac38",
+      "b": "0x10618",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 23,
+      "seconds": 7.957685738801956e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac38",
+      "b": "0x10e18",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 51,
+      "seconds": 1.758430153131485e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac38",
+      "b": "0x16010",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 33,
+      "seconds": 1.1833850294351578e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac38",
+      "b": "0x16810",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 76,
+      "seconds": 2.620834857225418e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac38",
+      "b": "0x30638",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 52,
+      "seconds": 1.7541926354169846e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3ac38",
+      "b": "0x36030",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 69,
+      "seconds": 2.4041160941123962e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x33871",
+      "b": "0x10418",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 56,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 18,
+      "seconds": 6.166752427816391e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x33871",
+      "b": "0x10c18",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 56,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 31,
+      "seconds": 1.0624993592500687e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x33c78",
+      "b": "0x41c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 14,
+      "seconds": 4.791654646396637e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x33c78",
+      "b": "0xc1c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 26,
+      "seconds": 8.959323167800903e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x33c78",
+      "b": "0x2043c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 58,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 51,
+      "seconds": 1.7541926354169846e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x35831",
+      "b": "0xe040",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 26,
+      "seconds": 8.832663297653198e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37071",
+      "b": "0x1c018",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 28,
+      "seconds": 9.750016033649445e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3b838",
+      "b": "0xe00c",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 36,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 26,
+      "seconds": 9.375158697366714e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc70",
+      "b": "0x1c400",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 19,
+      "seconds": 6.7497603595256805e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc70",
+      "b": "0x1cc00",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 33,
+      "seconds": 1.125037670135498e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc70",
+      "b": "0x3c420",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 12,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 89,
+      "seconds": 3.11252661049366e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37871",
+      "b": "0x418",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 57,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 11,
+      "seconds": 3.5422854125499725e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37871",
+      "b": "0xc18",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 57,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 17,
+      "seconds": 5.832873284816742e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37871",
+      "b": "0xd009",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 33,
+      "seconds": 1.1999625712633133e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37871",
+      "b": "0x1d401",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 45,
+      "seconds": 1.6625039279460907e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37871",
+      "b": "0x1dc01",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 72,
+      "seconds": 2.587493509054184e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3b878",
+      "b": "0xe080",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 36,
+        "start_column": 9,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 19,
+      "seconds": 6.792135536670685e-06
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3b878",
+      "b": "0xe0c0",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 36,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 33,
+      "seconds": 1.1417083442211151e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3b878",
+      "b": "0x2c02c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 36,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 66,
+      "seconds": 2.38749198615551e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc38",
+      "b": "0x1e610",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 99,
+      "seconds": 3.5624951124191284e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc38",
+      "b": "0x1ee10",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 197,
+      "seconds": 7.074978202581406e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc38",
+      "b": "0x3e630",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 503,
+      "seconds": 0.0001822090707719326
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1d6071",
+      "b": "0x78010",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 38,
+      "seconds": 1.3417098671197891e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1d6071",
+      "b": "0x7c011",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 64,
+      "seconds": 2.2209249436855316e-05
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e3b",
+      "b": "0x1846",
+      "context": {
+        "path": [],
+        "response": 35,
+        "start_column": 9,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 33,
+      "seconds": 1.1750031262636185e-05
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e3b",
+      "b": "0x1866",
+      "context": {
+        "path": [],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 56,
+      "seconds": 1.9832979887723923e-05
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e3b",
+      "b": "0x310c",
+      "context": {
+        "path": [],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 32,
+      "seconds": 1.1667143553495407e-05
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "a": "0x6e3b",
+      "b": "0x330c",
+      "context": {
+        "path": [],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 52,
+      "seconds": 1.800013706088066e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x78f6",
+      "b": "0xf18c",
+      "context": {
+        "path": [
+          8,
+          58
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 165,
+      "seconds": 5.974993109703064e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x1bc78",
+      "b": "0xc63c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 60,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 120,
+      "seconds": 4.2166560888290405e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x2bc78",
+      "b": "0x421c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 59,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 49,
+      "seconds": 1.741712912917137e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x2bc78",
+      "b": "0x423c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 59,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 70,
+      "seconds": 2.5209039449691772e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x2bc78",
+      "b": "0x4a1c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 59,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 113,
+      "seconds": 4.0125101804733276e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3b478",
+      "b": "0x1c21c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 37,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 125,
+      "seconds": 4.454236477613449e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc58",
+      "b": "0x3c60c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 14,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 126,
+      "seconds": 4.512490704655647e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc68",
+      "b": "0x1c204",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 13,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 54,
+      "seconds": 1.8708407878875732e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc68",
+      "b": "0x1ca04",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 13,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 125,
+      "seconds": 4.5000109821558e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc68",
+      "b": "0x3c204",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 13,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 89,
+      "seconds": 3.224983811378479e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc78",
+      "b": "0x1061c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 54,
+      "seconds": 1.8958933651447296e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc78",
+      "b": "0x10e1c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 118,
+      "seconds": 4.208274185657501e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc78",
+      "b": "0x14014",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 49,
+      "seconds": 1.7582904547452927e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc78",
+      "b": "0x14814",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 113,
+      "seconds": 4.041707143187523e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc78",
+      "b": "0x3063c",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 57,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 131,
+      "seconds": 4.729209467768669e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc78",
+      "b": "0x34034",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 35,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 110,
+      "seconds": 3.862520679831505e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x19f0f1",
+      "b": "0x11038",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 58,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 42,
+      "seconds": 1.4499761164188385e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x19f0f1",
+      "b": "0x13038",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 58,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 74,
+      "seconds": 2.595921978354454e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x19f0f1",
+      "b": "0x111078",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 58,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 381,
+      "seconds": 0.00013479217886924744
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1d6071",
+      "b": "0x78090",
+      "context": {
+        "path": [
+          10,
+          32
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 90,
+      "seconds": 3.1542032957077026e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0e1",
+      "b": "0xf1000",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 12,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 34,
+      "seconds": 1.1834315955638885e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0e1",
+      "b": "0xf3000",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 12,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 57,
+      "seconds": 1.9375234842300415e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0e1",
+      "b": "0x1f1040",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 12,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 309,
+      "seconds": 0.00010762503370642662
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x358f1",
+      "b": "0x18518",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 55,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 75,
+      "seconds": 2.6458874344825745e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x358f1",
+      "b": "0x18d18",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 55,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 123,
+      "seconds": 4.204176366329193e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378b1",
+      "b": "0xe10a",
+      "context": {
+        "path": [
+          31,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 125,
+      "seconds": 4.424992948770523e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378b1",
+      "b": "0x1a41a",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 174,
+      "seconds": 6.0374848544597626e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378b1",
+      "b": "0x1ac1a",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 277,
+      "seconds": 9.845895692706108e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378b1",
+      "b": "0x1e502",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 160,
+      "seconds": 5.633337423205376e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378b1",
+      "b": "0x1e518",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 198,
+      "seconds": 6.829109042882919e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378b1",
+      "b": "0x1ed02",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 264,
+      "seconds": 9.129103273153305e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378b1",
+      "b": "0x1ed18",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 315,
+      "seconds": 0.00010845810174942017
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0xa00a",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 49,
+      "seconds": 1.7208978533744812e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0xa04a",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 113,
+      "seconds": 3.941589966416359e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0xb00b",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 77,
+      "seconds": 2.6999972760677338e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0xe108",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 54,
+      "seconds": 1.8666964024305344e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0xe148",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 125,
+      "seconds": 4.424992948770523e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0xe182",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 62,
+      "seconds": 2.187490463256836e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0xe1c2",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 133,
+      "seconds": 4.6957749873399734e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0xf108",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 89,
+      "seconds": 3.262516111135483e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0xf183",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 106,
+      "seconds": 3.754207864403725e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1a402",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 61,
+      "seconds": 2.170773223042488e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1a418",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 75,
+      "seconds": 2.6540830731391907e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1a442",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 141,
+      "seconds": 5.0167087465524673e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1a458",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 174,
+      "seconds": 6.258394569158554e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1ac02",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 103,
+      "seconds": 3.654090687632561e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1ac18",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 123,
+      "seconds": 4.3750274926424026e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1ac42",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 232,
+      "seconds": 8.249981328845024e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1ac58",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 277,
+      "seconds": 9.712483733892441e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1b403",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 96,
+      "seconds": 3.341725096106529e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1b418",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 118,
+      "seconds": 4.120776429772377e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1bc03",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 159,
+      "seconds": 5.662534385919571e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1bc18",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 190,
+      "seconds": 6.741657853126526e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1e500",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 69,
+      "seconds": 2.4084001779556274e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1e540",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 160,
+      "seconds": 5.762465298175812e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1ed00",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 118,
+      "seconds": 4.0667131543159485e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1ed40",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 264,
+      "seconds": 0.00023391703143715858
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1f500",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 115,
+      "seconds": 3.94587405025959e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f1",
+      "b": "0x1fd00",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 189,
+      "seconds": 6.474973633885384e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1cf0f1",
+      "b": "0xc1838",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 56,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 84,
+      "seconds": 2.8625130653381348e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1cf0f1",
+      "b": "0xc3838",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 56,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 169,
+      "seconds": 5.8292411267757416e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1cf0f1",
+      "b": "0x1c1878",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 56,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 497,
+      "seconds": 0.00017424998804926872
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de0f1",
+      "b": "0x74019",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 85,
+      "seconds": 2.9208604246377945e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de0f1",
+      "b": "0x170058",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 242,
+      "seconds": 8.241692557930946e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37877",
+      "b": "0x1c41c",
+      "context": {
+        "path": [],
+        "response": 32,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 78,
+      "seconds": 2.7165748178958893e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x37877",
+      "b": "0x1cc1c",
+      "context": {
+        "path": [],
+        "response": 32,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 127,
+      "seconds": 4.387460649013519e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3b87b",
+      "b": "0xe08e",
+      "context": {
+        "path": [],
+        "response": 36,
+        "start_column": 9,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 90,
+      "seconds": 3.224983811378479e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3b87b",
+      "b": "0xe0ce",
+      "context": {
+        "path": [],
+        "response": 36,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 216,
+      "seconds": 7.524993270635605e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0xdf0f1",
+      "b": "0x71878",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 60,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 411,
+      "seconds": 0.0001459578052163124
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x11e1f6",
+      "b": "0x3c31c",
+      "context": {
+        "path": [
+          8,
+          58
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 550,
+      "seconds": 0.00019529182463884354
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x15f0f1",
+      "b": "0x30838",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 59,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 83,
+      "seconds": 2.8541777282953262e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x15f0f1",
+      "b": "0x30878",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 59,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 128,
+      "seconds": 4.333397373557091e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x15f0f1",
+      "b": "0x32838",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 59,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 184,
+      "seconds": 6.433390080928802e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1dd0f1",
+      "b": "0xf0838",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 37,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 219,
+      "seconds": 7.641687989234924e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0b1",
+      "b": "0x1f1818",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 14,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 597,
+      "seconds": 0.00021187542006373405
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0d1",
+      "b": "0xf0808",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 13,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 89,
+      "seconds": 3.1709205359220505e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0d1",
+      "b": "0xf2808",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 13,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 205,
+      "seconds": 7.220916450023651e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0d1",
+      "b": "0x1f0808",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 13,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 149,
+      "seconds": 5.224999040365219e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0x81838",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 57,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 60,
+      "seconds": 2.0541716367006302e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0x83838",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 57,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 127,
+      "seconds": 4.416704177856445e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0xb0028",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 77,
+      "seconds": 2.6999972760677338e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0xb2028",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 177,
+      "seconds": 6.17089681327343e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0xf5821",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 232,
+      "seconds": 8.245883509516716e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0xf7821",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 464,
+      "seconds": 0.0001678341068327427
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0x181878",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 57,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 158,
+      "seconds": 5.533406510949135e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0x1b0068",
+      "context": {
+        "path": [
+          32,
+          10
+        ],
+        "response": 35,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 178,
+      "seconds": 6.179092451930046e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df0f1",
+      "b": "0x1f5861",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 32,
+        "start_column": 8,
+        "left": 2,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1234,
+      "seconds": 0.0005606249906122684
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f7",
+      "b": "0xe18e",
+      "context": {
+        "path": [],
+        "response": 35,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 161,
+      "seconds": 5.733314901590347e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f7",
+      "b": "0xe1ce",
+      "context": {
+        "path": [],
+        "response": 35,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 334,
+      "seconds": 0.00011779088526964188
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x378f7",
+      "b": "0xf18f",
+      "context": {
+        "path": [],
+        "response": 35,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 275,
+      "seconds": 9.979214519262314e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc7b",
+      "b": "0x1c61c",
+      "context": {
+        "path": [],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 163,
+      "seconds": 5.6749675422906876e-05
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc7b",
+      "b": "0x1ce1c",
+      "context": {
+        "path": [],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 330,
+      "seconds": 0.00011708308011293411
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "a": "0x3bc7b",
+      "b": "0x3c63c",
+      "context": {
+        "path": [],
+        "response": 33,
+        "start_column": 9,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1518,
+      "seconds": 0.0005411249585449696
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de171",
+      "b": "0x7821a",
+      "context": {
+        "path": [
+          31,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 294,
+      "seconds": 0.00010412512347102165
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f1",
+      "b": "0x6801a",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 110,
+      "seconds": 3.7999823689460754e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f1",
+      "b": "0x6809a",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 254,
+      "seconds": 8.791685104370117e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f1",
+      "b": "0x6c01b",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 173,
+      "seconds": 6.041675806045532e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f1",
+      "b": "0x78218",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 127,
+      "seconds": 4.3791718780994415e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f1",
+      "b": "0x78298",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 294,
+      "seconds": 0.0001032920554280281
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f1",
+      "b": "0x78302",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 104,
+      "seconds": 3.6582816392183304e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f1",
+      "b": "0x78382",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 220,
+      "seconds": 7.575005292892456e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f1",
+      "b": "0x7c218",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 213,
+      "seconds": 7.470790296792984e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f1",
+      "b": "0x7c303",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 36,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 180,
+      "seconds": 6.295926868915558e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0xfceb7",
+      "b": "0x1f1820",
+      "context": {
+        "path": [
+          8,
+          58
+        ],
+        "response": 29,
+        "start_column": 5,
+        "left": 5,
+        "right": 1
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 177,
+      "seconds": 6.270920857787132e-05
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1d71f1",
+      "b": "0xe1a38",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 55,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 374,
+      "seconds": 0.00013316702097654343
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1d71f1",
+      "b": "0xe3a38",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 55,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 752,
+      "seconds": 0.0002715000882744789
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1d71f1",
+      "b": "0x1e1a78",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 55,
+        "start_column": 8,
+        "left": 2,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1024,
+      "seconds": 0.00047454191371798515
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df171",
+      "b": "0xe983a",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 844,
+      "seconds": 0.0003022090531885624
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df171",
+      "b": "0xeb83a",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1673,
+      "seconds": 0.0005992082878947258
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df171",
+      "b": "0xf9a22",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 835,
+      "seconds": 0.00029729166999459267
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df171",
+      "b": "0xf9a38",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 955,
+      "seconds": 0.00033637508749961853
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df171",
+      "b": "0xfba22",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1719,
+      "seconds": 0.0006217090412974358
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df171",
+      "b": "0xfba38",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1890,
+      "seconds": 0.0006702076643705368
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df171",
+      "b": "0x1e987a",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 19920,
+      "seconds": 0.007476582657545805
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df171",
+      "b": "0x1f9a62",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 17184,
+      "seconds": 0.006742333061993122
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df171",
+      "b": "0x1f9a78",
+      "context": {
+        "path": [
+          9,
+          10
+        ],
+        "response": 31,
+        "start_column": 8,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 20171,
+      "seconds": 0.007346125319600105
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xe9822",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 329,
+      "seconds": 0.00012066680938005447
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xe9838",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 374,
+      "seconds": 0.00013520894572138786
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xe98a2",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 739,
+      "seconds": 0.00026862509548664093
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xe98b8",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 844,
+      "seconds": 0.0003036246635019779
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xeb822",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 685,
+      "seconds": 0.00028179166838526726
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xeb838",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 752,
+      "seconds": 0.00027024978771805763
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xeb8a2",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1523,
+      "seconds": 0.0005438332445919514
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xeb8b8",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1673,
+      "seconds": 0.0006073750555515289
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xed823",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 513,
+      "seconds": 0.00018391618505120277
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xed838",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 584,
+      "seconds": 0.000208917073905468
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xef823",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1059,
+      "seconds": 0.0003836662508547306
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xef838",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1159,
+      "seconds": 0.00048779137432575226
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xf9a20",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 371,
+      "seconds": 0.0001327083446085453
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xf9aa0",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 835,
+      "seconds": 0.00029624998569488525
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xfba20",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 772,
+      "seconds": 0.0002753329463303089
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xfbaa0",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1719,
+      "seconds": 0.0006587081588804722
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xfda20",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 7
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 605,
+      "seconds": 0.00022008409723639488
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0xffa20",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1231,
+      "seconds": 0.00044670794159173965
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0x1e9862",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 858,
+      "seconds": 0.0003158329054713249
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0x1e9878",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 1024,
+      "seconds": 0.00036962516605854034
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0x1e98e2",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 16539,
+      "seconds": 0.00616787513718009
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0x1e98f8",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 19394,
+      "seconds": 0.007575000170618296
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0x1ed863",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 33,
+        "start_column": 8,
+        "left": 2,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 2261,
+      "seconds": 0.0008172919042408466
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0x1ed878",
+      "context": {
+        "path": [
+          33,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 2705,
+      "seconds": 0.0010055000893771648
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0x1f9a60",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 7,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 972,
+      "seconds": 0.0003449171781539917
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0x1f9ae0",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 5,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 16771,
+      "seconds": 0.006191832944750786
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1df1f1",
+      "b": "0x1fda60",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 9,
+        "start_column": 8,
+        "left": 2,
+        "right": 2
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 2643,
+      "seconds": 0.0009732921607792377
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1fae7e",
+      "b": "0x7871c",
+      "context": {
+        "path": [
+          11,
+          10
+        ],
+        "response": 39,
+        "start_column": 11,
+        "left": 4,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 458,
+      "seconds": 0.00016904063522815704
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f7",
+      "b": "0x7831e",
+      "context": {
+        "path": [],
+        "response": 36,
+        "start_column": 8,
+        "left": 7,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 383,
+      "seconds": 0.00014283275231719017
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "a": "0x1de1f7",
+      "b": "0x7839e",
+      "context": {
+        "path": [],
+        "response": 36,
+        "start_column": 8,
+        "left": 5,
+        "right": 5
+      },
+      "hits": 2,
+      "status": "winning",
+      "states": 782,
+      "seconds": 0.0003327918238937855
+    }
+  ],
+  "added": [
+    "certificates/mined_e442171dbe9cf838daeb.json.gz"
+  ],
+  "limits": {
+    "seconds": 35,
+    "max_candidates": 256,
+    "max_tile_cells": 21,
+    "tile_seconds": 0.6,
+    "max_states": 150000
+  }
+}

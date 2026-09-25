@@ -1,0 +1,6 @@
+LAUNCH: pid 24267 started Wed Sep 23 15:58:19 2026 cap 10800s cmd /tmp/ground_truth/colout4 -S 14 -t 22 -T 23 -j 4
+  DX_8 t=-1/8 R nodes=3945461525+6580528525 1462.0s
+  DX_8 t=-1 L nodes=13580172+212670 1465.0s
+  DX_8 t=-1/2 L nodes=131172103+6897915 1529.6s
+  DX_8 t=-1/4 P nodes=39+11210964 1534.9s
+LAUNCH: exit status 0 after 1538 s

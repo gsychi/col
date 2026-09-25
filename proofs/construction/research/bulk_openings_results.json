@@ -1,0 +1,410 @@
+[
+  {
+    "white": 2023,
+    "add": "1/4",
+    "options": [
+      {
+        "cell": 0,
+        "row": 0,
+        "col": 0,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 1,
+        "row": 0,
+        "col": 1,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 2,
+        "row": 0,
+        "col": 2,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 3,
+        "row": 0,
+        "col": 3,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 4,
+        "row": 1,
+        "col": 0,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 5,
+        "row": 1,
+        "col": 1,
+        "blue_next_wins": false,
+        "white_next_wins": false,
+        "class": "P"
+      },
+      {
+        "cell": 6,
+        "row": 1,
+        "col": 2,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 7,
+        "row": 1,
+        "col": 3,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 8,
+        "row": 2,
+        "col": 0,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 9,
+        "row": 2,
+        "col": 1,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 10,
+        "row": 2,
+        "col": 2,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 11,
+        "row": 2,
+        "col": 3,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      }
+    ]
+  },
+  {
+    "white": 1959,
+    "add": "1/4",
+    "options": [
+      {
+        "cell": 0,
+        "row": 0,
+        "col": 0,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 1,
+        "row": 0,
+        "col": 1,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 2,
+        "row": 0,
+        "col": 2,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 3,
+        "row": 0,
+        "col": 3,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 4,
+        "row": 1,
+        "col": 0,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 5,
+        "row": 1,
+        "col": 1,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 6,
+        "row": 1,
+        "col": 2,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 7,
+        "row": 1,
+        "col": 3,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 8,
+        "row": 2,
+        "col": 0,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 9,
+        "row": 2,
+        "col": 1,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 10,
+        "row": 2,
+        "col": 2,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 11,
+        "row": 2,
+        "col": 3,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      }
+    ]
+  },
+  {
+    "white": 3710,
+    "add": "1/4",
+    "options": [
+      {
+        "cell": 0,
+        "row": 0,
+        "col": 0,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 1,
+        "row": 0,
+        "col": 1,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 2,
+        "row": 0,
+        "col": 2,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 3,
+        "row": 0,
+        "col": 3,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 4,
+        "row": 1,
+        "col": 0,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 5,
+        "row": 1,
+        "col": 1,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 6,
+        "row": 1,
+        "col": 2,
+        "blue_next_wins": false,
+        "white_next_wins": false,
+        "class": "P"
+      },
+      {
+        "cell": 7,
+        "row": 1,
+        "col": 3,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 8,
+        "row": 2,
+        "col": 0,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 9,
+        "row": 2,
+        "col": 1,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      },
+      {
+        "cell": 10,
+        "row": 2,
+        "col": 2,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 11,
+        "row": 2,
+        "col": 3,
+        "blue_next_wins": true,
+        "white_next_wins": false,
+        "class": "L"
+      }
+    ]
+  },
+  {
+    "white": 3951,
+    "add": "1/4",
+    "options": [
+      {
+        "cell": 0,
+        "row": 0,
+        "col": 0,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 1,
+        "row": 0,
+        "col": 1,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 2,
+        "row": 0,
+        "col": 2,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 3,
+        "row": 0,
+        "col": 3,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 4,
+        "row": 1,
+        "col": 0,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 5,
+        "row": 1,
+        "col": 1,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 6,
+        "row": 1,
+        "col": 2,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 7,
+        "row": 1,
+        "col": 3,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 8,
+        "row": 2,
+        "col": 0,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 9,
+        "row": 2,
+        "col": 1,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 10,
+        "row": 2,
+        "col": 2,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      },
+      {
+        "cell": 11,
+        "row": 2,
+        "col": 3,
+        "blue_next_wins": false,
+        "white_next_wins": true,
+        "class": "R"
+      }
+    ]
+  }
+]

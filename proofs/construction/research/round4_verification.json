@@ -1,0 +1,813 @@
+{
+  "checked_at_utc": "2026-09-23T04:05:26.093616+00:00",
+  "status": "passed",
+  "scope": "Finite certificates and exact game-order checks. Unbounded claims additionally require the written symbolic arguments. Discovery outputs are hashed for provenance, not independently certified.",
+  "counts": {
+    "replayed_dags": 99,
+    "new_dags": 98,
+    "reused_dags": 1,
+    "checkpoints": 529093,
+    "response_edges": 3672781
+  },
+  "certificates": [
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s0_side_lower.json.gz",
+      "checkpoints": 563,
+      "edges": 2117,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s1_side_lower.json.gz",
+      "checkpoints": 385,
+      "edges": 1324,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s2_side_lower.json.gz",
+      "checkpoints": 345,
+      "edges": 1283,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s3_side_lower.json.gz",
+      "checkpoints": 300,
+      "edges": 974,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s8_side_lower.json.gz",
+      "checkpoints": 350,
+      "edges": 1259,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s9_side_lower.json.gz",
+      "checkpoints": 293,
+      "edges": 999,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s10_side_lower.json.gz",
+      "checkpoints": 371,
+      "edges": 1311,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s11_side_lower.json.gz",
+      "checkpoints": 318,
+      "edges": 1049,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s16_side_lower.json.gz",
+      "checkpoints": 415,
+      "edges": 1439,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s17_side_lower.json.gz",
+      "checkpoints": 252,
+      "edges": 818,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s17_side_upper.json.gz",
+      "checkpoints": 505,
+      "edges": 1992,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s18_side_lower.json.gz",
+      "checkpoints": 317,
+      "edges": 1067,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s19_side_lower.json.gz",
+      "checkpoints": 202,
+      "edges": 618,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s24_side_lower.json.gz",
+      "checkpoints": 283,
+      "edges": 924,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s25_side_lower.json.gz",
+      "checkpoints": 174,
+      "edges": 547,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s26_side_lower.json.gz",
+      "checkpoints": 420,
+      "edges": 1307,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/s27_side_lower.json.gz",
+      "checkpoints": 211,
+      "edges": 599,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/cap2_X_upper.json.gz",
+      "checkpoints": 13,
+      "edges": 23,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/cap2_X_lower.json.gz",
+      "checkpoints": 11,
+      "edges": 16,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/cap3_D_upper.json.gz",
+      "checkpoints": 215,
+      "edges": 732,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/cap3_D_lower.json.gz",
+      "checkpoints": 146,
+      "edges": 509,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/cap4_X_upper.json.gz",
+      "checkpoints": 1582,
+      "edges": 6107,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_dx_certificates/cap4_X_lower.json.gz",
+      "checkpoints": 1796,
+      "edges": 6673,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t1_r0.json.gz",
+      "checkpoints": 22,
+      "edges": 44,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t1_r2.json.gz",
+      "checkpoints": 19,
+      "edges": 41,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t3_r0.json.gz",
+      "checkpoints": 19,
+      "edges": 40,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t3_r1.json.gz",
+      "checkpoints": 16,
+      "edges": 30,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t3_r2.json.gz",
+      "checkpoints": 19,
+      "edges": 41,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d2_p1_t2_r0.json.gz",
+      "checkpoints": 22,
+      "edges": 44,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d2_p1_t2_r1.json.gz",
+      "checkpoints": 17,
+      "edges": 36,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d2_p1_t2_r2.json.gz",
+      "checkpoints": 19,
+      "edges": 41,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p0_t2_r0.json.gz",
+      "checkpoints": 96,
+      "edges": 278,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p0_t2_r1.json.gz",
+      "checkpoints": 216,
+      "edges": 779,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t1_r0.json.gz",
+      "checkpoints": 95,
+      "edges": 247,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t1_r1.json.gz",
+      "checkpoints": 216,
+      "edges": 779,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t1_r2.json.gz",
+      "checkpoints": 48,
+      "edges": 129,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t3_r0.json.gz",
+      "checkpoints": 111,
+      "edges": 325,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t3_r1.json.gz",
+      "checkpoints": 201,
+      "edges": 713,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t3_r2.json.gz",
+      "checkpoints": 44,
+      "edges": 117,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p2_t2_r0.json.gz",
+      "checkpoints": 124,
+      "edges": 366,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p2_t2_r1.json.gz",
+      "checkpoints": 216,
+      "edges": 779,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d3_p2_t2_r2.json.gz",
+      "checkpoints": 48,
+      "edges": 150,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t1_r0.json.gz",
+      "checkpoints": 1205,
+      "edges": 5149,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t1_r2.json.gz",
+      "checkpoints": 1017,
+      "edges": 4383,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t3_r0.json.gz",
+      "checkpoints": 982,
+      "edges": 4348,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t3_r1.json.gz",
+      "checkpoints": 1023,
+      "edges": 4275,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t3_r2.json.gz",
+      "checkpoints": 1026,
+      "edges": 4474,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p1_t2_r0.json.gz",
+      "checkpoints": 1084,
+      "edges": 4721,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p1_t2_r1.json.gz",
+      "checkpoints": 1121,
+      "edges": 4610,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p1_t2_r2.json.gz",
+      "checkpoints": 1025,
+      "edges": 4466,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t1_r0.json.gz",
+      "checkpoints": 1108,
+      "edges": 4798,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t1_r1.json.gz",
+      "checkpoints": 1125,
+      "edges": 4601,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t1_r2.json.gz",
+      "checkpoints": 931,
+      "edges": 3996,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t3_r0.json.gz",
+      "checkpoints": 990,
+      "edges": 4414,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t3_r1.json.gz",
+      "checkpoints": 1179,
+      "edges": 4996,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t3_r2.json.gz",
+      "checkpoints": 880,
+      "edges": 3894,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p3_t2_r0.json.gz",
+      "checkpoints": 1242,
+      "edges": 5381,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p3_t2_r1.json.gz",
+      "checkpoints": 1341,
+      "edges": 5682,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/dend_d4_p3_t2_r2.json.gz",
+      "checkpoints": 1025,
+      "edges": 4466,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r0.json.gz",
+      "checkpoints": 22,
+      "edges": 44,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r1.json.gz",
+      "checkpoints": 14,
+      "edges": 29,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r2.json.gz",
+      "checkpoints": 19,
+      "edges": 40,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r3.json.gz",
+      "checkpoints": 15,
+      "edges": 32,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r4.json.gz",
+      "checkpoints": 18,
+      "edges": 35,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r0.json.gz",
+      "checkpoints": 94,
+      "edges": 262,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r1.json.gz",
+      "checkpoints": 216,
+      "edges": 764,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r2.json.gz",
+      "checkpoints": 45,
+      "edges": 133,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r3.json.gz",
+      "checkpoints": 170,
+      "edges": 592,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r4.json.gz",
+      "checkpoints": 85,
+      "edges": 259,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r0.json.gz",
+      "checkpoints": 12,
+      "edges": 18,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r1.json.gz",
+      "checkpoints": 17,
+      "edges": 36,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r2.json.gz",
+      "checkpoints": 14,
+      "edges": 21,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r3.json.gz",
+      "checkpoints": 13,
+      "edges": 23,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r4.json.gz",
+      "checkpoints": 12,
+      "edges": 19,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r0.json.gz",
+      "checkpoints": 85,
+      "edges": 227,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r1.json.gz",
+      "checkpoints": 167,
+      "edges": 507,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r2.json.gz",
+      "checkpoints": 36,
+      "edges": 94,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r3.json.gz",
+      "checkpoints": 130,
+      "edges": 380,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r4.json.gz",
+      "checkpoints": 62,
+      "edges": 170,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/xsame_x2_p0_t2_r0.json.gz",
+      "checkpoints": 14,
+      "edges": 31,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/xsame_x2_p0_t2_r1.json.gz",
+      "checkpoints": 19,
+      "edges": 44,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/reply_u3_p1_t1_r2.json.gz",
+      "checkpoints": 32,
+      "edges": 77,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/reply_j3_p1_t1_r0.json.gz",
+      "checkpoints": 86,
+      "edges": 272,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_wf_certificates/reply_r2_p1_t1_r2.json.gz",
+      "checkpoints": 3,
+      "edges": 3,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_pair_base_certificates/rx3_ordinary_upper.json.gz",
+      "checkpoints": 342,
+      "edges": 1174,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_pair_base_certificates/rx3_starred_upper.json.gz",
+      "checkpoints": 631,
+      "edges": 2239,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_pair_base_certificates/vx3_ordinary_upper.json.gz",
+      "checkpoints": 317,
+      "edges": 1186,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_pair_base_certificates/vx3_starred_upper.json.gz",
+      "checkpoints": 589,
+      "edges": 2262,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_pair_base_certificates/xx3_ordinary_upper.json.gz",
+      "checkpoints": 214,
+      "edges": 790,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_pair_base_certificates/xx3_starred_upper.json.gz",
+      "checkpoints": 456,
+      "edges": 1710,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_bridge_certificates/center3_blue.json.gz",
+      "checkpoints": 103,
+      "edges": 317,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_bridge_certificates/center3_white2_child_blue.json.gz",
+      "checkpoints": 102,
+      "edges": 306,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_bridge_certificates/center5_w0_blue.json.gz",
+      "checkpoints": 4606,
+      "edges": 21375,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_bridge_certificates/center5_w0_white.json.gz",
+      "checkpoints": 17800,
+      "edges": 87305,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_bridge_certificates/center5_w1_blue0_child_white.json.gz",
+      "checkpoints": 9727,
+      "edges": 49418,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_bridge_certificates/center5_w6_blue0_child_white.json.gz",
+      "checkpoints": 2210,
+      "edges": 8936,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_bridge_certificates/center5_w7_blue0_child_white.json.gz",
+      "checkpoints": 8952,
+      "edges": 45539,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round4_bridge_certificates/center7_blue.json.gz",
+      "checkpoints": 447623,
+      "edges": 3306842,
+      "reused": false
+    },
+    {
+      "path": "proofs/construction/research/round3_corner_certificates/ordinary5_center_bad_reply.json.gz",
+      "checkpoints": 4682,
+      "edges": 21950,
+      "reused": true
+    }
+  ],
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "proofs/construction/research/round4_dx_check.py"
+      ],
+      "returncode": 0,
+      "stdout": "Verified 23 bound DAGs: 9467 checkpoints, 33687 response edges.\nChecked 16 exhaustive support bounds, three exact cap identities, 117 embeddings (regression).\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "proofs/construction/research/round4_wf_check.py"
+      ],
+      "returncode": 0,
+      "stdout": "VERIFIED dend_d2_p0_t1_r0 22 44\nVERIFIED dend_d2_p0_t1_r2 19 41\nVERIFIED dend_d2_p0_t3_r0 19 40\nVERIFIED dend_d2_p0_t3_r1 16 30\nVERIFIED dend_d2_p0_t3_r2 19 41\nVERIFIED dend_d2_p1_t2_r0 22 44\nVERIFIED dend_d2_p1_t2_r1 17 36\nVERIFIED dend_d2_p1_t2_r2 19 41\nVERIFIED dend_d3_p0_t2_r0 96 278\nVERIFIED dend_d3_p0_t2_r1 216 779\nVERIFIED dend_d3_p1_t1_r0 95 247\nVERIFIED dend_d3_p1_t1_r1 216 779\nVERIFIED dend_d3_p1_t1_r2 48 129\nVERIFIED dend_d3_p1_t3_r0 111 325\nVERIFIED dend_d3_p1_t3_r1 201 713\nVERIFIED dend_d3_p1_t3_r2 44 117\nVERIFIED dend_d3_p2_t2_r0 124 366\nVERIFIED dend_d3_p2_t2_r1 216 779\nVERIFIED dend_d3_p2_t2_r2 48 150\nVERIFIED dend_d4_p0_t1_r0 1205 5149\nVERIFIED dend_d4_p0_t1_r2 1017 4383\nVERIFIED dend_d4_p0_t3_r0 982 4348\nVERIFIED dend_d4_p0_t3_r1 1023 4275\nVERIFIED dend_d4_p0_t3_r2 1026 4474\nVERIFIED dend_d4_p1_t2_r0 1084 4721\nVERIFIED dend_d4_p1_t2_r1 1121 4610\nVERIFIED dend_d4_p1_t2_r2 1025 4466\nVERIFIED dend_d4_p2_t1_r0 1108 4798\nVERIFIED dend_d4_p2_t1_r1 1125 4601\nVERIFIED dend_d4_p2_t1_r2 931 3996\nVERIFIED dend_d4_p2_t3_r0 990 4414\nVERIFIED dend_d4_p2_t3_r1 1179 4996\nVERIFIED dend_d4_p2_t3_r2 880 3894\nVERIFIED dend_d4_p3_t2_r0 1242 5381\nVERIFIED dend_d4_p3_t2_r1 1341 5682\nVERIFIED dend_d4_p3_t2_r2 1025 4466\nVERIFIED endmark_u2_p1_t2_r0 22 44\nVERIFIED endmark_u2_p1_t2_r1 14 29\nVERIFIED endmark_u2_p1_t2_r2 19 40\nVERIFIED endmark_u2_p1_t2_r3 15 32\nVERIFIED endmark_u2_p1_t2_r4 18 35\nVERIFIED endmark_u3_p2_t2_r0 94 262\nVERIFIED endmark_u3_p2_t2_r1 216 764\nVERIFIED endmark_u3_p2_t2_r2 45 133\nVERIFIED endmark_u3_p2_t2_r3 170 592\nVERIFIED endmark_u3_p2_t2_r4 85 259\nVERIFIED endmark_j2_p1_t2_r0 12 18\nVERIFIED endmark_j2_p1_t2_r1 17 36\nVERIFIED endmark_j2_p1_t2_r2 14 21\nVERIFIED endmark_j2_p1_t2_r3 13 23\nVERIFIED endmark_j2_p1_t2_r4 12 19\nVERIFIED endmark_j3_p2_t2_r0 85 227\nVERIFIED endmark_j3_p2_t2_r1 167 507\nVERIFIED endmark_j3_p2_t2_r2 36 94\nVERIFIED endmark_j3_p2_t2_r3 130 380\nVERIFIED endmark_j3_p2_t2_r4 62 170\nVERIFIED xsame_x2_p0_t2_r0 14 31\nVERIFIED xsame_x2_p0_t2_r1 19 44\nVERIFIED reply_u3_p1_t1_r2 32 77\nVERIFIED reply_j3_p1_t1_r0 86 272\nVERIFIED reply_r2_p1_t1_r2 3 3\nVERIFIED 61 certificates, 21272 checkpoints, 87745 response edges\nREGRESSION: 627 reachable cap embeddings, all decreasing width\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "proofs/construction/research/round4_pair_bases_check.py"
+      ],
+      "returncode": 0,
+      "stdout": "Verified 6 paired-base DAGs: 2549 checkpoints, 9361 response edges.\nProved T1(RX3), T2(VX3), T1(XX3), including each starred inequality directly.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "proofs/construction/research/round4_bridge_check.py"
+      ],
+      "returncode": 0,
+      "stdout": "VERIFIED 8 alternating-path sign regressions and all 16 tile masks\nREGRESSION: 3260 staircase partitions, seam supports, and symbolic count cases\nVERIFIED 304 empty-3-row/2-row-cap attempts are not nonpositive (widths 3,5,7,9)\nREGRESSION: 2550 corner-cap lower-bound interval counts equal one\nVERIFIED only corners win against center Blue on 5x5: 47977 DAG checkpoints, 234523 edges\nVERIFIED M_3<0: 205 checkpoints, 623 edges\nVERIFIED M_7<=0: 447623 checkpoints, 3306842 edges\nVERIFIED manifest new: {'certificates': 8, 'checkpoints': 491123, 'edges': 3520038}\nVERIFIED manifest reused: {'certificates': 1, 'checkpoints': 4682, 'edges': 21950}\nVERIFIED manifest total: {'certificates': 9, 'checkpoints': 495805, 'edges': 3541988}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "proofs/construction/research/round4_star_bounds_check.py"
+      ],
+      "returncode": 0,
+      "stdout": "VERIFIED 39615 finite exact-order applications and eighteen conditional endpoint clauses.\nREJECTED unsafe strict-plus-star inference; White-first witness remains explicit.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "proofs/construction/research/round4_graph_shortcuts_check.py"
+      ],
+      "returncode": 0,
+      "stdout": "VERIFIED perfect-matching tree = star; 173 permission states\nVERIFIED even bipartite graph with a Hamiltonian path = star; 3774 permission states\nVERIFIED clipped 3x5 grid = star; 8267 permission states\nVERIFIED both fixed paths = zero and all stated graph properties\n",
+      "stderr": ""
+    }
+  ],
+  "sha256": {
+    "proofs/construction/README.md": "3dc8cdde2cf989806ccc0bf9547cf5aa6b9cdf35abed39a43c5d6c64ddb46ea1",
+    "proofs/construction/research/col_research_handoff.md": "0c22a54a9e28d377e4056a1630809f689cbf7e82ee4f58a65470c7b12201d813",
+    "proofs/construction/research/dd_reduction_check.py": "4b68f22f2ee5b0c2291c0fb621fac5dd95234b2300b6aa4d234ff9320d2ef17b",
+    "proofs/construction/research/dx_interface_contracts.py": "7b56b97066c272ab619a0819ec45abcd7e51866c7dd440a0722a01de716d4b3c",
+    "proofs/construction/research/dx_verify_interface_contracts.py": "0b0a6a29ed9b2a684a2a780cab315ed73d89e92312b6be2264d53a6c94542b81",
+    "proofs/construction/research/five_row_certificate_provenance.md": "996718f094d01e85e26d7bd44e68463a4880965d5aa69afdc1d8f190027ac2ae",
+    "proofs/construction/research/number_certificates.py": "f1c566f6bb244add502f10b29fd1ffe3c986f84a6d5d25ca4cfb6083ec35b4d5",
+    "proofs/construction/research/round2_dx_local_search.py": "c3035baddca9ce446aebe88ef5c5e02eb9f4e13e637f32df07a43e9a405fccfc",
+    "proofs/construction/research/round2_height_applications_check.py": "c4119219397fccdad8d91bfac582ef44a9b994c8d74b7e3051dce4f05af7264a",
+    "proofs/construction/research/round2_height_twin_check.py": "771fd0acc89147f7626b9a171b9bba04b93ec732a304b80c109a891ed6dbc216",
+    "proofs/construction/research/round2_wf_caps.py": "3e921e8abbc1bdf962eb9da3c60735433e2e2ae24b15b5c015ac739f8e6b0c93",
+    "proofs/construction/research/round2_wf_check.py": "6da6fdc1e78a15b1dacd7c5ec7318cb62986e010733c4cb12f9eb6ac0624ed3f",
+    "proofs/construction/research/round3_corner_certificates/ordinary5_center_bad_reply.json.gz": "815906175cf8155b3db8dc5de2ea0086f4bb082759fd4e01f71b4397f970cc93",
+    "proofs/construction/research/round4_bridge_certificates/center3_blue.json.gz": "7a0bcca3d000ecfb79a3e5a9cc2e54692ec32ae55549dda5872ee177a356c777",
+    "proofs/construction/research/round4_bridge_certificates/center3_white2_child_blue.json.gz": "ae804977a5cb82cdd94b40b44f0c07e5d3f01e758824253ab60f76ebcab47e91",
+    "proofs/construction/research/round4_bridge_certificates/center5_w0_blue.json.gz": "35af17def8080ea7f8a518817653f62626441caff96bac86cacb1bb0c931b477",
+    "proofs/construction/research/round4_bridge_certificates/center5_w0_white.json.gz": "b8b29152c2d9b93eeee3d8db09196122574314d4179f13ef798e8a8386eae23d",
+    "proofs/construction/research/round4_bridge_certificates/center5_w1_blue0_child_white.json.gz": "18403e43c4c47724df952189794e44a5e37ec3dd8bd96dc0fb406abff2344d4e",
+    "proofs/construction/research/round4_bridge_certificates/center5_w6_blue0_child_white.json.gz": "7e25bd65fefd84de9bdfe77be9564997edfc60dbd6effddd0e31d3eb40805832",
+    "proofs/construction/research/round4_bridge_certificates/center5_w7_blue0_child_white.json.gz": "b5cb0465970e40b17ebb749a47ffdfaa8d4684aa487944e5d25d58886bdcf7c1",
+    "proofs/construction/research/round4_bridge_certificates/center7_blue.json.gz": "180db25fc7fb53b6187cfba13ebe0d37b857397c294fb0b2219487bb004ed795",
+    "proofs/construction/research/round4_bridge_certificates/manifest.json": "4bc043d24127fe57c4213e89d8fd8b2d8e28676492918ab93d1f8bfd360df760",
+    "proofs/construction/research/round4_bridge_check.py": "e00efa42709376937c95e704ef23b6b9a5fc4181ef4b486c15028b344ffd214f",
+    "proofs/construction/research/round4_bridge_export.cpp": "00a816e49f3c72f3b36c3a01e565d99317ab6c73808cc9375d939273fe11c338",
+    "proofs/construction/research/round4_bridge_ideas.md": "cb57c046e3b7c8c21faf20955c905021809f14db2d03b1de8aca7c281b362fdc",
+    "proofs/construction/research/round4_bridge_probe.cpp": "21cc8acc56872a3adadbeff49e9402eb5d5e61e330b76dfbb3f633b1c397ccd4",
+    "proofs/construction/research/round4_bridge_probe_results.json": "44fefbf9222e6354148e473be0053a931e864c086864f9a0348fe118f2f9cdb9",
+    "proofs/construction/research/round4_dx_certificates/cap2_X_lower.json.gz": "dfd6c35c1e1adad28378cb8ca03a7c90f26fbb36209aae40aa172844a6bf77ff",
+    "proofs/construction/research/round4_dx_certificates/cap2_X_upper.json.gz": "d7110abdb832d9b3f1aed02e97b5e329cdf07b6c713dcdc868bc3bb357b0e7c0",
+    "proofs/construction/research/round4_dx_certificates/cap3_D_lower.json.gz": "b2da5deeb8340aac6da007dc7a0ac61050af079eecd75c1bf252350b66e5b5dc",
+    "proofs/construction/research/round4_dx_certificates/cap3_D_upper.json.gz": "a624ec01e88f2b306bf08ee76c4dc0b40cbad2c161ad5239aacabfb1f4c51a77",
+    "proofs/construction/research/round4_dx_certificates/cap4_X_lower.json.gz": "8fad22b430072b0f77aeaf09e4fa70036f8bbdd1d2a2bc9a80c5468867d2b3e7",
+    "proofs/construction/research/round4_dx_certificates/cap4_X_upper.json.gz": "4d4c193d77198867652ee3c22df782ca8889dc69c7a6c8dd1f6aaf3c2b2748af",
+    "proofs/construction/research/round4_dx_certificates/manifest.json": "5e911ad1400168962fb6c5b1468a9c26326aa0bdcdc00d179db76619e1c5ebf7",
+    "proofs/construction/research/round4_dx_certificates/s0_side_lower.json.gz": "eb5aebe7c60f9d2ec95ae2ba8bd8e6aa65f669ef7e5e99d846405554683154a7",
+    "proofs/construction/research/round4_dx_certificates/s10_side_lower.json.gz": "546be066d805a46756313502bef38067f894329e9a26f7527e72cfdfca2e8807",
+    "proofs/construction/research/round4_dx_certificates/s11_side_lower.json.gz": "5f23ab9b334135c3ae4d224ff4e9f2fb0fea015e464a93bced7a551c54b803c9",
+    "proofs/construction/research/round4_dx_certificates/s16_side_lower.json.gz": "6287f4dd3dcdede7cff179eb81c6196fa8386cc53afcbbf580fc0baae857c111",
+    "proofs/construction/research/round4_dx_certificates/s17_side_lower.json.gz": "6208ada15366a9bdd3f1a9d0e193a1bd29ba17b1ec35c16ce0c62b69d53ab45e",
+    "proofs/construction/research/round4_dx_certificates/s17_side_upper.json.gz": "de48e1e087e4d68abda1d471b18d8feed642dbd8c7d5c71c8664586db5c21168",
+    "proofs/construction/research/round4_dx_certificates/s18_side_lower.json.gz": "258d8389feeed7fcdfb2d132d429a4a940fff9d39315f70374443e98aae100d9",
+    "proofs/construction/research/round4_dx_certificates/s19_side_lower.json.gz": "7f2f7b4da6c151401921aec763fead95f6e1bda195cc8b787782d4c5f8df31a5",
+    "proofs/construction/research/round4_dx_certificates/s1_side_lower.json.gz": "490c3df8b8dd1e89466b6739a9e108f166531533f10b927d58b5f2c98210cba4",
+    "proofs/construction/research/round4_dx_certificates/s24_side_lower.json.gz": "6e19bfbcdc3699a2e95f9ed952576897ee35d92acfd4cf575cc016477cd45511",
+    "proofs/construction/research/round4_dx_certificates/s25_side_lower.json.gz": "2e6b937e70a8651e5f0f449210f330b724fc82a010602fc3545fdad91f998993",
+    "proofs/construction/research/round4_dx_certificates/s26_side_lower.json.gz": "b51cc6f150e5ee3a2b33c09d5e3194af726168cecf0ae74d8477229efb7f7d09",
+    "proofs/construction/research/round4_dx_certificates/s27_side_lower.json.gz": "04d7fa179b0b44b0e774714228b1860b297b1da4ee9a858a980373d741a135d1",
+    "proofs/construction/research/round4_dx_certificates/s2_side_lower.json.gz": "71df1e22447f9ffbb338e87dd9a7a787c66280217f9e973f473409ce6ea38040",
+    "proofs/construction/research/round4_dx_certificates/s3_side_lower.json.gz": "7282da362d7d3e0774fc74b7e3835ec420c513fc99a78bae65e5faa8b016731a",
+    "proofs/construction/research/round4_dx_certificates/s8_side_lower.json.gz": "bb637ece5b9907a2684e70f049a63ae1f9f9f0136ca3450eee7b413c54b1fa2b",
+    "proofs/construction/research/round4_dx_certificates/s9_side_lower.json.gz": "24a1e02233893f9b4528cd0f67672acec5c8ea27c605f42a4281d1aa12380dce",
+    "proofs/construction/research/round4_dx_check.py": "38ab3849b9916ef3cbfc59f1eb2319153bf3f561aa877c9f83175ff1c871b915",
+    "proofs/construction/research/round4_dx_pair_algebra.json": "1d416de2848e319db2eefb1929454bdc597abba8ab4f92c5275af8a280a28791",
+    "proofs/construction/research/round4_dx_pair_algebra.py": "e243a885909782da10b0daaaddba972117f6bd9724e8271cd445070b29ed36ac",
+    "proofs/construction/research/round4_dx_progress.md": "570626abe78dc022af06defe86e17d8c62797197757c15070e9208ea5ddecaae",
+    "proofs/construction/research/round4_dx_targets.json": "dd3d666f985817d3ea626a81ad8ff85c925dfec857dd3b8f22f2b4d24220c272",
+    "proofs/construction/research/round4_dx_targets.py": "bba802c6e18e40f8439880880330506e985d42eceb5832013af02a504e62547d",
+    "proofs/construction/research/round4_graph_shortcuts.md": "0c599581a32f98b1c0a8c2c877d868ae6bb9ec70bf9b41b610e5122559096e89",
+    "proofs/construction/research/round4_graph_shortcuts_check.py": "4d4ede7c8025c880bb34851ef41210639bbbd4fe2b7e9a32766a3d9593567acc",
+    "proofs/construction/research/round4_pair_base_certificates/manifest.json": "cbcb54c54f6e823b6f25141f41fef83a39e1e2318a34fad65555ed6135bf2a12",
+    "proofs/construction/research/round4_pair_base_certificates/rx3_ordinary_upper.json.gz": "b3634ef0d3ce27eadbd35ce252bd443cecd519307adf486f66d13586cda42df7",
+    "proofs/construction/research/round4_pair_base_certificates/rx3_starred_upper.json.gz": "7fbe62673513a5746691585cdde79633097834f05d32cde17de008cc537070df",
+    "proofs/construction/research/round4_pair_base_certificates/vx3_ordinary_upper.json.gz": "96d758cf45dd92fe96956a2dd21befa387690ae3ee3fb5a6779880d955168a4d",
+    "proofs/construction/research/round4_pair_base_certificates/vx3_starred_upper.json.gz": "48f2d8d34714bd575ded6f95fda42c0c2cbbd4ecd0e644ec6ad79fb1a4d16f1c",
+    "proofs/construction/research/round4_pair_base_certificates/xx3_ordinary_upper.json.gz": "8a7cdb3b0a1e8630290071e58fa94ad43eac01e80e263e80f756a8d1f77fa074",
+    "proofs/construction/research/round4_pair_base_certificates/xx3_starred_upper.json.gz": "593df2fc7e8471f9fc78867cf4750aa24162116968121cdba503432472771744",
+    "proofs/construction/research/round4_pair_bases.md": "efe73650a34d0151f7c8ff4646fcfa2a2f100726e55f3411222c4fed12810f11",
+    "proofs/construction/research/round4_pair_bases_check.py": "b2eebd61adc6512052c0704cfb8fa4389c6564536e04ffa65361fcc92b18acf8",
+    "proofs/construction/research/round4_research_progress.md": "bad41a17866010fb50efeccb4057d5b121976ada45ee8f093c1ad0b70dc57282",
+    "proofs/construction/research/round4_star_bound_ledger.json": "64e565cc9521ad4268844cc548b51eee82e7bd0644118b311b98557ad2ff05bf",
+    "proofs/construction/research/round4_star_bounds.md": "da870e2860a3690cbb6635430e95d14b89a30e140db6d53c82b46c73911bbeab",
+    "proofs/construction/research/round4_star_bounds_check.py": "57e62341729f29f35b156c66de56c9ae7302f6184e486657a9dd24ff0420c9e2",
+    "proofs/construction/research/round4_verify.py": "795404a8e2b9f74c6a86217f5db68e77ee2aa1ff58e66aa43e2b043e9a772906",
+    "proofs/construction/research/round4_wf_caps_probe.json": "47b8705724dbff16111f75ba6d167b2d3a50b7451d4b0c57296a9970f2cfde93",
+    "proofs/construction/research/round4_wf_caps_probe.py": "26d2eea48e091c29c0391136f7584898397c97c7b4cbbd200dbd6e4e86eb0dbd",
+    "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t1_r0.json.gz": "ba68a6db6e3e329f6ba4a25e06d27da7d9b9eae6bf7507b4410c8a0c3cb558f4",
+    "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t1_r2.json.gz": "1dae6aab4e377d6b48a852932e21481d9cbe9651625e9b46b97706c3ce2886ba",
+    "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t3_r0.json.gz": "af68dfe502d47ca829aabed42f985511f74cb2ec710d922302b8949f83492505",
+    "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t3_r1.json.gz": "ec2db5bd1ad2207dca72791fca5b0d58aeea25ba02cea638d031eccd3884f7cb",
+    "proofs/construction/research/round4_wf_certificates/dend_d2_p0_t3_r2.json.gz": "d9263dc9a0b76f4bd97ab6aae8e3a78b486d57714228870bbdba38917934c98f",
+    "proofs/construction/research/round4_wf_certificates/dend_d2_p1_t2_r0.json.gz": "cd2c80f86b774e97ff5c0d97202330666b2a402d8dd5f9a7592053473f9b3dc8",
+    "proofs/construction/research/round4_wf_certificates/dend_d2_p1_t2_r1.json.gz": "598e21918b9ad3634e41ae96575d14a9e83c74547ec21cf01931e37187499616",
+    "proofs/construction/research/round4_wf_certificates/dend_d2_p1_t2_r2.json.gz": "7c7f19202c87cf2bbbaecd3fc1d4d8e53b0ad2d925a8259147b8e294c9e874cd",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p0_t2_r0.json.gz": "404edf391e5a661d7f4b82654a4998c06e2dda65d44d11e592f0eba2f0389f3f",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p0_t2_r1.json.gz": "2f02dae424ce7b16768990d24fe50445241a7b7ca5dfe572ad7c97876357c6ad",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t1_r0.json.gz": "17ef98cd96431e7f8d92e14d50296d8ed47fea4007f309f7d43c4e5a90d473cc",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t1_r1.json.gz": "2a0b07efc6e16ae8bca8b02405b3454a2b6456e0d3315c2246264b89f4ce79f5",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t1_r2.json.gz": "a24d88b767e2907a8e41bf68e34f4cf1d9636b6fb92bfccec42ee17fbd56977e",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t3_r0.json.gz": "f3bb0ae616c096443dc35ee3604f4c5fc8d59f991a3ec7c24594d7940950908a",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t3_r1.json.gz": "63b64d2f7d4a5b1aec18631d6968a46d155d1d629820f428235959480cd77eb0",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p1_t3_r2.json.gz": "0ba8532fbffc878b21562e51a4ce50540da5a7f64dbd5f1f56b42c43047f7d4c",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p2_t2_r0.json.gz": "a08a8ab604bf0548dd12afc3f3b66f31ce499c854ec0f797e9c381fa4c1d7f28",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p2_t2_r1.json.gz": "1628340ea857bc3faced77be4798a380923adb082abbc746928f26d1a1000dae",
+    "proofs/construction/research/round4_wf_certificates/dend_d3_p2_t2_r2.json.gz": "0ba82237ad902b48a27ee4e31dbf01638d180f78f086f68b5914022f2d341cb7",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t1_r0.json.gz": "6acce81e6acc62ded95f7dc8bfdaea9a03a1b66ed15313872d15ddecc9d84515",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t1_r2.json.gz": "32925eac660a7c95684c3a46726e583e044db0cb7834f924bf96ccb9bdcdceff",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t3_r0.json.gz": "54806c2313778e39952e2e6f956731b170f8134a63557aef772914bf3ae75e05",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t3_r1.json.gz": "0e09c9746d734bf277dcaba745db804a6993ea87680c79b7a57e3906b4c3c8bf",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p0_t3_r2.json.gz": "9d2a71eb8371156ba0aea78f60859322d7e8d0ab29d1d84c08dbbb9466166309",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p1_t2_r0.json.gz": "b38f31489f655daf1cf854e8698019bbda4288fc442f54436babe3b2c3c83784",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p1_t2_r1.json.gz": "b4876cb41ca3d06700c9a5f8664f81235a7a89cbba78a83d704bb6fa3579369e",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p1_t2_r2.json.gz": "b60a6f7b5c1b4ca7da019f376de4a3b5a4b29bf0f563444a620d79274c55271e",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t1_r0.json.gz": "409e3c4ea5dfdefcb8afe154f02c4b51c6cbf4a32a7f938848905e6a128db84c",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t1_r1.json.gz": "5542087375ae69372052c15cc34e3158d05b39a9db4e025529a648399937cde3",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t1_r2.json.gz": "268a4a604304d92a90c71055507c52c920767b698e37c3240ea84637ab842de7",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t3_r0.json.gz": "86a03d5c2da89b7d269aee39ba7fc859906250cc9f882dca6f8efbab1b6783f9",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t3_r1.json.gz": "4e9dbf021d29fd4c0cfddbe0f93c6f8bdb571807a04d22407a8a72c43f5d5660",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p2_t3_r2.json.gz": "dbc23c2879ea5f30c4a26dc4109199b96db562de4fbd4a3e880fa9a71f33a0e8",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p3_t2_r0.json.gz": "30f83fea2703c9223914316ce2a6a76ef7087028425dec7746395db560d280a1",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p3_t2_r1.json.gz": "3b22d7110a15440952856709414086dc877439fcfb2f36ed0248dbb78749a92d",
+    "proofs/construction/research/round4_wf_certificates/dend_d4_p3_t2_r2.json.gz": "a8d710cc7285c6c43d4eda8bfa51a708a1820ad5ca99435dd19c6cd85b7394a0",
+    "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r0.json.gz": "b1a9d5db9577b5a92ea21401a724c5c48009ad5826e039d8a03329c261f79890",
+    "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r1.json.gz": "598e21918b9ad3634e41ae96575d14a9e83c74547ec21cf01931e37187499616",
+    "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r2.json.gz": "d48fadc48fb7e47d71175c7abbd6ca76c1559643cbaf99808fb0efb736e74cf0",
+    "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r3.json.gz": "ad65c73456a94c9d5afbeea299893cd0277952bdc78d56968da2edf53896e04d",
+    "proofs/construction/research/round4_wf_certificates/endmark_j2_p1_t2_r4.json.gz": "b3a48462f267e24273e8e150481fb7eafbccbb524dddef3fc6ec248068428d28",
+    "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r0.json.gz": "f3539afa30fc9572610f70ca066c474bb728af25282a849e6e86143956e1f241",
+    "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r1.json.gz": "0e7d25f7379cf57be6ec8bcda482f58b009bcd1fb893279daa869556086ccc2f",
+    "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r2.json.gz": "effa0de604e036fe3e6036639051cf3186b9fde1c4e0a87ed12e638bfaa5aec1",
+    "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r3.json.gz": "d9259186b4be773f77c389b4000384200d410a5b516ed6ccced9e2a94d3acce0",
+    "proofs/construction/research/round4_wf_certificates/endmark_j3_p2_t2_r4.json.gz": "d8be4d577ad419998b3f403ffad78badc000b1da563b0cad97784d9e2ea027b2",
+    "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r0.json.gz": "cd2c80f86b774e97ff5c0d97202330666b2a402d8dd5f9a7592053473f9b3dc8",
+    "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r1.json.gz": "e6ff5a7f0921daf3c12a220e0e99c06e7547a439a4eb5ee9b457d535618dd59c",
+    "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r2.json.gz": "c84c55330b9a5c715d9d4dcc0f1e7183c78ba4024fc44a962b7b275ef5fcae40",
+    "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r3.json.gz": "cceafe10c2a5804c0a194ab7fddf22eaa9adf8071f7bfa9b69616421404bf21d",
+    "proofs/construction/research/round4_wf_certificates/endmark_u2_p1_t2_r4.json.gz": "93b7512ee893bf83b5fe9e2461fa653ecca6768163d927d2a24a419bbe61e701",
+    "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r0.json.gz": "218ebefdd561c6fb6c2852dd9b94827fa4b4922413acc0a8a45cd9977e8aa3e6",
+    "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r1.json.gz": "2fbabcd4492ae27aec2dd9e80fd23702f4fcad4ec1fb8b5f5e7eb8891400d7b4",
+    "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r2.json.gz": "b348dfb69acf84f05296945dedd07bcb0896c86301e7a31829a2909149405426",
+    "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r3.json.gz": "a3ba0fc166bf69c6dfd4a5dee22b5ef8c15836e6ebef984a960348a31740a1c1",
+    "proofs/construction/research/round4_wf_certificates/endmark_u3_p2_t2_r4.json.gz": "d05b22fccd110d03781b5db30baf61c2ef05df8f062e29c79bede7ff42e50563",
+    "proofs/construction/research/round4_wf_certificates/manifest.json": "8bd842194524ea26b800465fc0ce248f1db1282b619ea88272dfa1f36840e86c",
+    "proofs/construction/research/round4_wf_certificates/reply_j3_p1_t1_r0.json.gz": "a566f18e8c1155a2781a05660ef775fe284180477a5bd3575a0d9fa8debd9605",
+    "proofs/construction/research/round4_wf_certificates/reply_r2_p1_t1_r2.json.gz": "a2c0f8a16fa86bbb1cade1e051ef177cca90fddb21f566342c8d1750b1a1ed8e",
+    "proofs/construction/research/round4_wf_certificates/reply_u3_p1_t1_r2.json.gz": "fe2ccfdb05a3b24a8357eaeeb66c84b34bd42d21b5ba93082b7d816b97462395",
+    "proofs/construction/research/round4_wf_certificates/xsame_x2_p0_t2_r0.json.gz": "1aa78ad71aed37670fc54ddf6fdc62baa57e21281068b5d80e48af3b92bf4514",
+    "proofs/construction/research/round4_wf_certificates/xsame_x2_p0_t2_r1.json.gz": "8706c0ee21867b375217795168f46663c65da6df64a794a3dd7cc400a4f5623c",
+    "proofs/construction/research/round4_wf_check.py": "8a60bf8c40e9ad8088b0d1d99d576a05812c3252fbd621e7dde77d230351e462",
+    "proofs/construction/research/round4_wf_generation.txt": "230a87dca497ee06430e5acd6fe29cc15855eb3372ae65106768ac77665244c3",
+    "proofs/construction/research/round4_wf_near_end_caps.md": "bc42ee03708eba4843f977477b0db6d324ef84069c8264dd4d8395381caac2d5",
+    "proofs/construction/research/round4_wf_scalar_probe.json": "c1cec0aaed946b1ada4bdfda6d5e5ae93d75e3c55d59076b0f24047c38590ca7",
+    "proofs/construction/research/round4_wf_scalar_probe.py": "5b6cb08b9ffeb965c14b7101aab83ff4939f152972f8f9276fa5f49ae3766ad0",
+    "proofs/construction/research/round4_wf_verification.txt": "230a87dca497ee06430e5acd6fe29cc15855eb3372ae65106768ac77665244c3",
+    "proofs/construction/research/wf_white_first_check.py": "a1cfee9da3cbc155369be0e00db278dcec01f83b7240024ad5b58a44e332cfed"
+  },
+  "inherited_mapping_status": "No previously missing mapping is claimed recovered; see five_row_certificate_provenance.md.",
+  "documentation_hash_refreshed_at_utc": "2026-09-23T04:06:20.069740+00:00",
+  "documentation_refresh_reason": "Added explicit odd residual width L>=3 and even L>=2 to the handoff cap summary; code and certificates unchanged after replay."
+}

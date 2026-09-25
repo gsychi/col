@@ -1,0 +1,790 @@
+{
+  "format": "col-one-sided-tiles-v1",
+  "board": {
+    "height": 3,
+    "width": 15
+  },
+  "first_player": "Blue",
+  "second_player": "White",
+  "openings": [
+    {
+      "blue_opening": 0,
+      "white_response": 32,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 3,
+          "certificate": "certificates/tile_8532d5d099db.json.gz"
+        },
+        {
+          "start_column": 3,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35180077088764,
+        32832841709430
+      ]
+    },
+    {
+      "blue_opening": 1,
+      "white_response": 17,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 3,
+          "certificate": "certificates/tile_7f61c9598d5f.json.gz"
+        },
+        {
+          "start_column": 3,
+          "width": 4,
+          "certificate": "certificates/tile_e4d37d528005.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_e4d37d528005.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_2affd31fec9d.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35184371892216,
+        34011774254009
+      ]
+    },
+    {
+      "blue_opening": 2,
+      "white_response": 4,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 7,
+          "certificate": "certificates/tile_2398ea84ec04.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35184371957729,
+        32847873701699
+      ]
+    },
+    {
+      "blue_opening": 3,
+      "white_response": 5,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 7,
+          "certificate": "certificates/tile_bce76b04468d.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_e4d37d528005.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_2affd31fec9d.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35184371826627,
+        34016068631431
+      ]
+    },
+    {
+      "blue_opening": 4,
+      "white_response": 36,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 7,
+          "certificate": "certificates/tile_8b16696647a7.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35115652087751,
+        32744795010927
+      ]
+    },
+    {
+      "blue_opening": 5,
+      "white_response": 19,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 4,
+          "certificate": "certificates/tile_2465591ca5a5.json.gz"
+        },
+        {
+          "start_column": 4,
+          "width": 3,
+          "certificate": "certificates/tile_1644a96c7c55.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35184370515855,
+        32830692521807
+      ]
+    },
+    {
+      "blue_opening": 6,
+      "white_response": 34,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 4,
+          "certificate": "certificates/tile_40d069500f87.json.gz"
+        },
+        {
+          "start_column": 4,
+          "width": 7,
+          "certificate": "certificates/tile_09197aa9813a.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35167190122271,
+        32925185210295
+      ]
+    },
+    {
+      "blue_opening": 7,
+      "white_response": 37,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 4,
+          "certificate": "certificates/tile_2465591ca5a5.json.gz"
+        },
+        {
+          "start_column": 4,
+          "width": 7,
+          "certificate": "certificates/tile_468c39840ab4.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_2affd31fec9d.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35046928940607,
+        33586572688239
+      ]
+    },
+    {
+      "blue_opening": 15,
+      "white_response": 1,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 3,
+          "certificate": "certificates/tile_da4864d83b99.json.gz"
+        },
+        {
+          "start_column": 3,
+          "width": 4,
+          "certificate": "certificates/tile_e4d37d528005.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_e4d37d528005.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_2affd31fec9d.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35183298248700,
+        34011774352312
+      ]
+    },
+    {
+      "blue_opening": 16,
+      "white_response": 2,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 3,
+          "certificate": "certificates/tile_501c8151efe6.json.gz"
+        },
+        {
+          "start_column": 3,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35182224375801,
+        32839284094833
+      ]
+    },
+    {
+      "blue_opening": 17,
+      "white_response": 0,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 3,
+          "certificate": "certificates/tile_e65624aa2731.json.gz"
+        },
+        {
+          "start_column": 3,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35180076924922,
+        32839284127604
+      ]
+    },
+    {
+      "blue_opening": 18,
+      "white_response": 4,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 7,
+          "certificate": "certificates/tile_09fb65f2292a.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35175781236711,
+        32847873439559
+      ]
+    },
+    {
+      "blue_opening": 19,
+      "white_response": 5,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 4,
+          "certificate": "certificates/tile_40d069500f87.json.gz"
+        },
+        {
+          "start_column": 4,
+          "width": 3,
+          "certificate": "certificates/tile_da4864d83b99.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_e4d37d528005.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_2affd31fec9d.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35167190646735,
+        34007478172551
+      ]
+    },
+    {
+      "blue_opening": 20,
+      "white_response": 0,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 7,
+          "certificate": "certificates/tile_55c55441362e.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35150008680414,
+        32847873144700
+      ]
+    },
+    {
+      "blue_opening": 21,
+      "white_response": 5,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 4,
+          "certificate": "certificates/tile_2465591ca5a5.json.gz"
+        },
+        {
+          "start_column": 4,
+          "width": 3,
+          "certificate": "certificates/tile_7de2134cc103.json.gz"
+        },
+        {
+          "start_column": 7,
+          "width": 4,
+          "certificate": "certificates/tile_675ea04f7dff.json.gz"
+        },
+        {
+          "start_column": 11,
+          "width": 4,
+          "certificate": "certificates/tile_1ed978875ca7.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35115649466271,
+        32830693046031
+      ]
+    },
+    {
+      "blue_opening": 22,
+      "white_response": 8,
+      "blocks": [
+        {
+          "start_column": 0,
+          "width": 7,
+          "certificate": "certificates/tile_91c7fb008913.json.gz"
+        },
+        {
+          "start_column": 8,
+          "width": 7,
+          "certificate": "certificates/tile_76ba798e4bc4.json.gz"
+        }
+      ],
+      "relaxed_masks": [
+        35046918454911,
+        35046920551551
+      ]
+    }
+  ],
+  "certificates": [
+    {
+      "file": "certificates/tile_8532d5d099db.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        244,
+        94
+      ],
+      "nodes": 7,
+      "edges": 14,
+      "sha256": "444fc2d8ed29b40c3cd074297c11f5db41eec773ce1d5afd89b21ea96d6b0013"
+    },
+    {
+      "file": "certificates/tile_675ea04f7dff.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4095,
+        3710
+      ],
+      "nodes": 155,
+      "edges": 474,
+      "sha256": "bfb4e6f6b210983ebd531c6d3e38f39db4f0373556ee938c3cd01771dfe8ef0c"
+    },
+    {
+      "file": "certificates/tile_1ed978875ca7.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4095,
+        3838
+      ],
+      "nodes": 156,
+      "edges": 477,
+      "sha256": "b9cba91497f4fe712f9dbc838e4afd5c1762fb91eddc8aaa33e21c6006a188ce"
+    },
+    {
+      "file": "certificates/tile_7f61c9598d5f.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        456,
+        201
+      ],
+      "nodes": 6,
+      "edges": 10,
+      "sha256": "554504f30365bc553dd84e84a14063af0693c3e22e0465bcb0d4c30be8af0333"
+    },
+    {
+      "file": "certificates/tile_e4d37d528005.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4095,
+        2023
+      ],
+      "nodes": 152,
+      "edges": 470,
+      "sha256": "d3c53ee922ec2e9049338240a1f0012526c8e4601743d5381d86933842440cc0"
+    },
+    {
+      "file": "certificates/tile_2affd31fec9d.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4095,
+        4079
+      ],
+      "nodes": 157,
+      "edges": 481,
+      "sha256": "1bc03ac42c354fab51dcf753aa0bac518557e15810a9c117141e2b2e4dac560a"
+    },
+    {
+      "file": "certificates/tile_2398ea84ec04.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        2096609,
+        2086851
+      ],
+      "nodes": 1438,
+      "edges": 5402,
+      "sha256": "59835d45fdb0354018950f64945a2715260cd843dee7390e8f33f6fd5778ace3"
+    },
+    {
+      "file": "certificates/tile_bce76b04468d.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        2096067,
+        1044359
+      ],
+      "nodes": 1562,
+      "edges": 6506,
+      "sha256": "72970796755936f2a6539d60d04e10c486c7463de5c8782721395a1316a3b67c"
+    },
+    {
+      "file": "certificates/tile_8b16696647a7.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1046471,
+        516079
+      ],
+      "nodes": 1252,
+      "edges": 5052,
+      "sha256": "db0ef5e7fff6c63f8a19e42a6e539fc79bae10a79c32eadf17a3bbf9ef898c25"
+    },
+    {
+      "file": "certificates/tile_2465591ca5a5.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4095,
+        3967
+      ],
+      "nodes": 155,
+      "edges": 452,
+      "sha256": "7870db19ac06e401c1eb3008cf0d1dc1e254f1e244cb5d47216c86a93c6eac7a"
+    },
+    {
+      "file": "certificates/tile_1644a96c7c55.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        480,
+        388
+      ],
+      "nodes": 6,
+      "edges": 10,
+      "sha256": "6a18f3bf099b9c558ce17f79a75748bb83d53b004d6fa40f8ca92f85f7afd8e3"
+    },
+    {
+      "file": "certificates/tile_40d069500f87.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4095,
+        2039
+      ],
+      "nodes": 152,
+      "edges": 470,
+      "sha256": "5a9938f2ac0071a6f32fc8682026d3572e0b5d99cbaae9a4e7e24c032f1abc61"
+    },
+    {
+      "file": "certificates/tile_09197aa9813a.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        2080241,
+        2039675
+      ],
+      "nodes": 1478,
+      "edges": 5511,
+      "sha256": "2a8147855d4bdd8a862cdfbefc1e38f16efd534b4e292bfa87aa3632a0484053"
+    },
+    {
+      "file": "certificates/tile_468c39840ab4.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1965027,
+        572342
+      ],
+      "nodes": 918,
+      "edges": 3771,
+      "sha256": "944220a3b640e9cd4c0cb21f2178189cc793492b2b82004f643b07a1240e593e"
+    },
+    {
+      "file": "certificates/tile_da4864d83b99.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        420,
+        224
+      ],
+      "nodes": 5,
+      "edges": 8,
+      "sha256": "178c9c4ef23340790f6c9053746d66117041a5a405882eda2797e2b637806eda"
+    },
+    {
+      "file": "certificates/tile_501c8151efe6.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        321,
+        457
+      ],
+      "nodes": 5,
+      "edges": 6,
+      "sha256": "917ba903f278ccafe9925ef41c84faa9152c428611581f0a7f53242068e32b22"
+    },
+    {
+      "file": "certificates/tile_e65624aa2731.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        202,
+        468
+      ],
+      "nodes": 9,
+      "edges": 15,
+      "sha256": "c769f6acd18aedc22c53f7cf058fa5a79bcf6852a60b011125b8984d1adac7bb"
+    },
+    {
+      "file": "certificates/tile_09fb65f2292a.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1962471,
+        2085831
+      ],
+      "nodes": 1098,
+      "edges": 4089,
+      "sha256": "23dd2a42839ab434fdbeb8463a7ca36ca3269a008cf0c41a4499997be670d7b1"
+    },
+    {
+      "file": "certificates/tile_55c55441362e.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1558494,
+        2084732
+      ],
+      "nodes": 1026,
+      "edges": 3798,
+      "sha256": "d8d6625e9b66a8f17f3b81884f07a08e10a6982f65da71da50692428c0fd7195"
+    },
+    {
+      "file": "certificates/tile_7de2134cc103.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        201,
+        392
+      ],
+      "nodes": 5,
+      "edges": 8,
+      "sha256": "c74e552b22440e58eb3ab1ebe41ca8b136cc0ab9bab5a11e69c9f0f8ea9648a1"
+    },
+    {
+      "file": "certificates/tile_91c7fb008913.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        2088959,
+        2097151
+      ],
+      "nodes": 7732,
+      "edges": 33566,
+      "sha256": "803a803a510e3db6f1d4355ab36eb15f1b88178f098a3a458ffb9d3372a53db6"
+    },
+    {
+      "file": "certificates/tile_76ba798e4bc4.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        2097022,
+        2097020
+      ],
+      "nodes": 4883,
+      "edges": 21033,
+      "sha256": "2b1e0eec1b0a2444e026a69f8bb1f14a4e24ccd6225cc75818fc1f042e977cf0"
+    },
+    {
+      "file": "certificates/tile_1a7f18fcf6af.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4076,
+        2038
+      ],
+      "nodes": 59,
+      "edges": 157,
+      "sha256": "6d4965c128e40e356e64ca426915aae509cc363621e59294a1a83274904a65c0"
+    },
+    {
+      "file": "certificates/tile_4d9d5d12cc0f.json.gz",
+      "height": 3,
+      "width": 2,
+      "root": [
+        60,
+        24
+      ],
+      "nodes": 4,
+      "edges": 6,
+      "sha256": "07a14bb308f2d7acd33d2303ce11da1621e325b2828a215933b787afe715375d"
+    },
+    {
+      "file": "certificates/tile_e06eb7fc2dd6.json.gz",
+      "height": 3,
+      "width": 1,
+      "root": [
+        7,
+        5
+      ],
+      "nodes": 3,
+      "edges": 3,
+      "sha256": "284e12ee540b9390d1041d7a81e957ddcbf162961341b309a2210b9b7499b698"
+    }
+  ],
+  "family_tiles": {
+    "A4": "certificates/tile_1a7f18fcf6af.json.gz",
+    "E4": "certificates/tile_e4d37d528005.json.gz",
+    "B2": "certificates/tile_4d9d5d12cc0f.json.gz",
+    "F1": "certificates/tile_e06eb7fc2dd6.json.gz"
+  },
+  "demon_case": {
+    "blue_stones": [
+      0,
+      14
+    ],
+    "white_stones": [
+      44
+    ],
+    "white_response": 12,
+    "blocks": [
+      {
+        "start_column": 0,
+        "width": 4,
+        "certificate": "certificates/tile_1a7f18fcf6af.json.gz"
+      },
+      {
+        "start_column": 4,
+        "width": 4,
+        "certificate": "certificates/tile_e4d37d528005.json.gz"
+      },
+      {
+        "start_column": 8,
+        "width": 4,
+        "certificate": "certificates/tile_e4d37d528005.json.gz"
+      },
+      {
+        "start_column": 12,
+        "width": 2,
+        "certificate": "certificates/tile_4d9d5d12cc0f.json.gz"
+      }
+    ],
+    "relaxed_masks": [
+      17591649112060,
+      6450360846198
+    ]
+  }
+}

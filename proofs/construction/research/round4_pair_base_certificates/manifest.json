@@ -1,0 +1,98 @@
+[
+  {
+    "file": "rx3_ordinary_upper.json.gz",
+    "family": "RX",
+    "board_width": 3,
+    "star": false,
+    "target": "1",
+    "ambient_width": 3,
+    "root": [
+      32510,
+      12219,
+      -1,
+      1
+    ],
+    "checkpoints": 342,
+    "response_edges": 1174
+  },
+  {
+    "file": "rx3_starred_upper.json.gz",
+    "family": "RX",
+    "board_width": 3,
+    "star": true,
+    "target": "1",
+    "ambient_width": 5,
+    "root": [
+      7572726,
+      2332915,
+      -1,
+      1
+    ],
+    "checkpoints": 631,
+    "response_edges": 2239
+  },
+  {
+    "file": "vx3_ordinary_upper.json.gz",
+    "family": "VX",
+    "board_width": 3,
+    "star": false,
+    "target": "2",
+    "ambient_width": 3,
+    "root": [
+      32503,
+      12218,
+      -2,
+      1
+    ],
+    "checkpoints": 317,
+    "response_edges": 1186
+  },
+  {
+    "file": "vx3_starred_upper.json.gz",
+    "family": "VX",
+    "board_width": 3,
+    "star": true,
+    "target": "2",
+    "ambient_width": 5,
+    "root": [
+      7572695,
+      2332914,
+      -2,
+      1
+    ],
+    "checkpoints": 589,
+    "response_edges": 2262
+  },
+  {
+    "file": "xx3_ordinary_upper.json.gz",
+    "family": "XX",
+    "board_width": 3,
+    "star": false,
+    "target": "1",
+    "ambient_width": 3,
+    "root": [
+      32447,
+      12282,
+      -1,
+      1
+    ],
+    "checkpoints": 214,
+    "response_edges": 790
+  },
+  {
+    "file": "xx3_starred_upper.json.gz",
+    "family": "XX",
+    "board_width": 3,
+    "star": true,
+    "target": "1",
+    "ambient_width": 5,
+    "root": [
+      7571703,
+      2333938,
+      -1,
+      1
+    ],
+    "checkpoints": 456,
+    "response_edges": 1710
+  }
+]

@@ -1,0 +1,243 @@
+[
+  {
+    "name": "alternating_5x4",
+    "kind": "exact_number",
+    "height": 5,
+    "width": 4,
+    "blue": 1048575,
+    "white": 518119,
+    "value": [
+      3,
+      4
+    ],
+    "opening": null,
+    "files": [
+      "alternating_5x4_blue.json",
+      "alternating_5x4_white.json"
+    ]
+  },
+  {
+    "name": "opening_1",
+    "kind": "exact_number",
+    "height": 5,
+    "width": 4,
+    "blue": 1048536,
+    "white": 518117,
+    "value": [
+      -1,
+      1
+    ],
+    "opening": 1,
+    "files": [
+      "opening_1_blue.json",
+      "opening_1_white.json"
+    ]
+  },
+  {
+    "name": "opening_3",
+    "kind": "exact_number",
+    "height": 5,
+    "width": 4,
+    "blue": 1048435,
+    "white": 518119,
+    "value": [
+      -1,
+      1
+    ],
+    "opening": 3,
+    "files": [
+      "opening_3_blue.json",
+      "opening_3_white.json"
+    ]
+  },
+  {
+    "name": "opening_4",
+    "kind": "exact_number",
+    "height": 5,
+    "width": 4,
+    "blue": 1048270,
+    "white": 518119,
+    "value": [
+      -1,
+      1
+    ],
+    "opening": 4,
+    "files": [
+      "opening_4_blue.json",
+      "opening_4_white.json"
+    ]
+  },
+  {
+    "name": "opening_6",
+    "kind": "exact_number",
+    "height": 5,
+    "width": 4,
+    "blue": 1047323,
+    "white": 518055,
+    "value": [
+      -1,
+      1
+    ],
+    "opening": 6,
+    "files": [
+      "opening_6_blue.json",
+      "opening_6_white.json"
+    ]
+  },
+  {
+    "name": "opening_9",
+    "kind": "exact_number",
+    "height": 5,
+    "width": 4,
+    "blue": 1038559,
+    "white": 517607,
+    "value": [
+      -1,
+      1
+    ],
+    "opening": 9,
+    "files": [
+      "opening_9_blue.json",
+      "opening_9_white.json"
+    ]
+  },
+  {
+    "name": "opening_11",
+    "kind": "exact_number",
+    "height": 5,
+    "width": 4,
+    "blue": 1012607,
+    "white": 518119,
+    "value": [
+      -1,
+      1
+    ],
+    "opening": 11,
+    "files": [
+      "opening_11_blue.json",
+      "opening_11_white.json"
+    ]
+  },
+  {
+    "name": "opening_8",
+    "kind": "exact_number",
+    "height": 5,
+    "width": 4,
+    "blue": 1043695,
+    "white": 517863,
+    "value": [
+      1,
+      2
+    ],
+    "opening": 8,
+    "files": [
+      "opening_8_blue.json",
+      "opening_8_white.json"
+    ]
+  },
+  {
+    "name": "opening_0",
+    "kind": "outcome_N",
+    "height": 5,
+    "width": 4,
+    "blue": 1048556,
+    "white": 518118,
+    "opening": 0,
+    "proofs": [
+      {
+        "actor": 0,
+        "move": 7,
+        "file": "fuzzy_opening0_actor0.json"
+      },
+      {
+        "actor": 1,
+        "move": 8,
+        "file": "fuzzy_opening0_actor1.json"
+      }
+    ]
+  },
+  {
+    "name": "opening_2",
+    "kind": "outcome_N",
+    "height": 5,
+    "width": 4,
+    "blue": 1048497,
+    "white": 518115,
+    "opening": 2,
+    "proofs": [
+      {
+        "actor": 0,
+        "move": 8,
+        "file": "fuzzy_opening2_actor0.json"
+      },
+      {
+        "actor": 1,
+        "move": 0,
+        "file": "fuzzy_opening2_actor1.json"
+      }
+    ]
+  },
+  {
+    "name": "opening_5",
+    "kind": "outcome_N",
+    "height": 5,
+    "width": 4,
+    "blue": 1047949,
+    "white": 518087,
+    "opening": 5,
+    "proofs": [
+      {
+        "actor": 0,
+        "move": 8,
+        "file": "fuzzy_opening5_actor0.json"
+      },
+      {
+        "actor": 1,
+        "move": 0,
+        "file": "fuzzy_opening5_actor1.json"
+      }
+    ]
+  },
+  {
+    "name": "opening_7",
+    "kind": "outcome_N",
+    "height": 5,
+    "width": 4,
+    "blue": 1046327,
+    "white": 517991,
+    "opening": 7,
+    "proofs": [
+      {
+        "actor": 0,
+        "move": 0,
+        "file": "fuzzy_opening7_actor0.json"
+      },
+      {
+        "actor": 1,
+        "move": 2,
+        "file": "fuzzy_opening7_actor1.json"
+      }
+    ]
+  },
+  {
+    "name": "opening_10",
+    "kind": "outcome_N",
+    "height": 5,
+    "width": 4,
+    "blue": 1028543,
+    "white": 517095,
+    "opening": 10,
+    "proofs": [
+      {
+        "actor": 0,
+        "move": 0,
+        "file": "fuzzy_opening10_actor0.json"
+      },
+      {
+        "actor": 1,
+        "move": 8,
+        "file": "fuzzy_opening10_actor1.json"
+      }
+    ]
+  }
+]

@@ -1,0 +1,1538 @@
+{
+  "version": 1,
+  "rules": "normal-play Col; own-color orthogonal adjacency forbidden",
+  "scope": "Full Blue legality, arbitrary permanent White restriction; partial checkpoints separately bounded above by zero.",
+  "bit_order": "row-major; bit 0 of north/south is leftmost; bit 0 of west/east is topmost",
+  "summary": {
+    "shapes": 21,
+    "classified_masks": 3598668,
+    "safe_masks": 1682,
+    "minimal_safe": 49,
+    "certificates": 467,
+    "checkpoints": 436703,
+    "response_edges": 1861429
+  },
+  "partial_tile_upper_bound_count": 152473,
+  "primitive_zero_tiles": [
+    {
+      "id": "1x2-W3",
+      "height": 1,
+      "width": 2,
+      "blue": 3,
+      "white": 3,
+      "pattern": [
+        "oo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 1,
+        "north": 3,
+        "south": 3
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/1x2/W3.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "1x3-W5",
+      "height": 1,
+      "width": 3,
+      "blue": 7,
+      "white": 5,
+      "pattern": [
+        "obo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 1,
+        "north": 5,
+        "south": 5
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/1x3/W5.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "1x4-W15",
+      "height": 1,
+      "width": 4,
+      "blue": 15,
+      "white": 15,
+      "pattern": [
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 1,
+        "north": 15,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/1x4/W15.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "1x5-W27",
+      "height": 1,
+      "width": 5,
+      "blue": 31,
+      "white": 27,
+      "pattern": [
+        "ooboo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 1,
+        "north": 27,
+        "south": 27
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/1x5/W27.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "1x6-W63",
+      "height": 1,
+      "width": 6,
+      "blue": 63,
+      "white": 63,
+      "pattern": [
+        "oooooo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 1,
+        "north": 63,
+        "south": 63
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/1x6/W63.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "1x7-W119",
+      "height": 1,
+      "width": 7,
+      "blue": 127,
+      "white": 119,
+      "pattern": [
+        "ooobooo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 1,
+        "north": 119,
+        "south": 119
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/1x7/W119.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "1x8-W239",
+      "height": 1,
+      "width": 8,
+      "blue": 255,
+      "white": 239,
+      "pattern": [
+        "oooobooo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 1,
+        "north": 239,
+        "south": 239
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/1x8/W239.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "1x8-W247",
+      "height": 1,
+      "width": 8,
+      "blue": 255,
+      "white": 247,
+      "pattern": [
+        "oooboooo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 1,
+        "north": 247,
+        "south": 247
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/1x8/W247.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x2-W6",
+      "height": 2,
+      "width": 2,
+      "blue": 15,
+      "white": 6,
+      "pattern": [
+        "bo",
+        "ob"
+      ],
+      "white_ports": {
+        "west": 2,
+        "east": 1,
+        "north": 2,
+        "south": 1
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x2/W6.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x2-W9",
+      "height": 2,
+      "width": 2,
+      "blue": 15,
+      "white": 9,
+      "pattern": [
+        "ob",
+        "bo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 2,
+        "north": 1,
+        "south": 2
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x2/W9.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x3-W45",
+      "height": 2,
+      "width": 3,
+      "blue": 63,
+      "white": 45,
+      "pattern": [
+        "obo",
+        "obo"
+      ],
+      "white_ports": {
+        "west": 3,
+        "east": 3,
+        "north": 5,
+        "south": 5
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x3/W45.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x4-W90",
+      "height": 2,
+      "width": 4,
+      "blue": 255,
+      "white": 90,
+      "pattern": [
+        "bobo",
+        "obob"
+      ],
+      "white_ports": {
+        "west": 2,
+        "east": 1,
+        "north": 10,
+        "south": 5
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x4/W90.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x4-W165",
+      "height": 2,
+      "width": 4,
+      "blue": 255,
+      "white": 165,
+      "pattern": [
+        "obob",
+        "bobo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 2,
+        "north": 5,
+        "south": 10
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x4/W165.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x5-W767",
+      "height": 2,
+      "width": 5,
+      "blue": 1023,
+      "white": 767,
+      "pattern": [
+        "ooooo",
+        "ooobo"
+      ],
+      "white_ports": {
+        "west": 3,
+        "east": 3,
+        "north": 31,
+        "south": 23
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x5/W767.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x5-W959",
+      "height": 2,
+      "width": 5,
+      "blue": 1023,
+      "white": 959,
+      "pattern": [
+        "ooooo",
+        "obooo"
+      ],
+      "white_ports": {
+        "west": 3,
+        "east": 3,
+        "north": 31,
+        "south": 29
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x5/W959.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x5-W1015",
+      "height": 2,
+      "width": 5,
+      "blue": 1023,
+      "white": 1015,
+      "pattern": [
+        "ooobo",
+        "ooooo"
+      ],
+      "white_ports": {
+        "west": 3,
+        "east": 3,
+        "north": 23,
+        "south": 31
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x5/W1015.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x5-W1021",
+      "height": 2,
+      "width": 5,
+      "blue": 1023,
+      "white": 1021,
+      "pattern": [
+        "obooo",
+        "ooooo"
+      ],
+      "white_ports": {
+        "west": 3,
+        "east": 3,
+        "north": 29,
+        "south": 31
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x5/W1021.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x6-W1386",
+      "height": 2,
+      "width": 6,
+      "blue": 4095,
+      "white": 1386,
+      "pattern": [
+        "bobobo",
+        "obobob"
+      ],
+      "white_ports": {
+        "west": 2,
+        "east": 1,
+        "north": 42,
+        "south": 21
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x6/W1386.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x6-W2709",
+      "height": 2,
+      "width": 6,
+      "blue": 4095,
+      "white": 2709,
+      "pattern": [
+        "obobob",
+        "bobobo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 2,
+        "north": 21,
+        "south": 42
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x6/W2709.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x7-W12031",
+      "height": 2,
+      "width": 7,
+      "blue": 16383,
+      "white": 12031,
+      "pattern": [
+        "ooooooo",
+        "obooobo"
+      ],
+      "white_ports": {
+        "west": 3,
+        "east": 3,
+        "north": 127,
+        "south": 93
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x7/W12031.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x7-W15359",
+      "height": 2,
+      "width": 7,
+      "blue": 16383,
+      "white": 15359,
+      "pattern": [
+        "ooooooo",
+        "ooobooo"
+      ],
+      "white_ports": {
+        "west": 3,
+        "east": 3,
+        "north": 127,
+        "south": 119
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x7/W15359.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x7-W16349",
+      "height": 2,
+      "width": 7,
+      "blue": 16383,
+      "white": 16349,
+      "pattern": [
+        "obooobo",
+        "ooooooo"
+      ],
+      "white_ports": {
+        "west": 3,
+        "east": 3,
+        "north": 93,
+        "south": 127
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x7/W16349.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x7-W16375",
+      "height": 2,
+      "width": 7,
+      "blue": 16383,
+      "white": 16375,
+      "pattern": [
+        "ooobooo",
+        "ooooooo"
+      ],
+      "white_ports": {
+        "west": 3,
+        "east": 3,
+        "north": 119,
+        "south": 127
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x7/W16375.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x8-W21930",
+      "height": 2,
+      "width": 8,
+      "blue": 65535,
+      "white": 21930,
+      "pattern": [
+        "bobobobo",
+        "obobobob"
+      ],
+      "white_ports": {
+        "west": 2,
+        "east": 1,
+        "north": 170,
+        "south": 85
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x8/W21930.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "2x8-W43605",
+      "height": 2,
+      "width": 8,
+      "blue": 65535,
+      "white": 43605,
+      "pattern": [
+        "obobobob",
+        "bobobobo"
+      ],
+      "white_ports": {
+        "west": 1,
+        "east": 2,
+        "north": 85,
+        "south": 170
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/2x8/W43605.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "3x3-W495",
+      "height": 3,
+      "width": 3,
+      "blue": 511,
+      "white": 495,
+      "pattern": [
+        "ooo",
+        "obo",
+        "ooo"
+      ],
+      "white_ports": {
+        "west": 7,
+        "east": 7,
+        "north": 7,
+        "south": 7
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/3x3/W495.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "3x4-W1959",
+      "height": 3,
+      "width": 4,
+      "blue": 4095,
+      "white": 1959,
+      "pattern": [
+        "ooob",
+        "bobo",
+        "ooob"
+      ],
+      "white_ports": {
+        "west": 5,
+        "east": 2,
+        "north": 7,
+        "south": 7
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/3x4/W1959.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "3x4-W3678",
+      "height": 3,
+      "width": 4,
+      "blue": 4095,
+      "white": 3678,
+      "pattern": [
+        "booo",
+        "obob",
+        "booo"
+      ],
+      "white_ports": {
+        "west": 2,
+        "east": 5,
+        "north": 14,
+        "south": 14
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/3x4/W3678.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "3x4-W3951",
+      "height": 3,
+      "width": 4,
+      "blue": 4095,
+      "white": 3951,
+      "pattern": [
+        "oooo",
+        "boob",
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 5,
+        "east": 5,
+        "north": 15,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/3x4/W3951.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "3x5-W21845",
+      "height": 3,
+      "width": 5,
+      "blue": 32767,
+      "white": 21845,
+      "pattern": [
+        "obobo",
+        "bobob",
+        "obobo"
+      ],
+      "white_ports": {
+        "west": 5,
+        "east": 5,
+        "north": 21,
+        "south": 21
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/3x5/W21845.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "3x6-W225975",
+      "height": 3,
+      "width": 6,
+      "blue": 262143,
+      "white": 225975,
+      "pattern": [
+        "oooboo",
+        "bobobb",
+        "oooboo"
+      ],
+      "white_ports": {
+        "west": 5,
+        "east": 5,
+        "north": 55,
+        "south": 55
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/3x6/W225975.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "3x6-W243003",
+      "height": 3,
+      "width": 6,
+      "blue": 262143,
+      "white": 243003,
+      "pattern": [
+        "oobooo",
+        "bbobob",
+        "oobooo"
+      ],
+      "white_ports": {
+        "west": 5,
+        "east": 5,
+        "north": 59,
+        "south": 59
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/3x6/W243003.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "3x7-W1966071",
+      "height": 3,
+      "width": 7,
+      "blue": 2097151,
+      "white": 1966071,
+      "pattern": [
+        "ooobooo",
+        "ooooooo",
+        "ooobooo"
+      ],
+      "white_ports": {
+        "west": 7,
+        "east": 7,
+        "north": 119,
+        "south": 119
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/3x7/W1966071.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "4x4-W23130",
+      "height": 4,
+      "width": 4,
+      "blue": 65535,
+      "white": 23130,
+      "pattern": [
+        "bobo",
+        "obob",
+        "bobo",
+        "obob"
+      ],
+      "white_ports": {
+        "west": 10,
+        "east": 5,
+        "north": 10,
+        "south": 5
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/4x4/W23130.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "4x4-W42405",
+      "height": 4,
+      "width": 4,
+      "blue": 65535,
+      "white": 42405,
+      "pattern": [
+        "obob",
+        "bobo",
+        "obob",
+        "bobo"
+      ],
+      "white_ports": {
+        "west": 5,
+        "east": 10,
+        "north": 5,
+        "south": 10
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/4x4/W42405.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W501695",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 501695,
+      "pattern": [
+        "oooo",
+        "oobo",
+        "ooob",
+        "bobo",
+        "ooob"
+      ],
+      "white_ports": {
+        "west": 23,
+        "east": 11,
+        "north": 15,
+        "south": 7
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W501695.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W503735",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 503735,
+      "pattern": [
+        "ooob",
+        "oobo",
+        "oooo",
+        "bobo",
+        "ooob"
+      ],
+      "white_ports": {
+        "west": 23,
+        "east": 14,
+        "north": 7,
+        "south": 7
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W503735.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W507815",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 507815,
+      "pattern": [
+        "ooob",
+        "bobo",
+        "oooo",
+        "oobo",
+        "ooob"
+      ],
+      "white_ports": {
+        "west": 29,
+        "east": 14,
+        "north": 7,
+        "south": 7
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W507815.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W941791",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 941791,
+      "pattern": [
+        "oooo",
+        "oboo",
+        "booo",
+        "obob",
+        "booo"
+      ],
+      "white_ports": {
+        "west": 11,
+        "east": 23,
+        "north": 15,
+        "south": 14
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W941791.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W942046",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 942046,
+      "pattern": [
+        "booo",
+        "oboo",
+        "oooo",
+        "obob",
+        "booo"
+      ],
+      "white_ports": {
+        "west": 14,
+        "east": 23,
+        "north": 14,
+        "south": 14
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W942046.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W974686",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 974686,
+      "pattern": [
+        "booo",
+        "obob",
+        "oooo",
+        "oboo",
+        "booo"
+      ],
+      "white_ports": {
+        "west": 14,
+        "east": 29,
+        "north": 14,
+        "south": 14
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W974686.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W1006591",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 1006591,
+      "pattern": [
+        "oooo",
+        "oooo",
+        "oobo",
+        "obob",
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 31,
+        "east": 23,
+        "north": 15,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W1006591.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W1027583",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 1027583,
+      "pattern": [
+        "oooo",
+        "oooo",
+        "oboo",
+        "bobo",
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 23,
+        "east": 31,
+        "north": 15,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W1027583.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W1029567",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 1029567,
+      "pattern": [
+        "oooo",
+        "oobo",
+        "obob",
+        "oobo",
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 31,
+        "east": 27,
+        "north": 15,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W1029567.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W1030055",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 1030055,
+      "pattern": [
+        "ooob",
+        "bobo",
+        "ooob",
+        "oobo",
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 29,
+        "east": 26,
+        "north": 7,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W1030055.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W1039071",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 1039071,
+      "pattern": [
+        "oooo",
+        "oboo",
+        "bobo",
+        "oboo",
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 27,
+        "east": 31,
+        "north": 15,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W1039071.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W1039966",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 1039966,
+      "pattern": [
+        "booo",
+        "obob",
+        "booo",
+        "oboo",
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 26,
+        "east": 29,
+        "north": 14,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W1039966.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W1047391",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 1047391,
+      "pattern": [
+        "oooo",
+        "obob",
+        "oobo",
+        "oooo",
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 31,
+        "east": 29,
+        "north": 15,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W1047391.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    },
+    {
+      "id": "5x4-W1047983",
+      "height": 5,
+      "width": 4,
+      "blue": 1048575,
+      "white": 1047983,
+      "pattern": [
+        "oooo",
+        "bobo",
+        "oboo",
+        "oooo",
+        "oooo"
+      ],
+      "white_ports": {
+        "west": 29,
+        "east": 31,
+        "north": 15,
+        "south": 15
+      },
+      "value_kind": "exact_number",
+      "value": [
+        0,
+        1
+      ],
+      "certificate": "certificates/5x4/W1047983.json.gz",
+      "inclusion_rule": "actual_blue subset_of blue; white subset_of actual_white"
+    }
+  ],
+  "by_shape": [
+    {
+      "height": 1,
+      "width": 2,
+      "masks": 4,
+      "safe_masks": 1,
+      "unsafe_masks": 3,
+      "minimal_safe": 1,
+      "maximal_unsafe": 2,
+      "certificates": 3,
+      "checkpoints": 4,
+      "response_edges": 2,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 1,
+      "width": 3,
+      "masks": 8,
+      "safe_masks": 2,
+      "unsafe_masks": 6,
+      "minimal_safe": 1,
+      "maximal_unsafe": 2,
+      "certificates": 3,
+      "checkpoints": 7,
+      "response_edges": 5,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 1,
+      "width": 4,
+      "masks": 16,
+      "safe_masks": 1,
+      "unsafe_masks": 15,
+      "minimal_safe": 1,
+      "maximal_unsafe": 4,
+      "certificates": 5,
+      "checkpoints": 14,
+      "response_edges": 15,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 1,
+      "width": 5,
+      "masks": 32,
+      "safe_masks": 2,
+      "unsafe_masks": 30,
+      "minimal_safe": 1,
+      "maximal_unsafe": 4,
+      "certificates": 5,
+      "checkpoints": 21,
+      "response_edges": 29,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 1,
+      "width": 6,
+      "masks": 64,
+      "safe_masks": 1,
+      "unsafe_masks": 63,
+      "minimal_safe": 1,
+      "maximal_unsafe": 6,
+      "certificates": 7,
+      "checkpoints": 50,
+      "response_edges": 77,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 1,
+      "width": 7,
+      "masks": 128,
+      "safe_masks": 2,
+      "unsafe_masks": 126,
+      "minimal_safe": 1,
+      "maximal_unsafe": 6,
+      "certificates": 7,
+      "checkpoints": 76,
+      "response_edges": 143,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 1,
+      "width": 8,
+      "masks": 256,
+      "safe_masks": 3,
+      "unsafe_masks": 253,
+      "minimal_safe": 2,
+      "maximal_unsafe": 7,
+      "certificates": 9,
+      "checkpoints": 160,
+      "response_edges": 350,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 2,
+      "width": 2,
+      "masks": 16,
+      "safe_masks": 7,
+      "unsafe_masks": 9,
+      "minimal_safe": 2,
+      "maximal_unsafe": 4,
+      "certificates": 6,
+      "checkpoints": 16,
+      "response_edges": 16,
+      "horizontal_safe_joins": 8,
+      "vertical_safe_joins": 8
+    },
+    {
+      "height": 2,
+      "width": 3,
+      "masks": 64,
+      "safe_masks": 4,
+      "unsafe_masks": 60,
+      "minimal_safe": 1,
+      "maximal_unsafe": 4,
+      "certificates": 5,
+      "checkpoints": 23,
+      "response_edges": 39,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 2,
+      "width": 4,
+      "masks": 256,
+      "safe_masks": 31,
+      "unsafe_masks": 225,
+      "minimal_safe": 2,
+      "maximal_unsafe": 16,
+      "certificates": 18,
+      "checkpoints": 199,
+      "response_edges": 381,
+      "horizontal_safe_joins": 128,
+      "vertical_safe_joins": 32
+    },
+    {
+      "height": 2,
+      "width": 5,
+      "masks": 1024,
+      "safe_masks": 5,
+      "unsafe_masks": 1019,
+      "minimal_safe": 4,
+      "maximal_unsafe": 12,
+      "certificates": 16,
+      "checkpoints": 583,
+      "response_edges": 1429,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 2,
+      "width": 6,
+      "masks": 4096,
+      "safe_masks": 127,
+      "unsafe_masks": 3969,
+      "minimal_safe": 2,
+      "maximal_unsafe": 36,
+      "certificates": 38,
+      "checkpoints": 2462,
+      "response_edges": 6722,
+      "horizontal_safe_joins": 2048,
+      "vertical_safe_joins": 128
+    },
+    {
+      "height": 2,
+      "width": 7,
+      "masks": 16384,
+      "safe_masks": 9,
+      "unsafe_masks": 16375,
+      "minimal_safe": 4,
+      "maximal_unsafe": 21,
+      "certificates": 25,
+      "checkpoints": 5111,
+      "response_edges": 16487,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 2,
+      "width": 8,
+      "masks": 65536,
+      "safe_masks": 511,
+      "unsafe_masks": 65025,
+      "minimal_safe": 2,
+      "maximal_unsafe": 64,
+      "certificates": 66,
+      "checkpoints": 25814,
+      "response_edges": 92386,
+      "horizontal_safe_joins": 32768,
+      "vertical_safe_joins": 512
+    },
+    {
+      "height": 3,
+      "width": 3,
+      "masks": 512,
+      "safe_masks": 2,
+      "unsafe_masks": 510,
+      "minimal_safe": 1,
+      "maximal_unsafe": 8,
+      "certificates": 9,
+      "checkpoints": 191,
+      "response_edges": 428,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 3,
+      "width": 4,
+      "masks": 4096,
+      "safe_masks": 32,
+      "unsafe_masks": 4064,
+      "minimal_safe": 3,
+      "maximal_unsafe": 19,
+      "certificates": 22,
+      "checkpoints": 1615,
+      "response_edges": 4399,
+      "horizontal_safe_joins": 72,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 3,
+      "width": 5,
+      "masks": 32768,
+      "safe_masks": 128,
+      "unsafe_masks": 32640,
+      "minimal_safe": 1,
+      "maximal_unsafe": 8,
+      "certificates": 9,
+      "checkpoints": 2889,
+      "response_edges": 10279,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 3,
+      "width": 6,
+      "masks": 262144,
+      "safe_masks": 124,
+      "unsafe_masks": 262020,
+      "minimal_safe": 2,
+      "maximal_unsafe": 24,
+      "certificates": 26,
+      "checkpoints": 27940,
+      "response_edges": 111098,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 3,
+      "width": 7,
+      "masks": 2097152,
+      "safe_masks": 4,
+      "unsafe_masks": 2097148,
+      "minimal_safe": 1,
+      "maximal_unsafe": 19,
+      "certificates": 20,
+      "checkpoints": 93277,
+      "response_edges": 423466,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    },
+    {
+      "height": 4,
+      "width": 4,
+      "masks": 65536,
+      "safe_masks": 511,
+      "unsafe_masks": 65025,
+      "minimal_safe": 2,
+      "maximal_unsafe": 64,
+      "certificates": 66,
+      "checkpoints": 25328,
+      "response_edges": 87366,
+      "horizontal_safe_joins": 8192,
+      "vertical_safe_joins": 8192
+    },
+    {
+      "height": 5,
+      "width": 4,
+      "masks": 1048576,
+      "safe_masks": 175,
+      "unsafe_masks": 1048401,
+      "minimal_safe": 14,
+      "maximal_unsafe": 88,
+      "certificates": 102,
+      "checkpoints": 250923,
+      "response_edges": 1106312,
+      "horizontal_safe_joins": 0,
+      "vertical_safe_joins": 0
+    }
+  ],
+  "numeric_manifest": "data/numeric_manifest.json",
+  "partial_tile_file": "certified_partial_tiles.jsonl.gz"
+}

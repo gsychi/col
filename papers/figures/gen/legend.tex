@@ -1,0 +1,19 @@
+\begin{tikzpicture}[scale=1.000, every node/.style={transform shape}]
+\fill[colboth] (0.000,0.000) rectangle ++(0.500,-0.500);
+\draw[boardline] (0.000,0.000) rectangle ++(0.500,-0.500);
+\node[anchor=west, font=\scriptsize] at (0.600,-0.25) {legal for both};
+\fill[colblue] (2.900,0.000) rectangle ++(0.500,-0.500);
+\draw[boardline] (2.900,0.000) rectangle ++(0.500,-0.500);
+\node[anchor=west, font=\scriptsize] at (3.500,-0.25) {Blue only};
+\fill[colwhite] (5.800,0.000) rectangle ++(0.500,-0.500);
+\draw[boardline] (5.800,0.000) rectangle ++(0.500,-0.500);
+\node[anchor=west, font=\scriptsize] at (6.400,-0.25) {White only};
+\fill[coldead] (8.700,0.000) rectangle ++(0.500,-0.500);
+\fill[pattern=north east lines, pattern color=black!45] (8.700,0.000) rectangle ++(0.500,-0.500);
+\draw[boardline] (8.700,0.000) rectangle ++(0.500,-0.500);
+\node[anchor=west, font=\scriptsize] at (9.300,-0.25) {legal for neither};
+\node[bluestone, minimum size=0.390cm] at (11.850,-0.250) {};
+\node[anchor=west, font=\scriptsize] at (12.200,-0.25) {Blue stone};
+\node[whitestone, minimum size=0.390cm] at (14.250,-0.250) {};
+\node[anchor=west, font=\scriptsize] at (14.600,-0.25) {White stone};
+\end{tikzpicture}

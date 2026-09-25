@@ -1,0 +1,14 @@
+{
+  "height": 5,
+  "cap_width": 5,
+  "budget": 500000,
+  "white_wins_controller": "Unknown",
+  "counts": {
+    "states": 500001,
+    "mirror_terminals": 36001,
+    "port_events": 158866,
+    "cap_moves": 1348350
+  },
+  "initial_port_prefix": [],
+  "first_nonport_witness": null
+}

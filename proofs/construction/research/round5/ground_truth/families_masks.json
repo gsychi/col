@@ -1,0 +1,2884 @@
+{
+ "D": {
+  "1": {
+   "A": 27,
+   "B": 21,
+   "diagram": [
+    "o",
+    "b",
+    "w",
+    "b",
+    "o"
+   ]
+  },
+  "2": {
+   "A": 1007,
+   "B": 955,
+   "diagram": [
+    "oo",
+    "bo",
+    "wo",
+    "bo",
+    "oo"
+   ]
+  },
+  "3": {
+   "A": 32703,
+   "B": 32247,
+   "diagram": [
+    "ooo",
+    "boo",
+    "woo",
+    "boo",
+    "ooo"
+   ]
+  },
+  "4": {
+   "A": 1048319,
+   "B": 1044463,
+   "diagram": [
+    "oooo",
+    "booo",
+    "wooo",
+    "booo",
+    "oooo"
+   ]
+  },
+  "5": {
+   "A": 33553407,
+   "B": 33521631,
+   "diagram": [
+    "ooooo",
+    "boooo",
+    "woooo",
+    "boooo",
+    "ooooo"
+   ]
+  },
+  "6": {
+   "A": 1073737727,
+   "B": 1073479615,
+   "diagram": [
+    "oooooo",
+    "booooo",
+    "wooooo",
+    "booooo",
+    "oooooo"
+   ]
+  },
+  "7": {
+   "A": 34359721983,
+   "B": 34357641087,
+   "diagram": [
+    "ooooooo",
+    "boooooo",
+    "woooooo",
+    "boooooo",
+    "ooooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511562239,
+   "B": 1099494850303,
+   "diagram": [
+    "oooooooo",
+    "booooooo",
+    "wooooooo",
+    "booooooo",
+    "oooooooo"
+   ]
+  },
+  "9": {
+   "A": 35184371826687,
+   "B": 35184237870591,
+   "diagram": [
+    "ooooooooo",
+    "boooooooo",
+    "woooooooo",
+    "boooooooo",
+    "ooooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899905794047,
+   "B": 1125898833099775,
+   "diagram": [
+    "oooooooooo",
+    "booooooooo",
+    "wooooooooo",
+    "booooooooo",
+    "oooooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797014769663,
+   "B": 36028788429027327,
+   "diagram": [
+    "ooooooooooo",
+    "boooooooooo",
+    "woooooooooo",
+    "boooooooooo",
+    "ooooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504590069759,
+   "B": 1152921435887366143,
+   "diagram": [
+    "oooooooooooo",
+    "booooooooooo",
+    "wooooooooooo",
+    "booooooooooo",
+    "oooooooooooo"
+   ]
+  }
+ },
+ "U": {
+  "1": {
+   "A": 30,
+   "B": 21,
+   "diagram": [
+    "w",
+    "b",
+    "o",
+    "b",
+    "o"
+   ]
+  },
+  "2": {
+   "A": 1022,
+   "B": 955,
+   "diagram": [
+    "wo",
+    "bo",
+    "oo",
+    "bo",
+    "oo"
+   ]
+  },
+  "3": {
+   "A": 32766,
+   "B": 32247,
+   "diagram": [
+    "woo",
+    "boo",
+    "ooo",
+    "boo",
+    "ooo"
+   ]
+  },
+  "4": {
+   "A": 1048574,
+   "B": 1044463,
+   "diagram": [
+    "wooo",
+    "booo",
+    "oooo",
+    "booo",
+    "oooo"
+   ]
+  },
+  "5": {
+   "A": 33554430,
+   "B": 33521631,
+   "diagram": [
+    "woooo",
+    "boooo",
+    "ooooo",
+    "boooo",
+    "ooooo"
+   ]
+  },
+  "6": {
+   "A": 1073741822,
+   "B": 1073479615,
+   "diagram": [
+    "wooooo",
+    "booooo",
+    "oooooo",
+    "booooo",
+    "oooooo"
+   ]
+  },
+  "7": {
+   "A": 34359738366,
+   "B": 34357641087,
+   "diagram": [
+    "woooooo",
+    "boooooo",
+    "ooooooo",
+    "boooooo",
+    "ooooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511627774,
+   "B": 1099494850303,
+   "diagram": [
+    "wooooooo",
+    "booooooo",
+    "oooooooo",
+    "booooooo",
+    "oooooooo"
+   ]
+  },
+  "9": {
+   "A": 35184372088830,
+   "B": 35184237870591,
+   "diagram": [
+    "woooooooo",
+    "boooooooo",
+    "ooooooooo",
+    "boooooooo",
+    "ooooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899906842622,
+   "B": 1125898833099775,
+   "diagram": [
+    "wooooooooo",
+    "booooooooo",
+    "oooooooooo",
+    "booooooooo",
+    "oooooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797018963966,
+   "B": 36028788429027327,
+   "diagram": [
+    "woooooooooo",
+    "boooooooooo",
+    "ooooooooooo",
+    "boooooooooo",
+    "ooooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504606846974,
+   "B": 1152921435887366143,
+   "diagram": [
+    "wooooooooooo",
+    "booooooooooo",
+    "oooooooooooo",
+    "booooooooooo",
+    "oooooooooooo"
+   ]
+  }
+ },
+ "V": {
+  "1": {
+   "A": 29,
+   "B": 10,
+   "diagram": [
+    "b",
+    "w",
+    "b",
+    "o",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 1019,
+   "B": 750,
+   "diagram": [
+    "bo",
+    "wo",
+    "bo",
+    "oo",
+    "bo"
+   ]
+  },
+  "3": {
+   "A": 32759,
+   "B": 28606,
+   "diagram": [
+    "boo",
+    "woo",
+    "boo",
+    "ooo",
+    "boo"
+   ]
+  },
+  "4": {
+   "A": 1048559,
+   "B": 982782,
+   "diagram": [
+    "booo",
+    "wooo",
+    "booo",
+    "oooo",
+    "booo"
+   ]
+  },
+  "5": {
+   "A": 33554399,
+   "B": 32504830,
+   "diagram": [
+    "boooo",
+    "woooo",
+    "boooo",
+    "ooooo",
+    "boooo"
+   ]
+  },
+  "6": {
+   "A": 1073741759,
+   "B": 1056960510,
+   "diagram": [
+    "booooo",
+    "wooooo",
+    "booooo",
+    "oooooo",
+    "booooo"
+   ]
+  },
+  "7": {
+   "A": 34359738239,
+   "B": 34091286526,
+   "diagram": [
+    "boooooo",
+    "woooooo",
+    "boooooo",
+    "ooooooo",
+    "boooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511627519,
+   "B": 1095216594942,
+   "diagram": [
+    "booooooo",
+    "wooooooo",
+    "booooooo",
+    "oooooooo",
+    "booooooo"
+   ]
+  },
+  "9": {
+   "A": 35184372088319,
+   "B": 35115652349950,
+   "diagram": [
+    "boooooooo",
+    "woooooooo",
+    "boooooooo",
+    "ooooooooo",
+    "boooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899906841599,
+   "B": 1124800394166270,
+   "diagram": [
+    "booooooooo",
+    "wooooooooo",
+    "booooooooo",
+    "oooooooooo",
+    "booooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797018961919,
+   "B": 36011204828725246,
+   "diagram": [
+    "boooooooooo",
+    "woooooooooo",
+    "boooooooooo",
+    "ooooooooooo",
+    "boooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504606842879,
+   "B": 1152640029613359102,
+   "diagram": [
+    "booooooooooo",
+    "wooooooooooo",
+    "booooooooooo",
+    "oooooooooooo",
+    "booooooooooo"
+   ]
+  }
+ },
+ "X": {
+  "1": {
+   "A": 27,
+   "B": 14,
+   "diagram": [
+    "b",
+    "o",
+    "w",
+    "o",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 1007,
+   "B": 766,
+   "diagram": [
+    "bo",
+    "oo",
+    "wo",
+    "oo",
+    "bo"
+   ]
+  },
+  "3": {
+   "A": 32703,
+   "B": 28670,
+   "diagram": [
+    "boo",
+    "ooo",
+    "woo",
+    "ooo",
+    "boo"
+   ]
+  },
+  "4": {
+   "A": 1048319,
+   "B": 983038,
+   "diagram": [
+    "booo",
+    "oooo",
+    "wooo",
+    "oooo",
+    "booo"
+   ]
+  },
+  "5": {
+   "A": 33553407,
+   "B": 32505854,
+   "diagram": [
+    "boooo",
+    "ooooo",
+    "woooo",
+    "ooooo",
+    "boooo"
+   ]
+  },
+  "6": {
+   "A": 1073737727,
+   "B": 1056964606,
+   "diagram": [
+    "booooo",
+    "oooooo",
+    "wooooo",
+    "oooooo",
+    "booooo"
+   ]
+  },
+  "7": {
+   "A": 34359721983,
+   "B": 34091302910,
+   "diagram": [
+    "boooooo",
+    "ooooooo",
+    "woooooo",
+    "ooooooo",
+    "boooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511562239,
+   "B": 1095216660478,
+   "diagram": [
+    "booooooo",
+    "oooooooo",
+    "wooooooo",
+    "oooooooo",
+    "booooooo"
+   ]
+  },
+  "9": {
+   "A": 35184371826687,
+   "B": 35115652612094,
+   "diagram": [
+    "boooooooo",
+    "ooooooooo",
+    "woooooooo",
+    "ooooooooo",
+    "boooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899905794047,
+   "B": 1124800395214846,
+   "diagram": [
+    "booooooooo",
+    "oooooooooo",
+    "wooooooooo",
+    "oooooooooo",
+    "booooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797014769663,
+   "B": 36011204832919550,
+   "diagram": [
+    "boooooooooo",
+    "ooooooooooo",
+    "woooooooooo",
+    "ooooooooooo",
+    "boooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504590069759,
+   "B": 1152640029630136318,
+   "diagram": [
+    "booooooooooo",
+    "oooooooooooo",
+    "wooooooooooo",
+    "oooooooooooo",
+    "booooooooooo"
+   ]
+  }
+ },
+ "R": {
+  "1": {
+   "A": 30,
+   "B": 11,
+   "diagram": [
+    "w",
+    "o",
+    "b",
+    "o",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 1022,
+   "B": 751,
+   "diagram": [
+    "wo",
+    "oo",
+    "bo",
+    "oo",
+    "bo"
+   ]
+  },
+  "3": {
+   "A": 32766,
+   "B": 28607,
+   "diagram": [
+    "woo",
+    "ooo",
+    "boo",
+    "ooo",
+    "boo"
+   ]
+  },
+  "4": {
+   "A": 1048574,
+   "B": 982783,
+   "diagram": [
+    "wooo",
+    "oooo",
+    "booo",
+    "oooo",
+    "booo"
+   ]
+  },
+  "5": {
+   "A": 33554430,
+   "B": 32504831,
+   "diagram": [
+    "woooo",
+    "ooooo",
+    "boooo",
+    "ooooo",
+    "boooo"
+   ]
+  },
+  "6": {
+   "A": 1073741822,
+   "B": 1056960511,
+   "diagram": [
+    "wooooo",
+    "oooooo",
+    "booooo",
+    "oooooo",
+    "booooo"
+   ]
+  },
+  "7": {
+   "A": 34359738366,
+   "B": 34091286527,
+   "diagram": [
+    "woooooo",
+    "ooooooo",
+    "boooooo",
+    "ooooooo",
+    "boooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511627774,
+   "B": 1095216594943,
+   "diagram": [
+    "wooooooo",
+    "oooooooo",
+    "booooooo",
+    "oooooooo",
+    "booooooo"
+   ]
+  },
+  "9": {
+   "A": 35184372088830,
+   "B": 35115652349951,
+   "diagram": [
+    "woooooooo",
+    "ooooooooo",
+    "boooooooo",
+    "ooooooooo",
+    "boooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899906842622,
+   "B": 1124800394166271,
+   "diagram": [
+    "wooooooooo",
+    "oooooooooo",
+    "booooooooo",
+    "oooooooooo",
+    "booooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797018963966,
+   "B": 36011204828725247,
+   "diagram": [
+    "woooooooooo",
+    "ooooooooooo",
+    "boooooooooo",
+    "ooooooooooo",
+    "boooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504606846974,
+   "B": 1152640029613359103,
+   "diagram": [
+    "wooooooooooo",
+    "oooooooooooo",
+    "booooooooooo",
+    "oooooooooooo",
+    "booooooooooo"
+   ]
+  }
+ },
+ "J": {
+  "1": {
+   "A": 29,
+   "B": 23,
+   "diagram": [
+    "o",
+    "w",
+    "o",
+    "b",
+    "o"
+   ]
+  },
+  "2": {
+   "A": 1019,
+   "B": 959,
+   "diagram": [
+    "oo",
+    "wo",
+    "oo",
+    "bo",
+    "oo"
+   ]
+  },
+  "3": {
+   "A": 32759,
+   "B": 32255,
+   "diagram": [
+    "ooo",
+    "woo",
+    "ooo",
+    "boo",
+    "ooo"
+   ]
+  },
+  "4": {
+   "A": 1048559,
+   "B": 1044479,
+   "diagram": [
+    "oooo",
+    "wooo",
+    "oooo",
+    "booo",
+    "oooo"
+   ]
+  },
+  "5": {
+   "A": 33554399,
+   "B": 33521663,
+   "diagram": [
+    "ooooo",
+    "woooo",
+    "ooooo",
+    "boooo",
+    "ooooo"
+   ]
+  },
+  "6": {
+   "A": 1073741759,
+   "B": 1073479679,
+   "diagram": [
+    "oooooo",
+    "wooooo",
+    "oooooo",
+    "booooo",
+    "oooooo"
+   ]
+  },
+  "7": {
+   "A": 34359738239,
+   "B": 34357641215,
+   "diagram": [
+    "ooooooo",
+    "woooooo",
+    "ooooooo",
+    "boooooo",
+    "ooooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511627519,
+   "B": 1099494850559,
+   "diagram": [
+    "oooooooo",
+    "wooooooo",
+    "oooooooo",
+    "booooooo",
+    "oooooooo"
+   ]
+  },
+  "9": {
+   "A": 35184372088319,
+   "B": 35184237871103,
+   "diagram": [
+    "ooooooooo",
+    "woooooooo",
+    "ooooooooo",
+    "boooooooo",
+    "ooooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899906841599,
+   "B": 1125898833100799,
+   "diagram": [
+    "oooooooooo",
+    "wooooooooo",
+    "oooooooooo",
+    "booooooooo",
+    "oooooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797018961919,
+   "B": 36028788429029375,
+   "diagram": [
+    "ooooooooooo",
+    "woooooooooo",
+    "ooooooooooo",
+    "boooooooooo",
+    "ooooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504606842879,
+   "B": 1152921435887370239,
+   "diagram": [
+    "oooooooooooo",
+    "wooooooooooo",
+    "oooooooooooo",
+    "booooooooooo",
+    "oooooooooooo"
+   ]
+  }
+ },
+ "DD": {
+  "1": {
+   "A": 27,
+   "B": 21,
+   "diagram": [
+    "o",
+    "b",
+    "w",
+    "b",
+    "o"
+   ]
+  },
+  "2": {
+   "A": 975,
+   "B": 819,
+   "diagram": [
+    "oo",
+    "bb",
+    "ww",
+    "bb",
+    "oo"
+   ]
+  },
+  "3": {
+   "A": 32447,
+   "B": 30167,
+   "diagram": [
+    "ooo",
+    "bob",
+    "wow",
+    "bob",
+    "ooo"
+   ]
+  },
+  "4": {
+   "A": 1046271,
+   "B": 1011567,
+   "diagram": [
+    "oooo",
+    "boob",
+    "woow",
+    "boob",
+    "oooo"
+   ]
+  },
+  "5": {
+   "A": 33537023,
+   "B": 32996831,
+   "diagram": [
+    "ooooo",
+    "booob",
+    "wooow",
+    "booob",
+    "ooooo"
+   ]
+  },
+  "6": {
+   "A": 1073606655,
+   "B": 1065088959,
+   "diagram": [
+    "oooooo",
+    "boooob",
+    "woooow",
+    "boooob",
+    "oooooo"
+   ]
+  },
+  "7": {
+   "A": 34358673407,
+   "B": 34223415167,
+   "diagram": [
+    "ooooooo",
+    "booooob",
+    "wooooow",
+    "booooob",
+    "ooooooo"
+   ]
+  },
+  "8": {
+   "A": 1099503173631,
+   "B": 1097347333887,
+   "diagram": [
+    "oooooooo",
+    "boooooob",
+    "woooooow",
+    "boooooob",
+    "oooooooo"
+   ]
+  },
+  "9": {
+   "A": 35184304717823,
+   "B": 35149878001151,
+   "diagram": [
+    "ooooooooo",
+    "booooooob",
+    "wooooooow",
+    "booooooob",
+    "ooooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899368923135,
+   "B": 1125349076761599,
+   "diagram": [
+    "oooooooooo",
+    "boooooooob",
+    "woooooooow",
+    "boooooooob",
+    "oooooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028792719802367,
+   "B": 36019992333907967,
+   "diagram": [
+    "ooooooooooo",
+    "booooooooob",
+    "wooooooooow",
+    "booooooooob",
+    "ooooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921470230331391,
+   "B": 1152780698390622207,
+   "diagram": [
+    "oooooooooooo",
+    "boooooooooob",
+    "woooooooooow",
+    "boooooooooob",
+    "oooooooooooo"
+   ]
+  }
+ },
+ "DU": {
+  "1": {
+   "A": 26,
+   "B": 21,
+   "diagram": [
+    "w",
+    "b",
+    "w",
+    "b",
+    "o"
+   ]
+  },
+  "2": {
+   "A": 1005,
+   "B": 819,
+   "diagram": [
+    "ow",
+    "bb",
+    "wo",
+    "bb",
+    "oo"
+   ]
+  },
+  "3": {
+   "A": 32699,
+   "B": 30167,
+   "diagram": [
+    "oow",
+    "bob",
+    "woo",
+    "bob",
+    "ooo"
+   ]
+  },
+  "4": {
+   "A": 1048311,
+   "B": 1011567,
+   "diagram": [
+    "ooow",
+    "boob",
+    "wooo",
+    "boob",
+    "oooo"
+   ]
+  },
+  "5": {
+   "A": 33553391,
+   "B": 32996831,
+   "diagram": [
+    "oooow",
+    "booob",
+    "woooo",
+    "booob",
+    "ooooo"
+   ]
+  },
+  "6": {
+   "A": 1073737695,
+   "B": 1065088959,
+   "diagram": [
+    "ooooow",
+    "boooob",
+    "wooooo",
+    "boooob",
+    "oooooo"
+   ]
+  },
+  "7": {
+   "A": 34359721919,
+   "B": 34223415167,
+   "diagram": [
+    "oooooow",
+    "booooob",
+    "woooooo",
+    "booooob",
+    "ooooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511562111,
+   "B": 1097347333887,
+   "diagram": [
+    "ooooooow",
+    "boooooob",
+    "wooooooo",
+    "boooooob",
+    "oooooooo"
+   ]
+  },
+  "9": {
+   "A": 35184371826431,
+   "B": 35149878001151,
+   "diagram": [
+    "oooooooow",
+    "booooooob",
+    "woooooooo",
+    "booooooob",
+    "ooooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899905793535,
+   "B": 1125349076761599,
+   "diagram": [
+    "ooooooooow",
+    "boooooooob",
+    "wooooooooo",
+    "boooooooob",
+    "oooooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797014768639,
+   "B": 36019992333907967,
+   "diagram": [
+    "oooooooooow",
+    "booooooooob",
+    "woooooooooo",
+    "booooooooob",
+    "ooooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504590067711,
+   "B": 1152780698390622207,
+   "diagram": [
+    "ooooooooooow",
+    "boooooooooob",
+    "wooooooooooo",
+    "boooooooooob",
+    "oooooooooooo"
+   ]
+  }
+ },
+ "DV": {
+  "1": {
+   "A": 25,
+   "B": 0,
+   "diagram": [
+    "b",
+    ".",
+    ".",
+    "b",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 999,
+   "B": 409,
+   "diagram": [
+    "ob",
+    "bw",
+    "wb",
+    "bo",
+    "ob"
+   ]
+  },
+  "3": {
+   "A": 32671,
+   "B": 15603,
+   "diagram": [
+    "oob",
+    "bow",
+    "wob",
+    "boo",
+    "oob"
+   ]
+  },
+  "4": {
+   "A": 1048191,
+   "B": 518119,
+   "diagram": [
+    "ooob",
+    "boow",
+    "woob",
+    "booo",
+    "ooob"
+   ]
+  },
+  "5": {
+   "A": 33552895,
+   "B": 16728015,
+   "diagram": [
+    "oooob",
+    "booow",
+    "wooob",
+    "boooo",
+    "oooob"
+   ]
+  },
+  "6": {
+   "A": 1073735679,
+   "B": 536477599,
+   "diagram": [
+    "ooooob",
+    "boooow",
+    "woooob",
+    "booooo",
+    "ooooob"
+   ]
+  },
+  "7": {
+   "A": 34359713791,
+   "B": 17176723263,
+   "diagram": [
+    "oooooob",
+    "booooow",
+    "wooooob",
+    "boooooo",
+    "oooooob"
+   ]
+  },
+  "8": {
+   "A": 1099511529471,
+   "B": 549730647679,
+   "diagram": [
+    "ooooooob",
+    "boooooow",
+    "woooooob",
+    "booooooo",
+    "ooooooob"
+   ]
+  },
+  "9": {
+   "A": 35184371695615,
+   "B": 17591984717055,
+   "diagram": [
+    "oooooooob",
+    "booooooow",
+    "wooooooob",
+    "boooooooo",
+    "oooooooob"
+   ]
+  },
+  "10": {
+   "A": 1125899905269759,
+   "B": 562948342807039,
+   "diagram": [
+    "ooooooooob",
+    "boooooooow",
+    "woooooooob",
+    "booooooooo",
+    "ooooooooob"
+   ]
+  },
+  "11": {
+   "A": 36028797012672511,
+   "B": 18014385624577023,
+   "diagram": [
+    "oooooooooob",
+    "booooooooow",
+    "wooooooooob",
+    "boooooooooo",
+    "oooooooooob"
+   ]
+  },
+  "12": {
+   "A": 1152921504581681151,
+   "B": 576460649224202239,
+   "diagram": [
+    "ooooooooooob",
+    "boooooooooow",
+    "woooooooooob",
+    "booooooooooo",
+    "ooooooooooob"
+   ]
+  }
+ },
+ "DR": {
+  "1": {
+   "A": 26,
+   "B": 1,
+   "diagram": [
+    "w",
+    "b",
+    ".",
+    "b",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 1005,
+   "B": 411,
+   "diagram": [
+    "ow",
+    "bo",
+    "wb",
+    "bo",
+    "ob"
+   ]
+  },
+  "3": {
+   "A": 32699,
+   "B": 15607,
+   "diagram": [
+    "oow",
+    "boo",
+    "wob",
+    "boo",
+    "oob"
+   ]
+  },
+  "4": {
+   "A": 1048311,
+   "B": 518127,
+   "diagram": [
+    "ooow",
+    "booo",
+    "woob",
+    "booo",
+    "ooob"
+   ]
+  },
+  "5": {
+   "A": 33553391,
+   "B": 16728031,
+   "diagram": [
+    "oooow",
+    "boooo",
+    "wooob",
+    "boooo",
+    "oooob"
+   ]
+  },
+  "6": {
+   "A": 1073737695,
+   "B": 536477631,
+   "diagram": [
+    "ooooow",
+    "booooo",
+    "woooob",
+    "booooo",
+    "ooooob"
+   ]
+  },
+  "7": {
+   "A": 34359721919,
+   "B": 17176723327,
+   "diagram": [
+    "oooooow",
+    "boooooo",
+    "wooooob",
+    "boooooo",
+    "oooooob"
+   ]
+  },
+  "8": {
+   "A": 1099511562111,
+   "B": 549730647807,
+   "diagram": [
+    "ooooooow",
+    "booooooo",
+    "woooooob",
+    "booooooo",
+    "ooooooob"
+   ]
+  },
+  "9": {
+   "A": 35184371826431,
+   "B": 17591984717311,
+   "diagram": [
+    "oooooooow",
+    "boooooooo",
+    "wooooooob",
+    "boooooooo",
+    "oooooooob"
+   ]
+  },
+  "10": {
+   "A": 1125899905793535,
+   "B": 562948342807551,
+   "diagram": [
+    "ooooooooow",
+    "booooooooo",
+    "woooooooob",
+    "booooooooo",
+    "ooooooooob"
+   ]
+  },
+  "11": {
+   "A": 36028797014768639,
+   "B": 18014385624578047,
+   "diagram": [
+    "oooooooooow",
+    "boooooooooo",
+    "wooooooooob",
+    "boooooooooo",
+    "oooooooooob"
+   ]
+  },
+  "12": {
+   "A": 1152921504590067711,
+   "B": 576460649224204287,
+   "diagram": [
+    "ooooooooooow",
+    "booooooooooo",
+    "woooooooooob",
+    "booooooooooo",
+    "ooooooooooob"
+   ]
+  }
+ },
+ "DX": {
+  "1": {
+   "A": 27,
+   "B": 4,
+   "diagram": [
+    "b",
+    "b",
+    "w",
+    "b",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 975,
+   "B": 441,
+   "diagram": [
+    "ob",
+    "bo",
+    "ww",
+    "bo",
+    "ob"
+   ]
+  },
+  "3": {
+   "A": 32447,
+   "B": 15859,
+   "diagram": [
+    "oob",
+    "boo",
+    "wow",
+    "boo",
+    "oob"
+   ]
+  },
+  "4": {
+   "A": 1046271,
+   "B": 520167,
+   "diagram": [
+    "ooob",
+    "booo",
+    "woow",
+    "booo",
+    "ooob"
+   ]
+  },
+  "5": {
+   "A": 33537023,
+   "B": 16744399,
+   "diagram": [
+    "oooob",
+    "boooo",
+    "wooow",
+    "boooo",
+    "oooob"
+   ]
+  },
+  "6": {
+   "A": 1073606655,
+   "B": 536608671,
+   "diagram": [
+    "ooooob",
+    "booooo",
+    "woooow",
+    "booooo",
+    "ooooob"
+   ]
+  },
+  "7": {
+   "A": 34358673407,
+   "B": 17177771839,
+   "diagram": [
+    "oooooob",
+    "boooooo",
+    "wooooow",
+    "boooooo",
+    "oooooob"
+   ]
+  },
+  "8": {
+   "A": 1099503173631,
+   "B": 549739036287,
+   "diagram": [
+    "ooooooob",
+    "booooooo",
+    "woooooow",
+    "booooooo",
+    "ooooooob"
+   ]
+  },
+  "9": {
+   "A": 35184304717823,
+   "B": 17592051825919,
+   "diagram": [
+    "oooooooob",
+    "boooooooo",
+    "wooooooow",
+    "boooooooo",
+    "oooooooob"
+   ]
+  },
+  "10": {
+   "A": 1125899368923135,
+   "B": 562948879677951,
+   "diagram": [
+    "ooooooooob",
+    "booooooooo",
+    "woooooooow",
+    "booooooooo",
+    "ooooooooob"
+   ]
+  },
+  "11": {
+   "A": 36028792719802367,
+   "B": 18014389919544319,
+   "diagram": [
+    "oooooooooob",
+    "boooooooooo",
+    "wooooooooow",
+    "boooooooooo",
+    "oooooooooob"
+   ]
+  },
+  "12": {
+   "A": 1152921470230331391,
+   "B": 576460683583940607,
+   "diagram": [
+    "ooooooooooob",
+    "booooooooooo",
+    "woooooooooow",
+    "booooooooooo",
+    "ooooooooooob"
+   ]
+  }
+ },
+ "DJ": {
+  "1": {
+   "A": 25,
+   "B": 21,
+   "diagram": [
+    "o",
+    ".",
+    "w",
+    "b",
+    "o"
+   ]
+  },
+  "2": {
+   "A": 999,
+   "B": 827,
+   "diagram": [
+    "oo",
+    "bw",
+    "wo",
+    "bb",
+    "oo"
+   ]
+  },
+  "3": {
+   "A": 32671,
+   "B": 30199,
+   "diagram": [
+    "ooo",
+    "bow",
+    "woo",
+    "bob",
+    "ooo"
+   ]
+  },
+  "4": {
+   "A": 1048191,
+   "B": 1011695,
+   "diagram": [
+    "oooo",
+    "boow",
+    "wooo",
+    "boob",
+    "oooo"
+   ]
+  },
+  "5": {
+   "A": 33552895,
+   "B": 32997343,
+   "diagram": [
+    "ooooo",
+    "booow",
+    "woooo",
+    "booob",
+    "ooooo"
+   ]
+  },
+  "6": {
+   "A": 1073735679,
+   "B": 1065091007,
+   "diagram": [
+    "oooooo",
+    "boooow",
+    "wooooo",
+    "boooob",
+    "oooooo"
+   ]
+  },
+  "7": {
+   "A": 34359713791,
+   "B": 34223423359,
+   "diagram": [
+    "ooooooo",
+    "booooow",
+    "woooooo",
+    "booooob",
+    "ooooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511529471,
+   "B": 1097347366655,
+   "diagram": [
+    "oooooooo",
+    "boooooow",
+    "wooooooo",
+    "boooooob",
+    "oooooooo"
+   ]
+  },
+  "9": {
+   "A": 35184371695615,
+   "B": 35149878132223,
+   "diagram": [
+    "ooooooooo",
+    "booooooow",
+    "woooooooo",
+    "booooooob",
+    "ooooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899905269759,
+   "B": 1125349077285887,
+   "diagram": [
+    "oooooooooo",
+    "boooooooow",
+    "wooooooooo",
+    "boooooooob",
+    "oooooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797012672511,
+   "B": 36019992336005119,
+   "diagram": [
+    "ooooooooooo",
+    "booooooooow",
+    "woooooooooo",
+    "booooooooob",
+    "ooooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504581681151,
+   "B": 1152780698399010815,
+   "diagram": [
+    "oooooooooooo",
+    "boooooooooow",
+    "wooooooooooo",
+    "boooooooooob",
+    "oooooooooooo"
+   ]
+  }
+ },
+ "RX": {
+  "1": {
+   "A": 26,
+   "B": 10,
+   "diagram": [
+    ".",
+    "o",
+    ".",
+    "o",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 990,
+   "B": 237,
+   "diagram": [
+    "wb",
+    "oo",
+    "bw",
+    "oo",
+    "bb"
+   ]
+  },
+  "3": {
+   "A": 32510,
+   "B": 12219,
+   "diagram": [
+    "wob",
+    "ooo",
+    "bow",
+    "ooo",
+    "bob"
+   ]
+  },
+  "4": {
+   "A": 1046526,
+   "B": 458487,
+   "diagram": [
+    "woob",
+    "oooo",
+    "boow",
+    "oooo",
+    "boob"
+   ]
+  },
+  "5": {
+   "A": 33538046,
+   "B": 15727599,
+   "diagram": [
+    "wooob",
+    "ooooo",
+    "booow",
+    "ooooo",
+    "booob"
+   ]
+  },
+  "6": {
+   "A": 1073610750,
+   "B": 520089567,
+   "diagram": [
+    "woooob",
+    "oooooo",
+    "boooow",
+    "oooooo",
+    "boooob"
+   ]
+  },
+  "7": {
+   "A": 34358689790,
+   "B": 16911417279,
+   "diagram": [
+    "wooooob",
+    "ooooooo",
+    "booooow",
+    "ooooooo",
+    "booooob"
+   ]
+  },
+  "8": {
+   "A": 1099503239166,
+   "B": 545460780927,
+   "diagram": [
+    "woooooob",
+    "oooooooo",
+    "boooooow",
+    "oooooooo",
+    "boooooob"
+   ]
+  },
+  "9": {
+   "A": 35184304979966,
+   "B": 17523466305279,
+   "diagram": [
+    "wooooooob",
+    "ooooooooo",
+    "booooooow",
+    "ooooooooo",
+    "booooooob"
+   ]
+  },
+  "10": {
+   "A": 1125899369971710,
+   "B": 561850440744447,
+   "diagram": [
+    "woooooooob",
+    "oooooooooo",
+    "boooooooow",
+    "oooooooooo",
+    "boooooooob"
+   ]
+  },
+  "11": {
+   "A": 36028792723996670,
+   "B": 17996806319242239,
+   "diagram": [
+    "wooooooooob",
+    "ooooooooooo",
+    "booooooooow",
+    "ooooooooooo",
+    "booooooooob"
+   ]
+  },
+  "12": {
+   "A": 1152921470247108606,
+   "B": 576179277309933567,
+   "diagram": [
+    "woooooooooob",
+    "oooooooooooo",
+    "boooooooooow",
+    "oooooooooooo",
+    "boooooooooob"
+   ]
+  }
+ },
+ "VX": {
+  "1": {
+   "A": 25,
+   "B": 10,
+   "diagram": [
+    "b",
+    "w",
+    ".",
+    "o",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 987,
+   "B": 236,
+   "diagram": [
+    "bb",
+    "wo",
+    "bw",
+    "oo",
+    "bb"
+   ]
+  },
+  "3": {
+   "A": 32503,
+   "B": 12218,
+   "diagram": [
+    "bob",
+    "woo",
+    "bow",
+    "ooo",
+    "bob"
+   ]
+  },
+  "4": {
+   "A": 1046511,
+   "B": 458486,
+   "diagram": [
+    "boob",
+    "wooo",
+    "boow",
+    "oooo",
+    "boob"
+   ]
+  },
+  "5": {
+   "A": 33538015,
+   "B": 15727598,
+   "diagram": [
+    "booob",
+    "woooo",
+    "booow",
+    "ooooo",
+    "booob"
+   ]
+  },
+  "6": {
+   "A": 1073610687,
+   "B": 520089566,
+   "diagram": [
+    "boooob",
+    "wooooo",
+    "boooow",
+    "oooooo",
+    "boooob"
+   ]
+  },
+  "7": {
+   "A": 34358689663,
+   "B": 16911417278,
+   "diagram": [
+    "booooob",
+    "woooooo",
+    "booooow",
+    "ooooooo",
+    "booooob"
+   ]
+  },
+  "8": {
+   "A": 1099503238911,
+   "B": 545460780926,
+   "diagram": [
+    "boooooob",
+    "wooooooo",
+    "boooooow",
+    "oooooooo",
+    "boooooob"
+   ]
+  },
+  "9": {
+   "A": 35184304979455,
+   "B": 17523466305278,
+   "diagram": [
+    "booooooob",
+    "woooooooo",
+    "booooooow",
+    "ooooooooo",
+    "booooooob"
+   ]
+  },
+  "10": {
+   "A": 1125899369970687,
+   "B": 561850440744446,
+   "diagram": [
+    "boooooooob",
+    "wooooooooo",
+    "boooooooow",
+    "oooooooooo",
+    "boooooooob"
+   ]
+  },
+  "11": {
+   "A": 36028792723994623,
+   "B": 17996806319242238,
+   "diagram": [
+    "booooooooob",
+    "woooooooooo",
+    "booooooooow",
+    "ooooooooooo",
+    "booooooooob"
+   ]
+  },
+  "12": {
+   "A": 1152921470247104511,
+   "B": 576179277309933566,
+   "diagram": [
+    "boooooooooob",
+    "wooooooooooo",
+    "boooooooooow",
+    "oooooooooooo",
+    "boooooooooob"
+   ]
+  }
+ },
+ "XX": {
+  "1": {
+   "A": 27,
+   "B": 14,
+   "diagram": [
+    "b",
+    "o",
+    "w",
+    "o",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 975,
+   "B": 252,
+   "diagram": [
+    "bb",
+    "oo",
+    "ww",
+    "oo",
+    "bb"
+   ]
+  },
+  "3": {
+   "A": 32447,
+   "B": 12282,
+   "diagram": [
+    "bob",
+    "ooo",
+    "wow",
+    "ooo",
+    "bob"
+   ]
+  },
+  "4": {
+   "A": 1046271,
+   "B": 458742,
+   "diagram": [
+    "boob",
+    "oooo",
+    "woow",
+    "oooo",
+    "boob"
+   ]
+  },
+  "5": {
+   "A": 33537023,
+   "B": 15728622,
+   "diagram": [
+    "booob",
+    "ooooo",
+    "wooow",
+    "ooooo",
+    "booob"
+   ]
+  },
+  "6": {
+   "A": 1073606655,
+   "B": 520093662,
+   "diagram": [
+    "boooob",
+    "oooooo",
+    "woooow",
+    "oooooo",
+    "boooob"
+   ]
+  },
+  "7": {
+   "A": 34358673407,
+   "B": 16911433662,
+   "diagram": [
+    "booooob",
+    "ooooooo",
+    "wooooow",
+    "ooooooo",
+    "booooob"
+   ]
+  },
+  "8": {
+   "A": 1099503173631,
+   "B": 545460846462,
+   "diagram": [
+    "boooooob",
+    "oooooooo",
+    "woooooow",
+    "oooooooo",
+    "boooooob"
+   ]
+  },
+  "9": {
+   "A": 35184304717823,
+   "B": 17523466567422,
+   "diagram": [
+    "booooooob",
+    "ooooooooo",
+    "wooooooow",
+    "ooooooooo",
+    "booooooob"
+   ]
+  },
+  "10": {
+   "A": 1125899368923135,
+   "B": 561850441793022,
+   "diagram": [
+    "boooooooob",
+    "oooooooooo",
+    "woooooooow",
+    "oooooooooo",
+    "boooooooob"
+   ]
+  },
+  "11": {
+   "A": 36028792719802367,
+   "B": 17996806323436542,
+   "diagram": [
+    "booooooooob",
+    "ooooooooooo",
+    "wooooooooow",
+    "ooooooooooo",
+    "booooooooob"
+   ]
+  },
+  "12": {
+   "A": 1152921470230331391,
+   "B": 576179277326710782,
+   "diagram": [
+    "boooooooooob",
+    "oooooooooooo",
+    "woooooooooow",
+    "oooooooooooo",
+    "boooooooooob"
+   ]
+  }
+ },
+ "XU": {
+  "1": {
+   "A": 26,
+   "B": 4,
+   "diagram": [
+    ".",
+    "b",
+    "w",
+    "b",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 1005,
+   "B": 630,
+   "diagram": [
+    "bw",
+    "ob",
+    "wo",
+    "ob",
+    "bo"
+   ]
+  },
+  "3": {
+   "A": 32699,
+   "B": 26590,
+   "diagram": [
+    "bow",
+    "oob",
+    "woo",
+    "oob",
+    "boo"
+   ]
+  },
+  "4": {
+   "A": 1048311,
+   "B": 950142,
+   "diagram": [
+    "boow",
+    "ooob",
+    "wooo",
+    "ooob",
+    "booo"
+   ]
+  },
+  "5": {
+   "A": 33553391,
+   "B": 31981054,
+   "diagram": [
+    "booow",
+    "oooob",
+    "woooo",
+    "oooob",
+    "boooo"
+   ]
+  },
+  "6": {
+   "A": 1073737695,
+   "B": 1048573950,
+   "diagram": [
+    "boooow",
+    "ooooob",
+    "wooooo",
+    "ooooob",
+    "booooo"
+   ]
+  },
+  "7": {
+   "A": 34359721919,
+   "B": 33957076990,
+   "diagram": [
+    "booooow",
+    "oooooob",
+    "woooooo",
+    "oooooob",
+    "boooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511562111,
+   "B": 1093069144062,
+   "diagram": [
+    "boooooow",
+    "ooooooob",
+    "wooooooo",
+    "ooooooob",
+    "booooooo"
+   ]
+  },
+  "9": {
+   "A": 35184371826431,
+   "B": 35081292742654,
+   "diagram": [
+    "booooooow",
+    "oooooooob",
+    "woooooooo",
+    "oooooooob",
+    "boooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899905793535,
+   "B": 1124250638876670,
+   "diagram": [
+    "boooooooow",
+    "ooooooooob",
+    "wooooooooo",
+    "ooooooooob",
+    "booooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797014768639,
+   "B": 36002408737800190,
+   "diagram": [
+    "booooooooow",
+    "oooooooooob",
+    "woooooooooo",
+    "oooooooooob",
+    "boooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504590067711,
+   "B": 1152499292133392382,
+   "diagram": [
+    "boooooooooow",
+    "ooooooooooob",
+    "wooooooooooo",
+    "ooooooooooob",
+    "booooooooooo"
+   ]
+  }
+ },
+ "XR": {
+  "1": {
+   "A": 26,
+   "B": 10,
+   "diagram": [
+    ".",
+    "o",
+    ".",
+    "o",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 1005,
+   "B": 222,
+   "diagram": [
+    "bw",
+    "oo",
+    "wb",
+    "oo",
+    "bb"
+   ]
+  },
+  "3": {
+   "A": 32699,
+   "B": 12030,
+   "diagram": [
+    "bow",
+    "ooo",
+    "wob",
+    "ooo",
+    "bob"
+   ]
+  },
+  "4": {
+   "A": 1048311,
+   "B": 456702,
+   "diagram": [
+    "boow",
+    "oooo",
+    "woob",
+    "oooo",
+    "boob"
+   ]
+  },
+  "5": {
+   "A": 33553391,
+   "B": 15712254,
+   "diagram": [
+    "booow",
+    "ooooo",
+    "wooob",
+    "ooooo",
+    "booob"
+   ]
+  },
+  "6": {
+   "A": 1073737695,
+   "B": 519962622,
+   "diagram": [
+    "boooow",
+    "oooooo",
+    "woooob",
+    "oooooo",
+    "boooob"
+   ]
+  },
+  "7": {
+   "A": 34359721919,
+   "B": 16910385150,
+   "diagram": [
+    "booooow",
+    "ooooooo",
+    "wooooob",
+    "ooooooo",
+    "booooob"
+   ]
+  },
+  "8": {
+   "A": 1099511562111,
+   "B": 545452457982,
+   "diagram": [
+    "boooooow",
+    "oooooooo",
+    "woooooob",
+    "oooooooo",
+    "boooooob"
+   ]
+  },
+  "9": {
+   "A": 35184371826431,
+   "B": 17523399458814,
+   "diagram": [
+    "booooooow",
+    "ooooooooo",
+    "wooooooob",
+    "ooooooooo",
+    "booooooob"
+   ]
+  },
+  "10": {
+   "A": 1125899905793535,
+   "B": 561849904922622,
+   "diagram": [
+    "boooooooow",
+    "oooooooooo",
+    "woooooooob",
+    "oooooooooo",
+    "boooooooob"
+   ]
+  },
+  "11": {
+   "A": 36028797014768639,
+   "B": 17996802028470270,
+   "diagram": [
+    "booooooooow",
+    "ooooooooooo",
+    "wooooooooob",
+    "ooooooooooo",
+    "booooooooob"
+   ]
+  },
+  "12": {
+   "A": 1152921504590067711,
+   "B": 576179242966974462,
+   "diagram": [
+    "boooooooooow",
+    "oooooooooooo",
+    "woooooooooob",
+    "oooooooooooo",
+    "boooooooooob"
+   ]
+  }
+ },
+ "XV": {
+  "1": {
+   "A": 25,
+   "B": 10,
+   "diagram": [
+    "b",
+    "w",
+    ".",
+    "o",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 999,
+   "B": 220,
+   "diagram": [
+    "bb",
+    "ow",
+    "wb",
+    "oo",
+    "bb"
+   ]
+  },
+  "3": {
+   "A": 32671,
+   "B": 12026,
+   "diagram": [
+    "bob",
+    "oow",
+    "wob",
+    "ooo",
+    "bob"
+   ]
+  },
+  "4": {
+   "A": 1048191,
+   "B": 456694,
+   "diagram": [
+    "boob",
+    "ooow",
+    "woob",
+    "oooo",
+    "boob"
+   ]
+  },
+  "5": {
+   "A": 33552895,
+   "B": 15712238,
+   "diagram": [
+    "booob",
+    "oooow",
+    "wooob",
+    "ooooo",
+    "booob"
+   ]
+  },
+  "6": {
+   "A": 1073735679,
+   "B": 519962590,
+   "diagram": [
+    "boooob",
+    "ooooow",
+    "woooob",
+    "oooooo",
+    "boooob"
+   ]
+  },
+  "7": {
+   "A": 34359713791,
+   "B": 16910385086,
+   "diagram": [
+    "booooob",
+    "oooooow",
+    "wooooob",
+    "ooooooo",
+    "booooob"
+   ]
+  },
+  "8": {
+   "A": 1099511529471,
+   "B": 545452457854,
+   "diagram": [
+    "boooooob",
+    "ooooooow",
+    "woooooob",
+    "oooooooo",
+    "boooooob"
+   ]
+  },
+  "9": {
+   "A": 35184371695615,
+   "B": 17523399458558,
+   "diagram": [
+    "booooooob",
+    "oooooooow",
+    "wooooooob",
+    "ooooooooo",
+    "booooooob"
+   ]
+  },
+  "10": {
+   "A": 1125899905269759,
+   "B": 561849904922110,
+   "diagram": [
+    "boooooooob",
+    "ooooooooow",
+    "woooooooob",
+    "oooooooooo",
+    "boooooooob"
+   ]
+  },
+  "11": {
+   "A": 36028797012672511,
+   "B": 17996802028469246,
+   "diagram": [
+    "booooooooob",
+    "oooooooooow",
+    "wooooooooob",
+    "ooooooooooo",
+    "booooooooob"
+   ]
+  },
+  "12": {
+   "A": 1152921504581681151,
+   "B": 576179242966972414,
+   "diagram": [
+    "boooooooooob",
+    "ooooooooooow",
+    "woooooooooob",
+    "oooooooooooo",
+    "boooooooooob"
+   ]
+  }
+ },
+ "XJ": {
+  "1": {
+   "A": 25,
+   "B": 6,
+   "diagram": [
+    "b",
+    "w",
+    "w",
+    "b",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 999,
+   "B": 638,
+   "diagram": [
+    "bo",
+    "ow",
+    "wo",
+    "ob",
+    "bo"
+   ]
+  },
+  "3": {
+   "A": 32671,
+   "B": 26622,
+   "diagram": [
+    "boo",
+    "oow",
+    "woo",
+    "oob",
+    "boo"
+   ]
+  },
+  "4": {
+   "A": 1048191,
+   "B": 950270,
+   "diagram": [
+    "booo",
+    "ooow",
+    "wooo",
+    "ooob",
+    "booo"
+   ]
+  },
+  "5": {
+   "A": 33552895,
+   "B": 31981566,
+   "diagram": [
+    "boooo",
+    "oooow",
+    "woooo",
+    "oooob",
+    "boooo"
+   ]
+  },
+  "6": {
+   "A": 1073735679,
+   "B": 1048575998,
+   "diagram": [
+    "booooo",
+    "ooooow",
+    "wooooo",
+    "ooooob",
+    "booooo"
+   ]
+  },
+  "7": {
+   "A": 34359713791,
+   "B": 33957085182,
+   "diagram": [
+    "boooooo",
+    "oooooow",
+    "woooooo",
+    "oooooob",
+    "boooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511529471,
+   "B": 1093069176830,
+   "diagram": [
+    "booooooo",
+    "ooooooow",
+    "wooooooo",
+    "ooooooob",
+    "booooooo"
+   ]
+  },
+  "9": {
+   "A": 35184371695615,
+   "B": 35081292873726,
+   "diagram": [
+    "boooooooo",
+    "oooooooow",
+    "woooooooo",
+    "oooooooob",
+    "boooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899905269759,
+   "B": 1124250639400958,
+   "diagram": [
+    "booooooooo",
+    "ooooooooow",
+    "wooooooooo",
+    "ooooooooob",
+    "booooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797012672511,
+   "B": 36002408739897342,
+   "diagram": [
+    "boooooooooo",
+    "oooooooooow",
+    "woooooooooo",
+    "oooooooooob",
+    "boooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504581681151,
+   "B": 1152499292141780990,
+   "diagram": [
+    "booooooooooo",
+    "ooooooooooow",
+    "wooooooooooo",
+    "ooooooooooob",
+    "booooooooooo"
+   ]
+  }
+ },
+ "M": {
+  "1": {
+   "A": 16,
+   "B": 24,
+   "diagram": [
+    ".",
+    ".",
+    ".",
+    "w",
+    "o"
+   ]
+  },
+  "3": {
+   "A": 31278,
+   "B": 32628,
+   "diagram": [
+    ".bo",
+    "bwo",
+    "w.w",
+    "owo",
+    "ooo"
+   ]
+  },
+  "5": {
+   "A": 33408894,
+   "B": 33550300,
+   "diagram": [
+    ".booo",
+    "bowoo",
+    "ow.wo",
+    "oowoo",
+    "ooooo"
+   ]
+  },
+  "7": {
+   "A": 34342501374,
+   "B": 34359607164,
+   "diagram": [
+    ".booooo",
+    "boowooo",
+    "oow.woo",
+    "ooowooo",
+    "ooooooo"
+   ]
+  },
+  "9": {
+   "A": 35182209916926,
+   "B": 35184367894012,
+   "diagram": [
+    ".booooooo",
+    "booowoooo",
+    "ooow.wooo",
+    "oooowoooo",
+    "ooooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028521671229438,
+   "B": 36028796884744188,
+   "diagram": [
+    ".booooooooo",
+    "boooowooooo",
+    "oooow.woooo",
+    "ooooowooooo",
+    "ooooooooooo"
+   ]
+  }
+ },
+ "E": {
+  "1": {
+   "A": 31,
+   "B": 31,
+   "diagram": [
+    "o",
+    "o",
+    "o",
+    "o",
+    "o"
+   ]
+  },
+  "2": {
+   "A": 1023,
+   "B": 1023,
+   "diagram": [
+    "oo",
+    "oo",
+    "oo",
+    "oo",
+    "oo"
+   ]
+  },
+  "3": {
+   "A": 32767,
+   "B": 32767,
+   "diagram": [
+    "ooo",
+    "ooo",
+    "ooo",
+    "ooo",
+    "ooo"
+   ]
+  },
+  "4": {
+   "A": 1048575,
+   "B": 1048575,
+   "diagram": [
+    "oooo",
+    "oooo",
+    "oooo",
+    "oooo",
+    "oooo"
+   ]
+  },
+  "5": {
+   "A": 33554431,
+   "B": 33554431,
+   "diagram": [
+    "ooooo",
+    "ooooo",
+    "ooooo",
+    "ooooo",
+    "ooooo"
+   ]
+  },
+  "6": {
+   "A": 1073741823,
+   "B": 1073741823,
+   "diagram": [
+    "oooooo",
+    "oooooo",
+    "oooooo",
+    "oooooo",
+    "oooooo"
+   ]
+  },
+  "7": {
+   "A": 34359738367,
+   "B": 34359738367,
+   "diagram": [
+    "ooooooo",
+    "ooooooo",
+    "ooooooo",
+    "ooooooo",
+    "ooooooo"
+   ]
+  },
+  "8": {
+   "A": 1099511627775,
+   "B": 1099511627775,
+   "diagram": [
+    "oooooooo",
+    "oooooooo",
+    "oooooooo",
+    "oooooooo",
+    "oooooooo"
+   ]
+  },
+  "9": {
+   "A": 35184372088831,
+   "B": 35184372088831,
+   "diagram": [
+    "ooooooooo",
+    "ooooooooo",
+    "ooooooooo",
+    "ooooooooo",
+    "ooooooooo"
+   ]
+  },
+  "10": {
+   "A": 1125899906842623,
+   "B": 1125899906842623,
+   "diagram": [
+    "oooooooooo",
+    "oooooooooo",
+    "oooooooooo",
+    "oooooooooo",
+    "oooooooooo"
+   ]
+  },
+  "11": {
+   "A": 36028797018963967,
+   "B": 36028797018963967,
+   "diagram": [
+    "ooooooooooo",
+    "ooooooooooo",
+    "ooooooooooo",
+    "ooooooooooo",
+    "ooooooooooo"
+   ]
+  },
+  "12": {
+   "A": 1152921504606846975,
+   "B": 1152921504606846975,
+   "diagram": [
+    "oooooooooooo",
+    "oooooooooooo",
+    "oooooooooooo",
+    "oooooooooooo",
+    "oooooooooooo"
+   ]
+  }
+ },
+ "DT": {
+  "1": {
+   "A": 27,
+   "B": 0,
+   "diagram": [
+    "b",
+    "b",
+    ".",
+    "b",
+    "b"
+   ]
+  },
+  "2": {
+   "A": 1007,
+   "B": 409,
+   "diagram": [
+    "ob",
+    "bo",
+    "wb",
+    "bo",
+    "ob"
+   ]
+  },
+  "3": {
+   "A": 32703,
+   "B": 15603,
+   "diagram": [
+    "oob",
+    "boo",
+    "wob",
+    "boo",
+    "oob"
+   ]
+  },
+  "4": {
+   "A": 1048319,
+   "B": 518119,
+   "diagram": [
+    "ooob",
+    "booo",
+    "woob",
+    "booo",
+    "ooob"
+   ]
+  },
+  "5": {
+   "A": 33553407,
+   "B": 16728015,
+   "diagram": [
+    "oooob",
+    "boooo",
+    "wooob",
+    "boooo",
+    "oooob"
+   ]
+  },
+  "6": {
+   "A": 1073737727,
+   "B": 536477599,
+   "diagram": [
+    "ooooob",
+    "booooo",
+    "woooob",
+    "booooo",
+    "ooooob"
+   ]
+  },
+  "7": {
+   "A": 34359721983,
+   "B": 17176723263,
+   "diagram": [
+    "oooooob",
+    "boooooo",
+    "wooooob",
+    "boooooo",
+    "oooooob"
+   ]
+  },
+  "8": {
+   "A": 1099511562239,
+   "B": 549730647679,
+   "diagram": [
+    "ooooooob",
+    "booooooo",
+    "woooooob",
+    "booooooo",
+    "ooooooob"
+   ]
+  },
+  "9": {
+   "A": 35184371826687,
+   "B": 17591984717055,
+   "diagram": [
+    "oooooooob",
+    "boooooooo",
+    "wooooooob",
+    "boooooooo",
+    "oooooooob"
+   ]
+  },
+  "10": {
+   "A": 1125899905794047,
+   "B": 562948342807039,
+   "diagram": [
+    "ooooooooob",
+    "booooooooo",
+    "woooooooob",
+    "booooooooo",
+    "ooooooooob"
+   ]
+  },
+  "11": {
+   "A": 36028797014769663,
+   "B": 18014385624577023,
+   "diagram": [
+    "oooooooooob",
+    "boooooooooo",
+    "wooooooooob",
+    "boooooooooo",
+    "oooooooooob"
+   ]
+  },
+  "12": {
+   "A": 1152921504590069759,
+   "B": 576460649224202239,
+   "diagram": [
+    "ooooooooooob",
+    "booooooooooo",
+    "woooooooooob",
+    "booooooooooo",
+    "ooooooooooob"
+   ]
+  }
+ }
+}

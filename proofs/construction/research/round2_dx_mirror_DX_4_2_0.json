@@ -1,0 +1,33 @@
+{
+  "pair": "DX",
+  "width": 4,
+  "cap_width": 2,
+  "half_turn": false,
+  "white_wins_restricted_policy": false,
+  "counters": {
+    "states": 6786,
+    "ordinary_moves": 4571,
+    "defect_moves": 11414,
+    "terminal_mirror": 256
+  },
+  "root_witness": {
+    "blue": 0,
+    "white_options": [
+      7,
+      2,
+      8,
+      15,
+      16,
+      1,
+      6,
+      11,
+      18,
+      5,
+      9,
+      10,
+      13,
+      17,
+      14
+    ]
+  }
+}

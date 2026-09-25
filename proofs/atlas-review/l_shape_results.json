@@ -1,0 +1,70 @@
+[
+  {
+    "file": "L_5x9_phase0.json.gz",
+    "target": [
+      5,
+      9
+    ],
+    "bulk": [
+      4,
+      8
+    ],
+    "phase": 0,
+    "path": "o b o b o b o b o b o b o",
+    "outcome": "Blue wins with either starting player",
+    "checkpoints": 111,
+    "response_edges": 286,
+    "search_states": 972
+  },
+  {
+    "file": "L_5x9_phase1.json.gz",
+    "target": [
+      5,
+      9
+    ],
+    "bulk": [
+      4,
+      8
+    ],
+    "phase": 1,
+    "path": "b o b o o o b o b o b o b",
+    "outcome": "Blue wins with either starting player",
+    "checkpoints": 142,
+    "response_edges": 436,
+    "search_states": 289
+  },
+  {
+    "file": "L_7x7_phase0.json.gz",
+    "target": [
+      7,
+      7
+    ],
+    "bulk": [
+      6,
+      6
+    ],
+    "phase": 0,
+    "path": "o b o b o b o b o b o b o",
+    "outcome": "Blue wins with either starting player",
+    "checkpoints": 111,
+    "response_edges": 286,
+    "search_states": 972
+  },
+  {
+    "file": "L_7x7_phase1.json.gz",
+    "target": [
+      7,
+      7
+    ],
+    "bulk": [
+      6,
+      6
+    ],
+    "phase": 1,
+    "path": "b o b o b o o o b o b o b",
+    "outcome": "Blue wins with either starting player",
+    "checkpoints": 148,
+    "response_edges": 461,
+    "search_states": 302
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "height": 3,
+  "cap_width": 3,
+  "budget": 1000000,
+  "white_wins_controller": false,
+  "counts": {
+    "states": 102,
+    "mirror_terminals": 46,
+    "port_events": 38,
+    "cap_moves": 113
+  },
+  "initial_port_prefix": [
+    [
+      0,
+      0
+    ]
+  ],
+  "first_nonport_witness": {
+    "event": "blue",
+    "vertex": 4,
+    "white_options": [
+      0,
+      1,
+      5,
+      7
+    ]
+  }
+}

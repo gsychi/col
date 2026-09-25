@@ -1,0 +1,31 @@
+[
+  {
+    "board": "3x13",
+    "outcome": "loss",
+    "seconds": 0.08398350002244115,
+    "opening_assemblies": 0,
+    "uncovered": [],
+    "tiles": 44,
+    "rust_verifier": "VERIFIED: 3x13 loss (side to move); 0 opening cases"
+  },
+  {
+    "board": "3x19",
+    "outcome": "loss",
+    "seconds": 0.08414458390325308,
+    "opening_assemblies": 57,
+    "uncovered": [],
+    "tiles": 44,
+    "rust_verifier": "VERIFIED: 3x19 loss (side to move); 57 opening cases"
+  },
+  {
+    "board": "3x23",
+    "outcome": "unknown",
+    "seconds": 0.11097008315846324,
+    "opening_assemblies": 68,
+    "uncovered": [
+      34
+    ],
+    "tiles": 44,
+    "rust_verifier": "VERIFIED: 3x23 unknown (side to move); 68 opening cases"
+  }
+]

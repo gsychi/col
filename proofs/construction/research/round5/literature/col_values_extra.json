@@ -1,0 +1,216 @@
+{
+ "increments": [
+  {
+   "graph": "grid_1x5",
+   "checked_failed": {
+    "I1": [
+     1280,
+     0
+    ],
+    "I2": [
+     1280,
+     0
+    ],
+    "I3": [
+     1280,
+     32
+    ]
+   },
+   "max_increment": {
+    "dead": "1",
+    "white_only": "1+*"
+   },
+   "max_witness": {
+    "dead": {
+     "A": 0,
+     "B": 0,
+     "u": 0
+    },
+    "white_only": {
+     "A": 0,
+     "B": 1,
+     "u": 0
+    }
+   },
+   "first_failures": {
+    "I3": {
+     "A": 0,
+     "B": 7,
+     "u": 1,
+     "diff": "1"
+    }
+   }
+  },
+  {
+   "graph": "grid_1x6",
+   "checked_failed": {
+    "I1": [
+     6144,
+     0
+    ],
+    "I2": [
+     6144,
+     0
+    ],
+    "I3": [
+     6144,
+     164
+    ]
+   },
+   "max_increment": {
+    "dead": "1",
+    "white_only": "1+*"
+   },
+   "max_witness": {
+    "dead": {
+     "A": 0,
+     "B": 0,
+     "u": 0
+    },
+    "white_only": {
+     "A": 0,
+     "B": 1,
+     "u": 0
+    }
+   },
+   "first_failures": {
+    "I3": {
+     "A": 0,
+     "B": 7,
+     "u": 1,
+     "diff": "1"
+    }
+   }
+  },
+  {
+   "graph": "grid_2x3",
+   "checked_failed": {
+    "I1": [
+     6144,
+     0
+    ],
+    "I2": [
+     6144,
+     0
+    ],
+    "I3": [
+     6144,
+     376
+    ]
+   },
+   "max_increment": {
+    "dead": "1",
+    "white_only": "3/2"
+   },
+   "max_witness": {
+    "dead": {
+     "A": 0,
+     "B": 0,
+     "u": 0
+    },
+    "white_only": {
+     "A": 1,
+     "B": 27,
+     "u": 4
+    }
+   },
+   "first_failures": {
+    "I3": {
+     "A": 0,
+     "B": 7,
+     "u": 1,
+     "diff": "1"
+    }
+   }
+  },
+  {
+   "graph": "grid_2x4",
+   "checked_failed": {
+    "I1": [
+     131072,
+     0
+    ],
+    "I2": [
+     131072,
+     0
+    ],
+    "I3": [
+     131072,
+     8728
+    ]
+   },
+   "max_increment": {
+    "dead": "1",
+    "white_only": "3/2"
+   },
+   "max_witness": {
+    "dead": {
+     "A": 0,
+     "B": 0,
+     "u": 0
+    },
+    "white_only": {
+     "A": 1,
+     "B": 51,
+     "u": 5
+    }
+   },
+   "first_failures": {
+    "I3": {
+     "A": 0,
+     "B": 7,
+     "u": 1,
+     "diff": "1"
+    }
+   }
+  },
+  {
+   "graph": "grid_3x3",
+   "checked_failed": {
+    "I1": [
+     589824,
+     0
+    ],
+    "I2": [
+     589824,
+     0
+    ],
+    "I3": [
+     589824,
+     34754
+    ]
+   },
+   "max_increment": {
+    "dead": "1",
+    "white_only": "3/2"
+   },
+   "max_witness": {
+    "dead": {
+     "A": 0,
+     "B": 0,
+     "u": 0
+    },
+    "white_only": {
+     "A": 1,
+     "B": 27,
+     "u": 4
+    }
+   },
+   "first_failures": {
+    "I3": {
+     "A": 0,
+     "B": 7,
+     "u": 1,
+     "diff": "1"
+    }
+   }
+  }
+ ],
+ "explosive_sets": {
+  "trials": 3000,
+  "applicable": 500,
+  "ok": 500,
+  "failed": 0,
+  "example": null
+ }
+}

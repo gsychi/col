@@ -1,0 +1,65 @@
+{
+  "scope": "New five-row finite checks only; symbolic arguments are in the linked research notes. Regression sweeps do not prove all-width conclusions.",
+  "response_dag_certificates": 30,
+  "checkpoints": 712,
+  "universal_response_edges": 2155,
+  "commands": [
+    {
+      "command": "python3 proofs/construction/research/dd_reduction_check.py",
+      "exit_code": 0,
+      "stdout": "VERIFIED 10 local contracts, endpoint V, and the isolated star\nVERIFIED 18 bound certificates: 70 checkpoints, 80 edges\nREGRESSION ONLY: 735 normalized openings, odd widths 3..31, strengthened R/X=False\nREGRESSION ONLY: 735 normalized openings, odd widths 3..31, strengthened R/X=True\n"
+    },
+    {
+      "command": "python3 proofs/construction/research/wf_white_first_check.py",
+      "exit_code": 0,
+      "stdout": "VERIFIED dd1_blue: 7 checkpoints, 9 edges\nVERIFIED dd1_white: 5 checkpoints, 6 edges\nVERIFIED dd3_blue: 261 checkpoints, 934 edges\nVERIFIED dd3_white_center_endpoint_child: 245 checkpoints, 876 edges\nVERIFIED du1_plus_eighth_blue: 11 checkpoints, 18 edges\nVERIFIED dj1_plus_three_eighths_blue: 11 checkpoints, 17 edges\nVERIFIED dt2_blue: 50 checkpoints, 126 edges\nVERIFIED dt2_white: 24 checkpoints, 49 edges\nVERIFIED white_center_cap_minus_value_blue: 7 checkpoints, 9 edges\nVERIFIED white_center_cap_minus_value_white: 5 checkpoints, 6 edges\nVERIFIED white_corner_cap_minus_value_blue: 9 checkpoints, 15 edges\nVERIFIED white_corner_cap_minus_value_white: 7 checkpoints, 10 edges\nVERIFIED 12 certificates, 642 checkpoints, 2075 edges\nREGRESSION: 2560 five-cell White-move support identities\nClaims: DD1=0; DD3<0; DU1<=-1/8; DJ1<=-3/8; DT2=0; local caps 1 and 1/2.\n"
+    },
+    {
+      "command": "python3 proofs/construction/research/dx_verify_interface_contracts.py",
+      "exit_code": 0,
+      "stdout": "Verified 21 complete one-column contracts and '..wbo' = -1/2.\nVerified 57216 rejected original-family side embeddings (finite regression only).\n"
+    },
+    {
+      "command": "python3 proofs/construction/research/test_new_certificates.py",
+      "exit_code": 0,
+      "stdout": "PASS: rejected illegal reply\nPASS: rejected missing first-player branch\nPASS: rejected non-dyadic number\nPASS: rejected missing successor checkpoint\n"
+    }
+  ],
+  "certificate_sha256": {
+    "dd_local_certificates/D_ge.json.gz": "152fdc0a901b9c12e333d4fcda957cb5c5102815f2458b030a007ebb6707e99c",
+    "dd_local_certificates/D_le.json.gz": "a0a36df6c215e5a7c18f8179b7ae02415d0501bf2425a55771235e5ef735be32",
+    "dd_local_certificates/J_ge.json.gz": "5587951105891e341056b9ed800ba76338d4a6fb936fc9acd76758818758cd52",
+    "dd_local_certificates/J_le.json.gz": "42d14fd85e08e0b1fa314c17ee18c3aab6de806662b0b957d6e380ddb4968635",
+    "dd_local_certificates/R_ge.json.gz": "d837ae4a5e1dddaafe22863f91fd43dc92efb3f80ede8e4ff6d165b256b8f670",
+    "dd_local_certificates/R_le.json.gz": "77ea5efa123dd6d4833882efd3125beb80527b1eeab4b76be7f4480fd399af60",
+    "dd_local_certificates/R_no_reply_ge.json.gz": "24c331f7350c073b0495d1a4bc1ab71a3ec8a252a7a8b5c7a857740c635e274b",
+    "dd_local_certificates/R_no_reply_le.json.gz": "de8bbf1d40f1ce0d15d487fb306f430e376ed1f96882e88a08a118abb4ed5d43",
+    "dd_local_certificates/U_ge.json.gz": "be6ef85126616573764fb34632c94d47f535b88847a43ef2997bf14ae8ac3e31",
+    "dd_local_certificates/U_le.json.gz": "63437064180c316ffdf94d689ead6b8e0aac1594d2fd54f432a6bba8bac89c85",
+    "dd_local_certificates/V_ge.json.gz": "345a8b7e611d25838d847459a2b5a9b1fc15da29014a8b48f09b5f7b18ddac07",
+    "dd_local_certificates/V_le.json.gz": "aa3f58334664b29411d51739f6d05c8e4aa801fc77be1d614cda12d921f8b7aa",
+    "dd_local_certificates/X_no_reply_ge.json.gz": "4d039b6f09566ff27c2e6d6c2e3f955631c2e70fd777f557bcaaebf42c079a0b",
+    "dd_local_certificates/X_no_reply_le.json.gz": "4d039b6f09566ff27c2e6d6c2e3f955631c2e70fd777f557bcaaebf42c079a0b",
+    "dd_local_certificates/corner_ge.json.gz": "be740c9e57b6adb7fceaa0e80dbe7a6cde7be94d5b3ead4903866fa086eeb359",
+    "dd_local_certificates/corner_le.json.gz": "5ac672f16e433e4b305b3baedffe262f1a40c050cc2f6503f3bb06f9220fc2cb",
+    "dd_local_certificates/corner_no_reply_ge.json.gz": "89137ee546380504ae9ddda5b5450f6eb762058ba189f181a99e429511ad0f1c",
+    "dd_local_certificates/corner_no_reply_le.json.gz": "f4c6edb8cfaa6ac486ad9f2764f8f2c4d401faff977affbfba8fe5046f9ee34b",
+    "wf_certificates/dd1_blue.json.gz": "e23a4289e7a45afabecec40c5a096fa371a65cb9765d587401f27bd98d4dc85b",
+    "wf_certificates/dd1_white.json.gz": "0e63470bb7bbaf563824446d6257797beb0e2f1a2f864967c78eb10b4fcbf66d",
+    "wf_certificates/dd3_blue.json.gz": "6c2423b951da0dc05c887fb7f143bd406f83390b7a4a34ebd30914fe19ee600e",
+    "wf_certificates/dd3_white_center_endpoint_child.json.gz": "fb95735934cd57920adb8aa8cdfb8930fb349ffcc67c0ad1cd64f711e3de7c7b",
+    "wf_certificates/dj1_plus_three_eighths_blue.json.gz": "efa91d144650e0aa424a5dd7a2123bc5ad7f494c11c6180baa42b62531faf283",
+    "wf_certificates/dt2_blue.json.gz": "ce1bc37ade0cd6e0b21427828b56b1bc8b3ac77bb3c9f0df6548a218fcfe1a34",
+    "wf_certificates/dt2_white.json.gz": "8094dd4b8aa50fd038e65e0d73af62a50561d684859c2f0260f9c1f076ecc277",
+    "wf_certificates/du1_plus_eighth_blue.json.gz": "21b4ea49714c66b9d1fe2fbdbf42d2a2e50064d77dd24c06fdda9c2c14c1148b",
+    "wf_certificates/white_center_cap_minus_value_blue.json.gz": "112e9e4f85130cc16c89a7ed8c5051f1106a0b3d275675ba82518ce1c0d3decd",
+    "wf_certificates/white_center_cap_minus_value_white.json.gz": "21424451e3f83d997d54cc0ddada95411652cda112d847acebda5d576e972a32",
+    "wf_certificates/white_corner_cap_minus_value_blue.json.gz": "5bd0e6fd9756fe3122bb58fc36df2a5cac5c2f19754de250e18363e8206615f2",
+    "wf_certificates/white_corner_cap_minus_value_white.json.gz": "1df3ed77928b86c559646cfe585e0f1132dbf224c96a48b1f683293475ac3fc6"
+  },
+  "historical_provenance_replay": {
+    "command": "python3 proofs/construction/research/provenance_check.py",
+    "exit_code": 0,
+    "stdout": "VERIFIED source DAGs: 25 certificates, 22423 checkpoints, 91789 edges\nVERIFIED stored 3x3 base: 4 representatives, 9 openings; geometry, reflections, and seams checked\nVERIFIED stored 3x7 base: 8 representatives, 21 openings; geometry, reflections, and seams checked\nVERIFIED stored 3x11 base: 12 representatives, 33 openings; geometry, reflections, and seams checked\nVERIFIED usable J5 <= 0: root (32767,21845), White ports 101/101, 490 checkpoints, 1829 edges\nFinite provenance checks passed; missing later gadget mappings remain separate.\n"
+  }
+}

@@ -1,0 +1,9 @@
+mask=495 safe=1 checkpoints=39 edges=96 minimax_calls=398 memo_entries=160
+mask=255 safe=0 checkpoints=18 edges=42 minimax_calls=470 memo_entries=174
+mask=383 safe=0 checkpoints=16 edges=34 minimax_calls=790 memo_entries=313
+mask=447 safe=0 checkpoints=22 edges=48 minimax_calls=885 memo_entries=333
+mask=479 safe=0 checkpoints=17 edges=35 minimax_calls=1045 memo_entries=386
+mask=503 safe=0 checkpoints=17 edges=35 minimax_calls=1125 memo_entries=404
+mask=507 safe=0 checkpoints=23 edges=53 minimax_calls=1218 memo_entries=421
+mask=509 safe=0 checkpoints=16 edges=32 minimax_calls=1271 memo_entries=430
+mask=510 safe=0 checkpoints=23 edges=53 minimax_calls=1391 memo_entries=459

@@ -1,0 +1,1 @@
+certificate /mnt/data/col_tile_atlas/certificates/numeric/extrusion_minus_3_4_blue.json checkpoints=8319 edges=44405

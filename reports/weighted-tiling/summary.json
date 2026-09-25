@@ -1,0 +1,863 @@
+{
+  "seed": 20260905,
+  "repeats": 3,
+  "source_check_seconds": 2.3463846249505877,
+  "assembly_check_seconds": 0.013741176109761,
+  "peak_process_mib": 105.640625,
+  "modes": {
+    "original": {
+      "variants": 71,
+      "wall_seconds": [
+        0.3151496178470552,
+        0.3480162504129112,
+        0.3404883868061006
+      ],
+      "median_seconds": 0.3404883868061006,
+      "metrics": {
+        "queries": 3387,
+        "matching_tiles": 19402,
+        "covers": 103,
+        "query_seconds": 0.3309444538317621
+      }
+    },
+    "nonpositive": {
+      "variants": 97,
+      "wall_seconds": [
+        0.3561672945506871,
+        0.3918391279876232,
+        0.3731456655077636
+      ],
+      "median_seconds": 0.3731456655077636,
+      "metrics": {
+        "queries": 3302,
+        "matching_tiles": 28873,
+        "covers": 167,
+        "query_seconds": 0.3635580549016595
+      }
+    },
+    "weighted": {
+      "variants": 113,
+      "wall_seconds": [
+        0.35870272386819124,
+        0.37027969816699624,
+        0.37766421400010586
+      ],
+      "median_seconds": 0.37027969816699624,
+      "metrics": {
+        "queries": 3127,
+        "matching_tiles": 36394,
+        "covers": 204,
+        "query_seconds": 0.3671415173448622
+      }
+    }
+  },
+  "boards": [
+    {
+      "board": "3x3",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 4,
+            "accepted": 4,
+            "kinds": {
+              "reply": 4
+            }
+          },
+          "late": {
+            "total": 18,
+            "accepted": 16,
+            "kinds": {
+              "own_upper": 7,
+              "reply": 9,
+              "unknown": 2
+            }
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 4,
+            "accepted": 4,
+            "kinds": {
+              "reply": 3,
+              "opponent_negative": 1
+            }
+          },
+          "late": {
+            "total": 18,
+            "accepted": 16,
+            "kinds": {
+              "own_upper": 7,
+              "reply": 7,
+              "opponent_negative": 2,
+              "unknown": 2
+            }
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 4,
+            "accepted": 4,
+            "kinds": {
+              "reply": 3,
+              "opponent_negative": 1
+            }
+          },
+          "late": {
+            "total": 18,
+            "accepted": 16,
+            "kinds": {
+              "own_upper": 7,
+              "reply": 7,
+              "opponent_negative": 2,
+              "unknown": 2
+            }
+          }
+        }
+      }
+    },
+    {
+      "board": "3x5",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 1,
+            "accepted": 1,
+            "kinds": {
+              "own_upper": 1
+            }
+          },
+          "opening": {
+            "total": 6,
+            "accepted": 3,
+            "kinds": {
+              "reply": 3,
+              "unknown": 3
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 5,
+            "kinds": {
+              "unknown": 19,
+              "own_upper": 1,
+              "reply": 4
+            }
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 1,
+            "accepted": 1,
+            "kinds": {
+              "own_upper": 1
+            }
+          },
+          "opening": {
+            "total": 6,
+            "accepted": 6,
+            "kinds": {
+              "reply": 2,
+              "opponent_negative": 4
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 5,
+            "kinds": {
+              "unknown": 19,
+              "own_upper": 1,
+              "reply": 4
+            }
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 1,
+            "accepted": 1,
+            "kinds": {
+              "own_upper": 1
+            }
+          },
+          "opening": {
+            "total": 6,
+            "accepted": 6,
+            "kinds": {
+              "reply": 2,
+              "opponent_negative": 4
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 5,
+            "kinds": {
+              "unknown": 19,
+              "own_upper": 1,
+              "reply": 4
+            }
+          }
+        }
+      }
+    },
+    {
+      "board": "3x7",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 8,
+            "accepted": 8,
+            "kinds": {
+              "reply": 8
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 2,
+            "kinds": {
+              "unknown": 22,
+              "own_upper": 2
+            }
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 8,
+            "accepted": 8,
+            "kinds": {
+              "reply": 7,
+              "opponent_negative": 1
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 2,
+            "kinds": {
+              "unknown": 22,
+              "own_upper": 2
+            }
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 8,
+            "accepted": 8,
+            "kinds": {
+              "reply": 3,
+              "opponent_negative": 5
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 2,
+            "kinds": {
+              "unknown": 22,
+              "own_upper": 2
+            }
+          }
+        }
+      }
+    },
+    {
+      "board": "3x9",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 1,
+            "accepted": 1,
+            "kinds": {
+              "own_upper": 1
+            }
+          },
+          "opening": {
+            "total": 10,
+            "accepted": 6,
+            "kinds": {
+              "reply": 6,
+              "unknown": 4
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 2,
+            "kinds": {
+              "unknown": 22,
+              "reply": 1,
+              "own_upper": 1
+            }
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 1,
+            "accepted": 1,
+            "kinds": {
+              "own_upper": 1
+            }
+          },
+          "opening": {
+            "total": 10,
+            "accepted": 10,
+            "kinds": {
+              "reply": 4,
+              "opponent_negative": 6
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 2,
+            "kinds": {
+              "unknown": 22,
+              "reply": 1,
+              "own_upper": 1
+            }
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 1,
+            "accepted": 1,
+            "kinds": {
+              "own_upper": 1
+            }
+          },
+          "opening": {
+            "total": 10,
+            "accepted": 10,
+            "kinds": {
+              "reply": 4,
+              "opponent_negative": 6
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 2,
+            "kinds": {
+              "unknown": 22,
+              "reply": 1,
+              "own_upper": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "board": "3x11",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 12,
+            "accepted": 12,
+            "kinds": {
+              "reply": 12
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 12,
+            "accepted": 12,
+            "kinds": {
+              "reply": 11,
+              "opponent_negative": 1
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 12,
+            "accepted": 12,
+            "kinds": {
+              "reply": 5,
+              "opponent_negative": 7
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "board": "3x13",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 1,
+            "accepted": 1,
+            "kinds": {
+              "own_upper": 1
+            }
+          },
+          "opening": {
+            "total": 14,
+            "accepted": 7,
+            "kinds": {
+              "reply": 7,
+              "unknown": 7
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 1,
+            "accepted": 1,
+            "kinds": {
+              "own_upper": 1
+            }
+          },
+          "opening": {
+            "total": 14,
+            "accepted": 13,
+            "kinds": {
+              "reply": 5,
+              "opponent_negative": 8,
+              "unknown": 1
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 1,
+            "accepted": 1,
+            "kinds": {
+              "own_upper": 1
+            }
+          },
+          "opening": {
+            "total": 14,
+            "accepted": 13,
+            "kinds": {
+              "reply": 5,
+              "opponent_negative": 8,
+              "unknown": 1
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "board": "3x15",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 16,
+            "accepted": 16,
+            "kinds": {
+              "reply": 16
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 16,
+            "accepted": 16,
+            "kinds": {
+              "reply": 16
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 16,
+            "accepted": 16,
+            "kinds": {
+              "reply": 8,
+              "opponent_negative": 8
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "board": "5x5",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 9,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 9
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 9,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 9
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 9,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 9
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "board": "5x7",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 12,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 12
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 12,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 12
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 1,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 1
+            }
+          },
+          "opening": {
+            "total": 12,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 12
+            }
+          },
+          "late": {
+            "total": 24,
+            "accepted": 0,
+            "kinds": {
+              "unknown": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "board": "3x19",
+      "modes": {
+        "original": {
+          "empty": {
+            "total": 0,
+            "accepted": 0,
+            "kinds": {}
+          },
+          "opening": {
+            "total": 20,
+            "accepted": 19,
+            "kinds": {
+              "reply": 19,
+              "unknown": 1
+            }
+          },
+          "late": {
+            "total": 0,
+            "accepted": 0,
+            "kinds": {}
+          }
+        },
+        "nonpositive": {
+          "empty": {
+            "total": 0,
+            "accepted": 0,
+            "kinds": {}
+          },
+          "opening": {
+            "total": 20,
+            "accepted": 19,
+            "kinds": {
+              "reply": 19,
+              "unknown": 1
+            }
+          },
+          "late": {
+            "total": 0,
+            "accepted": 0,
+            "kinds": {}
+          }
+        },
+        "weighted": {
+          "empty": {
+            "total": 0,
+            "accepted": 0,
+            "kinds": {}
+          },
+          "opening": {
+            "total": 20,
+            "accepted": 19,
+            "kinds": {
+              "reply": 9,
+              "opponent_negative": 10,
+              "unknown": 1
+            }
+          },
+          "late": {
+            "total": 0,
+            "accepted": 0,
+            "kinds": {}
+          }
+        }
+      }
+    }
+  ],
+  "new_vs_original": [
+    "3x5/opening/0,1",
+    "3x5/opening/1,1",
+    "3x5/opening/1,2",
+    "3x9/opening/0,1",
+    "3x9/opening/0,3",
+    "3x9/opening/1,2",
+    "3x9/opening/1,3",
+    "3x13/opening/0,1",
+    "3x13/opening/0,3",
+    "3x13/opening/0,5",
+    "3x13/opening/1,2",
+    "3x13/opening/1,3",
+    "3x13/opening/1,6"
+  ],
+  "new_vs_nonpositive": [],
+  "missing_opening_checkpoint_probe": {
+    "variants": 5012,
+    "seconds": 0.08368108374997973,
+    "metrics": {
+      "queries": 11,
+      "matching_tiles": 747,
+      "covers": 5,
+      "query_seconds": 0.037092626094818115
+    },
+    "outcome": "win"
+  },
+  "verification": {
+    "sources": 44,
+    "checked_results": 336,
+    "cases": 330
+  },
+  "dfs_cutoffs": 0,
+  "production_defaults_changed": false
+}

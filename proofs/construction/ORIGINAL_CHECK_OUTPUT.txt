@@ -1,0 +1,11 @@
+{
+  "result": "VERIFIED: empty 3x15 Col is a second-player win",
+  "demon_state": "VERIFIED: White wins by playing cell 12",
+  "opening_representatives": 16,
+  "opening_cells_covered": 45,
+  "tile_certificates": 25,
+  "largest_tile_cells": 21,
+  "checkpoints": 22423,
+  "blue_move_white_reply_edges": 91789,
+  "elapsed_seconds": 0.4495090660000187
+}

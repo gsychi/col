@@ -1,0 +1,6 @@
+  new family X0 q(even,odd)=(1,0)  w7=ooooooo/booooob/.boooow/booooob/ooooooo
+check X0 parity 0 (q 1, level 0)  [families 1, queue 1, searches 3, 7s]
+  new family X1 q(even,odd)=(3,3)  w7=oooooob/booooob/.boooob/booooob/oooooob
+  new family X2 q(even,odd)=(1,1/2)  w7=ooooooo/boooooo/.booooo/boooooo/ooooooo
+  new family X3 q(even,odd)=(1,2)  w7=oooooob/boooooo/.boooob/boooooo/oooooob
+  new family X4 q(even,odd)=(3/2,1/2)  w7=ooooooo/booooob/.booooo/booooob/ooooooo

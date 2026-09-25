@@ -1,0 +1,18 @@
+{"family": "DD", "width": 7, "status": "Completed", "value": "-1", "trail": "-1:P", "wall_seconds": 63.1}
+{"family": "DU", "width": 7, "status": "Completed", "value": "-1", "trail": "-1:P", "wall_seconds": 199.6}
+{"family": "RX", "width": 7, "status": "Completed", "value": "1/2", "trail": "1/2:P", "wall_seconds": 476.3}
+{"family": "VX", "width": 7, "status": "Completed", "value": "1/2", "trail": "1/2:P", "wall_seconds": 345.8}
+{"family": "M", "width": 7, "status": "Completed", "value": "-1", "trail": "0:R -1:P", "wall_seconds": 1.0}
+{"family": "XX", "width": 7, "status": "Completed", "value": "1/2", "trail": "5/8:R 0:L 1/2:P", "wall_seconds": 988.3}
+{"family": "D", "width": 7, "status": "Completed", "value": "-1/2", "trail": "-1/2:P", "wall_seconds": 30.1}
+{"family": "V", "width": 7, "status": "Completed", "value": "1", "trail": "0:L 1:P", "wall_seconds": 6.6}
+{"family": "U", "width": 7, "status": "Completed", "value": "-1/2", "trail": "0:R -1:L -1/2:P", "wall_seconds": 77.2}
+{"family": "R", "width": 7, "status": "Completed", "value": "0", "trail": "0:P", "wall_seconds": 9.2}
+{"family": "J", "width": 7, "status": "Completed", "value": "0", "trail": "0:P", "wall_seconds": 7.6}
+{"family": "DV", "width": 7, "status": "Completed", "value": "1", "trail": "1:P", "wall_seconds": 1.7}
+{"family": "X", "width": 7, "status": "Completed", "value": "1/2", "trail": "1/2:P", "wall_seconds": 141.5}
+{"family": "DJ", "width": 7, "status": "Completed", "value": "-1/2", "trail": "-5/8:L 0:R -1/2:P", "wall_seconds": 1206.1}
+{"family": "DX", "width": 7, "status": "Completed", "value": "1/2", "trail": "1/2:P", "wall_seconds": 35.8}
+{"family": "XU", "width": 7, "status": "Completed", "value": "1/2", "trail": "1:R 0:L 1/2:P", "wall_seconds": 49.2}
+{"family": "DT", "width": 7, "status": "Completed", "value": "1", "trail": "0:L 1:P", "wall_seconds": 2.0}
+{"family": "XJ", "width": 7, "status": "Completed", "value": "1/2", "trail": "1/2:P", "wall_seconds": 31.0}

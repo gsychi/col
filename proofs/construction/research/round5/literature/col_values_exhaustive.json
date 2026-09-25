@@ -1,0 +1,553 @@
+{
+ "graphs": {
+  "grid_1x1": {
+   "states": 4,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 1,
+   "X1_fail": 0,
+   "distinct_values": 4,
+   "max_denominator": 1,
+   "seconds": 0.0,
+   "values_sample": {
+    "0": 1,
+    "-1": 1,
+    "1": 1,
+    "*": 1
+   }
+  },
+  "grid_1x2": {
+   "states": 16,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 4,
+   "X1_fail": 0,
+   "distinct_values": 6,
+   "max_denominator": 2,
+   "seconds": 0.0,
+   "values_sample": {
+    "0": 4,
+    "-1": 3,
+    "1": 3,
+    "*": 2,
+    "-1/2": 2,
+    "1/2": 2
+   }
+  },
+  "grid_1x3": {
+   "states": 64,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 16,
+   "X1_fail": 0,
+   "distinct_values": 10,
+   "max_denominator": 2,
+   "seconds": 0.0,
+   "values_sample": {
+    "0": 19,
+    "-1/2": 8,
+    "1/2": 8,
+    "-1": 7,
+    "1": 7,
+    "-1+*": 4,
+    "1+*": 4,
+    "*": 3,
+    "-2": 2,
+    "2": 2
+   }
+  },
+  "grid_1x4": {
+   "states": 256,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 82,
+   "X1_fail": 0,
+   "distinct_values": 18,
+   "max_denominator": 4,
+   "seconds": 0.0,
+   "values_sample": {
+    "0": 54,
+    "-1": 28,
+    "1": 28,
+    "-1/2": 28,
+    "1/2": 28,
+    "*": 14,
+    "-1+*": 12,
+    "1+*": 12,
+    "-2": 8,
+    "-3/2": 8,
+    "2": 8,
+    "3/2": 8
+   }
+  },
+  "grid_1x5": {
+   "states": 1024,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 378,
+   "X1_fail": 0,
+   "distinct_values": 24,
+   "max_denominator": 4,
+   "seconds": 0.1,
+   "values_sample": {
+    "0": 170,
+    "-1": 124,
+    "1": 124,
+    "-1/2": 105,
+    "1/2": 105,
+    "*": 72,
+    "-3/2": 40,
+    "3/2": 40,
+    "-1+*": 30,
+    "1+*": 30,
+    "-2": 26,
+    "2": 26
+   }
+  },
+  "grid_1x6": {
+   "states": 4096,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 1585,
+   "X1_fail": 0,
+   "distinct_values": 38,
+   "max_denominator": 8,
+   "seconds": 0.4,
+   "values_sample": {
+    "0": 634,
+    "-1": 429,
+    "1": 429,
+    "-1/2": 419,
+    "1/2": 419,
+    "*": 230,
+    "-3/2": 156,
+    "3/2": 156,
+    "-1+*": 132,
+    "1+*": 132,
+    "-2": 114,
+    "2": 114
+   }
+  },
+  "grid_1x7": {
+   "states": 16384,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 6618,
+   "X1_fail": 0,
+   "distinct_values": 50,
+   "max_denominator": 8,
+   "seconds": 2.2,
+   "values_sample": {
+    "0": 2336,
+    "-1/2": 1600,
+    "1/2": 1600,
+    "-1": 1515,
+    "1": 1515,
+    "*": 772,
+    "-3/2": 660,
+    "3/2": 660,
+    "-1+*": 606,
+    "1+*": 606,
+    "-2": 544,
+    "2": 544
+   }
+  },
+  "grid_2x2": {
+   "states": 256,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 60,
+   "X1_fail": 0,
+   "distinct_values": 12,
+   "max_denominator": 2,
+   "seconds": 0.0,
+   "values_sample": {
+    "0": 94,
+    "-1/2": 32,
+    "1/2": 32,
+    "-1": 24,
+    "1": 24,
+    "-1+*": 12,
+    "1+*": 12,
+    "-2": 7,
+    "2": 7,
+    "*": 4,
+    "-3/2": 4,
+    "3/2": 4
+   }
+  },
+  "grid_2x3": {
+   "states": 4096,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 1549,
+   "X1_fail": 10,
+   "distinct_values": 26,
+   "max_denominator": 4,
+   "seconds": 0.4,
+   "values_sample": {
+    "0": 740,
+    "-1": 584,
+    "1": 584,
+    "-1/2": 426,
+    "1/2": 426,
+    "*": 258,
+    "-3/2": 150,
+    "3/2": 150,
+    "-2": 86,
+    "2": 86,
+    "-1/4": 84,
+    "1/4": 84
+   }
+  },
+  "grid_2x4": {
+   "states": 65536,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 25222,
+   "X1_fail": 112,
+   "distinct_values": 54,
+   "max_denominator": 8,
+   "seconds": 10.4,
+   "values_sample": {
+    "0": 12306,
+    "-1/2": 6836,
+    "1/2": 6836,
+    "-1": 6581,
+    "1": 6581,
+    "-3/2": 2322,
+    "3/2": 2322,
+    "-2": 2305,
+    "2": 2305,
+    "-1+*": 2224,
+    "1+*": 2224,
+    "*": 1860
+   }
+  },
+  "grid_3x3": {
+   "states": 262144,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 109772,
+   "X1_fail": 664,
+   "distinct_values": 66,
+   "max_denominator": 8,
+   "seconds": 52.2,
+   "values_sample": {
+    "0": 39496,
+    "-1": 27946,
+    "1": 27946,
+    "-1/2": 23709,
+    "1/2": 23709,
+    "*": 11338,
+    "-3/2": 10556,
+    "3/2": 10556,
+    "-2": 8798,
+    "2": 8798,
+    "-1+*": 6740,
+    "1+*": 6740
+   }
+  },
+  "cycle_3": {
+   "states": 64,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 12,
+   "X1_fail": 0,
+   "distinct_values": 6,
+   "max_denominator": 2,
+   "seconds": 0.0,
+   "values_sample": {
+    "0": 29,
+    "-1/2": 9,
+    "1/2": 9,
+    "-1": 7,
+    "1": 7,
+    "*": 3
+   }
+  },
+  "cycle_4": {
+   "states": 256,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 60,
+   "X1_fail": 0,
+   "distinct_values": 12,
+   "max_denominator": 2,
+   "seconds": 0.0,
+   "values_sample": {
+    "0": 94,
+    "-1/2": 32,
+    "1/2": 32,
+    "-1": 24,
+    "1": 24,
+    "-1+*": 12,
+    "1+*": 12,
+    "-2": 7,
+    "2": 7,
+    "*": 4,
+    "-3/2": 4,
+    "3/2": 4
+   }
+  },
+  "cycle_5": {
+   "states": 1024,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 335,
+   "X1_fail": 0,
+   "distinct_values": 18,
+   "max_denominator": 4,
+   "seconds": 0.1,
+   "values_sample": {
+    "0": 242,
+    "-1": 130,
+    "1": 130,
+    "-1/2": 115,
+    "1/2": 115,
+    "*": 50,
+    "-3/2": 35,
+    "3/2": 35,
+    "-1+*": 25,
+    "1+*": 25,
+    "-2": 21,
+    "2": 21
+   }
+  },
+  "cycle_6": {
+   "states": 4096,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 1489,
+   "X1_fail": 0,
+   "distinct_values": 26,
+   "max_denominator": 4,
+   "seconds": 0.3,
+   "values_sample": {
+    "0": 814,
+    "-1": 504,
+    "1": 504,
+    "-1/2": 452,
+    "1/2": 452,
+    "*": 206,
+    "-3/2": 144,
+    "3/2": 144,
+    "-2": 87,
+    "2": 87,
+    "-1/4": 84,
+    "1/4": 84
+   }
+  },
+  "cycle_7": {
+   "states": 16384,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 6209,
+   "X1_fail": 0,
+   "distinct_values": 38,
+   "max_denominator": 8,
+   "seconds": 1.7,
+   "values_sample": {
+    "0": 3026,
+    "-1/2": 1771,
+    "1/2": 1771,
+    "-1": 1694,
+    "1": 1694,
+    "*": 602,
+    "-3/2": 588,
+    "3/2": 588,
+    "-2": 455,
+    "2": 455,
+    "-1+*": 427,
+    "1+*": 427
+   }
+  },
+  "star_K1_4": {
+   "states": 1024,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 400,
+   "X1_fail": 16,
+   "distinct_values": 22,
+   "max_denominator": 2,
+   "seconds": 0.1,
+   "values_sample": {
+    "0": 161,
+    "-1": 117,
+    "1": 117,
+    "*": 117,
+    "-1+*": 88,
+    "1+*": 88,
+    "-2": 60,
+    "2": 60,
+    "-1/2": 32,
+    "1/2": 32,
+    "-2+*": 24,
+    "-3/2": 24
+   }
+  },
+  "K4": {
+   "states": 256,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 32,
+   "X1_fail": 0,
+   "distinct_values": 6,
+   "max_denominator": 2,
+   "seconds": 0.0,
+   "values_sample": {
+    "0": 166,
+    "-1/2": 28,
+    "1/2": 28,
+    "-1": 15,
+    "1": 15,
+    "*": 4
+   }
+  },
+  "K2_3": {
+   "states": 1024,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 339,
+   "X1_fail": 9,
+   "distinct_values": 16,
+   "max_denominator": 2,
+   "seconds": 0.1,
+   "values_sample": {
+    "0": 259,
+    "-1": 153,
+    "1": 153,
+    "-1/2": 90,
+    "1/2": 90,
+    "*": 75,
+    "-3/2": 36,
+    "3/2": 36,
+    "-1+*": 26,
+    "1+*": 26,
+    "-2": 24,
+    "2": 24
+   }
+  },
+  "plus_cross_9": {
+   "states": 262144,
+   "T1_fail": 0,
+   "T2_fail": 0,
+   "T3_fail": 0,
+   "T5_fail": 0,
+   "X1_checked": 117557,
+   "X1_fail": 250,
+   "distinct_values": 82,
+   "max_denominator": 8,
+   "seconds": 65.4,
+   "values_sample": {
+    "0": 25396,
+    "-1": 20052,
+    "1": 20052,
+    "-1/2": 19728,
+    "1/2": 19728,
+    "*": 13416,
+    "-3/2": 11840,
+    "3/2": 11840,
+    "-1+*": 9936,
+    "1+*": 9936,
+    "-2": 9382,
+    "2": 9382
+   }
+  }
+ },
+ "X1_counterexamples": {
+  "grid_2x3": {
+   "A": 7,
+   "B": 18,
+   "value": "1",
+   "winning_moves": [
+    0,
+    2
+   ]
+  },
+  "grid_2x4": {
+   "A": 7,
+   "B": 34,
+   "value": "1",
+   "winning_moves": [
+    0,
+    2
+   ]
+  },
+  "grid_3x3": {
+   "A": 7,
+   "B": 18,
+   "value": "1",
+   "winning_moves": [
+    0,
+    2
+   ]
+  },
+  "star_K1_4": {
+   "A": 7,
+   "B": 9,
+   "value": "1",
+   "winning_moves": [
+    1,
+    2
+   ]
+  },
+  "K2_3": {
+   "A": 13,
+   "B": 17,
+   "value": "1",
+   "winning_moves": [
+    2,
+    3
+   ]
+  },
+  "plus_cross_9": {
+   "A": 11,
+   "B": 33,
+   "value": "1",
+   "winning_moves": [
+    1,
+    3
+   ]
+  }
+ },
+ "canonical_forms": 296
+}

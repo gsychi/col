@@ -17,3 +17,6 @@ data/tablebases/*.bin.z
 
 # Cursor
 .cursor/
+
+# Runtime one-sided strategy artifacts
+/data/proofs/

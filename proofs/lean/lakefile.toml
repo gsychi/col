@@ -1,0 +1,5 @@
+name = "ColProof"
+defaultTargets = ["ColProof"]
+
+[[lean_lib]]
+name = "ColProof"

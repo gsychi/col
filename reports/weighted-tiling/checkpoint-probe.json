@@ -1,0 +1,114 @@
+{
+  "format": "col-checkpoint-probe-v1",
+  "source_evidence": "evidence.json.gz",
+  "discovered_opening": [
+    1,
+    7
+  ],
+  "white_response": 8,
+  "added": [
+    {
+      "tile": "certificates/mined_a8a00f0da6dddb4653c6.json.gz",
+      "source": "signed/economical_bulk_blue.json.gz",
+      "source_sha256": "d8563481d51c437fe6518cbe9a1af90682c6357d0603b047a8adcfcdd8143da6",
+      "checkpoint": [
+        1843,
+        1825,
+        0,
+        1
+      ],
+      "nodes": 17,
+      "edges": 35
+    }
+  ],
+  "older_checkpoint_matches": [
+    {
+      "source": "original/certificates/tile_675ea04f7dff.json.gz",
+      "checkpoint": [
+        3788,
+        3656,
+        0,
+        1
+      ],
+      "row_flip": false,
+      "column_flip": true,
+      "nodes": 17,
+      "edges": 35
+    },
+    {
+      "source": "original/certificates/tile_e4d37d528005.json.gz",
+      "checkpoint": [
+        1843,
+        1825,
+        0,
+        1
+      ],
+      "row_flip": false,
+      "column_flip": false,
+      "nodes": 17,
+      "edges": 35
+    }
+  ],
+  "boards": [
+    {
+      "board": "3x19",
+      "outcome": "loss",
+      "uncovered": [],
+      "opening_assemblies": 57,
+      "seconds": 0.2939352081157267,
+      "replay_games": 342,
+      "replay_moves": 13680,
+      "rust_verifier": "VERIFIED: 3x19 loss (side to move); 57 opening cases"
+    },
+    {
+      "board": "3x23",
+      "outcome": "unknown",
+      "uncovered": [
+        34
+      ],
+      "opening_assemblies": 68,
+      "seconds": 0.07346062501892447,
+      "replay_games": 0,
+      "replay_moves": 0,
+      "rust_verifier": "VERIFIED: 3x23 unknown (side to move); 68 opening cases"
+    },
+    {
+      "board": "3x27",
+      "outcome": "unknown",
+      "uncovered": [
+        38,
+        42
+      ],
+      "opening_assemblies": 79,
+      "seconds": 0.07683537527918816,
+      "replay_games": 0,
+      "replay_moves": 0,
+      "rust_verifier": "VERIFIED: 3x27 unknown (side to move); 79 opening cases"
+    },
+    {
+      "board": "3x31",
+      "outcome": "unknown",
+      "uncovered": [
+        42,
+        46,
+        50
+      ],
+      "opening_assemblies": 90,
+      "seconds": 0.09254433307796717,
+      "replay_games": 0,
+      "replay_moves": 0,
+      "rust_verifier": "VERIFIED: 3x31 unknown (side to move); 90 opening cases"
+    },
+    {
+      "board": "3x101",
+      "outcome": "loss",
+      "uncovered": [],
+      "opening_assemblies": 0,
+      "seconds": 0.06191083276644349,
+      "replay_games": 1818,
+      "replay_moves": 386340,
+      "rust_verifier": "VERIFIED: 3x101 loss (side to move); 0 opening cases"
+    }
+  ],
+  "note": "Finite board proofs using extracted zero-offset DAGs; production default library unchanged. Replay samples supplement complete DAG and assembly checking."
+}

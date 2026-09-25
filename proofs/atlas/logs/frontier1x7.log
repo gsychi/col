@@ -1,0 +1,7 @@
+mask=119 safe=1 checkpoints=20 edges=44 minimax_calls=145 memo_entries=52
+mask=63 safe=0 checkpoints=10 edges=18 minimax_calls=190 memo_entries=68
+mask=95 safe=0 checkpoints=8 edges=13 minimax_calls=347 memo_entries=133
+mask=111 safe=0 checkpoints=10 edges=17 minimax_calls=404 memo_entries=151
+mask=123 safe=0 checkpoints=10 edges=18 minimax_calls=528 memo_entries=201
+mask=125 safe=0 checkpoints=8 edges=13 minimax_calls=552 memo_entries=206
+mask=126 safe=0 checkpoints=10 edges=20 minimax_calls=705 memo_entries=264

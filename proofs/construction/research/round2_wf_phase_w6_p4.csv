@@ -1,0 +1,4 @@
+width,row,column,state,quarter_offset,result,visits,memo
+6,2,4,V,-4,0,6655478,2053355
+6,2,4,R,0,2,10000001,5079249
+6,2,4,X,0,2,10000001,2867609

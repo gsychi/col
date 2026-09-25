@@ -7,6 +7,7 @@
 
 mod endgame;
 mod tablebase;
+pub mod tiling;
 
 use dashmap::DashMap;
 use endgame::{
@@ -1295,6 +1296,11 @@ struct Stats {
     component_bag_shared_duplicate_inserts: u64,
     component_bag_raw_id_hits: u64,
     component_bag_signature_hits: u64,
+    component_charge_queries: u64,
+    component_charge_win_hits: u64,
+    component_charge_loss_hits: u64,
+    component_charge_fixed_checks: u64,
+    component_charge_greedy_checks: u64,
     component_signature_shared_queries: u64,
     component_signature_shared_hits: u64,
     component_signature_shared_inserts: u64,
@@ -1366,6 +1372,11 @@ impl Stats {
         self.component_bag_shared_duplicate_inserts += other.component_bag_shared_duplicate_inserts;
         self.component_bag_raw_id_hits += other.component_bag_raw_id_hits;
         self.component_bag_signature_hits += other.component_bag_signature_hits;
+        self.component_charge_queries += other.component_charge_queries;
+        self.component_charge_win_hits += other.component_charge_win_hits;
+        self.component_charge_loss_hits += other.component_charge_loss_hits;
+        self.component_charge_fixed_checks += other.component_charge_fixed_checks;
+        self.component_charge_greedy_checks += other.component_charge_greedy_checks;
         self.component_signature_shared_queries += other.component_signature_shared_queries;
         self.component_signature_shared_hits += other.component_signature_shared_hits;
         self.component_signature_shared_inserts += other.component_signature_shared_inserts;
@@ -1426,6 +1437,11 @@ impl Stats {
             endgame.component_bag_shared_duplicate_inserts;
         self.component_bag_raw_id_hits += endgame.component_bag_raw_id_hits;
         self.component_bag_signature_hits += endgame.component_bag_signature_hits;
+        self.component_charge_queries += endgame.component_charge_queries;
+        self.component_charge_win_hits += endgame.component_charge_win_hits;
+        self.component_charge_loss_hits += endgame.component_charge_loss_hits;
+        self.component_charge_fixed_checks += endgame.component_charge_fixed_checks;
+        self.component_charge_greedy_checks += endgame.component_charge_greedy_checks;
         self.component_signature_shared_queries += endgame.component_signature_shared_queries;
         self.component_signature_shared_hits += endgame.component_signature_shared_hits;
         self.component_signature_shared_inserts += endgame.component_signature_shared_inserts;
@@ -1450,6 +1466,10 @@ impl Stats {
 /// Cross-thread coordination: aggregated progress counter, throttle for
 /// progress lines, cancel flag, and optional adaptive move ordering.
 struct Coordination {
+    proof: Option<Arc<tiling::Evaluator>>,
+    proof_search: bool,
+    proof_known: FxHashMap<u128, bool>,
+    proof_leaves: Mutex<Vec<tiling::Leaf>>,
     searched: AtomicU64,
     last_report_ms: AtomicU64,
     cancel: AtomicBool,
@@ -1471,6 +1491,7 @@ struct Coordination {
     and_split_fanout: usize,
     persistent_component_bags: bool,
     component_native_one_large: bool,
+    component_charge_bounds: bool,
 }
 
 const ADAPT_MIN_STATES: u64 = 1_000_000;
@@ -1490,8 +1511,13 @@ impl Coordination {
         and_split_fanout: usize,
         persistent_component_bags: bool,
         component_native_one_large: bool,
+        component_charge_bounds: bool,
     ) -> Coordination {
         Coordination {
+            proof: None,
+            proof_search: false,
+            proof_known: FxHashMap::default(),
+            proof_leaves: Mutex::new(Vec::new()),
             searched: AtomicU64::new(0),
             last_report_ms: AtomicU64::new(0),
             cancel: AtomicBool::new(false),
@@ -1513,6 +1539,7 @@ impl Coordination {
             and_split_fanout,
             persistent_component_bags,
             component_native_one_large,
+            component_charge_bounds,
         }
     }
 
@@ -1623,6 +1650,9 @@ impl<'a, M: Memo> Solver<'a, M> {
         let endgame = (endgame_size > 0).then(|| {
             let mut evaluator = EndgameEvaluator::new(endgame_size, shared_endgame);
             evaluator.set_component_bag_policy(coord.component_bag_policy);
+            if coord.component_charge_bounds {
+                evaluator.enable_component_charge_bounds();
+            }
             if coord.persistent_component_bags {
                 evaluator.enable_shared_component_bags();
             }
@@ -1751,6 +1781,36 @@ impl<'a, M: Memo> Solver<'a, M> {
         last_p1_move: Option<usize>,
         known_unreduced_miss: bool,
     ) -> Option<bool> {
+        // Check unreduced permissions so the saved witness describes this exact state.
+        if let Some(&wins) = self.coord.proof_known.get(&key) {
+            if let Some(e) = &self.coord.proof {
+                e.cutoff();
+            }
+            self.remember(key, p1_legal, p2_legal, wins);
+            return Some(wins);
+        }
+        if self.coord.proof_search {
+            if let Some(e) = &self.coord.proof {
+                let columns = tiling::from_masks(self.board.m, self.board.n, p1_legal, p2_legal);
+                let found = if let Some(w) = e.plan(self.board.m, &columns, turn) {
+                    Some((false, None, w))
+                } else {
+                    e.winning_response(self.board.m, &columns, turn)
+                        .map(|(c, w)| (true, Some(c), w))
+                };
+                if let Some((wins, response, witness)) = found {
+                    e.cutoff();
+                    self.coord.proof_leaves.lock().unwrap().push(tiling::Leaf {
+                        columns,
+                        turn,
+                        response,
+                        witness,
+                    });
+                    self.remember(key, p1_legal, p2_legal, wins);
+                    return Some(wins);
+                }
+            }
+        }
         let mut skip_reduction = false;
         let mut raw_endgame_miss = false;
         if known_unreduced_miss && self.coord.component_reduction {
@@ -2400,7 +2460,15 @@ fn solve_parallel_root<M: Memo + Sync>(
     order_stats: bool,
     collect_entries: bool,
 ) -> SolveOutput {
-    let openings = distinct_openings(board, coord.active_order());
+    let openings: Vec<_> = distinct_openings(board, coord.active_order())
+        .into_iter()
+        .filter(|(key, _, _, _)| coord.proof_known.get(key) != Some(&true))
+        .collect();
+    if let Some(e) = &coord.proof {
+        for _ in openings.len()..distinct_openings(board, coord.active_order()).len() {
+            e.cutoff();
+        }
+    }
     let legal = board.all_cells_mask;
     let root_key = board.shadow_key(legal, legal, P1);
     let next_opening = AtomicUsize::new(0);
@@ -2557,6 +2625,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
         assert!(fanout > 0, "AND-split fanout must be positive");
         let jobs: Vec<OpeningJob> = distinct_openings(board, coord.active_order())
             .into_iter()
+            .filter(|(key, _, _, _)| coord.proof_known.get(key) != Some(&true))
             .map(|(key, p1, p2, opening_cell)| OpeningJob {
                 key,
                 p1,
@@ -2566,6 +2635,11 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                 state: JobState::Unexpanded,
             })
             .collect();
+        if let Some(e) = &coord.proof {
+            for _ in jobs.len()..distinct_openings(board, coord.active_order()).len() {
+                e.cutoff();
+            }
+        }
         let active = jobs.len();
         AndSplit {
             board,
@@ -2576,7 +2650,7 @@ impl<'a, M: Memo> AndSplit<'a, M> {
                 jobs,
                 ready: VecDeque::new(),
                 active,
-                result: None,
+                result: if active == 0 { Some(false) } else { None },
                 stats: SchedulerStats::default(),
             }),
         }
@@ -2998,6 +3072,10 @@ fn solve_parallel_and_split<M: Memo + Sync>(
 }
 
 pub fn run(args: Vec<String>) {
+    let mut proof_mode = String::from("root");
+    let mut proof_library = tiling::default_library();
+    let mut proof_out: Option<PathBuf> = None;
+    let mut certificate_only = false;
     let mut m = 0usize;
     let mut n = 0usize;
     let mut progress = false;
@@ -3020,6 +3098,7 @@ pub fn run(args: Vec<String>) {
     let mut component_bag_db_out: Option<PathBuf> = None;
     let mut component_bag_db_min_effective_live = 16usize;
     let mut component_native_one_large = false;
+    let mut component_charge_bounds = false;
     let mut move_order_spec: Option<MoveOrderSpec> = None;
     let mut order_stats = false;
     let mut opening_certificate_path: Option<PathBuf> = None;
@@ -3055,6 +3134,30 @@ pub fn run(args: Vec<String>) {
             "--memo-bits" => {
                 memo_bits = args[i + 1].parse().expect("bad --memo-bits");
                 i += 2;
+            }
+            "--help" | "-h" => {
+                println!("Col: --m HEIGHT --n WIDTH [--position ROWS --turn P1|P2]");
+                println!("Certificates: --proof-mode root|off|search (default root), --proof-library DIRECTORY, --proof-out FILE, --certificate-only");
+                println!("Certificate-only returns exit 2 for Unknown; it never launches DFS. Whole-board certificate heights: 1..7.");
+                println!("DFS: --threads N --memo open|hash|fixed --memo-bits N --no-tablebase --no-endgame-cache --endgame-size N --no-component-reduction --root-split --progress");
+                println!("Use col-cert verify FILE, verify-python FILE, replay FILE --moves CELL..., or discover --help for proof tools.");
+                return;
+            }
+            "--proof-mode" => {
+                proof_mode = args[i + 1].clone();
+                i += 2;
+            }
+            "--proof-library" => {
+                proof_library = PathBuf::from(&args[i + 1]);
+                i += 2;
+            }
+            "--proof-out" => {
+                proof_out = Some(PathBuf::from(&args[i + 1]));
+                i += 2;
+            }
+            "--certificate-only" => {
+                certificate_only = true;
+                i += 1;
             }
             "--endgame-size" => {
                 endgame_size = args[i + 1].parse().expect("bad --endgame-size");
@@ -3135,6 +3238,10 @@ pub fn run(args: Vec<String>) {
                 component_native_one_large = true;
                 i += 1;
             }
+            "--component-charge-bounds" => {
+                component_charge_bounds = true;
+                i += 1;
+            }
             "--move-order" => {
                 move_order_spec = Some(MoveOrderSpec::parse(&args[i + 1]));
                 i += 2;
@@ -3168,7 +3275,7 @@ pub fn run(args: Vec<String>) {
     }
     assert!(
         m > 0 && n > 0,
-        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--no-endgame-cache] [--component-reduction|--no-component-reduction] [--component-native-one-large] [--search-profile default|large-search] [--component-bag-min-components K] [--component-bag-min-live K] [--component-bag-two-component-max-live K] [--component-bag-db-in FILE] [--component-bag-db-out FILE] [--component-bag-db-min-effective-live K] [--and-split-fanout K] [--move-order auto|legacy|heuristic] [--order-stats] [--opening-certificate PATH] [--invariant-report PATH] [--position ROWS] [--turn P1|P2] [--tablebase-dir DIR] [--no-tablebase] [--root-split] [--no-pairing-certificate] [--progress]"
+        "usage: col-rs --m M --n N [--threads T] [--memo open|hash|fixed] [--memo-min-legal K] [--memo-bits K] [--endgame-size K] [--no-endgame-cache] [--component-reduction|--no-component-reduction] [--component-native-one-large] [--component-charge-bounds] [--search-profile default|large-search] [--component-bag-min-components K] [--component-bag-min-live K] [--component-bag-two-component-max-live K] [--component-bag-db-in FILE] [--component-bag-db-out FILE] [--component-bag-db-min-effective-live K] [--and-split-fanout K] [--move-order auto|legacy|heuristic] [--order-stats] [--opening-certificate PATH] [--invariant-report PATH] [--position ROWS] [--turn P1|P2] [--tablebase-dir DIR] [--no-tablebase] [--root-split] [--no-pairing-certificate] [--progress]"
     );
     assert!(threads > 0, "--threads must be >= 1");
     assert!(
@@ -3182,6 +3289,10 @@ pub fn run(args: Vec<String>) {
     assert!(
         !component_native_one_large || endgame_size > 0,
         "--component-native-one-large requires --endgame-size > 0"
+    );
+    assert!(
+        !component_charge_bounds || endgame_size > 0,
+        "--component-charge-bounds requires --endgame-size > 0"
     );
     if let Some(min_components) = component_bag_min_components {
         assert!(
@@ -3217,7 +3328,7 @@ pub fn run(args: Vec<String>) {
     if let Some(max_live_cells) = component_bag_two_component_max_live {
         component_bag_policy = component_bag_policy.with_two_component_max_live(max_live_cells);
     }
-    let coord = Coordination::new(
+    let mut coord = Coordination::new(
         adapt_order,
         m,
         n,
@@ -3228,7 +3339,120 @@ pub fn run(args: Vec<String>) {
         and_split_fanout,
         component_bag_db_in.is_some() || component_bag_db_out.is_some(),
         component_native_one_large,
+        component_charge_bounds,
     );
+    assert!(
+        ["off", "root", "search"].contains(&proof_mode.as_str()),
+        "--proof-mode must be off, root, or search"
+    );
+    assert!(
+        !certificate_only || proof_mode != "off",
+        "certificate-only requires proof mode"
+    );
+    // Legacy memo-derived reports keep their original schema; explicitly disable
+    // certificate cutoffs when those legacy outputs are requested.
+    let legacy_report = opening_certificate_path.is_some() || invariant_report_path.is_some();
+    if legacy_report {
+        assert!(!certificate_only && proof_out.is_none() && proof_mode != "search",
+            "legacy memo reports cannot be combined with proof output/search; use --proof-out separately");
+        proof_mode = "off".into();
+    }
+    assert!(
+        proof_mode != "off" || proof_out.is_none(),
+        "--proof-out requires proof mode"
+    );
+    let proof_started = Instant::now();
+    let mut proof_report = None;
+    if proof_mode != "off" && m <= 7 {
+        let evaluator = Arc::new(
+            tiling::Evaluator::load(&proof_library)
+                .unwrap_or_else(|e| panic!("invalid proof library: {e}")),
+        );
+        if evaluator.supports(m) || certificate_only {
+            let columns =
+                tiling::position(m, n, position_arg.as_deref()).unwrap_or_else(|e| panic!("{e}"));
+            let actor = if position_arg.is_some() {
+                query_turn
+            } else {
+                P1
+            };
+            let mut report = evaluator.certify(m, columns, actor, position_arg.is_none());
+            if report.outcome != "unknown" && !certificate_only {
+                evaluator.cutoff();
+                report.metrics = evaluator.metrics();
+            }
+            tiling::check_report(&report)
+                .unwrap_or_else(|e| panic!("invalid generated proof: {e}"));
+            let path = proof_out.get_or_insert_with(|| {
+                use sha2::{Digest, Sha256};
+                let digest = format!(
+                    "{:x}",
+                    Sha256::digest(
+                        serde_json::to_vec(&(
+                            m,
+                            n,
+                            actor,
+                            &report.columns,
+                            &proof_mode,
+                            report
+                                .library
+                                .iter()
+                                .map(|t| (&t.id, &t.source_sha256))
+                                .collect::<Vec<_>>()
+                        ))
+                        .unwrap()
+                    )
+                );
+                PathBuf::from(format!("data/proofs/{m}x{n}-{}.json", &digest[..16]))
+            });
+            tiling::write_report(path, &report)
+                .unwrap_or_else(|e| panic!("cannot save proof: {e}"));
+            println!("tiling proof saved: {}", path.display());
+            println!(
+                "tiling verification and preflight: {:.6}s",
+                proof_started.elapsed().as_secs_f64()
+            );
+            if report.outcome != "unknown" || certificate_only || m * n > 63 {
+                if report.outcome == "unknown" {
+                    println!("{m} x {n}: Unknown (no complete certificate)");
+                } else {
+                    let winner = if report.outcome == "win" {
+                        actor
+                    } else {
+                        1 - actor
+                    };
+                    println!("{m} x {n}: P{} wins", winner + 1);
+                    println!("proof source: verified one-sided tiling");
+                    if let Some(cell) = report.response {
+                        println!("certified response: {cell}");
+                    }
+                }
+                println!("solver: rust certificate preflight");
+                println!("states searched: 0");
+                println!("memo entries: 0");
+                println!("states per second: 0");
+                println!(
+                    "time elapsed (solve): {:.6}s",
+                    proof_started.elapsed().as_secs_f64()
+                );
+                println!(
+                    "tiling metrics: {}",
+                    serde_json::to_string(&evaluator.metrics()).unwrap()
+                );
+                if report.outcome == "unknown" {
+                    std::process::exit(2);
+                }
+                return;
+            }
+            coord.proof_search = proof_mode == "search";
+            coord.proof = Some(evaluator);
+            proof_report = Some(report);
+        }
+    }
+    if certificate_only || m * n > 63 {
+        println!("{m} x {n}: Unknown (unsupported certificate height or DFS size)");
+        std::process::exit(2);
+    }
     let track_order = order_stats || adapt_order;
     let board = Board::new(m, n);
     let legal = board.all_cells_mask;
@@ -3237,6 +3461,16 @@ pub fn run(args: Vec<String>) {
         .as_deref()
         .map(|position| parse_position(position, &board));
     let effective_root_split = root_split || m == 1;
+    if let Some(report) = &proof_report {
+        for opening in &report.openings {
+            let (c1, c2) = board.child_legals(legal, legal, P1, 1u64 << opening.opening);
+            coord.proof_known.insert(board.shadow_key(c1, c2, P2), true);
+            let (q1, q2) = board.child_legals(c1, c2, P2, 1u64 << opening.response);
+            coord
+                .proof_known
+                .insert(board.shadow_key(q1, q2, P1), false);
+        }
+    }
 
     let loaded = if tablebase_enabled {
         tablebase::load(&tablebase_dir, m, n).unwrap_or_else(|err| {
@@ -3437,6 +3671,18 @@ pub fn run(args: Vec<String>) {
         (output, true)
     };
     let elapsed = start.elapsed().as_secs_f64();
+    if let (Some(mut report), Some(evaluator)) = (proof_report, &coord.proof) {
+        report.cutoffs = std::mem::take(&mut *coord.proof_leaves.lock().unwrap());
+        report.metrics = evaluator.metrics();
+        tiling::write_report(proof_out.as_ref().unwrap(), &report)
+            .unwrap_or_else(|e| panic!("cannot save proof evidence: {e}"));
+        println!(
+            "tiling metrics: {}",
+            serde_json::to_string(&report.metrics).unwrap()
+        );
+        println!("tiling artifact contains certified partial evidence; DFS supplies the remaining outcome");
+    }
+
     if progress {
         eprintln!();
     }
@@ -3575,6 +3821,9 @@ pub fn run(args: Vec<String>) {
     );
     if component_native_one_large {
         println!("component native one-large: enabled");
+    }
+    if component_charge_bounds {
+        println!("component charge bounds: enabled");
     }
     if threads > 1 && !effective_root_split {
         println!(
@@ -3798,6 +4047,28 @@ pub fn run(args: Vec<String>) {
                 "component bag signature hits: {}",
                 output.stats.component_bag_signature_hits
             );
+            if output.stats.component_charge_queries > 0 {
+                println!(
+                    "component charge queries: {}",
+                    output.stats.component_charge_queries
+                );
+                println!(
+                    "component charge win hits: {}",
+                    output.stats.component_charge_win_hits
+                );
+                println!(
+                    "component charge loss hits: {}",
+                    output.stats.component_charge_loss_hits
+                );
+                println!(
+                    "component charge fixed checks: {}",
+                    output.stats.component_charge_fixed_checks
+                );
+                println!(
+                    "component charge greedy checks: {}",
+                    output.stats.component_charge_greedy_checks
+                );
+            }
         }
         if endgame_cache_enabled {
             println!("endgame cache loaded: {endgame_cache_loaded} entries");

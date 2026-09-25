@@ -1,0 +1,255 @@
+[
+  {
+    "file": "s0_side_lower.json.gz",
+    "root": [
+      28670,
+      32447,
+      1,
+      2
+    ],
+    "nodes": 563,
+    "edges": 2117
+  },
+  {
+    "file": "s1_side_lower.json.gz",
+    "root": [
+      28666,
+      32447,
+      1,
+      2
+    ],
+    "nodes": 385,
+    "edges": 1324
+  },
+  {
+    "file": "s2_side_lower.json.gz",
+    "root": [
+      28638,
+      32447,
+      1,
+      1
+    ],
+    "nodes": 345,
+    "edges": 1283
+  },
+  {
+    "file": "s3_side_lower.json.gz",
+    "root": [
+      28634,
+      32447,
+      1,
+      1
+    ],
+    "nodes": 300,
+    "edges": 974
+  },
+  {
+    "file": "s8_side_lower.json.gz",
+    "root": [
+      26622,
+      32447,
+      1,
+      1
+    ],
+    "nodes": 350,
+    "edges": 1259
+  },
+  {
+    "file": "s9_side_lower.json.gz",
+    "root": [
+      26618,
+      32447,
+      1,
+      1
+    ],
+    "nodes": 293,
+    "edges": 999
+  },
+  {
+    "file": "s10_side_lower.json.gz",
+    "root": [
+      26590,
+      32447,
+      1,
+      1
+    ],
+    "nodes": 371,
+    "edges": 1311
+  },
+  {
+    "file": "s11_side_lower.json.gz",
+    "root": [
+      26586,
+      32447,
+      3,
+      2
+    ],
+    "nodes": 318,
+    "edges": 1049
+  },
+  {
+    "file": "s16_side_lower.json.gz",
+    "root": [
+      12286,
+      32447,
+      1,
+      2
+    ],
+    "nodes": 415,
+    "edges": 1439
+  },
+  {
+    "file": "s17_side_lower.json.gz",
+    "root": [
+      12282,
+      32447,
+      1,
+      2
+    ],
+    "nodes": 252,
+    "edges": 818
+  },
+  {
+    "file": "s17_side_upper.json.gz",
+    "root": [
+      32447,
+      12282,
+      -1,
+      2
+    ],
+    "nodes": 505,
+    "edges": 1992
+  },
+  {
+    "file": "s18_side_lower.json.gz",
+    "root": [
+      12254,
+      32447,
+      1,
+      1
+    ],
+    "nodes": 317,
+    "edges": 1067
+  },
+  {
+    "file": "s19_side_lower.json.gz",
+    "root": [
+      12250,
+      32447,
+      1,
+      1
+    ],
+    "nodes": 202,
+    "edges": 618
+  },
+  {
+    "file": "s24_side_lower.json.gz",
+    "root": [
+      10238,
+      32447,
+      1,
+      1
+    ],
+    "nodes": 283,
+    "edges": 924
+  },
+  {
+    "file": "s25_side_lower.json.gz",
+    "root": [
+      10234,
+      32447,
+      1,
+      1
+    ],
+    "nodes": 174,
+    "edges": 547
+  },
+  {
+    "file": "s26_side_lower.json.gz",
+    "root": [
+      10206,
+      32447,
+      3,
+      2
+    ],
+    "nodes": 420,
+    "edges": 1307
+  },
+  {
+    "file": "s27_side_lower.json.gz",
+    "root": [
+      10202,
+      32447,
+      3,
+      2
+    ],
+    "nodes": 211,
+    "edges": 599
+  },
+  {
+    "file": "cap2_X_upper.json.gz",
+    "root": [
+      839,
+      598,
+      0,
+      1
+    ],
+    "nodes": 13,
+    "edges": 23
+  },
+  {
+    "file": "cap2_X_lower.json.gz",
+    "root": [
+      598,
+      839,
+      0,
+      1
+    ],
+    "nodes": 11,
+    "edges": 16
+  },
+  {
+    "file": "cap3_D_upper.json.gz",
+    "root": [
+      30239,
+      12026,
+      1,
+      1
+    ],
+    "nodes": 215,
+    "edges": 732
+  },
+  {
+    "file": "cap3_D_lower.json.gz",
+    "root": [
+      12026,
+      30239,
+      -1,
+      1
+    ],
+    "nodes": 146,
+    "edges": 509
+  },
+  {
+    "file": "cap4_X_upper.json.gz",
+    "root": [
+      253501935,
+      236745198,
+      0,
+      1
+    ],
+    "nodes": 1582,
+    "edges": 6107
+  },
+  {
+    "file": "cap4_X_lower.json.gz",
+    "root": [
+      236745198,
+      253501935,
+      0,
+      1
+    ],
+    "nodes": 1796,
+    "edges": 6673
+  }
+]

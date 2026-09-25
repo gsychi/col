@@ -1,0 +1,30 @@
+LAUNCH: pid 49299 started Wed Sep 23 16:33:45 2026 cap 7300s cmd /tmp/ground_truth/colout5 -S 14 -t 20 -T 21 -j 1 -L 7200
+    [DD_9 B -1] 120s kids 0/15 nodes 187165838 tt 8380623 vc 2336704
+    [DD_9 B -1] 240s kids 2/15 nodes 386461665 tt 8388605 vc 2920135
+    [DD_9 B -1] 360s kids 5/15 nodes 658253228 tt 8388608 vc 3183438
+    [DD_9 B -1] 481s kids 11/15 nodes 914796676 tt 8388608 vc 3342105
+    [DD_9 B -1] 601s kids 14/15 nodes 1133008911 tt 8388608 vc 3417379
+    [DD_9 B -1] 721s kids 14/15 nodes 1308905841 tt 8388608 vc 3505769
+  DD_9 t=-1 P nodes=1313662893+105753460 790.6s
+    [DU_9 B -1] 911s kids 0/44 nodes 287415391 tt 8388608 vc 3713948
+    [DU_9 B -1] 1031s kids 2/44 nodes 626351499 tt 8388608 vc 3771006
+    [DU_9 B -1] 1151s kids 11/44 nodes 965777601 tt 8388608 vc 3816181
+    [DU_9 B -1] 1271s kids 18/44 nodes 1288698327 tt 8388608 vc 3847053
+    [DU_9 B -1] 1391s kids 20/44 nodes 1597278845 tt 8388608 vc 3883753
+    [DU_9 B -1] 1511s kids 25/44 nodes 1933108941 tt 8388608 vc 3933590
+    [DU_9 B -1] 1631s kids 26/44 nodes 2205214110 tt 8388608 vc 3969664
+    [DU_9 B -1] 1751s kids 26/44 nodes 2504583310 tt 8388608 vc 3992296
+    [DU_9 B -1] 1872s kids 26/44 nodes 2799942166 tt 8388608 vc 4010248
+    [DU_9 B -1] 1992s kids 26/44 nodes 3084248198 tt 8388608 vc 4019146
+    [DU_9 B -1] 2112s kids 26/44 nodes 3364159342 tt 8388608 vc 4030922
+    [DU_9 B -1] 2232s kids 28/44 nodes 3658167437 tt 8388608 vc 4041051
+    [DU_9 B -1] 2352s kids 34/44 nodes 3920564045 tt 8388608 vc 4048067
+    [DU_9 B -1] 2472s kids 40/44 nodes 4237033238 tt 8388608 vc 4054491
+    [DU_9 B -1] 2592s kids 42/44 nodes 4520554986 tt 8388608 vc 4062058
+    [DU_9 B -1] 2712s kids 43/44 nodes 4790050979 tt 8388608 vc 4067756
+    [DU_9 B -1] 2832s kids 43/44 nodes 4871255015 tt 8388608 vc 4068421
+    [DU_9 B -1] 2953s kids 43/44 nodes 4930352639 tt 8388608 vc 4068621
+    [DU_9 W -1] 3137s kids 16/41 nodes 164497681 tt 8388608 vc 4111993
+    [DU_9 W -1] 3257s kids 32/41 nodes 335462180 tt 8388608 vc 4126698
+  DU_9 t=-1 P nodes=4989513892+417189756 2539.1s
+LAUNCH: exit status 0 after 3330 s

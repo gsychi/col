@@ -1,0 +1,1 @@
+VERIFIED INDEX: 49 exact-zero primitives and 152473 unique upper-bound-zero checkpoints.

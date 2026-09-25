@@ -1,0 +1,70 @@
+{
+  "status": "discovery only; small reference roots are independently certified elsewhere",
+  "results": [
+    {
+      "actor_wins": false,
+      "blue": 975,
+      "budget": 2000000,
+      "height": 5,
+      "memo_hits": 4,
+      "seconds": 6.2208e-05,
+      "states": 8,
+      "turn": 0,
+      "white": 441,
+      "width": 2,
+      "label": "DX"
+    },
+    {
+      "actor_wins": true,
+      "blue": 975,
+      "budget": 2000000,
+      "height": 5,
+      "memo_hits": 0,
+      "seconds": 6.2208e-05,
+      "states": 15,
+      "turn": 1,
+      "white": 441,
+      "width": 2,
+      "label": "DX"
+    },
+    {
+      "actor_wins": false,
+      "blue": 32447,
+      "budget": 2000000,
+      "height": 5,
+      "memo_hits": 11,
+      "seconds": 0.00036975,
+      "states": 26,
+      "turn": 0,
+      "white": 30167,
+      "width": 3,
+      "label": "DD"
+    },
+    {
+      "actor_wins": true,
+      "blue": 32447,
+      "budget": 2000000,
+      "height": 5,
+      "memo_hits": 8,
+      "seconds": 0.00023275,
+      "states": 61,
+      "turn": 1,
+      "white": 30167,
+      "width": 3,
+      "label": "DD"
+    },
+    {
+      "actor_wins": false,
+      "blue": 1073735679,
+      "budget": 2000000,
+      "height": 5,
+      "memo_hits": 122022,
+      "seconds": 0.319100209,
+      "states": 331527,
+      "turn": 0,
+      "white": 536477599,
+      "width": 6,
+      "label": "DV"
+    }
+  ]
+}

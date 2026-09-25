@@ -1,0 +1,154 @@
+{
+  "format": "col-atlas-integration-validation-v1",
+  "atlas": {
+    "shapes": 21,
+    "classified_masks": 3598668,
+    "safe_masks": 1682,
+    "minimal_safe": 49,
+    "certificates": 467,
+    "checkpoints": 436703,
+    "response_edges": 1861429,
+    "partial_checkpoints": 152473,
+    "exact_zero_upgrades": 772,
+    "hashed_files": 664,
+    "seconds": 13.205349124968052
+  },
+  "rust_all_grid_sources": "VERIFIED: 3x23 unknown (side to move); 0 opening cases",
+  "known_strips": [
+    {
+      "case": "3x13-empty",
+      "status": "certified",
+      "budget": null,
+      "winner": 1,
+      "seconds": 0.0004940829239785671,
+      "metrics": {
+        "states": 1,
+        "memo_hits": 0,
+        "white_preflights": 0,
+        "failed_branches": 0,
+        "depths_completed": [],
+        "blue_loss_queries": 1,
+        "white_loss_queries": 0,
+        "blue_loss_leaves": 1,
+        "white_loss_leaves": 0,
+        "actual_refutation_cutoffs": 0,
+        "exact_zero_promotions": 1
+      },
+      "oracle": {
+        "queries": 1,
+        "query_seconds": 0.0004386249929666519,
+        "local_queries": 68,
+        "local_cache_hits": 61,
+        "covers": 1
+      },
+      "verification": {
+        "nodes": 1,
+        "edges": 0,
+        "tiles": 2,
+        "replay_games": 40,
+        "replay_moves": 1078,
+        "rust_leaf_verifier": "VERIFIED: 3x13 unknown (side to move); 0 opening cases"
+      }
+    },
+    {
+      "case": "3x19-opening26",
+      "status": "certified",
+      "budget": null,
+      "winner": 1,
+      "seconds": 0.007048457860946655,
+      "metrics": {
+        "states": 1,
+        "memo_hits": 0,
+        "white_preflights": 5,
+        "failed_branches": 0,
+        "depths_completed": [],
+        "blue_loss_queries": 5,
+        "white_loss_queries": 1,
+        "blue_loss_leaves": 1,
+        "white_loss_leaves": 0,
+        "actual_refutation_cutoffs": 0,
+        "exact_zero_promotions": 0
+      },
+      "oracle": {
+        "queries": 7,
+        "query_seconds": 0.007278957404196262,
+        "local_queries": 502,
+        "local_cache_hits": 290,
+        "covers": 2
+      },
+      "verification": {
+        "nodes": 2,
+        "edges": 1,
+        "tiles": 3,
+        "replay_games": 40,
+        "replay_moves": 1528,
+        "rust_leaf_verifier": "VERIFIED: 3x19 unknown (side to move); 0 opening cases"
+      }
+    },
+    {
+      "case": "3x101-empty",
+      "status": "certified",
+      "budget": null,
+      "winner": 1,
+      "seconds": 0.0020807916298508644,
+      "metrics": {
+        "states": 1,
+        "memo_hits": 0,
+        "white_preflights": 0,
+        "failed_branches": 0,
+        "depths_completed": [],
+        "blue_loss_queries": 1,
+        "white_loss_queries": 0,
+        "blue_loss_leaves": 1,
+        "white_loss_leaves": 0,
+        "actual_refutation_cutoffs": 0,
+        "exact_zero_promotions": 1
+      },
+      "oracle": {
+        "queries": 8,
+        "query_seconds": 0.009323915466666222,
+        "local_queries": 1033,
+        "local_cache_hits": 821,
+        "covers": 3
+      },
+      "verification": {
+        "nodes": 1,
+        "edges": 0,
+        "tiles": 2,
+        "replay_games": 40,
+        "replay_moves": 8554,
+        "rust_leaf_verifier": "VERIFIED: 3x101 unknown (side to move); 0 opening cases"
+      }
+    }
+  ],
+  "l_remainders": [
+    {
+      "case": "L_5x9_phase0.json.gz",
+      "states": 111,
+      "edges": 286,
+      "rust": "VERIFIED: 3x23 unknown (side to move); 0 opening cases",
+      "conclusion": "Only the specified unopened zero bulk plus independently safe unopened L is rejected; no physical board outcome inferred."
+    },
+    {
+      "case": "L_5x9_phase1.json.gz",
+      "states": 142,
+      "edges": 436,
+      "rust": "VERIFIED: 3x23 unknown (side to move); 0 opening cases",
+      "conclusion": "Only the specified unopened zero bulk plus independently safe unopened L is rejected; no physical board outcome inferred."
+    },
+    {
+      "case": "L_7x7_phase0.json.gz",
+      "states": 111,
+      "edges": 286,
+      "rust": "VERIFIED: 3x23 unknown (side to move); 0 opening cases",
+      "conclusion": "Only the specified unopened zero bulk plus independently safe unopened L is rejected; no physical board outcome inferred."
+    },
+    {
+      "case": "L_7x7_phase1.json.gz",
+      "states": 148,
+      "edges": 461,
+      "rust": "VERIFIED: 3x23 unknown (side to move); 0 opening cases",
+      "conclusion": "Only the specified unopened zero bulk plus independently safe unopened L is rejected; no physical board outcome inferred."
+    }
+  ]
+}

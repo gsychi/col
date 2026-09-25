@@ -1,0 +1,577 @@
+{
+  "boards": [
+    "1x3",
+    "1x5",
+    "1x7",
+    "1x9",
+    "3x3",
+    "1x11",
+    "1x13",
+    "1x15",
+    "3x5",
+    "1x17",
+    "1x19",
+    "1x21",
+    "3x7",
+    "1x23",
+    "1x25",
+    "5x5",
+    "1x27",
+    "3x9",
+    "1x29",
+    "1x31",
+    "1x33",
+    "3x11",
+    "1x35",
+    "5x7",
+    "1x37",
+    "1x39",
+    "3x13"
+  ],
+  "min_cells": 3,
+  "max_cells": 39,
+  "threads": 8,
+  "elapsed_seconds": 128.34352684020996,
+  "results": [
+    {
+      "board": "1x3",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x3",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x5",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x5",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x7",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x7",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 1e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x9",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x9",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 2e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x3",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 10,
+      "solve_seconds": 0.001446,
+      "states_per_second": 6917,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x3",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 10,
+      "solve_seconds": 0.001367,
+      "states_per_second": 7314,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x11",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x11",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 2e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x13",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x13",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x15",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x15",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x5",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 291,
+      "solve_seconds": 0.002008,
+      "states_per_second": 144905,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x5",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 287,
+      "solve_seconds": 0.002,
+      "states_per_second": 143509,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x17",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x17",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x19",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x19",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 2e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x21",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x21",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x7",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 6918,
+      "solve_seconds": 0.006797,
+      "states_per_second": 1017758,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x7",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 6589,
+      "solve_seconds": 0.007449,
+      "states_per_second": 884553,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x23",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x23",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x25",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 1e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x25",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "5x5",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 41407,
+      "solve_seconds": 0.024082,
+      "states_per_second": 1719396,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "5x5",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 39282,
+      "solve_seconds": 0.027118,
+      "states_per_second": 1448558,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x27",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x27",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x9",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 54615,
+      "solve_seconds": 0.023399,
+      "states_per_second": 2334028,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x9",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 41750,
+      "solve_seconds": 0.021172,
+      "states_per_second": 1971975,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x29",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 1e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x29",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x31",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 1e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x31",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 1e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x33",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 1e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x33",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x11",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 3953601,
+      "solve_seconds": 1.814987,
+      "states_per_second": 2178309,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x11",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 2784416,
+      "solve_seconds": 1.511489,
+      "states_per_second": 1842167,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x35",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x35",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "5x7",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 11937916,
+      "solve_seconds": 1.965167,
+      "states_per_second": 6074758,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "5x7",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 8284509,
+      "solve_seconds": 1.688062,
+      "states_per_second": 4907705,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x37",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 1e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x37",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x39",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 0.0,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "1x39",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 0,
+      "solve_seconds": 2e-06,
+      "states_per_second": 0,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x13",
+      "config": "baseline",
+      "winner": "P2",
+      "states": 120282110,
+      "solve_seconds": 109.816918,
+      "states_per_second": 1095297,
+      "ok": true,
+      "error": null
+    },
+    {
+      "board": "3x13",
+      "config": "reduction",
+      "winner": "P2",
+      "states": 50288740,
+      "solve_seconds": 10.053847,
+      "states_per_second": 5001940,
+      "ok": true,
+      "error": null
+    }
+  ]
+}

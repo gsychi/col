@@ -1,0 +1,83 @@
+{
+  "pair": "DX",
+  "width": 4,
+  "cap_width": 2,
+  "half_turn": true,
+  "repairs": 0,
+  "white_wins_restricted_policy": false,
+  "counters": {
+    "states": 6158,
+    "ordinary_moves": 3217,
+    "defect_moves": 10869,
+    "terminal_mirror": 253
+  },
+  "root_witness": {
+    "blue": 0,
+    "white_options": [
+      [
+        15,
+        0
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        8,
+        0
+      ],
+      [
+        16,
+        0
+      ],
+      [
+        11,
+        0
+      ],
+      [
+        18,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        10,
+        0
+      ],
+      [
+        14,
+        0
+      ],
+      [
+        17,
+        0
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        13,
+        0
+      ],
+      [
+        6,
+        0
+      ]
+    ]
+  },
+  "counterstrategy": {
+    "file": "round2_dx_mirror_counter_DX_4_2_1_0.json.gz",
+    "nodes": 1284
+  }
+}

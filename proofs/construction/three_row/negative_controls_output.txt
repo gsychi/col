@@ -1,0 +1,17 @@
+baseline: unmodified package passes (sweep to width 23)
+REJECTED as expected               old_z7_in_repeated_position: White-legal cells on both sides of the seam between columns 10 and 11
+REJECTED as expected               wrong_reply_case3: comparison deletes an actual Blue move
+REJECTED as expected               wrong_reply_case6: comparison deletes an actual Blue move
+REJECTED as expected               flipped_declared_port: T_middle1: declared White ports differ from the White mask
+REJECTED as expected               flipped_mask_bit: T_middle1: role masks differ from the certificate root
+REJECTED as expected               left_port_111_after_e4: White-legal cells on both sides of the seam between columns 3 and 4
+REJECTED as expected               corrupted_certificate_reply: missing successor checkpoint
+REJECTED as expected               byte_corruption: checksum mismatch: ordinary/z7.json.gz
+REJECTED as expected               tampered_derived_certificate: stored derived certificate K_outer4_H_of_tile_09197aa9813a is not the H-reflection of its source
+REJECTED as expected               missing_odd_cell: no certified bound for E4 opened at (1,2)
+REJECTED as expected               wrong_direction_numeric: E4_open_0_1: role masks differ from the certificate root
+REJECTED as expected               weak_cap_bound: bound sum 0 is not < 0 with White to move
+REJECTED as expected               case5_below_threshold: case 5 at n=11, c=5: b = k-a-2 = -1 < 0
+REJECTED as expected               base_width_11_removed: the six-case step needs n = 4k+3 >= 15, got n = 11
+REJECTED as expected               base_witness_dropped: base width 7: normalized openings not all answered
+15/15 negative controls behaved as expected

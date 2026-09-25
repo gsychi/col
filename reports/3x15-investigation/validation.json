@@ -1,0 +1,6 @@
+{
+  "independent_monotonicity_checks": 32768,
+  "four_mode_agreement_positions": 24,
+  "winning_cases": 12,
+  "losing_cases": 12
+}

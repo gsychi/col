@@ -1,0 +1,1039 @@
+{
+  "format": "col-3xn-all-width-package-v1",
+  "theorem": "For every n >= 1 the empty 3 x n Col board has value 0 (proofs/construction/empty_3xn_theorem.md).",
+  "conventions": {
+    "rows": 3,
+    "mask_bits": "row-major within the block: bit r*width + c, bit 0 = top-left",
+    "ordinary_root": "[Blue-legal mask, White-legal mask], Blue to move; certificate proves Blue-first loss (<= 0)",
+    "numeric_root": "[mover mask, opponent mask, q numerator, q denominator]; mover is Left in q; proves G + q <= 0",
+    "white_ports": "White legality of the left / right column, read top to bottom",
+    "diagram": "o both, b Blue only, w White only, . neither (permissions, not stones)"
+  },
+  "certificates": [
+    {
+      "id": "tile_e4d37d528005",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_e4d37d528005.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4095,
+        2023
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_e4d37d528005.json.gz",
+      "nodes": 152,
+      "edges": 470,
+      "sha256": "d3c53ee922ec2e9049338240a1f0012526c8e4601743d5381d86933842440cc0"
+    },
+    {
+      "id": "tile_675ea04f7dff",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_675ea04f7dff.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4095,
+        3710
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_675ea04f7dff.json.gz",
+      "nodes": 155,
+      "edges": 474,
+      "sha256": "bfb4e6f6b210983ebd531c6d3e38f39db4f0373556ee938c3cd01771dfe8ef0c"
+    },
+    {
+      "id": "tile_e06eb7fc2dd6",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_e06eb7fc2dd6.json.gz",
+      "height": 3,
+      "width": 1,
+      "root": [
+        7,
+        5
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_e06eb7fc2dd6.json.gz",
+      "nodes": 3,
+      "edges": 3,
+      "sha256": "284e12ee540b9390d1041d7a81e957ddcbf162961341b309a2210b9b7499b698"
+    },
+    {
+      "id": "tile_8532d5d099db",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_8532d5d099db.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        244,
+        94
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_8532d5d099db.json.gz",
+      "nodes": 7,
+      "edges": 14,
+      "sha256": "444fc2d8ed29b40c3cd074297c11f5db41eec773ce1d5afd89b21ea96d6b0013"
+    },
+    {
+      "id": "tile_09197aa9813a",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_09197aa9813a.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        2080241,
+        2039675
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_09197aa9813a.json.gz",
+      "nodes": 1478,
+      "edges": 5511,
+      "sha256": "2a8147855d4bdd8a862cdfbefc1e38f16efd534b4e292bfa87aa3632a0484053"
+    },
+    {
+      "id": "tmiddle1",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tmiddle1.json.gz",
+      "height": 3,
+      "width": 6,
+      "root": [
+        253500,
+        130844
+      ],
+      "source": "proofs/construction/three_row/incoming/tmiddle1.json.gz",
+      "nodes": 231,
+      "edges": 714,
+      "sha256": "3921502216bc68f87bb5e3a9035f817dffa7739914d2bb08998273508f23559d"
+    },
+    {
+      "id": "atlas_3x5_W21845",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/atlas_3x5_W21845.json.gz",
+      "height": 3,
+      "width": 5,
+      "root": [
+        32767,
+        21845
+      ],
+      "source": "proofs/atlas/certificates/3x5/W21845.json.gz",
+      "nodes": 490,
+      "edges": 1829,
+      "sha256": "5dd0f7d95a28954eb04938278b601b4f91c08d5afb2e9c4f9adc28607e611ab9"
+    },
+    {
+      "id": "z7",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/z7.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        2097022,
+        2088828
+      ],
+      "source": "proofs/construction/three_row/incoming/z7.json.gz",
+      "nodes": 4844,
+      "edges": 21105,
+      "sha256": "fd853aedb1594168498831fad7920c44f24739dae69731e60030ed9d28603d17"
+    },
+    {
+      "id": "tile_76ba798e4bc4",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_76ba798e4bc4.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        2097022,
+        2097020
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_76ba798e4bc4.json.gz (identical JSON to three_row/incoming/z7old.json.gz)",
+      "nodes": 4883,
+      "edges": 21033,
+      "sha256": "2b1e0eec1b0a2444e026a69f8bb1f14a4e24ccd6225cc75818fc1f042e977cf0",
+      "note": "Z7 with right port 111; valid only at a physical right edge"
+    },
+    {
+      "id": "tile_4d9d5d12cc0f",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_4d9d5d12cc0f.json.gz",
+      "height": 3,
+      "width": 2,
+      "root": [
+        60,
+        24
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_4d9d5d12cc0f.json.gz",
+      "nodes": 4,
+      "edges": 6,
+      "sha256": "07a14bb308f2d7acd33d2303ce11da1621e325b2828a215933b787afe715375d"
+    },
+    {
+      "id": "tile_da4864d83b99",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_da4864d83b99.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        420,
+        224
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_da4864d83b99.json.gz",
+      "nodes": 5,
+      "edges": 8,
+      "sha256": "178c9c4ef23340790f6c9053746d66117041a5a405882eda2797e2b637806eda"
+    },
+    {
+      "id": "tile_501c8151efe6",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_501c8151efe6.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        321,
+        457
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_501c8151efe6.json.gz",
+      "nodes": 5,
+      "edges": 6,
+      "sha256": "917ba903f278ccafe9925ef41c84faa9152c428611581f0a7f53242068e32b22"
+    },
+    {
+      "id": "tile_2398ea84ec04",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_2398ea84ec04.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        2096609,
+        2086851
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_2398ea84ec04.json.gz",
+      "nodes": 1438,
+      "edges": 5402,
+      "sha256": "59835d45fdb0354018950f64945a2715260cd843dee7390e8f33f6fd5778ace3"
+    },
+    {
+      "id": "tile_468c39840ab4",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_468c39840ab4.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1965027,
+        572342
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_468c39840ab4.json.gz",
+      "nodes": 918,
+      "edges": 3771,
+      "sha256": "944220a3b640e9cd4c0cb21f2178189cc793492b2b82004f643b07a1240e593e"
+    },
+    {
+      "id": "tile_7de2134cc103",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_7de2134cc103.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        201,
+        392
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_7de2134cc103.json.gz",
+      "nodes": 5,
+      "edges": 8,
+      "sha256": "c74e552b22440e58eb3ab1ebe41ca8b136cc0ab9bab5a11e69c9f0f8ea9648a1"
+    },
+    {
+      "id": "tile_09fb65f2292a",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_09fb65f2292a.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1962471,
+        2085831
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_09fb65f2292a.json.gz",
+      "nodes": 1098,
+      "edges": 4089,
+      "sha256": "23dd2a42839ab434fdbeb8463a7ca36ca3269a008cf0c41a4499997be670d7b1"
+    },
+    {
+      "id": "tile_8b16696647a7",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_8b16696647a7.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1046471,
+        516079
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_8b16696647a7.json.gz",
+      "nodes": 1252,
+      "edges": 5052,
+      "sha256": "db0ef5e7fff6c63f8a19e42a6e539fc79bae10a79c32eadf17a3bbf9ef898c25",
+      "note": "K_outer4 near-match with left port 111; valid only at a physical left edge (base 3x11, opening (0,4)); NOT the K_outer4 role"
+    },
+    {
+      "id": "tile_55c55441362e",
+      "kind": "ordinary",
+      "file": "certificates/ordinary/tile_55c55441362e.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1558494,
+        2084732
+      ],
+      "source": "proofs/construction/original_proof/certificates/tile_55c55441362e.json.gz",
+      "nodes": 1026,
+      "edges": 3798,
+      "sha256": "d8d6625e9b66a8f17f3b81884f07a08e10a6982f65da71da50692428c0fd7195"
+    },
+    {
+      "id": "cap_minus_quarter_blue",
+      "kind": "numeric",
+      "file": "certificates/numerical/cap_minus_quarter_blue.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        511,
+        503,
+        -1,
+        4
+      ],
+      "source": "proofs/construction/research/new_certificates/cap_minus_quarter_blue.json.gz",
+      "nodes": 85,
+      "edges": 272,
+      "sha256": "ccfd3960261b385f35196cee7de41dafcda753eccd6ad17fc32a095cfc48fa1c"
+    },
+    {
+      "id": "cap_minus_quarter_white",
+      "kind": "numeric",
+      "file": "certificates/numerical/cap_minus_quarter_white.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        503,
+        511,
+        1,
+        4
+      ],
+      "source": "proofs/construction/research/new_certificates/cap_minus_quarter_white.json.gz",
+      "nodes": 98,
+      "edges": 238,
+      "sha256": "368827e6ed5ec75585c70ccf08bcda631045ca4590764620844d0ff35ef8b9a2",
+      "supplementary": "C3 >= 1/4 (with the Blue file: C3 = 1/4); not needed by the theorem"
+    },
+    {
+      "id": "opened_bulk_plus_one_blue",
+      "kind": "numeric",
+      "file": "certificates/numerical/opened_bulk_plus_one_blue.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        4056,
+        2021,
+        1,
+        1
+      ],
+      "source": "proofs/construction/research/new_certificates/opened_bulk_plus_one_blue.json.gz",
+      "nodes": 101,
+      "edges": 307,
+      "sha256": "b834253cc626bab82f0afc7410575d482ac9688cf1476827a744b307385c66f9"
+    },
+    {
+      "id": "opened_bulk_plus_one_white",
+      "kind": "numeric",
+      "file": "certificates/numerical/opened_bulk_plus_one_white.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        2021,
+        4056,
+        -1,
+        1
+      ],
+      "source": "proofs/construction/research/new_certificates/opened_bulk_plus_one_white.json.gz",
+      "nodes": 77,
+      "edges": 225,
+      "sha256": "74be48eec4eaadb83593e21cf04406de8759ec9426a1ce45cf62b1c432b3c188",
+      "supplementary": "E4 after Blue (0,1) >= -1; not needed"
+    },
+    {
+      "id": "opened_bulk_c3_plus_one_blue",
+      "kind": "numeric",
+      "file": "certificates/numerical/opened_bulk_c3_plus_one_blue.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        3955,
+        2023,
+        1,
+        1
+      ],
+      "source": "proofs/construction/research/new_certificates/opened_bulk_c3_plus_one_blue.json.gz",
+      "nodes": 109,
+      "edges": 332,
+      "sha256": "c55c02cae65fd6a6f99b0567df52dc2495b1591a83d2a44990f4ef8b107ac5a6"
+    },
+    {
+      "id": "opened_bulk_c3_plus_one_white",
+      "kind": "numeric",
+      "file": "certificates/numerical/opened_bulk_c3_plus_one_white.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        2023,
+        3955,
+        -1,
+        1
+      ],
+      "source": "proofs/construction/research/new_certificates/opened_bulk_c3_plus_one_white.json.gz",
+      "nodes": 66,
+      "edges": 180,
+      "sha256": "75a8ba673ad73a20ab70b1344c8250773e1c1bf859392bd76be22f8fd1017768",
+      "supplementary": "E4 after Blue (0,3) >= -1; not needed"
+    },
+    {
+      "id": "opened_bulk_middle0_plus_one_blue",
+      "kind": "numeric",
+      "file": "certificates/numerical/opened_bulk_middle0_plus_one_blue.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        3790,
+        2023,
+        1,
+        1
+      ],
+      "source": "proofs/construction/research/new_certificates/opened_bulk_middle0_plus_one_blue.json.gz",
+      "nodes": 92,
+      "edges": 270,
+      "sha256": "270f06d375d8e8217709ce3e21f21637e1871ad03c1892c2d9af7e560ef58fba"
+    },
+    {
+      "id": "opened_bulk_middle0_plus_one_white",
+      "kind": "numeric",
+      "file": "certificates/numerical/opened_bulk_middle0_plus_one_white.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        2023,
+        3790,
+        -1,
+        1
+      ],
+      "source": "proofs/construction/research/new_certificates/opened_bulk_middle0_plus_one_white.json.gz",
+      "nodes": 82,
+      "edges": 237,
+      "sha256": "a574c47c7d1270defafe3d59c9cec10a768a9ea7183cc15e5d0c4ac21dc85c72",
+      "supplementary": "E4 after Blue (1,0) >= -1; not needed"
+    },
+    {
+      "id": "opened_bulk_middle2_plus_one_blue",
+      "kind": "numeric",
+      "file": "certificates/numerical/opened_bulk_middle2_plus_one_blue.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        2843,
+        1959,
+        1,
+        1
+      ],
+      "source": "proofs/construction/research/new_certificates/opened_bulk_middle2_plus_one_blue.json.gz",
+      "nodes": 83,
+      "edges": 259,
+      "sha256": "793e008af74bdab0c59e6911e15267baf8546f7081f3e7803c65c376ac4df473"
+    },
+    {
+      "id": "opened_bulk_middle2_plus_one_white",
+      "kind": "numeric",
+      "file": "certificates/numerical/opened_bulk_middle2_plus_one_white.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        1959,
+        2843,
+        -1,
+        1
+      ],
+      "source": "proofs/construction/research/new_certificates/opened_bulk_middle2_plus_one_white.json.gz",
+      "nodes": 61,
+      "edges": 171,
+      "sha256": "6b0c12cdb3abd5129504de50a1800532d7067cfa0ca35a88464d97f2ea2a63af",
+      "supplementary": "E4 after Blue (1,2) >= -1; not needed"
+    },
+    {
+      "id": "K_outer4_H_of_tile_09197aa9813a",
+      "kind": "ordinary",
+      "file": "certificates/derived/K_outer4_H_of_tile_09197aa9813a.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1046471,
+        515951
+      ],
+      "derived_from": "tile_09197aa9813a",
+      "transform": "H",
+      "source": "H-reflection of tile_09197aa9813a, rebuilt by verify.py",
+      "nodes": 1478,
+      "edges": 5511,
+      "sha256": "2b9ef6a4d90abc26aea939d580f977657215d9036ed55d288f99be8e799f21d2"
+    },
+    {
+      "id": "opened_bulk_2_1_plus_one_blue_V_of_opened_bulk_plus_one_blue",
+      "kind": "numeric",
+      "file": "certificates/derived/opened_bulk_2_1_plus_one_blue_V_of_opened_bulk_plus_one_blue.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        2271,
+        1511,
+        1,
+        1
+      ],
+      "derived_from": "opened_bulk_plus_one_blue",
+      "transform": "V",
+      "source": "V-reflection of opened_bulk_plus_one_blue, rebuilt by verify.py",
+      "nodes": 101,
+      "edges": 307,
+      "sha256": "a23a2e8b4395f11978cf40821f35e2deebb12a14912f664de56077ba5549d128"
+    },
+    {
+      "id": "opened_bulk_2_3_plus_one_blue_V_of_opened_bulk_c3_plus_one_blue",
+      "kind": "numeric",
+      "file": "certificates/derived/opened_bulk_2_3_plus_one_blue_V_of_opened_bulk_c3_plus_one_blue.json.gz",
+      "height": 3,
+      "width": 4,
+      "root": [
+        895,
+        2023,
+        1,
+        1
+      ],
+      "derived_from": "opened_bulk_c3_plus_one_blue",
+      "transform": "V",
+      "source": "V-reflection of opened_bulk_c3_plus_one_blue, rebuilt by verify.py",
+      "nodes": 109,
+      "edges": 332,
+      "sha256": "89323ed8b09562330f96b9cee66c9a102924f9f5083e41fa5053b10e6499019b"
+    },
+    {
+      "id": "tile_501c8151efe6_H",
+      "kind": "ordinary",
+      "file": "certificates/derived/tile_501c8151efe6_H.json.gz",
+      "height": 3,
+      "width": 3,
+      "root": [
+        324,
+        484
+      ],
+      "derived_from": "tile_501c8151efe6",
+      "transform": "H",
+      "source": "H-reflection of tile_501c8151efe6, rebuilt by verify.py",
+      "nodes": 5,
+      "edges": 6,
+      "sha256": "ce76577f64713827c7ce1132b1413e8d1174a2111f7150a61fa4932a49452267"
+    },
+    {
+      "id": "tile_09fb65f2292a_H",
+      "kind": "ordinary",
+      "file": "certificates/derived/tile_09fb65f2292a_H.json.gz",
+      "height": 3,
+      "width": 7,
+      "root": [
+        1962483,
+        2095473
+      ],
+      "derived_from": "tile_09fb65f2292a",
+      "transform": "H",
+      "source": "H-reflection of tile_09fb65f2292a, rebuilt by verify.py",
+      "nodes": 1098,
+      "edges": 4089,
+      "sha256": "14b0cc753e603f9362ed6bca0be23691c5c738444c3df8db33cee49c7ad3eab8"
+    }
+  ],
+  "roles": [
+    {
+      "role": "E4",
+      "certificate": "tile_e4d37d528005",
+      "width": 4,
+      "blue_mask": 4095,
+      "white_mask": 2023,
+      "white_ports": {
+        "left": "101",
+        "right": "010"
+      },
+      "diagram": [
+        "ooob",
+        "booo",
+        "ooob"
+      ],
+      "bound": "0",
+      "claim": "E4 <= 0",
+      "used_in": [
+        "4k+1",
+        "case 1",
+        "case 3",
+        "case 4",
+        "case 5"
+      ]
+    },
+    {
+      "role": "E4bar",
+      "certificate": "tile_675ea04f7dff",
+      "width": 4,
+      "blue_mask": 4095,
+      "white_mask": 3710,
+      "white_ports": {
+        "left": "010",
+        "right": "101"
+      },
+      "diagram": [
+        "booo",
+        "ooob",
+        "booo"
+      ],
+      "bound": "0",
+      "claim": "E4bar <= 0",
+      "used_in": [
+        "case 2",
+        "case 3",
+        "case 4",
+        "case 6"
+      ]
+    },
+    {
+      "role": "F1",
+      "certificate": "tile_e06eb7fc2dd6",
+      "width": 1,
+      "blue_mask": 7,
+      "white_mask": 5,
+      "white_ports": {
+        "left": "101",
+        "right": "101"
+      },
+      "diagram": [
+        "o",
+        "b",
+        "o"
+      ],
+      "bound": "0",
+      "claim": "F1 <= 0",
+      "used_in": [
+        "4k+1"
+      ]
+    },
+    {
+      "role": "K_corner",
+      "certificate": "tile_8532d5d099db",
+      "width": 3,
+      "blue_mask": 244,
+      "white_mask": 94,
+      "white_ports": {
+        "left": "011",
+        "right": "100"
+      },
+      "diagram": [
+        ".wo",
+        "wob",
+        "ob."
+      ],
+      "local_moves": {
+        "blue": [
+          0,
+          0
+        ],
+        "white": [
+          2,
+          2
+        ]
+      },
+      "bound": "0",
+      "claim": "K_corner <= 0",
+      "used_in": [
+        "case 2"
+      ]
+    },
+    {
+      "role": "K_outer2",
+      "certificate": "tile_09197aa9813a",
+      "width": 7,
+      "blue_mask": 2080241,
+      "white_mask": 2039675,
+      "white_ports": {
+        "left": "100",
+        "right": "101"
+      },
+      "diagram": [
+        "ow.wooo",
+        "bowooob",
+        ".booooo"
+      ],
+      "local_moves": {
+        "blue": [
+          0,
+          2
+        ],
+        "white": [
+          2,
+          0
+        ]
+      },
+      "bound": "0",
+      "claim": "K_outer2 <= 0",
+      "used_in": [
+        "case 3"
+      ]
+    },
+    {
+      "role": "K_outer4",
+      "certificate": "K_outer4_H_of_tile_09197aa9813a",
+      "width": 7,
+      "blue_mask": 1046471,
+      "white_mask": 515951,
+      "white_ports": {
+        "left": "101",
+        "right": "100"
+      },
+      "diagram": [
+        "ooow.wo",
+        "booowob",
+        "ooooob."
+      ],
+      "local_moves": {
+        "blue": [
+          0,
+          4
+        ],
+        "white": [
+          2,
+          6
+        ]
+      },
+      "bound": "0",
+      "claim": "K_outer4 <= 0",
+      "used_in": [
+        "case 4"
+      ]
+    },
+    {
+      "role": "T_middle1",
+      "certificate": "tmiddle1",
+      "width": 6,
+      "blue_mask": 253500,
+      "white_mask": 130844,
+      "white_ports": {
+        "left": "001",
+        "right": "010"
+      },
+      "diagram": [
+        "..ooob",
+        "..wooo",
+        "owooob"
+      ],
+      "local_moves": {
+        "blue": [
+          1,
+          1
+        ],
+        "white": [
+          0,
+          0
+        ]
+      },
+      "bound": "0",
+      "claim": "T_middle1 <= 0",
+      "used_in": [
+        "case 5"
+      ]
+    },
+    {
+      "role": "J5",
+      "certificate": "atlas_3x5_W21845",
+      "width": 5,
+      "blue_mask": 32767,
+      "white_mask": 21845,
+      "white_ports": {
+        "left": "101",
+        "right": "101"
+      },
+      "diagram": [
+        "obobo",
+        "bobob",
+        "obobo"
+      ],
+      "bound": "0",
+      "claim": "J5 <= 0",
+      "used_in": [
+        "case 5"
+      ]
+    },
+    {
+      "role": "Z7",
+      "certificate": "z7",
+      "width": 7,
+      "blue_mask": 2097022,
+      "white_mask": 2088828,
+      "white_ports": {
+        "left": "001",
+        "right": "101"
+      },
+      "diagram": [
+        ".booooo",
+        ".ooooob",
+        "ooooooo"
+      ],
+      "local_moves": {
+        "blue": [
+          1,
+          -1
+        ],
+        "white": [
+          0,
+          0
+        ]
+      },
+      "note": "repeatable right seam (port 101); used whenever E4bar follows",
+      "bound": "0",
+      "claim": "Z7 <= 0",
+      "used_in": [
+        "case 6, s >= 11"
+      ]
+    },
+    {
+      "role": "Z7_end",
+      "certificate": "tile_76ba798e4bc4",
+      "width": 7,
+      "blue_mask": 2097022,
+      "white_mask": 2097020,
+      "white_ports": {
+        "left": "001",
+        "right": "111"
+      },
+      "diagram": [
+        ".booooo",
+        ".oooooo",
+        "ooooooo"
+      ],
+      "local_moves": {
+        "blue": [
+          1,
+          -1
+        ],
+        "white": [
+          0,
+          0
+        ]
+      },
+      "note": "right port 111: valid only at the physical right edge",
+      "bound": "0",
+      "claim": "Z7_end <= 0",
+      "used_in": [
+        "case 6, s = 7",
+        "base 3x7",
+        "base 3x11"
+      ]
+    },
+    {
+      "role": "C3",
+      "certificate": "cap_minus_quarter_blue",
+      "width": 3,
+      "blue_mask": 511,
+      "white_mask": 503,
+      "white_ports": {
+        "left": "101",
+        "right": "111"
+      },
+      "diagram": [
+        "ooo",
+        "boo",
+        "ooo"
+      ],
+      "number_offset": "-1/4",
+      "bound": "1/4",
+      "claim": "C3 <= 1/4",
+      "used_in": [
+        "case 1"
+      ]
+    },
+    {
+      "role": "E4_open_0_1",
+      "certificate": "opened_bulk_plus_one_blue",
+      "width": 4,
+      "blue_mask": 4056,
+      "white_mask": 2021,
+      "white_ports": {
+        "left": "101",
+        "right": "010"
+      },
+      "diagram": [
+        "w.wb",
+        "bwoo",
+        "ooob"
+      ],
+      "number_offset": "1",
+      "opening": [
+        0,
+        1
+      ],
+      "bound": "-1",
+      "claim": "E4_open_0_1 <= -1",
+      "used_in": [
+        "case 1"
+      ]
+    },
+    {
+      "role": "E4_open_0_3",
+      "certificate": "opened_bulk_c3_plus_one_blue",
+      "width": 4,
+      "blue_mask": 3955,
+      "white_mask": 2023,
+      "white_ports": {
+        "left": "101",
+        "right": "010"
+      },
+      "diagram": [
+        "oow.",
+        "boow",
+        "ooob"
+      ],
+      "number_offset": "1",
+      "opening": [
+        0,
+        3
+      ],
+      "bound": "-1",
+      "claim": "E4_open_0_3 <= -1",
+      "used_in": [
+        "case 1"
+      ]
+    },
+    {
+      "role": "E4_open_1_0",
+      "certificate": "opened_bulk_middle0_plus_one_blue",
+      "width": 4,
+      "blue_mask": 3790,
+      "white_mask": 2023,
+      "white_ports": {
+        "left": "101",
+        "right": "010"
+      },
+      "diagram": [
+        "woob",
+        ".woo",
+        "woob"
+      ],
+      "number_offset": "1",
+      "opening": [
+        1,
+        0
+      ],
+      "bound": "-1",
+      "claim": "E4_open_1_0 <= -1",
+      "used_in": [
+        "case 1"
+      ]
+    },
+    {
+      "role": "E4_open_1_2",
+      "certificate": "opened_bulk_middle2_plus_one_blue",
+      "width": 4,
+      "blue_mask": 2843,
+      "white_mask": 1959,
+      "white_ports": {
+        "left": "101",
+        "right": "010"
+      },
+      "diagram": [
+        "oowb",
+        "bw.w",
+        "oowb"
+      ],
+      "number_offset": "1",
+      "opening": [
+        1,
+        2
+      ],
+      "bound": "-1",
+      "claim": "E4_open_1_2 <= -1",
+      "used_in": [
+        "case 1"
+      ]
+    },
+    {
+      "role": "E4_open_2_1",
+      "certificate": "opened_bulk_2_1_plus_one_blue_V_of_opened_bulk_plus_one_blue",
+      "width": 4,
+      "blue_mask": 2271,
+      "white_mask": 1511,
+      "white_ports": {
+        "left": "101",
+        "right": "010"
+      },
+      "diagram": [
+        "ooob",
+        "bwoo",
+        "w.wb"
+      ],
+      "number_offset": "1",
+      "opening": [
+        2,
+        1
+      ],
+      "bound": "-1",
+      "claim": "E4_open_2_1 <= -1",
+      "used_in": [
+        "case 1"
+      ]
+    },
+    {
+      "role": "E4_open_2_3",
+      "certificate": "opened_bulk_2_3_plus_one_blue_V_of_opened_bulk_c3_plus_one_blue",
+      "width": 4,
+      "blue_mask": 895,
+      "white_mask": 2023,
+      "white_ports": {
+        "left": "101",
+        "right": "010"
+      },
+      "diagram": [
+        "ooob",
+        "boow",
+        "oow."
+      ],
+      "number_offset": "1",
+      "opening": [
+        2,
+        3
+      ],
+      "bound": "-1",
+      "claim": "E4_open_2_3 <= -1",
+      "used_in": [
+        "case 1"
+      ]
+    }
+  ],
+  "base_widths": {
+    "file": "certificates/base/existing_library_scan.json",
+    "source": "proofs/construction/research/existing_library_scan.json (byte-identical copy)",
+    "sha256": "4beb89a9d77968bac422b17de8b2e74a39c2e6020da222dcbda358b4655c2482",
+    "widths": [
+      3,
+      7,
+      11
+    ],
+    "certificate_aliases": {
+      "certificates/tile_09fb65f2292a.json.gz": "tile_09fb65f2292a",
+      "certificates/tile_09fb65f2292a.json.gz:H1V0": "tile_09fb65f2292a_H",
+      "certificates/tile_2398ea84ec04.json.gz": "tile_2398ea84ec04",
+      "certificates/tile_468c39840ab4.json.gz": "tile_468c39840ab4",
+      "certificates/tile_4d9d5d12cc0f.json.gz": "tile_4d9d5d12cc0f",
+      "certificates/tile_501c8151efe6.json.gz": "tile_501c8151efe6",
+      "certificates/tile_501c8151efe6.json.gz:H1V0": "tile_501c8151efe6_H",
+      "certificates/tile_55c55441362e.json.gz": "tile_55c55441362e",
+      "certificates/tile_675ea04f7dff.json.gz": "tile_675ea04f7dff",
+      "certificates/tile_76ba798e4bc4.json.gz": "tile_76ba798e4bc4",
+      "certificates/tile_7de2134cc103.json.gz": "tile_7de2134cc103",
+      "certificates/tile_8532d5d099db.json.gz": "tile_8532d5d099db",
+      "certificates/tile_8b16696647a7.json.gz": "tile_8b16696647a7",
+      "certificates/tile_da4864d83b99.json.gz": "tile_da4864d83b99",
+      "certificates/tile_e06eb7fc2dd6.json.gz": "tile_e06eb7fc2dd6",
+      "certificates/tile_e4d37d528005.json.gz": "tile_e4d37d528005"
+    }
+  }
+}

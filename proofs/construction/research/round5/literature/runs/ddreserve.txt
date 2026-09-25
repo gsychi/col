@@ -1,0 +1,6 @@
+DD_1 = 0 ; after White (2,0): 1 ; reserve bound gives DD <= 0
+DD_2 = 1 ; after White (2,0): 2 ; reserve bound gives DD <= 1
+DD_3 = -1 ; after White (2,0): 0 ; reserve bound gives DD <= -1
+DD_4 = 0 ; after White (2,0): 1 ; reserve bound gives DD <= 0
+DD_5 = -1 ; after White (2,0): 0 ; reserve bound gives DD <= -1
+DD_6 = 0 ; after White (2,0): 1 ; reserve bound gives DD <= 0

@@ -1,0 +1,151 @@
+[
+  {
+    "height": 3,
+    "width": 3,
+    "status": "certified",
+    "nodes": 2,
+    "seconds": 3.46499999182015e-06,
+    "plan": [
+      [
+        0,
+        0,
+        3,
+        3,
+        495
+      ]
+    ]
+  },
+  {
+    "height": 3,
+    "width": 5,
+    "status": "certified",
+    "nodes": 3,
+    "seconds": 4.527000015741578e-06,
+    "plan": [
+      [
+        0,
+        0,
+        3,
+        4,
+        1959
+      ],
+      [
+        0,
+        4,
+        3,
+        1,
+        5
+      ]
+    ]
+  },
+  {
+    "height": 3,
+    "width": 7,
+    "status": "no_tiling_in_library",
+    "nodes": 88,
+    "seconds": 6.53760000091097e-05,
+    "plan": null
+  },
+  {
+    "height": 3,
+    "width": 9,
+    "status": "certified",
+    "nodes": 4,
+    "seconds": 3.7060000011024385e-06,
+    "plan": [
+      [
+        0,
+        0,
+        3,
+        4,
+        1959
+      ],
+      [
+        0,
+        4,
+        3,
+        4,
+        1959
+      ],
+      [
+        0,
+        8,
+        3,
+        1,
+        5
+      ]
+    ]
+  },
+  {
+    "height": 3,
+    "width": 11,
+    "status": "no_tiling_in_library",
+    "nodes": 387,
+    "seconds": 0.0003001609999842003,
+    "plan": null
+  },
+  {
+    "height": 5,
+    "width": 5,
+    "status": "no_tiling_in_library",
+    "nodes": 114,
+    "seconds": 9.849500000314038e-05,
+    "plan": null
+  },
+  {
+    "height": 5,
+    "width": 7,
+    "status": "no_tiling_in_library",
+    "nodes": 384,
+    "seconds": 0.0004152810000164209,
+    "plan": null
+  },
+  {
+    "height": 5,
+    "width": 9,
+    "status": "no_tiling_in_library",
+    "nodes": 1270,
+    "seconds": 0.0016319199999941247,
+    "plan": null
+  },
+  {
+    "height": 5,
+    "width": 11,
+    "status": "no_tiling_in_library",
+    "nodes": 4090,
+    "seconds": 0.004708194999977877,
+    "plan": null
+  },
+  {
+    "height": 7,
+    "width": 7,
+    "status": "no_tiling_in_library",
+    "nodes": 550,
+    "seconds": 0.000704697000003307,
+    "plan": null
+  },
+  {
+    "height": 7,
+    "width": 9,
+    "status": "no_tiling_in_library",
+    "nodes": 2009,
+    "seconds": 0.0028139190000047165,
+    "plan": null
+  },
+  {
+    "height": 7,
+    "width": 11,
+    "status": "no_tiling_in_library",
+    "nodes": 7081,
+    "seconds": 0.010098412999980155,
+    "plan": null
+  },
+  {
+    "height": 9,
+    "width": 9,
+    "status": "no_tiling_in_library",
+    "nodes": 2009,
+    "seconds": 0.003203072000019347,
+    "plan": null
+  }
+]

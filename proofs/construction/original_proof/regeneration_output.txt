@@ -1,0 +1,36 @@
+certificates/tile_8532d5d099db.json.gz checkpoints=7 edges=14 minimax_calls=51 memo_entries=20
+certificates/tile_675ea04f7dff.json.gz checkpoints=155 edges=474 minimax_calls=2078 memo_entries=785
+certificates/tile_1ed978875ca7.json.gz checkpoints=156 edges=477 minimax_calls=2357 memo_entries=920
+certificates/tile_7f61c9598d5f.json.gz checkpoints=6 edges=10 minimax_calls=25 memo_entries=9
+certificates/tile_e4d37d528005.json.gz checkpoints=152 edges=470 minimax_calls=1620 memo_entries=557
+certificates/tile_2affd31fec9d.json.gz checkpoints=157 edges=481 minimax_calls=1578 memo_entries=536
+certificates/tile_2398ea84ec04.json.gz checkpoints=1438 edges=5402 minimax_calls=83398 memo_entries=29698
+certificates/tile_bce76b04468d.json.gz checkpoints=1562 edges=6506 minimax_calls=55031 memo_entries=19453
+certificates/tile_8b16696647a7.json.gz checkpoints=1252 edges=5052 minimax_calls=22305 memo_entries=7423
+certificates/tile_2465591ca5a5.json.gz checkpoints=155 edges=452 minimax_calls=3009 memo_entries=1165
+certificates/tile_1644a96c7c55.json.gz checkpoints=6 edges=10 minimax_calls=25 memo_entries=9
+certificates/tile_40d069500f87.json.gz checkpoints=152 edges=470 minimax_calls=1767 memo_entries=632
+certificates/tile_09197aa9813a.json.gz checkpoints=1478 edges=5511 minimax_calls=78038 memo_entries=27859
+certificates/tile_468c39840ab4.json.gz checkpoints=918 edges=3771 minimax_calls=35744 memo_entries=13714
+certificates/tile_da4864d83b99.json.gz checkpoints=5 edges=8 minimax_calls=22 memo_entries=8
+certificates/tile_501c8151efe6.json.gz checkpoints=5 edges=6 minimax_calls=27 memo_entries=13
+certificates/tile_e65624aa2731.json.gz checkpoints=9 edges=15 minimax_calls=38 memo_entries=15
+certificates/tile_09fb65f2292a.json.gz checkpoints=1098 edges=4089 minimax_calls=67722 memo_entries=24302
+certificates/tile_55c55441362e.json.gz checkpoints=1026 edges=3798 minimax_calls=241882 memo_entries=78210
+certificates/tile_7de2134cc103.json.gz checkpoints=5 edges=8 minimax_calls=21 memo_entries=8
+certificates/tile_91c7fb008913.json.gz checkpoints=7732 edges=33566 minimax_calls=439065 memo_entries=147282
+certificates/tile_76ba798e4bc4.json.gz checkpoints=4883 edges=21033 minimax_calls=244831 memo_entries=88965
+certificates/tile_1a7f18fcf6af.json.gz checkpoints=59 edges=157 minimax_calls=736 memo_entries=304
+certificates/tile_4d9d5d12cc0f.json.gz checkpoints=4 edges=6 minimax_calls=17 memo_entries=7
+certificates/tile_e06eb7fc2dd6.json.gz checkpoints=3 edges=3 minimax_calls=9 memo_entries=3
+{
+  "result": "VERIFIED: empty 3x15 Col is a second-player win",
+  "demon_state": "VERIFIED: White wins by playing cell 12",
+  "opening_representatives": 16,
+  "opening_cells_covered": 45,
+  "tile_certificates": 25,
+  "largest_tile_cells": 21,
+  "checkpoints": 22423,
+  "blue_move_white_reply_edges": 91789,
+  "elapsed_seconds": 0.4491866560001654
+}

@@ -42,6 +42,89 @@ the P1 continuations of the move-ordered P2 reply must all be refuted too, so
 the work splits into hundreds of required subtasks instead of ~20 openings.
 Pass `--root-split` for the older opening-level split (useful for comparison).
 
+## Empty 3 × n theorem
+
+The current mathematical result is that every empty `3 × n` Col board has
+value zero. The even-width case uses half-turn pairing; widths `4k+1` use a
+periodic certified tiling; widths `4k+3` use finite base cases and a
+strong-induction proof with a separator in the middle-row `3 mod 4` opening.
+The full argument and its gadget inventory are recorded in
+[the all-width proof write-up](proofs/construction/empty_3xn_theorem.md).
+The whole theorem, including every finite certificate, is formalised in Lean 4
+without external libraries; see [the Lean proof](proofs/lean/README.md)
+(`cd proofs/lean && lake build`). Papers for submission and for beginners are
+in [`papers/`](papers/).
+For the proof's game conventions, the five-row boundary-state program,
+documented obstructions, and suggested next research targets, see the
+[Col research handoff](proofs/construction/research/col_research_handoff.md).
+The five-row and general odd-by-odd problems remain open; the three-row theorem
+does not claim to solve them.
+
+## Certified strategies and larger strips
+
+The solver now tries verified one-sided tilings before full-board DFS. The
+bundled certificate library proves empty 3×15 and supports arbitrarily long
+3×(4k+1) strips, including 3×101. Certificate results retain an executable
+strategy and are separate from numerical CGT values and ordinary tablebases.
+
+```bash
+./col-solve --m 3 --n 15 --proof-out /tmp/3x15.json
+./col-cert verify /tmp/3x15.json
+./col-cert verify-python /tmp/3x15.json
+./col-cert replay /tmp/3x15.json --moves 0 14
+./col-cert --m 3 --n 101 --proof-out /tmp/3x101.json
+./col-cert discover --out /tmp/col-tiles --boards 3x19 3x23 5x9 7x7
+```
+
+`--proof-mode root` is the default; `off` restores ordinary DFS and `search`
+also enables deeper certificate cutoffs. `col-cert` never falls back to DFS:
+exit status 2 means **unknown**, not a winning or losing result. Without an
+explicit output path, witnesses are saved under `data/proofs/`.
+
+The default library covers 19/20 representative openings on 3×19. The
+[checkpoint experiment](reports/weighted-tiling/checkpoint-results.md) closes
+the remaining opening by exposing one existing internal certificate state as
+a reusable tile. Its separate 26-tile library certifies all 57 openings, with
+both checkers agreeing and an executable response strategy:
+
+```bash
+./col-cert --m 3 --n 19 --proof-library reports/weighted-tiling/checkpoint-library --proof-out /tmp/3x19.json
+./col-cert verify /tmp/3x19.json
+./col-cert replay /tmp/3x19.json --moves 26
+```
+
+The [weighted experiment](reports/weighted-tiling/README.md) compares signed
+bounds on known boards. Run `python3 scripts/benchmark_weighted_tiling.py`
+and then `python3 scripts/checkpoint_tiling_probe.py` to reproduce both
+experiments. General compensated bounds remain experimental and require a
+different gameplay player; the extracted zero-bound tile above works with
+the existing player. Production defaults are unchanged. Taller odd-by-odd
+boards remain outside the `3 × n` theorem. See
+[the integration report](reports/certified-tiling-integration.md) for the
+original artifact semantics, budgets, verification, and benchmarks. Its
+historical statements that wider `4k+3` strips are unresolved predate the
+inductive proof linked above; the certificate explorer still reports unknown
+when its finite tile library cannot construct a witness.
+
+The [adaptive search experiment](reports/adaptive-tiling/README.md) adds bounded
+multi-round strategies, indexed checkpoint lookup, and targeted local searches.
+It admitted 18 additional local certificates; its finite tile library still
+returns unknown for 3×23, although the all-width induction proves that board's
+outcome. This distinction is between the theorem and this particular witness
+search, not an open mathematical case.
+Run `python3 scripts/refine_adaptive_tiling.py` to reproduce the experiment;
+its separate library is under `reports/adaptive-tiling/final/library`.
+
+The [atlas integration and benchmark](reports/atlas-priority/README.md) adds
+role-explicit imports, executable counterstrategies, complete local classification
+lookups, and 772 exact-zero upgrades. On matched 3×23 cases the full atlas costs
+more time and memory without closing the center opening, so it remains opt-in:
+
+```bash
+python3 scripts/adaptive_tiling_research.py --library reports/adaptive-tiling/final/library --atlas proofs/atlas --atlas-review proofs/atlas-review --out /tmp/col-atlas-research
+python3 scripts/benchmark_atlas_priority.py --out /tmp/col-atlas-benchmark
+```
+
 ## Render (cloud)
 
 Deploy continuous solving + web explorer to [Render](https://render.com):
@@ -165,9 +248,9 @@ checks terminal and half-turn-pairing leaves. The frontier audit exits nonzero
 when one truncated signature contains both winning and losing exact states;
 that is a concrete counterexample to treating the signature as a proof state.
 
-`proof_status.py` exits nonzero while any all-width proof obligation remains
-open. In particular, finite verification through a fixed width is not reported
-as a proof of all odd `3xn` boards.
+`proof_status.py` tracks the earlier finite-state proof route and still reports
+that route's open obligations. It does not evaluate the later gadget-and-
+induction proof linked above, so its status is not the current theorem status.
 
 ## GUI
 

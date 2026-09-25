@@ -1,0 +1,515 @@
+{
+  "schema": 1,
+  "patterns": {
+    "D": "obwbo",
+    "U": "wbobo",
+    "V": "bwbob",
+    "X": "bowob",
+    "R": "wobob",
+    "J": "owobo"
+  },
+  "scope": "neutral opening column; same-column reply only",
+  "contracts": [
+    {
+      "opening_row": 0,
+      "reply_row": null,
+      "near_left": "U",
+      "near_right": "U",
+      "separator": ".wbob",
+      "left_white_support": [
+        0,
+        2,
+        4
+      ],
+      "right_white_support": [
+        0,
+        2,
+        4
+      ],
+      "separator_white_support": [
+        1,
+        3
+      ],
+      "value": {
+        "number": "0",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 0,
+      "reply_row": 1,
+      "near_left": "U",
+      "near_right": "U",
+      "separator": "..bob",
+      "left_white_support": [
+        0,
+        2,
+        4
+      ],
+      "right_white_support": [
+        0,
+        2,
+        4
+      ],
+      "separator_white_support": [
+        3
+      ],
+      "value": {
+        "number": "1",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 0,
+      "reply_row": 3,
+      "near_left": "U",
+      "near_right": "U",
+      "separator": ".wb.b",
+      "left_white_support": [
+        0,
+        2,
+        4
+      ],
+      "right_white_support": [
+        0,
+        2,
+        4
+      ],
+      "separator_white_support": [
+        1
+      ],
+      "value": {
+        "number": "1",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 0,
+      "reply_row": null,
+      "near_left": "U",
+      "near_right": "R",
+      "separator": "..bbb",
+      "left_white_support": [
+        0,
+        2,
+        4
+      ],
+      "right_white_support": [
+        0,
+        1,
+        3
+      ],
+      "separator_white_support": [],
+      "value": {
+        "number": "2",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 0,
+      "reply_row": null,
+      "near_left": "R",
+      "near_right": "R",
+      "separator": "..obo",
+      "left_white_support": [
+        0,
+        1,
+        3
+      ],
+      "right_white_support": [
+        0,
+        1,
+        3
+      ],
+      "separator_white_support": [
+        2,
+        4
+      ],
+      "value": {
+        "number": "0",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 0,
+      "reply_row": 2,
+      "near_left": "R",
+      "near_right": "R",
+      "separator": "...bo",
+      "left_white_support": [
+        0,
+        1,
+        3
+      ],
+      "right_white_support": [
+        0,
+        1,
+        3
+      ],
+      "separator_white_support": [
+        4
+      ],
+      "value": {
+        "number": "1/2",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 0,
+      "reply_row": 4,
+      "near_left": "R",
+      "near_right": "R",
+      "separator": "..ob.",
+      "left_white_support": [
+        0,
+        1,
+        3
+      ],
+      "right_white_support": [
+        0,
+        1,
+        3
+      ],
+      "separator_white_support": [
+        2
+      ],
+      "value": {
+        "number": "1/2",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 1,
+      "reply_row": null,
+      "near_left": "V",
+      "near_right": "V",
+      "separator": "w.wbo",
+      "left_white_support": [
+        1,
+        3
+      ],
+      "right_white_support": [
+        1,
+        3
+      ],
+      "separator_white_support": [
+        0,
+        2,
+        4
+      ],
+      "value": {
+        "number": "-3/2",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 1,
+      "reply_row": 0,
+      "near_left": "V",
+      "near_right": "V",
+      "separator": "..wbo",
+      "left_white_support": [
+        1,
+        3
+      ],
+      "right_white_support": [
+        1,
+        3
+      ],
+      "separator_white_support": [
+        2,
+        4
+      ],
+      "value": {
+        "number": "-1/2",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 1,
+      "reply_row": 2,
+      "near_left": "V",
+      "near_right": "V",
+      "separator": "w..bo",
+      "left_white_support": [
+        1,
+        3
+      ],
+      "right_white_support": [
+        1,
+        3
+      ],
+      "separator_white_support": [
+        0,
+        4
+      ],
+      "value": {
+        "number": "-1/2",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 1,
+      "reply_row": 4,
+      "near_left": "V",
+      "near_right": "V",
+      "separator": "w.wb.",
+      "left_white_support": [
+        1,
+        3
+      ],
+      "right_white_support": [
+        1,
+        3
+      ],
+      "separator_white_support": [
+        0,
+        2
+      ],
+      "value": {
+        "number": "-1",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 1,
+      "reply_row": null,
+      "near_left": "V",
+      "near_right": "J",
+      "separator": "...bb",
+      "left_white_support": [
+        1,
+        3
+      ],
+      "right_white_support": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "separator_white_support": [],
+      "value": {
+        "number": "1",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 1,
+      "reply_row": null,
+      "near_left": "J",
+      "near_right": "J",
+      "separator": "...ob",
+      "left_white_support": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "right_white_support": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "separator_white_support": [
+        3
+      ],
+      "value": {
+        "number": "1/2",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 1,
+      "reply_row": 3,
+      "near_left": "J",
+      "near_right": "J",
+      "separator": "....b",
+      "left_white_support": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "right_white_support": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "separator_white_support": [],
+      "value": {
+        "number": "1",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 2,
+      "reply_row": null,
+      "near_left": "D",
+      "near_right": "D",
+      "separator": "bw.wb",
+      "left_white_support": [
+        0,
+        2,
+        4
+      ],
+      "right_white_support": [
+        0,
+        2,
+        4
+      ],
+      "separator_white_support": [
+        1,
+        3
+      ],
+      "value": {
+        "number": "0",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 2,
+      "reply_row": 1,
+      "near_left": "D",
+      "near_right": "D",
+      "separator": "b..wb",
+      "left_white_support": [
+        0,
+        2,
+        4
+      ],
+      "right_white_support": [
+        0,
+        2,
+        4
+      ],
+      "separator_white_support": [
+        3
+      ],
+      "value": {
+        "number": "1",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 2,
+      "reply_row": 3,
+      "near_left": "D",
+      "near_right": "D",
+      "separator": "bw..b",
+      "left_white_support": [
+        0,
+        2,
+        4
+      ],
+      "right_white_support": [
+        0,
+        2,
+        4
+      ],
+      "separator_white_support": [
+        1
+      ],
+      "value": {
+        "number": "1",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 2,
+      "reply_row": null,
+      "near_left": "D",
+      "near_right": "X",
+      "separator": "b...b",
+      "left_white_support": [
+        0,
+        2,
+        4
+      ],
+      "right_white_support": [
+        1,
+        2,
+        3
+      ],
+      "separator_white_support": [],
+      "value": {
+        "number": "2",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 2,
+      "reply_row": null,
+      "near_left": "X",
+      "near_right": "X",
+      "separator": "o...o",
+      "left_white_support": [
+        1,
+        2,
+        3
+      ],
+      "right_white_support": [
+        1,
+        2,
+        3
+      ],
+      "separator_white_support": [
+        0,
+        4
+      ],
+      "value": {
+        "number": "0",
+        "star": false
+      }
+    },
+    {
+      "opening_row": 2,
+      "reply_row": 0,
+      "near_left": "X",
+      "near_right": "X",
+      "separator": "....o",
+      "left_white_support": [
+        1,
+        2,
+        3
+      ],
+      "right_white_support": [
+        1,
+        2,
+        3
+      ],
+      "separator_white_support": [
+        4
+      ],
+      "value": {
+        "number": "0",
+        "star": true
+      }
+    },
+    {
+      "opening_row": 2,
+      "reply_row": 4,
+      "near_left": "X",
+      "near_right": "X",
+      "separator": "o....",
+      "left_white_support": [
+        1,
+        2,
+        3
+      ],
+      "right_white_support": [
+        1,
+        2,
+        3
+      ],
+      "separator_white_support": [
+        0
+      ],
+      "value": {
+        "number": "0",
+        "star": true
+      }
+    }
+  ]
+}

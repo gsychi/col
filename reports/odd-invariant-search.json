@@ -1,0 +1,987 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "board": "3x3",
+      "states": 37,
+      "seconds": 0.0006541669999999833,
+      "naive_candidates": 5,
+      "naive_counterexamples": 1,
+      "component_candidates": 7,
+      "component_counterexamples": 0,
+      "skipped": null
+    },
+    {
+      "board": "3x5",
+      "states": 565,
+      "seconds": 0.005076042000000003,
+      "naive_candidates": 15,
+      "naive_counterexamples": 1,
+      "component_candidates": 75,
+      "component_counterexamples": 0,
+      "skipped": null
+    },
+    {
+      "board": "3x7",
+      "states": 15608,
+      "seconds": 0.1417857090000001,
+      "naive_candidates": 38,
+      "naive_counterexamples": 7,
+      "component_candidates": 1893,
+      "component_counterexamples": 0,
+      "skipped": null
+    },
+    {
+      "board": "5x5",
+      "states": 94228,
+      "seconds": 1.1589326249999998,
+      "naive_candidates": 77,
+      "naive_counterexamples": 9,
+      "component_candidates": 8367,
+      "component_counterexamples": 0,
+      "skipped": null
+    },
+    {
+      "board": "3x9",
+      "states": 135636,
+      "seconds": 1.5002568749999998,
+      "naive_candidates": 96,
+      "naive_counterexamples": 11,
+      "component_candidates": 8932,
+      "component_counterexamples": 0,
+      "skipped": null
+    },
+    {
+      "board": "3x11",
+      "states": 3870038,
+      "seconds": 0.0,
+      "naive_candidates": 1033,
+      "naive_counterexamples": 127,
+      "component_candidates": 0,
+      "component_counterexamples": 0,
+      "skipped": "Rust full-memo naive scan; component cancellation not scanned"
+    },
+    {
+      "board": "5x7",
+      "states": 11442573,
+      "seconds": 0.0,
+      "naive_candidates": 689,
+      "naive_counterexamples": 45,
+      "component_candidates": 0,
+      "component_counterexamples": 0,
+      "skipped": "Rust full-memo naive scan; component cancellation not scanned"
+    },
+    {
+      "board": "3x13",
+      "states": 71877361,
+      "seconds": 0.0,
+      "naive_candidates": 318,
+      "naive_counterexamples": 79,
+      "component_candidates": 0,
+      "component_counterexamples": 0,
+      "skipped": "Rust full-memo naive scan; component cancellation not scanned"
+    }
+  ],
+  "counterexamples": [
+    {
+      "board": "3x3",
+      "key": "0x7c6e",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1f",
+      "p2_legal": "0x37",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x5",
+      "key": "0x10062018",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1006",
+      "p2_legal": "0x100c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x7",
+      "key": "0x1e7cf1e3e3c",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x79f3c",
+      "p2_legal": "0xf1f1e",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x7",
+      "key": "0x187001838",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x61c",
+      "p2_legal": "0xc1c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x7",
+      "key": "0x347802c78",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0xd1e",
+      "p2_legal": "0x163c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x7",
+      "key": "0x2187101838",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x861c",
+      "p2_legal": "0x80c1c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x7",
+      "key": "0x107800878",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x41e",
+      "p2_legal": "0x43c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x7",
+      "key": "0x107000838",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x41c",
+      "p2_legal": "0x41c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x7",
+      "key": "0x5c7803a78",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x171e",
+      "p2_legal": "0x1d3c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "5x5",
+      "key": "0x4300002300",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x10c0",
+      "p2_legal": "0x1180",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "5x5",
+      "key": "0x4018002018",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1006",
+      "p2_legal": "0x100c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "5x5",
+      "key": "0x4018002019",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1006",
+      "p2_legal": "0x100c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "5x5",
+      "key": "0x18040011",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0x6",
+      "p2_legal": "0x20008",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "5x5",
+      "key": "0x19fff319efbcc",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x67ffcc",
+      "p2_legal": "0xcf7de6",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "5x5",
+      "key": "0x300800201",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0xc0",
+      "p2_legal": "0x400100",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "5x5",
+      "key": "0x218000118",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x86",
+      "p2_legal": "0x8c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "5x5",
+      "key": "0x4100000300",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1040",
+      "p2_legal": "0x180",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "5x5",
+      "key": "0x2403010200c",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x900c",
+      "p2_legal": "0x81006",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0xf0f8783c1f078",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0xf0f878",
+      "p2_legal": "0x1e0f83c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x4000180800060",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x400018",
+      "p2_legal": "0x400030",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x4804304820030",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x480430",
+      "p2_legal": "0x2410018",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x40003408000b0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x400034",
+      "p2_legal": "0x400058",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x60001c18000e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x60001c",
+      "p2_legal": "0xc00070",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x4800304800030",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x480030",
+      "p2_legal": "0x2400018",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x40041a0820160",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x40041a",
+      "p2_legal": "0x4100b0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x40001a0800160",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x40001a",
+      "p2_legal": "0x4000b0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x4904b04820834",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x4904b0",
+      "p2_legal": "0x241041a",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x20180004060",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x2018",
+      "p2_legal": "0x2030",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x9",
+      "key": "0x4000180800061",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0x400018",
+      "p2_legal": "0x400030",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x401e0000201e1",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0x10078",
+      "p2_legal": "0x100f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x7d8601f6f8061be0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1f61807d",
+      "p2_legal": "0x17c030df0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x1703c0000e80f0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x5c0f0",
+      "p2_legal": "0x74078",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x7c86c1f0f83613e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1f21b07c",
+      "p2_legal": "0x7c1b09f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x484c1f0803213e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x121307c",
+      "p2_legal": "0x401909f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x58401f680021be0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x161007d",
+      "p2_legal": "0x140010df0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700621c0384600e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c018870",
+      "p2_legal": "0x1c230070",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x718601c6380618e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c618071",
+      "p2_legal": "0x11c030c70",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0xd01e0000b01e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x34078",
+      "p2_legal": "0x580f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700601e0380601e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c018078",
+      "p2_legal": "0x1c0300f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x78040c107802020c",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1e010304",
+      "p2_legal": "0x3c010106",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x407d8000206f8",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x101f6",
+      "p2_legal": "0x1037c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700641f0382603e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c01907c",
+      "p2_legal": "0x1c1301f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x17c060df0fa0603ec",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x5f01837c",
+      "p2_legal": "0x7d0301f6",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x781d0e10780b821c",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1e074384",
+      "p2_legal": "0x3c05c10e",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700605f0380603e8",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c01817c",
+      "p2_legal": "0x1c0301f4",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x401c0000200e1",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0x10070",
+      "p2_legal": "0x10070",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x720c21c9384304e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c830872",
+      "p2_legal": "0x9c218270",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700c21c8384304e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c030872",
+      "p2_legal": "0x1c218270",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x641f0002603e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1907c",
+      "p2_legal": "0x1301f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x7c0601f0f80603e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1f01807c",
+      "p2_legal": "0x7c0301f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x380006e0700001d8",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0xe0001b8",
+      "p2_legal": "0x380000ec",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x781f11e4780f89e2",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1e07c479",
+      "p2_legal": "0x3c07c4f1",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x780601f0780603e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1e01807c",
+      "p2_legal": "0x3c0301f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x40401f0800203e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x101007c",
+      "p2_legal": "0x400101f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x401f0000203e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1007c",
+      "p2_legal": "0x101f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x200000c0100000c0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x8000030",
+      "p2_legal": "0x8000060",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x7b1fc1ef783f8de0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1ec7f07b",
+      "p2_legal": "0x1bc1fc6f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x710641c6382608e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c419071",
+      "p2_legal": "0x11c130470",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x605f0000603e8",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1817c",
+      "p2_legal": "0x301f4",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700601c0380600e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c018070",
+      "p2_legal": "0x1c030070",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x718661c6386618e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c619871",
+      "p2_legal": "0x11c330c70",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x1707f8000e87f8",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x5c1fe",
+      "p2_legal": "0x743fc",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x80601f0400603e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x201807c",
+      "p2_legal": "0x200301f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x601c0000600e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x18070",
+      "p2_legal": "0x30070",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700601f438060be0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c01807d",
+      "p2_legal": "0x1c0305f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x300000e0300001c0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0xc000038",
+      "p2_legal": "0x180000e0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x403d0000202f0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x100f4",
+      "p2_legal": "0x10178",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x400c0000200c1",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0x10030",
+      "p2_legal": "0x10060",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x781fc1e0783f81e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1e07f078",
+      "p2_legal": "0x3c1fc0f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x1701e0000e81e1",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0x5c078",
+      "p2_legal": "0x740f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x791f01e6780f89e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1e47c079",
+      "p2_legal": "0x13c07c4f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700601e8380605e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c01807a",
+      "p2_legal": "0x1c0302f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700649c0382600e4",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c019270",
+      "p2_legal": "0x1c130072",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x730c41cf38230ce0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1cc31073",
+      "p2_legal": "0x19c118670",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x70061df438060bee",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c01877d",
+      "p2_legal": "0x1c0305f7",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x720c01c9380304e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c830072",
+      "p2_legal": "0x9c018270",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x7d06c1f6f8360be0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1f41b07d",
+      "p2_legal": "0x17c1b05f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x4030437df00c20efa",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x100c10df7",
+      "p2_legal": "0x18061077d",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x504c1f680320be0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x141307d",
+      "p2_legal": "0x1401905f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x7c8601f0f80613e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1f21807c",
+      "p2_legal": "0x7c0309f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x7d86e1f6f8761be0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1f61b87d",
+      "p2_legal": "0x17c3b0df0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x781d0610780b8218",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1e074184",
+      "p2_legal": "0x3c05c10c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x40481f0801203e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x101207c",
+      "p2_legal": "0x400901f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x48401f0800213e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x121007c",
+      "p2_legal": "0x400109f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x584e1f680721be0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x161387d",
+      "p2_legal": "0x140390df0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x30c41cf00230ce0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0xc31073",
+      "p2_legal": "0x180118670",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x415fc00020fea",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1057f",
+      "p2_legal": "0x107f5",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700c41c0382300e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c031070",
+      "p2_legal": "0x1c118070",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700605f8380607e8",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c01817e",
+      "p2_legal": "0x1c0303f4",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x4799f11e6788f99e2",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x11e67c479",
+      "p2_legal": "0x13c47ccf1",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700601e0380601e1",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c018078",
+      "p2_legal": "0x1c0300f0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x2710609c6390608e4",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x9c418271",
+      "p2_legal": "0x11c830472",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x781f0ff0780f83fc",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1e07c3fc",
+      "p2_legal": "0x3c07c1fe",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x300c01c0300300e0",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0xc030070",
+      "p2_legal": "0x18018070",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x200001a010000160",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x8000068",
+      "p2_legal": "0x80000b0",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700631c4384608e2",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c018c71",
+      "p2_legal": "0x1c230471",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x1fc1f87f0fe1f83f8",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x7f07e1fc",
+      "p2_legal": "0x7f0fc1fc",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x407d8000206f9",
+      "turn": "P2",
+      "side_to_move_wins": true,
+      "p1_legal": "0x101f6",
+      "p2_legal": "0x1037c",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x700611e4380609e2",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x1c018479",
+      "p2_legal": "0x1c0304f1",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    },
+    {
+      "board": "3x11",
+      "key": "0x4710631c638c608e2",
+      "turn": "P1",
+      "side_to_move_wins": true,
+      "p1_legal": "0x11c418c71",
+      "p2_legal": "0x11c630471",
+      "reason": "symmetric wings plus isolated middle-column value zero"
+    }
+  ]
+}

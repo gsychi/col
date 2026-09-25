@@ -1,0 +1,4 @@
+SCAN blue 2 (0,2) reply -1 best0 0.2500 tried 0 t 31
+SCAN blue 3 (0,3) reply 2 best0 0.5000 tried 0 t 36
+SCAN blue 4 (0,4) reply -1 best0 0.5000 tried 0 t 48
+SCAN blue 5 (0,5) reply 2 best0 0.5000 tried 0 t 51

@@ -1,0 +1,322 @@
+[
+  {
+    "support": 0,
+    "Q": "oowoo",
+    "separator": [
+      "2",
+      false
+    ],
+    "left": [
+      "-1",
+      false
+    ],
+    "right": [
+      "1",
+      false
+    ],
+    "sum": [
+      "2",
+      false
+    ]
+  },
+  {
+    "support": 1,
+    "Q": "bowoo",
+    "separator": [
+      "1",
+      true
+    ],
+    "left": [
+      "-1",
+      false
+    ],
+    "right": [
+      "1",
+      false
+    ],
+    "sum": [
+      "1",
+      true
+    ]
+  },
+  {
+    "support": 2,
+    "Q": "obwoo",
+    "separator": [
+      "1",
+      false
+    ],
+    "left": [
+      "0",
+      false
+    ],
+    "right": [
+      "3/2",
+      false
+    ],
+    "sum": [
+      "5/2",
+      false
+    ]
+  },
+  {
+    "support": 3,
+    "Q": "bbwoo",
+    "separator": [
+      "1/2",
+      false
+    ],
+    "left": [
+      "1/2",
+      false
+    ],
+    "right": [
+      "3/2",
+      false
+    ],
+    "sum": [
+      "5/2",
+      false
+    ]
+  },
+  {
+    "support": 8,
+    "Q": "oowbo",
+    "separator": [
+      "1",
+      false
+    ],
+    "left": [
+      "0",
+      false
+    ],
+    "right": [
+      "3/2",
+      false
+    ],
+    "sum": [
+      "5/2",
+      false
+    ]
+  },
+  {
+    "support": 9,
+    "Q": "bowbo",
+    "separator": [
+      "0",
+      true
+    ],
+    "left": [
+      "0",
+      false
+    ],
+    "right": [
+      "3/2",
+      false
+    ],
+    "sum": [
+      "3/2",
+      true
+    ]
+  },
+  {
+    "support": 10,
+    "Q": "obwbo",
+    "separator": [
+      "0",
+      false
+    ],
+    "left": [
+      "1",
+      false
+    ],
+    "right": [
+      "2",
+      false
+    ],
+    "sum": [
+      "3",
+      false
+    ]
+  },
+  {
+    "support": 11,
+    "Q": "bbwbo",
+    "separator": [
+      "-1/2",
+      false
+    ],
+    "left": [
+      "3/2",
+      false
+    ],
+    "right": [
+      "2",
+      false
+    ],
+    "sum": [
+      "3",
+      false
+    ]
+  },
+  {
+    "support": 16,
+    "Q": "oowob",
+    "separator": [
+      "1",
+      true
+    ],
+    "left": [
+      "-1",
+      false
+    ],
+    "right": [
+      "1",
+      false
+    ],
+    "sum": [
+      "1",
+      true
+    ]
+  },
+  {
+    "support": 17,
+    "Q": "bowob",
+    "separator": [
+      "0",
+      false
+    ],
+    "left": [
+      "-1",
+      false
+    ],
+    "right": [
+      "1",
+      false
+    ],
+    "sum": [
+      "0",
+      false
+    ]
+  },
+  {
+    "support": 18,
+    "Q": "obwob",
+    "separator": [
+      "0",
+      true
+    ],
+    "left": [
+      "0",
+      false
+    ],
+    "right": [
+      "3/2",
+      false
+    ],
+    "sum": [
+      "3/2",
+      true
+    ]
+  },
+  {
+    "support": 19,
+    "Q": "bbwob",
+    "separator": [
+      "-1/2",
+      true
+    ],
+    "left": [
+      "1/2",
+      false
+    ],
+    "right": [
+      "3/2",
+      false
+    ],
+    "sum": [
+      "3/2",
+      true
+    ]
+  },
+  {
+    "support": 24,
+    "Q": "oowbb",
+    "separator": [
+      "1/2",
+      false
+    ],
+    "left": [
+      "1/2",
+      false
+    ],
+    "right": [
+      "3/2",
+      false
+    ],
+    "sum": [
+      "5/2",
+      false
+    ]
+  },
+  {
+    "support": 25,
+    "Q": "bowbb",
+    "separator": [
+      "-1/2",
+      true
+    ],
+    "left": [
+      "1/2",
+      false
+    ],
+    "right": [
+      "3/2",
+      false
+    ],
+    "sum": [
+      "3/2",
+      true
+    ]
+  },
+  {
+    "support": 26,
+    "Q": "obwbb",
+    "separator": [
+      "-1/2",
+      false
+    ],
+    "left": [
+      "3/2",
+      false
+    ],
+    "right": [
+      "2",
+      false
+    ],
+    "sum": [
+      "3",
+      false
+    ]
+  },
+  {
+    "support": 27,
+    "Q": "bbwbb",
+    "separator": [
+      "-1",
+      false
+    ],
+    "left": [
+      "2",
+      false
+    ],
+    "right": [
+      "2",
+      false
+    ],
+    "sum": [
+      "3",
+      false
+    ]
+  }
+]

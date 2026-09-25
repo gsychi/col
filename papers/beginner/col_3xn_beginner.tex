@@ -1,0 +1,401 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,enumitem,microtype,xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tcolorbox}
+\newcommand{\figdir}{../figures}
+\input{\figdir/colstyle.tex}
+
+\tcbuselibrary{skins}
+\newtcolorbox{idea}[1][]{colback=colblue!25, colframe=colbluedark, fonttitle=\bfseries, title=#1}
+\newtcolorbox{careful}[1][]{colback=red!5, colframe=red!60!black, fonttitle=\bfseries, title=#1}
+
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+
+\title{\textbf{Who wins Col on a $3\times n$ board?}\\[4pt]
+\large A friendly guide to a proof that the second player always wins}
+\author{Gordon Chi}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{idea}[The one-sentence answer]
+On an empty board with 3 rows and any number of columns, the player who moves
+\emph{second} can always win Col, no matter how cleverly the first player
+plays.
+\end{idea}
+
+This guide explains why, step by step, with lots of pictures. You do not need
+any background beyond knowing how to play a board game. A more formal version of the same
+argument is written for mathematicians in the companion paper.
+
+\tableofcontents
+
+\section{Meet the game}
+
+Col is a game for two players, whom we call \textbf{Blue} and \textbf{White}.
+They take turns placing a stone of their own colour on an empty square of a
+grid. There is exactly one rule:
+
+\begin{idea}[The only rule]
+You may \textbf{not} put a stone right next to (above, below, left or right
+of) one of \textbf{your own} stones. Next to your opponent's stones is fine.
+\end{idea}
+
+If it is your turn and you have no legal square, you \textbf{lose}. There are
+no draws, and there is no luck.
+
+\begin{center}
+\colfig{rules_forbidden}
+\end{center}
+
+As the game goes on, some squares become off-limits to one player, some to the
+other, and some to both. We colour each empty square to show who may still
+play there:
+
+\begin{center}
+\colfig{legend}
+\end{center}
+
+Here is a position on a board with 3 rows and 5 columns after four moves. The
+numbers show the order the stones were played:
+
+\begin{center}
+\colfig{rules_legality}
+\end{center}
+
+Blue's stone \textbf{1} makes the squares around it pale orange: only White
+may still play there. White's stone \textbf{2} makes its neighbours pale
+blue. The grey squares are dead for both players. A player's legal squares
+are the white ones plus those tinted in her own colour, so this picture shows
+at a glance what each player can still do.
+
+\section{What does ``the second player wins'' mean?}
+
+Game theorists say a game has \textbf{value zero} if whoever moves second can
+always win. It does not matter whether Blue or White starts; the one who waits
+wins.
+
+The smallest example is a strip of three squares. Here is every way the game
+can go when Blue starts (the right end is a mirror image of the left, so we
+skip it):
+
+\begin{center}
+\colfig{game_tree}
+\end{center}
+
+If Blue starts in the middle, White plays at an end and Blue is stuck, since
+the other end is next to Blue's stone. If Blue starts at an end, White should
+take the \emph{other} end. Then the middle is next to Blue's stone, and Blue is
+stuck again. Either way, White wins. The same happens if White starts, with
+the colours swapped. So this little strip has value zero.
+
+\begin{idea}[Our goal]
+Show that the empty board with 3 rows and $n$ columns (call it the
+$3\times n$ board) has value zero, for \emph{every} $n$: 1, 2, 3, \dots,
+1000, and forever.
+\end{idea}
+
+We can never try every $n$, and a single board can have more possible games
+than there are atoms in the universe. We need ideas.
+
+\section{Even widths: the copycat trick}
+
+Suppose the board has an even number of columns, say 6. Imagine spinning the
+board half a turn around its centre. Every square lands on a \emph{different}
+square. The second player simply copies every move to the spun-around square:
+
+\begin{center}
+\colfig{mirror_even}
+\end{center}
+
+Why is the copy always legal? The board always looks the same after the spin,
+with the colours swapped. If Blue's move was legal, then White's spun copy is
+legal for exactly the same reason. So the copycat never runs out of moves, and
+the other player gets stuck first.
+
+\begin{careful}[Why this fails for odd widths]
+With an odd number of columns, the centre square spins onto \emph{itself}. If
+the first player takes the centre, there is nothing to copy onto.
+\begin{center}\colfig{odd_center}\end{center}
+The rest of this guide is about odd widths.
+\end{careful}
+
+\section{Two big ideas}
+
+\subsection{Big idea 1: games can be added}
+
+If a board splits into separate regions that do not touch, you can think of
+it as several games played at once: on each turn you choose one region and
+move there. Game theorists call this a \emph{sum} of games.
+
+\begin{center}
+\colfig{sum_intuition}
+\end{center}
+
+\begin{idea}[Adding second-player wins]
+If White wins each region when Blue moves first there, White also wins the
+whole sum. Her strategy: always answer in the same region Blue just played in.
+\end{idea}
+
+\subsection{Big idea 2: cheating in Blue's favour}
+
+Our boards do not split into separate regions by themselves. So we pretend
+they do. We cut the board into pieces and change the rules a little, always in
+\textbf{Blue's} favour:
+\begin{itemize}[nosep]
+\item Blue may keep every square she really has, and we may give her extra
+ones;
+\item White may only use squares she really has, and we may take some away;
+\item at each cut, White must not be allowed to play on both sides of the cut
+in the same row.
+\end{itemize}
+
+\begin{center}
+\colfig{comparison_schematic}
+\end{center}
+
+If White can still win this ``rigged'' game, she can certainly win the real
+one. Her real moves copy her virtual moves, and Blue's real moves are also
+available in the virtual game. This is the \textbf{comparison principle}, the
+main tool of the whole proof.
+
+\begin{careful}[Why the third rule matters]
+In the real game, two squares side by side across a cut really are next to
+each other. If White could play on both of them in the rigged game, she would
+be allowed something the real rules forbid. So at every cut we check that
+each row is White-legal on at most one side.
+\end{careful}
+
+\subsection{Pieces and plugs}
+
+The pieces we cut the board into are called \textbf{gadgets}. Each gadget is a
+small $3$-row board with some squares already restricted. The pattern of
+White-legal squares on a gadget's left and right edges works like a
+\emph{plug}. Two gadgets may sit side by side only if their plugs never both
+have White in the same row:
+
+\begin{center}
+\colfig{seams}
+\end{center}
+
+Here is the whole toolbox. Under each gadget is a guarantee that a computer
+has checked. ``$\le 0$'' means White wins that gadget when Blue moves first
+there.
+
+\begin{center}
+\colfig{gadget_gallery}
+\end{center}
+
+\subsection{Scores that are not whole numbers}
+
+Some gadgets come with a score like $-1$ or $\tfrac14$ instead of $0$. Think of
+it as a count of spare moves: $-1$ means White is a whole spare move ahead, and
+$+\frac14$ means Blue is a quarter of a move ahead. (Fractional moves really do
+make sense in game theory!) When we add regions we add their scores. If the
+total is below zero, White wins even if it is her turn to move.
+
+\section{Widths $5, 9, 13, 17,\dots$ (one more than a multiple of 4)}
+
+For these widths the pieces fit like a brick wall: repeat the four-column
+gadget $E_4$ and finish with the one-column gadget $F_1$.
+
+\begin{center}
+\colfig{tiling_4k1}
+\end{center}
+
+Every plug fits, and every piece scores $\le0$. So White wins when Blue starts.
+By the colour swap, Blue wins when White starts. So the board has value zero.
+
+\begin{idea}[The colour-swap shortcut]
+The empty board looks identical if you swap the names Blue and White. So if
+the second player wins when Blue starts, the second player also wins when
+White starts. We only ever need to check Blue starting.
+\end{idea}
+
+\section{Widths $3, 7, 11, 15,\dots$ (three more than a multiple of 4)}
+
+This is the hardest family, and it needs a new idea: \textbf{induction}, the
+domino effect. We show:
+\begin{enumerate}[nosep]
+\item the boards of width 3, 7 and 11 have value zero (checked by computer);
+\item if every narrower board in the family has value zero, then so does the
+next one.
+\end{enumerate}
+Then width 15 follows from 3, 7 and 11; width 19 from those and 15; and so on
+forever, like falling dominoes.
+
+\begin{center}
+\colfig{recursion_chain}
+\end{center}
+
+\subsection{The starting dominoes}
+
+For the $3\times 3$ board there are only four genuinely different first
+moves for Blue. Here is White's winning answer to each:
+
+\begin{center}
+\colfig{base3}
+\end{center}
+
+Widths 7 and 11 are handled the same way, with 8 and 12 first moves, and a
+computer checks every answer.
+
+\subsection{Only a quarter of the board matters}
+
+Flipping the board top-to-bottom or left-to-right does not change the game.
+So we only need to answer Blue's first move in the shaded part:
+
+\begin{center}
+\colfig{normalization}
+\end{center}
+
+We sort those first moves into six cases, shown here for width 23:
+
+\begin{center}
+\colfig{case_map}
+\end{center}
+
+\subsection{The six cases, in pictures}
+
+In each picture the top board is the real game after Blue's first move (and
+White's answer, if there is one). The bottom board is the rigged version, cut
+into gadgets. Circles show where the stones went.
+
+\paragraph{Case 1: Blue plays on an ``odd'' square.}
+Colour the board like a chessboard; ``odd'' squares are those where row plus
+column is odd. Blue's move lands inside one of the $E_4$ bricks and damages it
+so badly that it scores $-1$: White is a whole move ahead.
+
+\begin{center}
+\colfig{e4_parity}\qquad
+\colfig{opened_e4}
+\end{center}
+
+The end-cap $C_3$ gives Blue back only a quarter:
+
+\begin{center}
+\colfig{number_line}
+\end{center}
+
+The total is $-\frac34$, below zero, so White wins even though it is her turn.
+She does not need a specific answer at all!
+
+\begin{center}
+\colfig{example_case1}
+\end{center}
+
+\paragraph{Cases 2 to 5: special answers.}
+When Blue plays an ``even'' square in the shaded area, White makes one specific
+answer, and a special gadget around the two stones scores $\le 0$.
+
+\begin{center}
+\colfig{example_case2}\\[8pt]
+\colfig{example_case3}\\[8pt]
+\colfig{example_case4}\\[8pt]
+\colfig{example_case5}
+\end{center}
+
+\paragraph{Case 6: the clever one.}
+Blue plays in the middle row, in a column three more than a multiple of 4.
+White answers diagonally up and to the right. Now look at Blue's column:
+
+\begin{center}
+\colfig{case6_zoom}
+\end{center}
+
+Blue can never play in that column again: one square has her stone, and the
+other two are next to it. White can't use the top square, which is beside her
+own stone, and she \emph{promises} never to use the bottom one. The column has
+become a wall. To its left is an ordinary empty board, narrower than the one
+we started with and in the same family, and we already know it has value zero
+(the domino before). To its right sit certified gadgets.
+
+\begin{center}
+\colfig{example_case6}\\[8pt]
+\colfig{example_case6_big}
+\end{center}
+
+\begin{idea}[Why this is the heart of the proof]
+Case 6 is the only place the dominoes are used. One stone plus one answer
+turns a big board into a smaller copy of the same problem. That is exactly
+what induction needs.
+\end{idea}
+
+\section{The whole proof on one page}
+
+\begin{center}
+\colfig{roadmap}
+\end{center}
+
+\begin{itemize}
+\item \textbf{Even width:} copy every move through the centre.
+\item \textbf{Width $4k+1$:} a wall of $E_4$ bricks capped by $F_1$.
+\item \textbf{Width $4k+3$:} three starting dominoes, then six cases for Blue's
+first move. Case 1 wins on the score, Cases 2--5 use a special gadget, and
+Case 6 builds a wall that leaves a smaller board.
+\end{itemize}
+
+\section{What did the computer do, and what did people do?}
+
+Each gadget's guarantee concerns a small, finite board, so a computer can check
+it completely. For each gadget the stored certificate lists, for every Blue
+move, White's answer, and a short program replays all of these. Every
+certificate is checked in a few seconds, without any searching.
+
+The unlimited part, ``for every width'', cannot be checked by trying widths
+one at a time. It rests on arguments: the copycat trick, the comparison
+principle, the colour swap, the plug table, and the dominoes.
+
+\begin{idea}[A computer checked the whole argument too]
+All of those arguments have also been written in \textbf{Lean}, a
+\emph{proof assistant}: a program that accepts a proof only if every single
+step follows from the rules of logic. Lean checked the complete statement
+``for every width $n$, the player who moves first on the empty $3\times n$
+board loses'', stated with the real rules of Col, stones and all. It checked
+the gadget certificates as well. Nothing is left to trust except Lean
+itself.
+\end{idea}
+
+The Lean version uses an even simpler pattern for every case: bricks, then
+one small \emph{window} around Blue's first move and White's answer, then
+bricks again. The window is just the real board near the two stones, with
+White giving up the few squares her plugs require.
+
+\begin{center}
+\colfig{lean_scheme}
+\end{center}
+
+Here are all nine windows it uses:
+
+\begin{center}
+\colfig{lean_windows}
+\end{center}
+
+With these windows the domino step already works at width 11, so the
+starting dominoes are just the $3\times3$ and $3\times7$ boards.
+
+\begin{careful}[What is still unknown]
+Nobody yet knows whether the second player always wins on boards with 5 rows
+and an odd number of columns, or on odd-by-odd boards in general. The wall
+trick of Case 6 does not work there, because one stone does not block a whole
+column of 5 squares.
+\end{careful}
+
+\section*{Glossary}
+\begin{description}[nosep, font=\normalfont\bfseries]
+\item[Value zero] The second player can always win.
+\item[Gadget] A small certified piece of board with a score guarantee.
+\item[Plug / port] The White-legal pattern on a gadget's left or right edge.
+\item[Comparison principle] If White wins a version rigged in Blue's favour,
+she wins the real game.
+\item[Induction] Proving every case by proving the first ones and showing each
+case follows from earlier ones.
+\item[Certificate] A stored list of White's answers that a computer can replay
+to confirm a gadget's guarantee.
+\end{description}
+
+\end{document}

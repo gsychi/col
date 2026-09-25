@@ -1,4 +1,11 @@
-# Formal Proof Handoff
+# Formal Proof Handoff (finite-state route; superseded for theorem status)
+
+> **Status note (2026-09-22):** This report evaluates an earlier finite-state
+> frontier-closure approach, which did not prove the all-width theorem. The
+> later gadget-and-strong-induction proof is written up in
+> [`proofs/construction/empty_3xn_theorem.md`](../proofs/construction/empty_3xn_theorem.md).
+> The failed checks below remain accurate for this finite-state route; they do
+> not assess or refute the later induction proof.
 
 Status: **NOT PROVED**
 
