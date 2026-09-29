@@ -591,13 +591,15 @@ static RootResult root_win(const Board& bd, Cache& vc, TT& tt, int smax, int thr
     }
     // monitor
     double lastReport = since_start();
+    int waitUs = 100;
     for (;;) {
         bool alive = false;
         if (ndone.load() >= nk || abort.load()) {
             alive = false;
         } else alive = true;
         if (!alive) break;
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::microseconds(waitUs));
+        waitUs = std::min(waitUs * 2, 200000);
         double now = since_start();
         if (now > g_deadline) { timeout = true; abort = true; break; }
         if (now - lastReport > 120) {

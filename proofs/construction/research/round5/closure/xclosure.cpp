@@ -21,7 +21,7 @@
 //                 [-test r c w1,w2,..] [-fam w7draw] ROOT
 //        two-round: -T n (gap threshold of type G), -noG (no type G), -G (type G only:
 //                   no type b; with -test also no one-round search), -no2 (no type b),
-//                   -reply r,c[:r,c..] (G replies to try), -Gtries n, -Gdiag (G:
+//                   -reply r,c[:r,c..] (G replies to try), -Gtries n, -Gsec s (time cap per G sub-rule), -Gdiag (G:
 //                   report every stuck configuration with its best sums)
 //        -val d1,d2,..: print exact values of strip drawings and exit
 #define main colout5_main
@@ -170,6 +170,7 @@ static int g_threads = 3, g_smax = 14, g_maxSeams = 2, g_maxFam = 400, g_newBudg
 static bool g_diag = false, g_allDrops = false;
 static int g_rwFar = 2;
 static int g_T = 6;             // gap-representative rules: gaps >= g_T stand for all longer ones
+static double g_gSec = 300;     // time cap per deep G sub-rule search (failure is sound)
 static bool g_gapRule = true, g_gOnly = false;   // -noG / -G (G is the only two-round rule)
 static double g_limit = 900;
 static Cache* g_vc;
@@ -241,6 +242,24 @@ static void val_store(const std::string& k, XV v) {
 }
 static double now_s() { return since_start(); }
 
+// Pieces with at least g_parCells live cells are searched with the
+// multi-threaded root driver, so one hard piece does not hold up a batch.
+static int g_parCells = 0, g_parThreads = 0;
+static std::atomic<std::uint64_t> g_nPar{0};
+static int piece_win(const Strip& s, int cid, Mask A, Mask B, i64 q, bool st, bool blueMoves) {
+    const int w = int(s.size());
+    Search& S = ctx_search(cid, w);
+    int live = 0;
+    for (auto& c : s) live += __builtin_popcount(unsigned(c.a | c.b));
+    if (g_parCells > 0 && live >= g_parCells) {
+        ++g_nPar;
+        RootResult r = blueMoves ? root_win(*g_ctx[cid].boards[w], *g_vc, *g_tt, g_smax, g_parThreads, A, B, q, st, "hard")
+                                 : root_win(*g_ctx[cid].boards[w], *g_vc, *g_tt, g_smax, g_parThreads, B, A, q, st, "hard");
+        return r.win;
+    }
+    return blueMoves ? S.win(A, B, q, st, 0) : S.win(B, A, q, st, 0);
+}
+
 // Exact value by bisection on outcomes of G - t (Cor 4.3: P means G = t,
 // N means G = t + *, L means x > t, R means x < t).
 static XV compute_exact(const Strip& s, int cid, const std::string& key) {
@@ -273,9 +292,9 @@ static XV compute_exact(const Strip& s, int cid, const std::string& key) {
         i64 t = simplest(true, lo, loOpen, true, hi, hiOpen);
         g_nSearch += 2;
         Timer tm(g_tSearch);
-        int b = S.win(A, B, -t, false, 0);
+        int b = piece_win(s, cid, A, B, -t, false, true);
         if (b < 0) break;
-        int wr = S.win(B, A, t, false, 0);
+        int wr = piece_win(s, cid, A, B, t, false, false);
         if (wr < 0) break;
         if (!b && !wr) { res = XV{t, false}; break; }
         if (b && wr) { res = XV{t, true}; break; }
@@ -733,7 +752,47 @@ struct Rule {
     std::vector<std::pair<int, int>> ins;   // per range: insertion column j, piece index
     std::string board;
 };
-struct SC { int cid; bool cachedOnly, allowNew, allowDom; int newBudget; };
+struct SC { int cid; bool cachedOnly, allowNew, allowDom; int newBudget; double until = 1e18; bool easyOnly = false; };
+
+// Threshold tests for hard exact pieces (-thr). A cut needs only one inequality
+// for its last unknown piece P: P <= Q (cmp L) or P <| Q (cmp F), where Q is the
+// target minus the bounds of the other pieces. P <= Q iff Blue moving first
+// loses P - Q; P <| Q iff White moving first wins P - Q. The piece is recorded
+// with src 't' (P <= val) or 'u' (P <| val).
+static bool g_thr = false;
+static int g_hardCells = 30;
+static std::atomic<std::uint64_t> g_nThr{0}, g_nThrHit{0};
+static std::unordered_map<std::string, bool> g_thrCache;
+static std::mutex g_thrMu;
+// 1 holds, 0 fails, -1 unknown (time limit or stop).
+static int threshold_test(const Strip& s, XV Q, char cmp, int cid) {
+    const std::string key = canon(s) + "|" + std::to_string(Q.num) + (Q.star ? "*" : "") + cmp;
+    {
+        std::lock_guard<std::mutex> lk(g_thrMu);
+        auto it = g_thrCache.find(key);
+        if (it != g_thrCache.end()) { ++g_nThrHit; return it->second ? 1 : 0; }
+    }
+    int w = int(s.size());
+    ctx_search(cid, w);
+    Mask A = 0, B = 0;
+    for (int c = 0; c < w; ++c)
+        for (int r = 0; r < 5; ++r) {
+            if ((s[c].a >> r) & 1) A |= Mask(1) << (r * w + c);
+            if ((s[c].b >> r) & 1) B |= Mask(1) << (r * w + c);
+        }
+    Ctx& C = g_ctx[cid];
+    C.abort = false;
+    C.deadline = now_s() + g_limit;
+    ++g_nThr;
+    ++g_nSearch;
+    int r = cmp == 'L' ? piece_win(s, cid, A, B, -Q.num, Q.star, true) : piece_win(s, cid, A, B, Q.num, Q.star, false);
+    C.deadline = 1e18;
+    if (r < 0) return -1;
+    const bool holds = cmp == 'L' ? r == 0 : r == 1;
+    std::lock_guard<std::mutex> lk(g_thrMu);
+    g_thrCache[key] = holds;
+    return holds ? 1 : 0;
+}
 
 static bool piece_bound(const Strip& piece, SC& sc, PieceRec& rec) {
     int n = int(piece.size());
@@ -772,18 +831,36 @@ static bool piece_bound(const Strip& piece, SC& sc, PieceRec& rec) {
     return true;
 }
 
-static bool evaluate(const Strip& s3, const std::vector<int>& seams, SC& sc, std::vector<PieceRec>& pcs, XV& sum) {
+// With a target (tgt, cmp) and -thr, hard uncached exact pieces are deferred: all
+// but the last get exact values, the last only its threshold test. *proven is
+// set when the comparison with the target is established that way.
+static bool evaluate(const Strip& s3, const std::vector<int>& seams, SC& sc, std::vector<PieceRec>& pcs, XV& sum,
+                     const XV* tgt = nullptr, char cmp = 'L', bool* proven = nullptr) {
+    if (proven) *proven = false;
     int prev = 0;
     std::vector<int> cuts = seams;
     cuts.push_back(int(s3.size()) - 1);
     pcs.clear();
     sum = XV{0, false};
+    std::vector<std::pair<int, Strip>> deferred;
     for (int j : cuts) {
         Strip piece(s3.begin() + prev, s3.begin() + j + 1);
         PieceRec rec;
         rec.a = prev; rec.b = j;
         if (int(piece.size()) <= 7) {
-            XV v = xvalue(piece, sc.cid, sc.cachedOnly);
+            XV v = xvalue(piece, sc.cid, true);
+            if (!v.ok && !sc.cachedOnly) {
+                if (g_thr && live_cells(piece) >= g_hardCells) {
+                    if (sc.easyOnly) return false;
+                    rec.src = 'x';
+                    rec.dr = draw(piece);
+                    deferred.push_back({int(pcs.size()), piece});
+                    pcs.push_back(rec);
+                    prev = j + 1;
+                    continue;
+                }
+                v = xvalue(piece, sc.cid, false);
+            }
             if (!v.ok) return false;
             rec.src = 'x'; rec.val = v;
         } else if (!piece_bound(piece, sc, rec)) return false;
@@ -792,6 +869,24 @@ static bool evaluate(const Strip& s3, const std::vector<int>& seams, SC& sc, std
         pcs.push_back(rec);
         prev = j + 1;
     }
+    if (deferred.empty()) return true;
+    const std::size_t exactUpTo = tgt && proven ? deferred.size() - 1 : deferred.size();
+    for (std::size_t i = 0; i < exactUpTo; ++i) {
+        XV v = xvalue(deferred[i].second, sc.cid, false);
+        if (!v.ok) return false;
+        pcs[deferred[i].first].val = v;
+        sum = xadd(sum, v);
+    }
+    if (exactUpTo == deferred.size()) return true;
+    // Q = target - (bounds of the other pieces).
+    XV Q{tgt->num - sum.num, tgt->star != sum.star};
+    int r = threshold_test(deferred.back().second, Q, cmp, sc.cid);
+    if (r != 1) return false;
+    PieceRec& rec = pcs[deferred.back().first];
+    rec.src = cmp == 'L' ? 't' : 'u';
+    rec.val = Q;
+    sum = *tgt;
+    *proven = true;
     return true;
 }
 
@@ -1047,7 +1142,7 @@ static bool ranges_ok(const Stretch& st, const std::vector<PieceRec>& pcs, std::
         bool ok = false;
         for (std::size_t i = 0; i < pcs.size() && !ok; ++i) {
             auto& p = pcs[i];
-            if (p.src == 'x') continue;
+            if (p.src != 'f' && p.src != 'd') continue;
             int j = std::max(p.a + 2, lo - 1);
             if (j <= std::min(p.b - 3, hi)) {
                 ok = true;
@@ -1116,8 +1211,10 @@ static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const 
                 for (auto& dv : drop_variants(s2, seams)) {
                     if (g_stop) return false;
                     if (budget && --*budget < 0) return false;
+                    if (sc.until < 1e17 && now_s() > sc.until) return false;
                     std::vector<PieceRec> pcs;
                     XV sum;
+                    bool proven = false;
                     bool got;
                     if (g_mono && !sc.cachedOnly) {
                         // A sum >= L passes "<= target" only if L <= target, and "<| target" only if not target <= L.
@@ -1138,7 +1235,7 @@ static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const 
                         };
                         got = evaluate_pruned(dv.s, s2, seams, sc, pcs, sum, dead, pre, best ? nullptr : &mv.target,
                                               mv.cmp);
-                    } else got = evaluate(dv.s, seams, sc, pcs, sum);
+                    } else got = evaluate(dv.s, seams, sc, pcs, sum, &mv.target, mv.cmp, &proven);
                     if (!got) continue;
                     bool fl = pcs.front().b - pcs.front().a + 1 >= 8, fr = pcs.back().b - pcs.back().a + 1 >= 8;
                     if (st.mode == 1 && ((st.L && !fl) || (st.R && !fr))) continue;
@@ -1146,7 +1243,7 @@ static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const 
                     std::vector<std::pair<int, int>> ins;
                     if (!ranges_ok(st, pcs, &ins)) continue;
                     if (best) keep_min(best[mv.r >= 0], sum);
-                    bool ok = mv.cmp == 'L' ? xle(sum, mv.target) : xlf(sum, mv.target);
+                    bool ok = proven || (mv.cmp == 'L' ? xle(sum, mv.target) : xlf(sum, mv.target));
                     if (!ok) continue;
                     out.w = w; out.rrow = mv.r; out.rcol = mv.r >= 0 ? mv.c : -1;
                     out.seams = seams; out.drops = dv.d; out.pieces = pcs; out.sum = sum;
@@ -1162,6 +1259,11 @@ static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const 
 template <class Fn> static bool three_pass(int cid, Fn fn) {
     SC a{cid, true, false, true, 0};
     if (fn(a)) return true;
+    if (g_thr) {
+        SC e{cid, false, false, true, 0};
+        e.easyOnly = true;
+        if (fn(e)) return true;
+    }
     SC b{cid, false, false, true, 0};
     if (fn(b)) return true;
     SC c{cid, false, true, true, g_newBudget};
@@ -1576,15 +1678,19 @@ static bool gap_sub(const Layout& L, const GCfg& cf, int oc, XV q, XV qR, int ci
     sub.board = draw(P);
     long budget = cheap ? 5000 : g_b2Budget;
     if (cheap) {
-        SC sc{cid, true, false, true, 0};
+        // The cheap pass ranks the replies; at large widths it needs family pieces
+        // that do not exist yet, so it may create a few.
+        SC sc{cid, true, true, true, 2};
         return search_cands(base, moves, centres, moveCentre, 2, st, sc, sub, &budget);
     }
+    const double until = now_s() + g_gSec;
     // Far from the opening the pieces are long family pieces, so new families are
     // tried (on cached exact values) before computing new exact values.
     for (int cap : {2, 3}) {
         SC passes[4] = {{cid, true, false, true, 0}, {cid, true, true, true, g_newBudget},
                         {cid, false, false, true, 0}, {cid, false, true, true, g_newBudget}};
         for (auto& sc : passes) {
+            sc.until = until;
             long b = budget;
             if (search_cands(base, moves, centres, moveCentre, cap, st, sc, sub, &b, best)) return true;
             if (g_stop) return false;
@@ -1617,9 +1723,11 @@ static bool find_BG(const Strip& s, int r, int c, XV q, int cid, Rule& out, bool
         else for (int i = 0; i < n && !g_stop; ++i) fn(i, cid);
     };
     bool needL = atMax && c >= 9, needR = atMax && w - 1 - c >= 9;
+    const bool vs1 = is_vsym(s1);   // mirrored replies give mirrored rules
     for (int cc = std::max(0, c - RW); cc <= std::min(w - 1, c + RW); ++cc)
         for (int rr = 0; rr < 5; ++rr) {
             if (!((s1[cc].b >> rr) & 1)) continue;
+            if (vs1 && rr > 2) continue;
             if (!g_forceReplies.empty() &&
                 std::find(g_forceReplies.begin(), g_forceReplies.end(), std::make_pair(rr, cc)) == g_forceReplies.end())
                 continue;
@@ -2179,6 +2287,7 @@ int main(int argc, char** argv) {
         else if (a == "-noG") g_gapRule = false;
         else if (a == "-G") g_gOnly = true;
         else if (a == "-Gdiag") g_gDiag = true;
+        else if (a == "-Gsec") g_gSec = std::atof(argv[++i]);
         else if (a == "-val") {
             std::stringstream vs(argv[++i]);
             std::string t;
@@ -2195,6 +2304,9 @@ int main(int argc, char** argv) {
         }
         else if (a == "-B2") g_b2Budget = std::atol(argv[++i]);
         else if (a == "-comp") g_comp = true;
+        else if (a == "-thr") g_thr = true;
+        else if (a == "-par") g_parCells = std::atoi(argv[++i]);
+        else if (a == "-hard") g_hardCells = std::atoi(argv[++i]);
         else if (a == "-pass") g_pass = 1;
         else if (a == "-refute") g_refute = std::atoi(argv[++i]);
         else if (a == "-qrefute") g_quickRefute = std::atoi(argv[++i]);
@@ -2221,6 +2333,7 @@ int main(int argc, char** argv) {
         } else root = a;
     }
     g_start = std::chrono::steady_clock::now();
+    if (g_parThreads == 0) g_parThreads = g_threads;
     Cache vc(g_tlog);
     TT tt(g_tlog);
     g_vc = &vc; g_tt = &tt;
@@ -2403,6 +2516,9 @@ int main(int argc, char** argv) {
         rc = failed ? 1 : 0;
     }
     print_stats();
+    LOG("stats: exact values %" PRIu64 ", searches %" PRIu64 ", threshold tests %" PRIu64 " (+%" PRIu64
+        " cached), split pieces %" PRIu64 ", %.0fs\n",
+        g_nExact.load(), g_nSearch.load(), g_nThr.load(), g_nThrHit.load(), g_nSplit.load(), now_s());
     g_quit = true;
     watchdog.join();
     return rc;
