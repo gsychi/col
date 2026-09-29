@@ -1,0 +1,14 @@
+3x9 E-empty    answer-ok 1060544, free-ok 0, FAIL 0
+3x9 E-opp      answer-ok 38883520, free-ok 0, FAIL 0
+3x9 E-opp-W    answer-ok 19265504, free-ok 0, FAIL 0
+3x9 E-oppB     answer-ok 0, free-ok 38883520, FAIL 0
+3x9 E-oppB-W   answer-ok 19265504, free-ok 0, FAIL 0
+3x9 M-Bonly    answer-ok 5013568, free-ok 0, FAIL 0
+3x9 M-Bonly-cut answer-ok 0, free-ok 2379776, FAIL 0
+3x9 M-WW       answer-ok 0, free-ok 7225344, FAIL 0
+3x9 M-empty    answer-ok 2125760, free-ok 0, FAIL 0
+3x9 pmax=99 qmax=99: cases 134103040, rule failures 0, (W') failures 0
+
+real	1m49.746s
+user	1m45.416s
+sys	0m1.236s

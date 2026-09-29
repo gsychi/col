@@ -1,0 +1,24 @@
+3x3 E-opp      answer-ok 64, free-ok 0, FAIL 0
+3x3 E-opp-W    answer-ok 32, free-ok 0, FAIL 0
+3x3 E-oppB     answer-ok 0, free-ok 64, FAIL 0
+3x3 E-oppB-W   answer-ok 32, free-ok 0, FAIL 0
+3x3 pmax=99 qmax=99: cases 192, rule failures 0, (W') failures 0
+3x5 E-empty    answer-ok 192, free-ok 0, FAIL 0
+3x5 E-opp      answer-ok 6848, free-ok 0, FAIL 0
+3x5 E-opp-W    answer-ok 2912, free-ok 0, FAIL 0
+3x5 E-oppB     answer-ok 0, free-ok 6848, FAIL 0
+3x5 E-oppB-W   answer-ok 2912, free-ok 0, FAIL 0
+3x5 M-Bonly    answer-ok 896, free-ok 0, FAIL 0
+3x5 M-Bonly-cut answer-ok 0, free-ok 448, FAIL 0
+3x5 M-empty    answer-ok 448, free-ok 0, FAIL 0
+3x5 pmax=99 qmax=99: cases 21504, rule failures 0, (W') failures 0
+3x7 E-empty    answer-ok 16064, free-ok 0, FAIL 0
+3x7 E-opp      answer-ok 530624, free-ok 0, FAIL 0
+3x7 E-opp-W    answer-ok 243680, free-ok 0, FAIL 0
+3x7 E-oppB     answer-ok 0, free-ok 530624, FAIL 0
+3x7 E-oppB-W   answer-ok 243680, free-ok 0, FAIL 0
+3x7 M-Bonly    answer-ok 74816, free-ok 0, FAIL 0
+3x7 M-Bonly-cut answer-ok 0, free-ok 35840, FAIL 0
+3x7 M-WW       answer-ok 0, free-ok 50176, FAIL 0
+3x7 M-empty    answer-ok 32704, free-ok 0, FAIL 0
+3x7 pmax=99 qmax=99: cases 1758208, rule failures 0, (W') failures 0

@@ -19,6 +19,11 @@
 //
 // Usage: xclosure [-j threads] [-L sec] [-o tag] [-M maxfam] [-S maxseams]
 //                 [-test r c w1,w2,..] [-fam w7draw] ROOT
+//        two-round: -T n (gap threshold of type G), -noG (no type G), -G (type G only:
+//                   no type b; with -test also no one-round search), -no2 (no type b),
+//                   -reply r,c[:r,c..] (G replies to try), -Gtries n, -Gdiag (G:
+//                   report every stuck configuration with its best sums)
+//        -val d1,d2,..: print exact values of strip drawings and exit
 #define main colout5_main
 #include "xcolout5.cpp"
 #undef main
@@ -164,7 +169,7 @@ static int g_threads = 3, g_smax = 14, g_maxSeams = 2, g_maxFam = 400, g_newBudg
 static bool g_diag = false, g_allDrops = false;
 static int g_rwFar = 2;
 static int g_T = 6;             // gap-representative rules: gaps >= g_T stand for all longer ones
-static bool g_gapRule = true;
+static bool g_gapRule = true, g_gOnly = false;   // -noG / -G (G is the only two-round rule)
 static double g_limit = 900;
 static Cache* g_vc;
 static TT* g_tt;
@@ -198,7 +203,7 @@ static std::mutex g_valFileMu;
 static std::atomic<std::uint64_t> g_nExact{0}, g_nTimeout{0}, g_nSearch{0};
 // Speed options (SPEED.md). All off reproduces the original value path exactly.
 static bool g_comp = false, g_guess = false, g_mono = false, g_decide = false, g_sandwich = true, g_vlog = false;
-static std::atomic<std::uint64_t> g_nFree{0}, g_nSmall{0}, g_nPruned{0}, g_nBadBracket{0}, g_nGuessHit{0};
+static std::atomic<std::uint64_t> g_nFree{0}, g_nSmall{0}, g_nPruned{0}, g_nBadBracket{0}, g_nGuessHit{0}, g_nSplit{0};
 // Profile (nanoseconds, summed over threads).
 static std::atomic<std::uint64_t> g_tSearch{0}, g_tCut{0}, g_tFold{0}, g_nCut{0};
 struct Timer {
@@ -560,7 +565,9 @@ static XV xvalue(const Strip& s, int cid, bool cachedOnly, const Brk* brk = null
     }
     XV sum{0, false};
     std::vector<std::pair<Strip, std::string>> todo;
-    for (auto& c : components(s)) {
+    std::vector<Strip> parts = components(s);
+    if (parts.size() > 1) ++g_nSplit;
+    for (auto& c : parts) {
         Strip n = normalize(c);
         std::string ck = ckey(n);
         XV x;
@@ -689,6 +696,7 @@ struct Rule {
     // the rule was checked on, and column ranges that must stay stretchable.
     std::vector<int> gaps;
     std::vector<std::pair<int, int>> sranges;
+    std::vector<std::pair<int, int>> ins;   // per range: insertion column j, piece index
     std::string board;
 };
 struct SC { int cid; bool cachedOnly, allowNew, allowDom; int newBudget; };
@@ -983,12 +991,18 @@ struct Stretch {
     // columns j and j+1, j in [lo - 1, hi], inside the neutral middle of a family piece.
     std::vector<std::pair<int, int>> ranges;
 };
-static bool ranges_ok(const Stretch& st, const std::vector<PieceRec>& pcs) {
+static bool ranges_ok(const Stretch& st, const std::vector<PieceRec>& pcs, std::vector<std::pair<int, int>>* ins) {
+    if (ins) ins->clear();
     for (auto [lo, hi] : st.ranges) {
         bool ok = false;
-        for (auto& p : pcs) {
+        for (std::size_t i = 0; i < pcs.size() && !ok; ++i) {
+            auto& p = pcs[i];
             if (p.src == 'x') continue;
-            if (std::max(p.a + 2, lo - 1) <= std::min(p.b - 3, hi)) { ok = true; break; }
+            int j = std::max(p.a + 2, lo - 1);
+            if (j <= std::min(p.b - 3, hi)) {
+                ok = true;
+                if (ins) ins->push_back({j, int(i)});
+            }
         }
         if (!ok) return false;
     }
@@ -1014,8 +1028,14 @@ static std::vector<int> seam_list(int w, const std::vector<int>& centres) {
 }
 // Seams lie in the windows around the fixed centres and, if moveIsCentre, around
 // the White move's column. budget (if given) caps the number of cuts evaluated.
+// best (if given) receives the smallest admissible sum with no White move
+// (best[0]) and with one (best[1]).
+static void keep_min(XV& b, XV s) {
+    if (!b.ok || s.num < b.num || (s.num == b.num && !s.star && b.star)) b = s;
+}
 static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const std::vector<int>& fixedCentres,
-                         bool moveIsCentre, int maxStage, const Stretch& st, SC& sc, Rule& out, long* budget = nullptr) {
+                         bool moveIsCentre, int maxStage, const Stretch& st, SC& sc, Rule& out, long* budget = nullptr,
+                         XV* best = nullptr) {
     int w = int(s1.size());
     std::vector<int> fixedList = seam_list(w, fixedCentres);
     for (int stage = 1; stage <= maxStage; ++stage)
@@ -1038,26 +1058,38 @@ static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const 
                     bool got;
                     if (g_mono && !sc.cachedOnly) {
                         // A sum >= L passes "<= target" only if L <= target, and "<| target" only if not target <= L.
-                        auto dead = [&](XV l) { return mv.cmp == 'L' ? !xle(l, mv.target) : xle(mv.target, l); };
+                        // With best, a candidate is skipped only if it also cannot lower best.
+                        auto dead = [&](XV l) {
+                            bool d = mv.cmp == 'L' ? !xle(l, mv.target) : xle(mv.target, l);
+                            if (d && best) {
+                                const XV& b = best[mv.r >= 0];
+                                d = b.ok && (l.num > b.num || (l.num == b.num && (!b.star || l.star)));
+                            }
+                            return d;
+                        };
                         auto pre = [&](const std::vector<PieceRec>& p) {
                             bool fl = p.front().b - p.front().a + 1 >= 8, fr = p.back().b - p.back().a + 1 >= 8;
                             if (st.mode == 1 && ((st.L && !fl) || (st.R && !fr))) return false;
                             if (st.mode == 2 && !fl && !fr) return false;
-                            return ranges_ok(st, p);
+                            return ranges_ok(st, p, nullptr);
                         };
-                        got = evaluate_pruned(dv.s, s2, seams, sc, pcs, sum, dead, pre, &mv.target, mv.cmp);
+                        got = evaluate_pruned(dv.s, s2, seams, sc, pcs, sum, dead, pre, best ? nullptr : &mv.target,
+                                              mv.cmp);
                     } else got = evaluate(dv.s, seams, sc, pcs, sum);
                     if (!got) continue;
-                    bool ok = mv.cmp == 'L' ? xle(sum, mv.target) : xlf(sum, mv.target);
-                    if (!ok) continue;
                     bool fl = pcs.front().b - pcs.front().a + 1 >= 8, fr = pcs.back().b - pcs.back().a + 1 >= 8;
                     if (st.mode == 1 && ((st.L && !fl) || (st.R && !fr))) continue;
                     if (st.mode == 2 && !fl && !fr) continue;
-                    if (!ranges_ok(st, pcs)) continue;
+                    std::vector<std::pair<int, int>> ins;
+                    if (!ranges_ok(st, pcs, &ins)) continue;
+                    if (best) keep_min(best[mv.r >= 0], sum);
+                    bool ok = mv.cmp == 'L' ? xle(sum, mv.target) : xlf(sum, mv.target);
+                    if (!ok) continue;
                     out.w = w; out.rrow = mv.r; out.rcol = mv.r >= 0 ? mv.c : -1;
                     out.seams = seams; out.drops = dv.d; out.pieces = pcs; out.sum = sum;
                     out.target = mv.target; out.cmp = mv.cmp;
                     out.sranges = st.ranges;
+                    out.ins = ins;
                     out.stretch = st.mode == 0 ? "" : std::string(fl ? "L" : "") + (fr ? "R" : "");
                     return true;
                 }
@@ -1314,9 +1346,12 @@ static std::string rule_json(const Rule& R, int fam, int par, int att, XV q) {
     }
     if (R.type == 'G') o << ",\"T\":" << g_T;
     if (!R.sranges.empty()) {
-        o << ",\"stretch_cols\":[";
+        o << ",\"sranges\":[";
         for (std::size_t i = 0; i < R.sranges.size(); ++i)
             o << (i ? "," : "") << "[" << R.sranges[i].first << "," << R.sranges[i].second << "]";
+        o << "],\"ins\":[";
+        for (std::size_t i = 0; i < R.ins.size(); ++i)
+            o << (i ? "," : "") << "[" << R.ins[i].first << "," << R.ins[i].second << "]";
         o << "]";
     }
     if (!R.subs.empty()) {
@@ -1352,7 +1387,7 @@ template <class F> static void pfor(int n, F fn) {
 // ------------------------------------------------------------ gap-representative two-round rule
 // After the opening and White's reply, P = B0 N^g1 B1 ... N^gk Bk: blocks Bi
 // without neutral columns, separated by runs of neutral columns N. A gap with
-// g < T stands for itself; a gap with g >= T for every g' >= T of the same
+// g < T stands for itself; a gap with g >= T for every g' >= g of the same
 // parity. Every second Blue move is checked on a reduced configuration, and
 // every long (sub)gap must be stretchable in its sub-rule (NOTES §4a).
 static bool is_neutral(Col c) { return c.a == FC && c.b == FC; }
@@ -1430,6 +1465,9 @@ static std::vector<GCfg> gap_configs(const Layout& L, bool hasR) {
             for (int u = 0; u < l; ++u) {
                 int v = l - 1 - u;
                 if (lg && (u > g_T + 1 || v > g_T + 1)) continue;
+                // The class only contains gap lengths >= L.gaps[i] (NOTES §4a.1): a configuration
+                // with both sub-gaps exact stands for gap length l alone.
+                if (lg && u < g_T && v < g_T && l < L.gaps[i]) continue;
                 auto rr = long_ranges(g, st, i);
                 if (lg && u >= g_T) rr.push_back({st[i], st[i] + u - 1});
                 if (lg && v >= g_T) rr.push_back({st[i] + u + 1, st[i] + l - 1});
@@ -1440,7 +1478,8 @@ static std::vector<GCfg> gap_configs(const Layout& L, bool hasR) {
     }
     return out;
 }
-static bool gap_sub(const Layout& L, const GCfg& cf, int oc, XV q, XV qR, int cid, bool cheap, Rule& sub) {
+static bool gap_sub(const Layout& L, const GCfg& cf, int oc, XV q, XV qR, int cid, bool cheap, Rule& sub,
+                    XV* best = nullptr) {
     Strip P = build(L, cf.gaps);
     int w = int(P.size());
     Stretch st;
@@ -1477,15 +1516,22 @@ static bool gap_sub(const Layout& L, const GCfg& cf, int oc, XV q, XV qR, int ci
         SC sc{cid, true, false, true, 0};
         return search_cands(base, moves, centres, moveCentre, 2, st, sc, sub, &budget);
     }
+    // Far from the opening the pieces are long family pieces, so new families are
+    // tried (on cached exact values) before computing new exact values.
     for (int cap : {2, 3}) {
-        bool got = three_pass(cid, [&](SC& sc) {
+        SC passes[4] = {{cid, true, false, true, 0}, {cid, true, true, true, g_newBudget},
+                        {cid, false, false, true, 0}, {cid, false, true, true, g_newBudget}};
+        for (auto& sc : passes) {
             long b = budget;
-            return search_cands(base, moves, centres, moveCentre, cap, st, sc, sub, &b);
-        });
-        if (got) return true;
+            if (search_cands(base, moves, centres, moveCentre, cap, st, sc, sub, &b, best)) return true;
+            if (g_stop) return false;
+        }
     }
     return false;
 }
+static std::vector<std::pair<int, int>> g_forceReplies;   // -reply r,c[:r,c...]
+static int g_gTries = 6;
+static bool g_gDiag = false;
 // par: spread the sub-rules over g_threads contexts (only when not already inside pfor).
 static bool find_BG(const Strip& s, int r, int c, XV q, int cid, Rule& out, bool par) {
     Strip s1 = s;
@@ -1507,21 +1553,27 @@ static bool find_BG(const Strip& s, int r, int c, XV q, int cid, Rule& out, bool
         if (par) pfor(n, fn);
         else for (int i = 0; i < n && !g_stop; ++i) fn(i, cid);
     };
+    bool needL = atMax && c >= 9, needR = atMax && w - 1 - c >= 9;
     for (int cc = std::max(0, c - RW); cc <= std::min(w - 1, c + RW); ++cc)
         for (int rr = 0; rr < 5; ++rr) {
             if (!((s1[cc].b >> rr) & 1)) continue;
+            if (!g_forceReplies.empty() &&
+                std::find(g_forceReplies.begin(), g_forceReplies.end(), std::make_pair(rr, cc)) == g_forceReplies.end())
+                continue;
             Strip P = s1;
             wmove(P, rr, cc);
             Rep R;
             R.rr = rr; R.cc = cc;
             R.L = layout_of(P);
             int k = int(R.L.gaps.size());
-            if (atMax) {
-                // The stretched side's gap must be a long gap on that side of the opening.
+            if (needL || needR) {
+                // NOTES §4a.6: a side stretched beyond W(p) must have a long gap containing
+                // column 3 (left) or w-4 (right); stretching lengthens exactly that gap.
                 std::vector<int> st;
                 build(R.L, R.L.gaps, &st);
-                bool okL = c < 9 || (k > 0 && R.L.gaps[0] >= g_T && st[0] + R.L.gaps[0] <= c);
-                bool okR = w - 1 - c < 9 || (k > 0 && R.L.gaps[k - 1] >= g_T && st[k - 1] > c);
+                bool okL = !needL || (k > 0 && R.L.gaps[0] >= g_T && st[0] <= 3 && 3 < st[0] + R.L.gaps[0]);
+                bool okR = !needR || (k > 0 && R.L.gaps[k - 1] >= g_T && st[k - 1] <= w - 4 &&
+                                      w - 4 < st[k - 1] + R.L.gaps[k - 1]);
                 if (!okL || !okR) continue;
             }
             R.cfgs = gap_configs(R.L, hasR);
@@ -1546,38 +1598,50 @@ static bool find_BG(const Strip& s, int r, int c, XV q, int cid, Rule& out, bool
     std::stable_sort(reps.begin(), reps.end(), [](const Rep& a, const Rep& b) { return a.fails < b.fails; });
     int tried = 0;
     for (auto& R : reps) {
-        if (++tried > 6 || g_stop) break;
+        if (++tried > g_gTries || g_stop) break;
         std::vector<int> todo;
         for (std::size_t i = 0; i < R.cfgs.size(); ++i) if (!R.done[i]) todo.push_back(int(i));
         std::atomic<bool> stuck{false};
-        std::atomic<int> closed{0};
+        std::atomic<int> closed{0}, nstuck{0};
         std::mutex smu;
         std::string stuckAt;
         run(int(todo.size()), [&](int k, int t) {
-            if (stuck) return;
+            if (stuck && !g_gDiag) return;
             int i = todo[k];
-            if (gap_sub(R.L, R.cfgs[i], R.oc[i], q, qR, t, false, R.subs[i])) { R.done[i] = 1; ++closed; return; }
-            if (g_stop) return;
-            std::lock_guard<std::mutex> lk(smu);
-            if (!stuck) {
-                stuck = true;
-                auto& cf = R.cfgs[i];
-                std::string gs;
-                for (int g : cf.gaps) gs += (gs.empty() ? "" : ",") + std::to_string(g);
-                stuckAt = "gaps [" + gs + "] second move (" + std::to_string(cf.xr) + "," + std::to_string(cf.x) +
-                          ") on " + draw(build(R.L, cf.gaps));
+            XV best[2] = {XBAD, XBAD};
+            if (gap_sub(R.L, R.cfgs[i], R.oc[i], q, qR, t, false, R.subs[i], best)) {
+                R.done[i] = 1;
+                ++closed;
+                if (g_verbose)
+                    LOG("        closed %d/%zu: second move (%d,%d) gaps %zu sum %s [%.0fs]\n", closed.load(), todo.size(),
+                        R.cfgs[i].xr, R.cfgs[i].x, R.cfgs[i].gaps.size(), xs(R.subs[i].sum).c_str(), now_s());
+                return;
             }
+            if (g_stop) return;
+            ++nstuck;
+            auto& cf = R.cfgs[i];
+            std::string gs;
+            for (int g : cf.gaps) gs += (gs.empty() ? "" : ",") + std::to_string(g);
+            std::string d = "gaps [" + gs + "] second move (" + std::to_string(cf.xr) + "," + std::to_string(cf.x) +
+                            ") on " + draw(build(R.L, cf.gaps)) + " best no-reply " + xs(best[0]) + ", after reply " +
+                            xs(best[1]);
+            if (g_gDiag) LOG("        STUCK %s\n", d.c_str());
+            std::lock_guard<std::mutex> lk(smu);
+            if (!stuck) { stuck = true; stuckAt = d; }
         });
         if (g_stop) return false;
         LOG("      gap rule w=%d (%d,%d) reply (%d,%d): %zu configurations, %d cheap failures, %s\n", w, r, c, R.rr,
-            R.cc, R.cfgs.size(), R.fails, stuck ? ("stuck after " + std::to_string(closed.load()) + ": " + stuckAt).c_str()
-                                                : "all closed");
+            R.cc, R.cfgs.size(), R.fails,
+            stuck ? (std::to_string(nstuck.load()) + " stuck (" + std::to_string(closed.load()) +
+                     " closed in deep pass), first: " + stuckAt).c_str()
+                  : "all closed");
         if (stuck) continue;
         Strip P = s1;
         wmove(P, R.rr, R.cc);
         out = Rule();
         out.type = 'G'; out.w = w; out.orow = r; out.ocol = c; out.rrow = R.rr; out.rcol = R.cc;
         out.target = q; out.cmp = 'L'; out.subs = R.subs; out.gaps = R.L.gaps; out.board = draw(P);
+        out.stretch = std::string(needL ? "L" : "") + (needR ? "R" : "");
         return true;
     }
     return false;
@@ -1669,7 +1733,7 @@ static Outcome run_table(int id, int p, XV q, bool collectAll) {
             auto& T = tasks[i];
             Strip s = member(f, T.w);
             bool got = g_gapRule && find_BG(s, T.r, T.c, q, t, rules[i], false);
-            if (!got && !g_stop && g_twoRound && (T.w < wmax_of(p) || g_wmaxOverride))
+            if (!got && !g_stop && g_twoRound && !g_gOnly && (T.w < wmax_of(p) || g_wmaxOverride))
                 got = find_B2(s, T.r, T.c, q, t, rules[i]);
             if (g_stop) return;
             if (got) {
@@ -2023,9 +2087,11 @@ static int run_validate(const std::string& path, int n, int seed, bool warm) {
 int main(int argc, char** argv) {
     std::string root = "KD", tag = "xrun", famDraw;
     int tr = -1, tc = -1;
-    bool gOnly = false;
     std::vector<int> testW;
-    std::string valsArg, valFile;
+    std::vector<std::string> valDraws;
+    std::string valFile = "xc_values.txt", benchFile;
+    int benchN = 0;
+    std::string valsArg, validateFile;
     int onlyPar = -1, valN = 0, valSeed = 1;
     bool valWarm = false;
     for (int i = 1; i < argc; ++i) {
@@ -2046,9 +2112,31 @@ int main(int argc, char** argv) {
         else if (a == "-rwfar") g_rwFar = std::atoi(argv[++i]);
         else if (a == "-T") g_T = std::atoi(argv[++i]);
         else if (a == "-noG") g_gapRule = false;
-        else if (a == "-G") gOnly = true;
+        else if (a == "-G") g_gOnly = true;
+        else if (a == "-Gdiag") g_gDiag = true;
+        else if (a == "-val") {
+            std::stringstream vs(argv[++i]);
+            std::string t;
+            while (std::getline(vs, t, ',')) valDraws.push_back(t);
+        }
+        else if (a == "-Gtries") g_gTries = std::atoi(argv[++i]);
+        else if (a == "-reply") {
+            std::stringstream rs(argv[++i]);
+            std::string t;
+            while (std::getline(rs, t, ':')) {
+                auto k = t.find(',');
+                g_forceReplies.push_back({std::atoi(t.substr(0, k).c_str()), std::atoi(t.substr(k + 1).c_str())});
+            }
+        }
         else if (a == "-B2") g_b2Budget = std::atol(argv[++i]);
         else if (a == "-comp") g_comp = true;
+        else if (a == "-pass") g_pass = 1;
+        else if (a == "-refute") g_refute = std::atoi(argv[++i]);
+        else if (a == "-qrefute") g_quickRefute = std::atoi(argv[++i]);
+        else if (a == "-etc") g_etc = 1;
+        else if (a == "-smax") g_smax = std::atoi(argv[++i]);
+        else if (a == "-V") valFile = argv[++i];
+        else if (a == "-bench") { benchN = std::atoi(argv[++i]); benchFile = argv[++i]; }
         else if (a == "-guess") g_guess = true;
         else if (a == "-mono") g_mono = true;
         else if (a == "-nosandwich") g_sandwich = false;
@@ -2059,7 +2147,7 @@ int main(int argc, char** argv) {
         else if (a == "-warm") valWarm = true;
         else if (a == "-vlog") g_vlog = true;
         else if (a == "-validate") {
-            valFile = argv[++i]; valN = std::atoi(argv[++i]); valSeed = std::atoi(argv[++i]);
+            validateFile = argv[++i]; valN = std::atoi(argv[++i]); valSeed = std::atoi(argv[++i]);
         } else if (a == "-test") {
             tr = std::atoi(argv[++i]); tc = std::atoi(argv[++i]);
             std::stringstream ws(argv[++i]);
@@ -2073,12 +2161,73 @@ int main(int argc, char** argv) {
     g_vc = &vc; g_tt = &tt;
     g_ctx.reset(new Ctx[g_threads + 1]);
     const std::string dir = "/workspace/proofs/construction/research/round5/closure/runs/";
-    // -vals PATH: value cache to load and append to; -vals none: start empty, write nothing.
-    g_valPath = valsArg.empty() ? dir + "xc_values.txt" : valsArg == "none" ? "" : valsArg;
-    if (!valFile.empty() && !valWarm) g_valPath.clear();
-    if (!g_valPath.empty()) load_values(g_valPath);
-    if (g_comp && valFile.empty()) derive_components();
     for (const char* h : {"bounds_cache.txt", "bounds_cache_t2.txt", "bounds_cache_r5.txt"}) load_hints(dir + h);
+    if (benchN > 0) {
+        // Recompute a deterministic sample of cached values from an empty value
+        // cache and compare with the recorded ones.
+        std::ifstream f(benchFile);
+        std::vector<std::pair<std::string, XV>> all;
+        std::string k, v;
+        while (f >> k >> v) { XV x; if (xparse(v, x)) all.push_back({unhex(k), x}); }
+        std::vector<std::pair<std::string, XV>> sample;
+        const std::size_t stride = std::max<std::size_t>(1, all.size() / std::size_t(benchN));
+        for (std::size_t i = 0; i < all.size() && int(sample.size()) < benchN; i += stride) sample.push_back(all[i]);
+        std::atomic<int> bad{0}, unk{0};
+        std::thread wd([] {
+            while (!g_quit) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                double t = now_s();
+                for (int i = 0; i <= g_threads; ++i)
+                    if (t > g_ctx[i].deadline.load()) g_ctx[i].abort = true;
+            }
+        });
+        const double t0 = now_s();
+        std::vector<double> took(sample.size(), 0);
+        pfor(int(sample.size()), [&](int i, int cid) {
+            const double ti = now_s();
+            struct Rec { double& at; double t; ~Rec() { at = now_s() - t; } } rec{took[i], ti};
+            const std::string& key = sample[i].first;
+            Strip s(key.size() / 2);
+            for (std::size_t c = 0; c < s.size(); ++c)
+                s[c] = Col{std::uint8_t(std::uint8_t(key[2 * c]) - 'a'), std::uint8_t(std::uint8_t(key[2 * c + 1]) - 'A')};
+            XV got = xvalue(s, cid, false);
+            if (!got.ok) ++unk;
+            else if (got.num != sample[i].second.num || got.star != sample[i].second.star) {
+                ++bad;
+                LOG("MISMATCH %s recorded %s got %s\n", draw(s).c_str(), xs(sample[i].second).c_str(), xs(got).c_str());
+            }
+        });
+        LOG("bench %s: %zu values in %.1fs, searches %" PRIu64 ", exact computations %" PRIu64 ", split pieces %" PRIu64
+            ", mismatches %d, unknown %d\n",
+            g_comp ? "comp" : "whole", sample.size(), now_s() - t0, g_nSearch.load(), g_nExact.load(), g_nSplit.load(),
+            bad.load(), unk.load());
+        std::vector<int> order(sample.size());
+        for (std::size_t i = 0; i < order.size(); ++i) order[i] = int(i);
+        std::sort(order.begin(), order.end(), [&](int x, int y) { return took[x] > took[y]; });
+        double total = 0;
+        for (double t : took) total += t;
+        double top = 0;
+        for (int i = 0; i < 10 && i < int(order.size()); ++i) top += took[order[i]];
+        LOG("thread-seconds %.1f; slowest 10 values %.1f (%.0f%%)\n", total, top, 100 * top / std::max(total, 1e-9));
+        for (int i = 0; i < 10 && i < int(order.size()); ++i) {
+            const std::string& key = sample[order[i]].first;
+            Strip s(key.size() / 2);
+            for (std::size_t c = 0; c < s.size(); ++c)
+                s[c] = Col{std::uint8_t(std::uint8_t(key[2 * c]) - 'a'), std::uint8_t(std::uint8_t(key[2 * c + 1]) - 'A')};
+            int live = 0;
+            for (auto& c : s) live += __builtin_popcount(unsigned(c.a | c.b));
+            LOG("  %.2fs  w=%zu live=%d value %s  %s\n", took[order[i]], s.size(), live, xs(sample[order[i]].second).c_str(),
+                draw(s).c_str());
+        }
+        g_quit = true;
+        wd.join();
+        return bad ? 2 : 0;
+    }
+    // -vals PATH: value cache to load and append to; -vals none: start empty, write nothing.
+    g_valPath = valsArg.empty() ? dir + valFile : valsArg == "none" ? "" : valsArg;
+    if (!validateFile.empty() && !valWarm) g_valPath.clear();
+    if (!g_valPath.empty()) load_values(g_valPath);
+    if (g_comp && validateFile.empty()) derive_components();
     std::fprintf(stderr, "value path: comp %d guess %d mono %d decide %d sandwich %d\n", g_comp, g_guess, g_mono,
                  g_decide, g_sandwich);
     const std::string base = tag[0] == '/' ? tag : dir + tag;
@@ -2100,8 +2249,8 @@ int main(int argc, char** argv) {
         }
     });
 
-    if (!valFile.empty()) {
-        int vr = run_validate(valFile, valN, valSeed, valWarm);
+    if (!validateFile.empty()) {
+        int vr = run_validate(validateFile, valN, valSeed, valWarm);
         print_stats();
         g_quit = true;
         watchdog.join();
@@ -2128,6 +2277,12 @@ int main(int argc, char** argv) {
         f.R[0] = N; f.R[1] = N; f.R[2] = letter("obwbo");
         if (root == "KD") { Strip s = member(f, 8); wmove(s, 2, 0); for (int i = 0; i < 3; ++i) f.L[i] = s[i]; }
     }
+    if (!valDraws.empty()) {
+        for (auto& d : valDraws) LOG("value %s = %s  [%.0fs]\n", d.c_str(), xs(xvalue(undraw(d), g_threads, false)).c_str(), now_s());
+        g_quit = true;
+        watchdog.join();
+        return 0;
+    }
     int rid = get_family(f, root, g_threads, -1);
     int rc = 0;
     if (!testW.empty()) {
@@ -2140,13 +2295,13 @@ int main(int argc, char** argv) {
                 continue;
             }
             Rule R;
-            bool got = !gOnly && find_B(s, tr, tc, q, g_threads, R);
+            bool got = !g_gOnly && find_B(s, tr, tc, q, g_threads, R);
             if (!got && g_gapRule) {
                 LOG("w=%d opening (%d,%d): trying gap-representative two-round rule, T=%d [%.0fs]\n", w, tr, tc, g_T,
                     now_s());
                 got = find_BG(s, tr, tc, q, g_threads, R, true);
             }
-            if (!got && g_twoRound && !gOnly) {
+            if (!got && g_twoRound && !g_gOnly) {
                 LOG("w=%d opening (%d,%d): no one-round rule, trying two-round [%.0fs]\n", w, tr, tc, now_s());
                 got = find_B2(s, tr, tc, q, g_threads, R);
             }

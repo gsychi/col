@@ -1,0 +1,110 @@
+3x2 L=nnn R=wnB W : G-F = 1 x8
+3x2 L=nnn R=wnB W*: G-F = 1 x12
+3x2 L=nnn R=wnB W*: G-F = 1/2 x4
+3x2 L=nnn R=wnB b : G-F = 1 x4
+3x2 L=nnn R=wnB b : G-F = 1/2 x2
+3x2 L=nnn R=wnB b : G-F = 1/4 x1
+3x2 L=nnn R=wnB e : G-F = * x1
+3x4 L=nnn R=wnB W : G-F = 1 x960
+3x4 L=nnn R=wnB W*: G-F = 1 x1016
+3x4 L=nnn R=wnB W*: G-F = 1/2 x8
+3x4 L=nnn R=wnB b : G-F = 1 x53
+3x4 L=nnn R=wnB b : G-F = 1/2 x10
+3x4 L=nnn R=wnB e : G-F = 0 x1
+3x6 L=nnn R=wnB W : G-F = 1 x65024
+3x6 L=nnn R=wnB W*: G-F = 1 x65532
+3x6 L=nnn R=wnB W*: G-F = 1/2 x4
+3x6 L=nnn R=wnB b : G-F = 1 x493
+3x6 L=nnn R=wnB b : G-F = 1/2 x16
+3x6 L=nnn R=wnB b : G-F = 1/4 x2
+3x6 L=nnn R=wnB e : G-F = * x1
+3x8 L=nnn R=wnB W : G-F = 1 x4190208
+3x8 L=nnn R=wnB W*: G-F = 1 x4194292
+3x8 L=nnn R=wnB W*: G-F = 1/2 x12
+3x8 L=nnn R=wnB b : G-F = 1 x4067
+3x8 L=nnn R=wnB b : G-F = 1/2 x28
+3x8 L=nnn R=wnB e : G-F = 0 x1
+3x1 L=nwn R=nnn b : G-F = * x2
+3x1 L=nwn R=nnn b : G-F = 1 x1
+3x1 L=nwn R=nnn e : G-F = -1 x1
+3x3 L=nwn R=nnn W : G-F = 0 x8
+3x3 L=nwn R=nnn W : G-F = 1 x136
+3x3 L=nwn R=nnn W : G-F = 1/2 x64
+3x3 L=nwn R=nnn W : G-F = 1/4 x16
+3x3 L=nwn R=nnn b : G-F = -1/4 x4
+3x3 L=nwn R=nnn b : G-F = -3/4 x1
+3x3 L=nwn R=nnn b : G-F = 0 x4
+3x3 L=nwn R=nnn b : G-F = 1 x7
+3x3 L=nwn R=nnn b : G-F = 1/2 x9
+3x3 L=nwn R=nnn b : G-F = 1/4 x4
+3x3 L=nwn R=nnn b : G-F = 1/8 x2
+3x3 L=nwn R=nnn e : G-F = -3/4 x1
+3x5 L=nwn R=nnn W : G-F = 0 x960
+3x5 L=nwn R=nnn W : G-F = 1 x9152
+3x5 L=nwn R=nnn W : G-F = 1/2 x5984
+3x5 L=nwn R=nnn W : G-F = 1/4 x32
+3x5 L=nwn R=nnn b : G-F = * x2
+3x5 L=nwn R=nnn b : G-F = -1/2 x7
+3x5 L=nwn R=nnn b : G-F = -1/4 x6
+3x5 L=nwn R=nnn b : G-F = 0 x50
+3x5 L=nwn R=nnn b : G-F = 1 x64
+3x5 L=nwn R=nnn b : G-F = 1/2 x106
+3x5 L=nwn R=nnn b : G-F = 1/4 x20
+3x5 L=nwn R=nnn e : G-F = -1 x1
+3x7 L=nwn R=nnn W : G-F = 0 x65024
+3x7 L=nwn R=nnn W : G-F = 1 x589312
+3x7 L=nwn R=nnn W : G-F = 1/2 x392176
+3x7 L=nwn R=nnn W : G-F = 1/4 x16
+3x7 L=nwn R=nnn b : G-F = -1/2 x11
+3x7 L=nwn R=nnn b : G-F = -1/4 x10
+3x7 L=nwn R=nnn b : G-F = -3/4 x2
+3x7 L=nwn R=nnn b : G-F = 0 x490
+3x7 L=nwn R=nnn b : G-F = 1 x511
+3x7 L=nwn R=nnn b : G-F = 1/2 x987
+3x7 L=nwn R=nnn b : G-F = 1/4 x32
+3x7 L=nwn R=nnn b : G-F = 1/8 x4
+3x7 L=nwn R=nnn e : G-F = -3/4 x1
+3x9 L=nwn R=nnn b : G-F = * x2
+3x9 L=nwn R=nnn b : G-F = -1/2 x21
+3x9 L=nwn R=nnn b : G-F = -1/4 x14
+3x9 L=nwn R=nnn b : G-F = 0 x4060
+3x9 L=nwn R=nnn b : G-F = 1 x4096
+3x9 L=nwn R=nnn b : G-F = 1/2 x8134
+3x9 L=nwn R=nnn b : G-F = 1/4 x56
+3x9 L=nwn R=nnn e : G-F = -1 x1
+3x1 L=nnW R=nnn (forced Blue) W : G-F = 0 x2
+3x1 L=nnW R=nnn (forced Blue) b : G-F = 0 x2
+3x3 L=nnW R=nnn (forced Blue) W : G-F = 0 x240
+3x3 L=nnW R=nnn (forced Blue) b : G-F = 0 x16
+3x5 L=nnW R=nnn (forced Blue) W : G-F = 0 x16256
+3x5 L=nnW R=nnn (forced Blue) b : G-F = 0 x128
+3x7 L=nnW R=nnn (forced Blue) W : G-F = 0 x1047552
+3x7 L=nnW R=nnn (forced Blue) b : G-F = 0 x1024
+3x9 L=nnW R=nnn (forced Blue) b : G-F = 0 x8192
+3x1 L=nnn R=nnn W : G-F = 0 x4
+3x1 L=nnn R=nnn b : G-F = -1/2 x2
+3x1 L=nnn R=nnn b : G-F = 0 x1
+3x1 L=nnn R=nnn e : G-F = -1 x1
+3x2 L=nnn R=nnn W : G-F = 0 x56
+3x2 L=nnn R=nnn b : G-F = 0 x7
+3x2 L=nnn R=nnn e : G-F = 0 x1
+3x3 L=nnn R=nnn W : G-F = 0 x480
+3x3 L=nnn R=nnn b : G-F = -1 x1
+3x3 L=nnn R=nnn b : G-F = -1/2 x8
+3x3 L=nnn R=nnn b : G-F = 0 x22
+3x3 L=nnn R=nnn e : G-F = -1 x1
+3x4 L=nnn R=nnn W : G-F = 0 x4032
+3x4 L=nnn R=nnn b : G-F = 0 x63
+3x4 L=nnn R=nnn e : G-F = 0 x1
+3x5 L=nnn R=nnn W : G-F = 0 x32512
+3x5 L=nnn R=nnn b : G-F = -1/2 x15
+3x5 L=nnn R=nnn b : G-F = 0 x240
+3x5 L=nnn R=nnn e : G-F = -1 x1
+3x6 L=nnn R=nnn W : G-F = 0 x261632
+3x6 L=nnn R=nnn b : G-F = 0 x511
+3x6 L=nnn R=nnn e : G-F = 0 x1
+3x7 L=nnn R=nnn W : G-F = 0 x2095104
+3x7 L=nnn R=nnn b : G-F = -1 x2
+3x7 L=nnn R=nnn b : G-F = -1/2 x28
+3x7 L=nnn R=nnn b : G-F = 0 x2017
+3x7 L=nnn R=nnn e : G-F = -1 x1

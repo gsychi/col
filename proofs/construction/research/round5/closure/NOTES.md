@@ -127,6 +127,237 @@ coverage argument (§7) never stretches them. At `W(p)` only one-round rules
 are accepted. Every `x2` is checked; no symmetry reduction is applied inside
 `P`. JSON: type `b`, with the sub-rules in `subs`.
 
+## 4a. Gap-representative two-round rule (`G`)
+
+A type-`b` rule is a fact about one width. Type `G` is a two-round rule that
+is checked on finitely many *reduced configurations* and is valid for a whole
+class of positions whose long neutral runs have arbitrary length of a fixed
+parity. That makes it usable at `W(p)` and, through §7, at every larger width.
+
+### 4a.1 Layout and class
+
+Fix `F`, `w`, a Blue opening `(r, c)` of `F_w` and a White reply `y1`. Put
+`P = F_w^{L,(r,c); R,y1}`. A column is **neutral** if all five cells are legal
+for both players. A **gap** is a maximal run of neutral columns of `P` that
+contains neither column 0 nor column `w − 1`. Write
+
+    P = B_0 N^{g_1} B_1 N^{g_2} ... N^{g_k} B_k
+
+with blocks `B_i` (all other columns, maximal neutral runs touching an end
+included in `B_0` or `B_k`). Each block between two gaps is non-empty and its
+columns next to a gap are non-neutral. For positive integers
+`h = (h_1..h_k)` let `P[h]` be the strip with the same blocks and gap lengths
+`h`. The lower limit `g_i` (not `T`) is all that §4a.6 needs, and it spares
+configurations that only stand for narrower members. Fix `T ≥ 1` (engine default 6, CLI `-T`). Gap `i` is **long** if
+`g_i ≥ T`, otherwise **short**. The **class** of the rule is
+
+    C = { P[h] : h_i = g_i for short i;  h_i ≥ g_i and h_i ≡ g_i (mod 2) for long i }.
+
+The **representative** vector `ρ` has `ρ_i = g_i` (short) and
+`ρ_i = T + ((g_i − T) mod 2)` (long). Note `ρ_i ≤ h_i` for every `P[h] ∈ C`,
+with `h_i − ρ_i` even.
+
+### 4a.2 What the engine checks
+
+A **sub-rule** on a strip `S` is a one-round rule exactly as in §3/§4: for a
+Blue move `x2` of `S`, a White reply `y2` in `S^{x2}` with a cut of sum
+`Σ ≤ q`, or no reply and a cut of `S^{x2}` with `Σ ⧏ q`; for the White-first
+part, a White move (or none) in `S` with `Σ ≤ q^R` (or `Σ ⧏ q^R`). Every
+sub-rule has at least one seam. Pieces of length `≤ 7` use exact values,
+longer pieces a family bound (member or dominated, §5), as everywhere else.
+
+A **range** is an interval `[lo, hi]` of columns of `S` that is a run of
+neutral columns of `S` (before `x2`). An **insertion point** for it in a
+sub-rule is a column `j` with `lo − 1 ≤ j ≤ hi` and a piece `[a, b]` of the
+sub-rule that is bounded through a family (JSON `src` `f` or `d`) with
+`a + 2 ≤ j ≤ b − 3`. It stands for "insert two neutral columns between `j`
+and `j + 1`".
+
+The rule is accepted if:
+
+- **(G1) block moves.** On `S = P[ρ]`: for every Blue-legal `x2` in a block
+  column, a sub-rule with an insertion point for the range of every long gap.
+- **(G2) short-gap moves.** On `S = P[ρ]`: for every short gap and every
+  Blue-legal `x2` in it, a sub-rule with an insertion point for every long gap.
+- **(G3) long-gap moves.** For every long gap `i`, every `l` with
+  `T ≤ l ≤ 2T + 3` and `l ≡ g_i (mod 2)`, and every offset `u` with
+  `0 ≤ u ≤ l − 1`, `u ≤ T + 1`, `v := l − 1 − u ≤ T + 1`, and
+  (`u ≥ T` or `v ≥ T` or `l ≥ g_i`): on
+  `S = P[ρ with ρ_i := l]` (gap `i` occupying columns `s..s+l−1`), for every
+  Blue-legal `x2` in column `s + u`, a sub-rule with an insertion point for
+  every other long gap, for `[s, s+u−1]` if `u ≥ T`, and for
+  `[s+u+1, s+l−1]` if `v ≥ T`.
+- **(G4) White-first.** If `q` has a Right option `q^R`: on `S = P[ρ]`, a
+  White-first sub-rule with an insertion point for every long gap. (The
+  engine only tries White moves outside long gaps; this is a search
+  restriction.)
+
+`P[ρ]` is `S` for (G1), (G2) and (G4) because short gaps are exact. The engine
+does not apply any symmetry reduction to the second move.
+
+### 4a.3 One insertion
+
+**Lemma 4a.1.** Let `R` be a sub-rule on `S` with an insertion point `j` in
+piece `[a, b]` for a range `[lo, hi]`. Let `S⁺` be `S` with two neutral columns
+inserted between `j` and `j + 1`, and `R⁺` the translated rule (columns `> j`
+move right by 2; the piece `[a, b]` becomes `[a, b + 2]`). Then `R⁺` is a valid
+sub-rule on `S⁺` with the same piece bounds, the same `Σ`, and the same
+comparison. In `S⁺` the range becomes `[lo, hi + 2]`, a run of neutral columns
+two longer than `[lo, hi]`.
+
+*Proof.* Let `Q` be the final strip of `R` (after `x2`, `y2` if any, and the
+seam drops). Because the piece is bounded through a family, its columns
+`a+3 .. b−3` are neutral in `Q` (checked by `piece_bound`). From
+`a + 2 ≤ j ≤ b − 3`, at least one of `j`, `j + 1` lies in `[a+3, b−3]`; call it
+the *middle column*. It is neutral in `Q`.
+
+(a) *No move is made in column `j` or `j + 1`.* Suppose a move (by either
+player) is made in column `j`. Then `j` is non-neutral in `Q` (the played cell
+is dead), so the middle column is `j + 1` and must be neutral in `Q`. If
+`j + 1` is non-neutral in `S`, it stays non-neutral (permissions only shrink).
+If it is neutral in `S`, the move at `(row, j)` removes the mover's permission
+at `(row, j + 1)` (it was present just before the move, otherwise `j + 1` was
+already non-neutral). Either way `j + 1` is non-neutral in `Q`, a
+contradiction. A move in column `j + 1` is symmetric. Drops touch only seam
+columns, which are the end columns `a`, `b` of pieces, and `a < j`, `j + 1 < b`.
+
+(b) *The moves commute with the insertion.* A move at a column `m ∉ {j, j+1}`
+changes permissions only in columns `m − 1, m, m + 1`, and these are the same
+columns (after translation) in `S⁺`, where the inserted columns are adjacent
+only to `j` and `j + 1`. Legality of each move depends only on its cell. So
+`S⁺` after `x2⁺, y2⁺` equals (`S` after `x2, y2`) with two neutral columns
+inserted at `j`, and those columns stay neutral.
+
+(c) *The cut is the same.* No seam is at `j` (the piece `[a, b]` contains
+`j` and `j + 1`). Seam columns and their contents are unchanged, so the same
+drops satisfy the edge condition of Lemma 2. Hence `Q⁺` is `Q` with the
+insertion.
+
+(d) *Piece bounds are unchanged.* Pieces other than `[a, b]` are identical.
+The piece `[a, b + 2]` has the same left end block (columns `a..a+2`, all
+`≤ j`) and the same right end block (old columns `b−2..b`, all `≥ j + 1`), and
+its middle is the old neutral middle plus two neutral columns. So it is the
+member of the same family at length `n + 2` (or dominated by it, with the
+same blocks), with the same parity and bound. `Σ` is unchanged.
+
+Finally, the inserted columns are adjacent to a column of `[lo, hi]` (`j ≥ lo−1`
+and `j + 1 ≤ hi + 1`) and neutral, so in `S⁺` they join that run. ∎
+
+After the insertion, `j` is still an insertion point for `[lo, hi + 2]` in the
+piece `[a, b + 2]`, and every other recorded insertion point `j'` is still one
+(translated by 2 if `j' > j`). Distinct ranges are separated by at least one
+non-range column (a non-empty block, or the column of `x2`), so their
+insertion points are distinct. The lemma can therefore be applied any number
+of times, at any of the recorded points, in any order.
+
+### 4a.4 Coverage of every second move in every member of the class
+
+**Lemma 4a.2.** Let `P[h] ∈ C`. For every Blue-legal `x2` of `P[h]` there is a
+checked configuration `S` and move `x2'` such that `P[h]`, with `x2`, is
+obtained from `S`, with `x2'`, by insertions at recorded insertion points of
+the sub-rule for `(S, x2')`. The same holds for (G4) and the White-first part.
+
+*Proof.* In every case each long gap `i′` not containing the move has length
+`ρ_{i′}` in `S` and `h_{i′} ≥ ρ_{i′}` in `P[h]`, with even difference. Insert
+`(h_{i′} − ρ_{i′})/2` pairs at its recorded point. Blocks and short gaps are
+carried along by translation.
+
+- `x2` in a block column: `S = P[ρ]`, `x2'` is the same block cell.
+- `x2` in a short gap: `h_i = g_i`, `S = P[ρ]`, same offset in the gap.
+- `x2` in long gap `i` at offset `u` (so `v = h_i − 1 − u`). Put
+  `u* = u` if `u ≤ T + 1`, else `u* = T + ((u − T) mod 2)`. Define `v*`
+  likewise. Put `l = u* + v* + 1`. Then `u*, v* ≤ T + 1`, so `l ≤ 2T + 3`;
+  `l ≡ h_i ≡ g_i (mod 2)`; and `l ≥ T`. If neither side was reduced,
+  `l = h_i ≥ g_i ≥ T`. Otherwise the reduced side is `≥ T`, so `l ≥ T + 1`
+  and the third condition of (G3) holds through `u* ≥ T` or `v* ≥ T`. So
+  `(l, u*)` is a (G3) configuration. If `u* < u` then `u* ≥ T`, so the left
+  sub-range was recorded; insert `(u − u*)/2` pairs there. By (a) the point is
+  not next to the column of `x2`, so the new columns land left of `x2` and
+  lengthen the left sub-run. The right side is the same with `v`. The result
+  is `P[h]` with `x2` at offset `u` of gap `i`.
+- (G4): `S = P[ρ]`.
+
+Each insertion is Lemma 4a.1, so the translated sub-rule is valid on the
+target. ∎
+
+### 4a.5 The rule proves `F_w^L ⧏ q` for the whole class
+
+**Proposition 4a.3.** If (G1)–(G4) hold, then `P[h] ≤ q` for every
+`P[h] ∈ C`, assuming (C) for every family at every length `< width(P[h])`.
+
+*Proof.* Conway's definition applied to `P[h]` (§3): for (B′), each Blue
+option `P[h]^{x2}` has a transferred sub-rule by Lemma 4a.2. With a reply,
+`P[h]^{x2,y2} ≤ Σ ≤ q`, so `P[h]^{x2} ⧏ q`. With none, `P[h]^{x2} ≤ Σ ⧏ q`, so
+`q ≰ P[h]^{x2}`. (W′) likewise with `q^R`. So `P[h] ≤ q`. ∎
+
+Then for the opening that produced `P[h]`, White's reply gives
+`G^{LR} = P[h] ≤ q`, hence `G^L ⧏ q` (§3, item 1).
+
+**Induction measure.** `P[h]` is not a family member. Its bound is proved
+directly by Conway's definition, not by the induction hypothesis. The only
+inputs are piece bounds of transferred sub-rules. Each sub-rule has at least
+one seam, and after the insertions its pieces partition the columns of
+`P[h]`, whose width is the width `w'` of the family member being proved. So
+every piece is strictly shorter than `w'`. Pieces of length `≤ 7` receive no
+insertion and use exact values. Family pieces use (C) at their stretched
+length `< w'`, which is the induction hypothesis on the first coordinate of
+the measure `(w, live cells)` (§5). The reduced configurations can be
+narrower than `P[h]`, never wider (`ρ_i ≤ h_i`, `l ≤ h_i`). A stretched piece
+may be longer than `W(p)`; (C) covers every length. There is no same-width
+step.
+
+### 4a.6 Widths: use at `W(p)` and beyond
+
+Below `W(p)` a `G` rule is used only for the opening it was found for:
+`P = P[g] ∈ C`. The insertion-point checks are still needed whenever some
+gap is long, because the checked configurations are the reduced ones.
+
+At `W(p)`, a `G` rule for an opening at distance `d_L = c`, `d_R = w − 1 − c`
+is accepted only if:
+
+- `d_L ≥ 9` ⟹ gap 1 is long and contains column 3; and
+- `d_R ≥ 9` ⟹ gap `k` is long and contains column `w − 4`.
+
+**Lemma 4a.4.** Under the first condition, for every `m ≥ 0`, `F_{w+2m}`
+opened at `(r, c + 2m)` with reply `y1 + (0, 2m)` equals `P[h]` with
+`h_1 = g_1 + 2m` and the other gaps unchanged. It is therefore in `C`. The
+same holds on the right with no shift. Both sides can be combined.
+
+*Proof.* `F_{w+2}` is `F_w` with two neutral columns inserted between
+columns 2 and 3. Column 3 is neutral in `P` and in `F_w`. So no move of the
+opening or reply is in columns 2, 3 or 4: a move in column 2 or 4 would remove
+a permission of column 3, and a move in column 3 kills a cell. By the
+commutation argument of Lemma 4a.1(b), inserting and then playing the
+translated moves gives `P` with two neutral columns inserted between 2 and 3.
+These join the run containing column 3, which is gap 1. Induct on `m`. On the
+right, insert between `w − 4` and `w − 3`. ∎
+
+By the claim of §7, every side that is shortened when an opening at
+`w' > W(p)` is reduced to `W(p)` has distance `≥ 9` at `W(p)`. Lemma 4a.4
+then puts the opened-and-replied position at `w'` into the class of the
+`W(p)` rule, and Proposition 4a.3 proves `G^L ⧏ q` at `w'`.
+
+The earlier engine condition ("gap 1 is long and ends left of the opening")
+also implies this in practice, but it does not state that the lengthened run
+is the one the stretch lands in. The engine now tests that column 3
+(respectively `w − 4`) lies in the gap.
+
+### 4a.7 JSON
+
+Type `G`: `board` (the drawing of `P`), `gaps` (`g`), `T`, `white` (the reply
+`y1`), `stretch` (the sides that satisfied the §4a.6 condition, at `W(p)`)
+and `subs`. Each sub-rule additionally has `board` (the drawing of `S`
+before `x2`), `gaps` (the gap vector of `S`), `sranges` (ranges `[lo, hi]` in
+`S` coordinates) and `ins` (for each range, the insertion point `j` and
+the index of the piece). A replay checker must:
+
+1. recompute the layout of `board` and the set of configurations (G1)–(G4)
+   from `gaps` and `T`, and match each to exactly one sub-rule;
+2. check each sub-rule as a one-round rule on its `board`;
+3. check each insertion point, including `lo − 1 ≤ j ≤ hi`,
+   `a + 2 ≤ j ≤ b − 3`, and that the piece has `src` `f` or `d`;
+4. at `W(p)`, check the §4a.6 condition.
+
 ## 5. The induction
 
 Measure: `(w, number of live cells of F_w)`, ordered lexicographically.
@@ -204,7 +435,9 @@ Pieces of length `≥ 8` are family pieces by construction.
 The engine enforces this directly. At `w = W(p)`, a Blue-opening rule is
 accepted only if every side with distance `≥ 9` has an end piece of length
 `≥ 8`. A White-first or reserve-cut rule is accepted only if at least one end
-piece has length `≥ 8`. The side is recorded in the JSON as `stretch`. White-first obligations
+piece has length `≥ 8`. A two-round rule of type `G` is accepted at `W(p)`
+only under the gap condition of §4a.6, and then covers every larger width by
+Lemma 4a.4 and Proposition 4a.3. Type `b` is never used at `W(p)`. The side is recorded in the JSON as `stretch`. White-first obligations
 for `w > W(p)` use the `W(p)` rule stretched on that side.
 
 **Flag on the old engine (`closure.cpp`).** Its comment says widths 8..18
@@ -268,7 +501,9 @@ These are the points a certification pass must replay or re-prove:
   and one `failed` line per failed attempt. Fields:
   - `fam`, `par`, `att` (attempt id); `bound` (the `q` proved);
   - `type`: `B` (Blue opening), `b` (two-round Blue opening, sub-rules in
-    `subs`), `W` (White-first; `white` null means the no-move cut),
+    `subs`), `G` (gap-representative two-round rule, §4a.7: `board`, `gaps`,
+    `T`, and per sub-rule `board`, `gaps`, `sranges`, `ins`),
+    `W` (White-first; `white` null means the no-move cut),
     `R` (reserve-cut), `E` (end-block reserve);
   - `w`, `open` `[row, col]`, `white` `[row, col]` or null (reply or White
     move);
