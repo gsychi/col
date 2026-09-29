@@ -1,0 +1,123 @@
+3x3 EB 0W  certified 32, not certified 0
+3x3 EB W0  certified 32, not certified 0
+3x3 EO 0W  certified 32, not certified 0
+3x3 EO W0  certified 32, not certified 0
+3x3 EW 0W  certified 32, not certified 0
+3x3 EW W0  certified 32, not certified 0
+3x3 total certified 192, not certified 0
+EW eW  +-Y-+/-+-BW/+-BWB  F=0  Z-F=*  G^Ry-F=1+*
+EW eW  +-Y-+/-+-B-/+-BWB  F=-1  Z-F=*  G^Ry-F=1/2+*
+EO eW  +-Y-B/-+-BW/+-+WB  F=0  Z-F=*  G^Ry-F=1+*
+EO eW  +-Y-B/-+-B-/+-+WB  F=-1  Z-F=*  G^Ry-F=1+*
+M eW   +-+-B/-Y-BW/+-+-B  F=-1  Z-F=0  G^Ry-F=1/2
+M eW   +-+-+/-Y-BW/+-+-B  F=0  Z-F=0  G^Ry-F=1/2
+EW We  +-Y-+/WB-+-/BWB-+  F=0  Z-F=*  G^Ry-F=1+*
+EW We  +-Y-+/-B-+-/BWB-+  F=-1  Z-F=*  G^Ry-F=1/2+*
+EO We  B-Y-+/WB-+-/BW+-+  F=0  Z-F=*  G^Ry-F=1+*
+EO We  B-Y-+/-B-+-/BW+-+  F=-1  Z-F=*  G^Ry-F=1+*
+M We   B-+-+/WB-Y-/B-+-+  F=-1  Z-F=0  G^Ry-F=1/2
+M We   +-+-+/WB-Y-/B-+-+  F=0  Z-F=0  G^Ry-F=1/2
+3x5 EB 0W  certified 2944, not certified 0
+3x5 EB W0  certified 2944, not certified 0
+3x5 EB WW  certified 512, not certified 0
+3x5 EB Wb  certified 224, not certified 0
+3x5 EB We  certified 32, not certified 0
+3x5 EB bW  certified 224, not certified 0
+3x5 EB eW  certified 32, not certified 0
+3x5 EO 0W  certified 2944, not certified 0
+3x5 EO W0  certified 2944, not certified 0
+3x5 EO WW  certified 512, not certified 0
+3x5 EO Wb  certified 224, not certified 0
+3x5 EO We  certified 0, not certified 32  [Z-F=* x32]
+3x5 EO bW  certified 224, not certified 0
+3x5 EO eW  certified 0, not certified 32  [Z-F=* x32]
+3x5 EW 0W  certified 2048, not certified 0
+3x5 EW W0  certified 2048, not certified 0
+3x5 EW WW  certified 1280, not certified 0
+3x5 EW Wb  certified 224, not certified 0
+3x5 EW We  certified 0, not certified 32  [Z-F=* x32]
+3x5 EW bW  certified 224, not certified 0
+3x5 EW eW  certified 0, not certified 32  [Z-F=* x32]
+3x5 M Wb   certified 672, not certified 0
+3x5 M We   certified 216, not certified 8  [Z-F=0 x8]
+3x5 M bW   certified 672, not certified 0
+3x5 M eW   certified 216, not certified 8  [Z-F=0 x8]
+3x5 total certified 21360, not certified 144
+EW eW  +-Y-+WB/-+-BWBW/+-BWBWB  F=0  Z-F=*  G^Ry-F=1+*
+EW eW  +-Y-+-B/-+-BWBW/+-BWBWB  F=-1  Z-F=*  G^Ry-F=1+*
+EO eW  +-Y-BWB/-+-BWBW/+-+WBWB  F=0  Z-F=*  G^Ry-F=1+*
+EO eW  +-Y-B-B/-+-BWBW/+-+WBWB  F=-1  Z-F=*  G^Ry-F=1+*
+M eW   +-+-BWB/-Y-BWBW/+-+-BWB  F=-1  Z-F=0  G^Ry-F=1/2
+M eW   +-+-B-B/-Y-BWBW/+-+-BWB  F=-2  Z-F=0  G^Ry-F=1/2
+EW We  BW+-Y-+/WBWB-+-/BWBWB-+  F=0  Z-F=*  G^Ry-F=1+*
+EW We  B-+-Y-+/WBWB-+-/BWBWB-+  F=-1  Z-F=*  G^Ry-F=1+*
+EO We  BWB-Y-+/WBWB-+-/BWBW+-+  F=0  Z-F=*  G^Ry-F=1+*
+EO We  B-B-Y-+/WBWB-+-/BWBW+-+  F=-1  Z-F=*  G^Ry-F=1+*
+M We   BWB-+-+/WBWB-Y-/BWB-+-+  F=-1  Z-F=0  G^Ry-F=1/2
+M We   B-B-+-+/WBWB-Y-/BWB-+-+  F=-2  Z-F=0  G^Ry-F=1/2
+3x7 EB 0W  certified 195584, not certified 0
+3x7 EB W0  certified 195584, not certified 0
+3x7 EB WW  certified 94208, not certified 0
+3x7 EB Wb  certified 22624, not certified 0
+3x7 EB We  certified 2976, not certified 0
+3x7 EB bW  certified 22624, not certified 0
+3x7 EB eW  certified 2976, not certified 0
+3x7 EO 0W  certified 195584, not certified 0
+3x7 EO W0  certified 195584, not certified 0
+3x7 EO WW  certified 94208, not certified 0
+3x7 EO Wb  certified 22624, not certified 0
+3x7 EO We  certified 32, not certified 2944  [Z-F=* x2944]
+3x7 EO bW  certified 22624, not certified 0
+3x7 EO eW  certified 32, not certified 2944  [Z-F=* x2944]
+3x7 EW 0W  certified 131072, not certified 0
+3x7 EW W0  certified 131072, not certified 0
+3x7 EW WW  certified 192512, not certified 0
+3x7 EW Wb  certified 16352, not certified 0
+3x7 EW We  certified 32, not certified 2048  [Z-F=* x2048]
+3x7 EW bW  certified 16352, not certified 0
+3x7 EW eW  certified 32, not certified 2048  [Z-F=* x2048]
+3x7 M WW   certified 50176, not certified 0
+3x7 M Wb   certified 55328, not certified 0
+3x7 M We   certified 15392, not certified 960  [Z-F=0 x960]
+3x7 M bW   certified 55328, not certified 0
+3x7 M eW   certified 15392, not certified 960  [Z-F=0 x960]
+3x7 total certified 1746304, not certified 11904
+EW eW  +-Y-+WBWB/-+-BWBWBW/+-BWBWBWB  F=0  Z-F=*  G^Ry-F=1+*
+EW eW  +-Y-+-BWB/-+-BWBWBW/+-BWBWBWB  F=-1  Z-F=*  G^Ry-F=1+*
+EO eW  +-Y-BWBWB/-+-BWBWBW/+-+WBWBWB  F=0  Z-F=*  G^Ry-F=1+*
+EO eW  +-Y-B-BWB/-+-BWBWBW/+-+WBWBWB  F=-1  Z-F=*  G^Ry-F=1+*
+M eW   +-+-BWBWB/-Y-BWBWBW/+-+-BWBWB  F=-1  Z-F=0  G^Ry-F=1/2
+M eW   +-+-B-BWB/-Y-BWBWBW/+-+-BWBWB  F=-2  Z-F=0  G^Ry-F=1/2
+EW We  BWBW+-Y-+/WBWBWB-+-/BWBWBWB-+  F=0  Z-F=*  G^Ry-F=1+*
+EW We  B-BW+-Y-+/WBWBWB-+-/BWBWBWB-+  F=-1  Z-F=*  G^Ry-F=1+*
+EO We  BWBWB-Y-+/WBWBWB-+-/BWBWBW+-+  F=0  Z-F=*  G^Ry-F=1+*
+EO We  B-BWB-Y-+/WBWBWB-+-/BWBWBW+-+  F=-1  Z-F=*  G^Ry-F=1+*
+M We   BWBWB-+-+/WBWBWB-Y-/BWBWB-+-+  F=-1  Z-F=0  G^Ry-F=1/2
+M We   B-BWB-+-+/WBWBWB-Y-/BWBWB-+-+  F=-2  Z-F=0  G^Ry-F=1/2
+3x9 EB 0W  certified 12574720, not certified 0
+3x9 EB W0  certified 12574720, not certified 0
+3x9 EB WW  certified 10592256, not certified 0
+3x9 EB Wb  certified 1570912, not certified 0
+3x9 EB We  certified 198560, not certified 0
+3x9 EB bW  certified 1570912, not certified 0
+3x9 EB eW  certified 198560, not certified 0
+3x9 EO 0W  certified 12574720, not certified 0
+3x9 EO W0  certified 12574720, not certified 0
+3x9 EO WW  certified 10592256, not certified 0
+3x9 EO Wb  certified 1570912, not certified 0
+3x9 EO We  certified 2944, not certified 195616  [Z-F=* x195616]
+3x9 EO bW  certified 1570912, not certified 0
+3x9 EO eW  certified 2944, not certified 195616  [Z-F=* x195616]
+3x9 EW 0W  certified 8388608, not certified 0
+3x9 EW W0  certified 8388608, not certified 0
+3x9 EW WW  certified 19628032, not certified 0
+3x9 EW Wb  certified 1062880, not certified 0
+3x9 EW We  certified 2048, not certified 131104  [Z-F=* x131104]
+3x9 EW bW  certified 1062880, not certified 0
+3x9 EW eW  certified 2048, not certified 131104  [Z-F=* x131104]
+3x9 M WW   certified 7225344, not certified 0
+3x9 M Wb   certified 3696672, not certified 0
+3x9 M We   certified 997848, not certified 65032  [Z-F=0 x65032]
+3x9 M bW   certified 3696672, not certified 0
+3x9 M eW   certified 997848, not certified 65032  [Z-F=0 x65032]
+3x9 total certified 133319536, not certified 783504
