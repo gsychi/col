@@ -548,8 +548,8 @@ static XV compute_exact_guess(const Strip& s, int cid, const std::string& key, B
         int b, wr;
         {
             Timer tm(g_tSearch);
-            b = S.win(A, B, -t, false, 0);
-            wr = b < 0 ? -1 : S.win(B, A, t, false, 0);
+            b = piece_win(s, cid, A, B, -t, false, true);
+            wr = b < 0 ? -1 : piece_win(s, cid, A, B, t, false, false);
         }
         if (b < 0 || wr < 0) break;
         if (b == wr) {
@@ -923,7 +923,7 @@ static int decide(const Strip& P, const std::string& key, XV c, bool ge, int cid
         }
     }
     int w = int(P.size());
-    Search& S = ctx_search(cid, w);
+    ctx_search(cid, w);
     Mask A, B;
     to_masks(P, A, B);
     Ctx& C = g_ctx[cid];
@@ -935,7 +935,7 @@ static int decide(const Strip& P, const std::string& key, XV c, bool ge, int cid
         Timer tm(g_tSearch);
         ++g_nSearch; ++g_nDecideSearch;
         // P - c <= 0 iff Blue moving first loses; P - c >= 0 iff White moving first loses.
-        r = ge ? S.win(B, A, c.num, c.star, 0) : S.win(A, B, -c.num, c.star, 0);
+        r = ge ? piece_win(P, cid, A, B, c.num, c.star, false) : piece_win(P, cid, A, B, -c.num, c.star, true);
     }
     C.deadline = 1e18;
     if (g_vlog)
