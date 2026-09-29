@@ -127,6 +127,14 @@ coverage argument (§7) never stretches them. At `W(p)` only one-round rules
 are accepted. Every `x2` is checked; no symmetry reduction is applied inside
 `P`. JSON: type `b`, with the sub-rules in `subs`.
 
+**Exact base (`X`, flag `-xbase W`).** At a checked width `w ≤ W` where some
+obligation of the table failed, the engine computes the exact value `v` of
+`F_w` itself. If `v ≤ q`, then `F_w ≤ q` holds outright and that width needs
+no rules. This is the same kind of fact as the base widths 6 and 7 (solver
+EVIDENCE, to be certified like every other exact value). It never enters the
+stretch argument, because it is only used below `W(p)`. JSON: type `X`, `sum`
+is the exact value.
+
 ## 5. The induction
 
 Measure: `(w, number of live cells of F_w)`, ordered lexicographically.
@@ -269,7 +277,7 @@ These are the points a certification pass must replay or re-prove:
   - `fam`, `par`, `att` (attempt id); `bound` (the `q` proved);
   - `type`: `B` (Blue opening), `b` (two-round Blue opening, sub-rules in
     `subs`), `W` (White-first; `white` null means the no-move cut),
-    `R` (reserve-cut), `E` (end-block reserve);
+    `R` (reserve-cut), `E` (end-block reserve), `X` (exact base, §4);
   - `w`, `open` `[row, col]`, `white` `[row, col]` or null (reply or White
     move);
   - `seams` (cut after these columns), `drops` `[seam, rows dropped in the
