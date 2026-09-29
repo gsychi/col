@@ -29,6 +29,7 @@
 #undef main
 
 #include <array>
+#include <condition_variable>
 #include <deque>
 #include <fstream>
 #include <functional>
@@ -384,8 +385,8 @@ static bool peek(const Strip& s, int cid, XV& v) {
     return true;
 }
 
-// Closed bounds on the number part x of a value.
-struct Brk { bool hasLo = false, hasHi = false; i64 lo = 0, hi = 0; };
+// Closed bounds on the number part x of a value, and an optional first probe t.
+struct Brk { bool hasLo = false, hasHi = false, hasGuess = false; i64 lo = 0, hi = 0, guess = 0; };
 static void brk_lo(Brk& b, i64 x) { if (!b.hasLo || x > b.lo) { b.hasLo = true; b.lo = x; } }
 static void brk_hi(Brk& b, i64 x) { if (!b.hasHi || x < b.hi) { b.hasHi = true; b.hi = x; } }
 
@@ -393,7 +394,7 @@ static void brk_hi(Brk& b, i64 x) { if (!b.hasHi || x < b.hi) { b.hasHi = true; 
 // White at one end of every White-White cut edge gives G <= sum; dropping Blue at
 // one end of every Blue-Blue cut edge gives G >= sum. If some lower and some
 // upper sum are the same value, G equals it.
-struct CutB { Brk b; bool exact = false; XV val, lo = XBAD; };
+struct CutB { Brk b; bool exact = false; XV val, lo = XBAD, hi = XBAD; };
 static CutB cut_bounds(const Strip& s, int cid) {
     Timer tm(g_tCut);
     ++g_nCut;
@@ -417,7 +418,11 @@ static CutB cut_bounds(const Strip& s, int cid) {
                     los.push_back(t);
                     if (!out.lo.ok || t.num > out.lo.num) out.lo = t;
                 }
-                else { brk_hi(out.b, t.num); his.push_back(t); }
+                else {
+                    brk_hi(out.b, t.num);
+                    his.push_back(t);
+                    if (!out.hi.ok || t.num < out.hi.num) out.hi = t;
+                }
             }
         }
     }
@@ -480,6 +485,7 @@ static XV compute_exact_guess(const Strip& s, int cid, const std::string& key, B
     if (cb.b.hasLo) brk_lo(extra, cb.b.lo);
     if (cb.b.hasHi) brk_hi(extra, cb.b.hi);
     std::vector<i64> guesses = stretch_guesses(s);
+    if (extra.hasGuess) guesses.insert(guesses.begin(), extra.guess);
     Ctx& C = g_ctx[cid];
     C.abort = false;
     C.deadline = now_s() + g_limit;
@@ -540,6 +546,35 @@ static XV compute_exact_guess(const Strip& s, int cid, const std::string& key, B
     if (!res.ok) ++g_nTimeout; else ++g_nExact;
     return res;
 }
+// -comp: one thread computes a component at a time; others wanting it wait.
+// compute_value never waits on another value, so this cannot deadlock.
+static std::mutex g_flyMu;
+static std::condition_variable g_flyCv;
+static std::set<std::string> g_fly;
+static std::atomic<std::uint64_t> g_nWaited{0};
+static XV compute_value(const Strip& s, int cid, const std::string& key, const Brk* brk);
+static XV compute_once(const Strip& s, int cid, const std::string& key, const Brk* brk) {
+    {
+        std::unique_lock<std::mutex> lk(g_flyMu);
+        for (bool waited = false;; waited = true) {
+            if (!g_fly.count(key)) {
+                XV v;
+                if (waited && val_lookup(key, v)) { ++g_nWaited; return v; }
+                g_fly.insert(key);
+                break;
+            }
+            g_flyCv.wait(lk);
+        }
+    }
+    XV v = compute_value(s, cid, key, brk);
+    if (v.ok || !g_stop) val_store(key, v);
+    {
+        std::lock_guard<std::mutex> lk(g_flyMu);
+        g_fly.erase(key);
+    }
+    g_flyCv.notify_all();
+    return v;
+}
 static XV compute_value(const Strip& s, int cid, const std::string& key, const Brk* brk) {
     std::uint64_t n0 = g_nSearch;
     double t0 = now_s();
@@ -587,12 +622,11 @@ static XV xvalue(const Strip& s, int cid, bool cachedOnly, const Brk* brk = null
                 if (brk && todo.size() == 1) {
                     if (brk->hasLo) brk_lo(b, brk->lo - sum.num);
                     if (brk->hasHi) brk_hi(b, brk->hi - sum.num);
+                    if (brk->hasGuess) { b.hasGuess = true; b.guess = brk->guess - sum.num; }
                     bp = &b;
                 }
-                x = compute_value(n, cid, ck, bp);
-                if (!x.ok && g_stop) return x;
-                val_store(ck, x);
-                if (!x.ok) return XBAD;
+                x = compute_once(n, cid, ck, bp);
+                if (!x.ok) return g_stop ? x : XBAD;
             }
             sum = xadd(sum, x);
         }
@@ -767,7 +801,7 @@ static bool evaluate(const Strip& s3, const std::vector<int>& seams, SC& sc, std
 struct Fact { XV c; bool ge, res; };
 static std::unordered_map<std::string, std::vector<Fact>> g_facts;
 static std::mutex g_factMu;
-static std::atomic<std::uint64_t> g_nDecided{0}, g_nDecideSearch{0}, g_nDecideFact{0};
+static std::atomic<std::uint64_t> g_nDecided{0}, g_nDecideSearch{0}, g_nDecideFact{0}, g_nProvenPass{0};
 static int facts_answer(const std::vector<Fact>& fs, XV c, bool ge) {
     for (auto& f : fs) {
         if (!ge) {
@@ -801,6 +835,7 @@ static int decide(const Strip& P, const std::string& key, XV c, bool ge, int cid
     C.abort = false;
     C.deadline = now_s() + g_limit;
     int r;
+    double t0 = now_s();
     {
         Timer tm(g_tSearch);
         ++g_nSearch; ++g_nDecideSearch;
@@ -808,6 +843,9 @@ static int decide(const Strip& P, const std::string& key, XV c, bool ge, int cid
         r = ge ? S.win(B, A, c.num, c.star, 0) : S.win(A, B, -c.num, c.star, 0);
     }
     C.deadline = 1e18;
+    if (g_vlog)
+        LOG("DEC %s %s %s: %d cells %d time %.3f\n", draw(P).c_str(), ge ? ">=" : "<=", xs(c).c_str(), r,
+            live_cells(P), now_s() - t0);
     if (r < 0) return -1;
     int res = r ? 0 : 1;
     std::lock_guard<std::mutex> lk(g_factMu);
@@ -906,8 +944,20 @@ static bool evaluate_pruned(const Strip& s3, const Strip& base, const std::vecto
             std::string rk = canon(R);
             XV c{target->num - known.num - kp.num, bool(target->star ^ known.star ^ kp.star)};
             bool ge = cmp == 'F';
-            decided = decide(R, rk, c, ge, sc.cid);
-            if (decided >= 0 && (ge ? decided == 1 : decided == 0)) { ++g_nDecided; return false; }
+            // If a cut upper bound U of R already proves the pass (R <= U), skip the search.
+            CutB cu = cut_bounds(R, sc.cid);
+            bool proven = false;
+            if (cu.hi.ok) {
+                XV u = xadd(xadd(known, kp), cu.hi);
+                proven = cmp == 'L' ? xle(u, *target) : xlf(u, *target);
+            }
+            if (!proven) {
+                decided = decide(R, rk, c, ge, sc.cid);
+                if (decided >= 0 && (ge ? decided == 1 : decided == 0)) { ++g_nDecided; return false; }
+            } else ++g_nProvenPass;
+            // A passing piece usually sits at c: probing t = c first reuses the root
+            // search of decide() from the transposition table.
+            if (!c.star) { b.hasGuess = true; b.guess = c.num + kp.num; }
             Brk fb;
             facts_brk(rk, fb);
             if (fb.hasLo) brk_lo(b, fb.lo + kp.num);
@@ -1036,6 +1086,19 @@ static void keep_min(XV& b, XV s) {
 static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const std::vector<int>& fixedCentres,
                          bool moveIsCentre, int maxStage, const Stretch& st, SC& sc, Rule& out, long* budget = nullptr,
                          XV* best = nullptr) {
+    if (best && (g_mono || g_decide) && !sc.cachedOnly) {
+        // best only matters if no rule is found: search with full pruning first,
+        // then (on failure) redo the enumeration keeping every sum that can lower best.
+        long b0 = budget ? *budget : 0;
+        SC sc0 = sc;
+        if (search_cands(s1, moves, fixedCentres, moveIsCentre, maxStage, st, sc0, out, budget ? &b0 : nullptr)) {
+            if (budget) *budget = b0;
+            sc = sc0;
+            return true;
+        }
+        if (g_stop) return false;
+        sc = sc0;   // families created by the first pass count against the same budget
+    }
     int w = int(s1.size());
     std::vector<int> fixedList = seam_list(w, fixedCentres);
     for (int stage = 1; stage <= maxStage; ++stage)
@@ -2042,7 +2105,9 @@ static void print_stats() {
         ex, ex ? double(se) / double(ex) : 0.0, g_nGuessHit.load(), sm, fr, g_nTimeout.load(), se, g_nPruned.load(),
         g_nBadBracket.load(), now_s());
     LOG("DECIDE candidates rejected by one comparison %" PRIu64 " (%" PRIu64 " outcome searches, %" PRIu64
-        " answered by stored facts)\n", g_nDecided.load(), g_nDecideSearch.load(), g_nDecideFact.load());
+        " answered by stored facts); passes proven by a cut upper bound %" PRIu64
+        "; values taken from another thread's computation %" PRIu64 "\n",
+        g_nDecided.load(), g_nDecideSearch.load(), g_nDecideFact.load(), g_nProvenPass.load(), g_nWaited.load());
     LOG("PROFILE thread-seconds: searches %.1f, cut bounds %.1f (%" PRIu64 " calls), small-piece folding %.1f\n",
         g_tSearch * 1e-9, g_tCut * 1e-9, g_nCut.load(), g_tFold * 1e-9);
 }
