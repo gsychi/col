@@ -19,6 +19,10 @@
 //
 // Usage: xclosure [-j threads] [-L sec] [-o tag] [-M maxfam] [-S maxseams]
 //                 [-test r c w1,w2,..] [-fam w7draw] ROOT
+//        two-round: -T n (gap threshold of type G), -noG (no type G), -G (type G only:
+//                   no type b; with -test also no one-round search), -no2 (no type b),
+//                   -reply r,c[:r,c..] (G replies to try), -Gtries n, -Gdiag (G:
+//                   report every stuck configuration with its best sums)
 #define main colout5_main
 #include "xcolout5.cpp"
 #undef main
@@ -163,7 +167,7 @@ static int g_threads = 3, g_smax = 14, g_maxSeams = 2, g_maxFam = 400, g_newBudg
 static bool g_diag = false, g_allDrops = false;
 static int g_rwFar = 2;
 static int g_T = 6;             // gap-representative rules: gaps >= g_T stand for all longer ones
-static bool g_gapRule = true;
+static bool g_gapRule = true, g_gOnly = false;   // -noG / -G (G is the only two-round rule)
 static double g_limit = 900;
 static Cache* g_vc;
 static TT* g_tt;
@@ -368,6 +372,7 @@ struct Rule {
     // the rule was checked on, and column ranges that must stay stretchable.
     std::vector<int> gaps;
     std::vector<std::pair<int, int>> sranges;
+    std::vector<std::pair<int, int>> ins;   // per range: insertion column j, piece index
     std::string board;
 };
 struct SC { int cid; bool cachedOnly, allowNew, allowDom; int newBudget; };
@@ -490,12 +495,18 @@ struct Stretch {
     // columns j and j+1, j in [lo - 1, hi], inside the neutral middle of a family piece.
     std::vector<std::pair<int, int>> ranges;
 };
-static bool ranges_ok(const Stretch& st, const std::vector<PieceRec>& pcs) {
+static bool ranges_ok(const Stretch& st, const std::vector<PieceRec>& pcs, std::vector<std::pair<int, int>>* ins) {
+    if (ins) ins->clear();
     for (auto [lo, hi] : st.ranges) {
         bool ok = false;
-        for (auto& p : pcs) {
+        for (std::size_t i = 0; i < pcs.size() && !ok; ++i) {
+            auto& p = pcs[i];
             if (p.src == 'x') continue;
-            if (std::max(p.a + 2, lo - 1) <= std::min(p.b - 3, hi)) { ok = true; break; }
+            int j = std::max(p.a + 2, lo - 1);
+            if (j <= std::min(p.b - 3, hi)) {
+                ok = true;
+                if (ins) ins->push_back({j, int(i)});
+            }
         }
         if (!ok) return false;
     }
@@ -521,8 +532,14 @@ static std::vector<int> seam_list(int w, const std::vector<int>& centres) {
 }
 // Seams lie in the windows around the fixed centres and, if moveIsCentre, around
 // the White move's column. budget (if given) caps the number of cuts evaluated.
+// best (if given) receives the smallest admissible sum with no White move
+// (best[0]) and with one (best[1]).
+static void keep_min(XV& b, XV s) {
+    if (!b.ok || s.num < b.num || (s.num == b.num && !s.star && b.star)) b = s;
+}
 static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const std::vector<int>& fixedCentres,
-                         bool moveIsCentre, int maxStage, const Stretch& st, SC& sc, Rule& out, long* budget = nullptr) {
+                         bool moveIsCentre, int maxStage, const Stretch& st, SC& sc, Rule& out, long* budget = nullptr,
+                         XV* best = nullptr) {
     int w = int(s1.size());
     std::vector<int> fixedList = seam_list(w, fixedCentres);
     for (int stage = 1; stage <= maxStage; ++stage)
@@ -543,16 +560,19 @@ static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const 
                     std::vector<PieceRec> pcs;
                     XV sum;
                     if (!evaluate(dv.s, seams, sc, pcs, sum)) continue;
-                    bool ok = mv.cmp == 'L' ? xle(sum, mv.target) : xlf(sum, mv.target);
-                    if (!ok) continue;
                     bool fl = pcs.front().b - pcs.front().a + 1 >= 8, fr = pcs.back().b - pcs.back().a + 1 >= 8;
                     if (st.mode == 1 && ((st.L && !fl) || (st.R && !fr))) continue;
                     if (st.mode == 2 && !fl && !fr) continue;
-                    if (!ranges_ok(st, pcs)) continue;
+                    std::vector<std::pair<int, int>> ins;
+                    if (!ranges_ok(st, pcs, &ins)) continue;
+                    if (best) keep_min(best[mv.r >= 0], sum);
+                    bool ok = mv.cmp == 'L' ? xle(sum, mv.target) : xlf(sum, mv.target);
+                    if (!ok) continue;
                     out.w = w; out.rrow = mv.r; out.rcol = mv.r >= 0 ? mv.c : -1;
                     out.seams = seams; out.drops = dv.d; out.pieces = pcs; out.sum = sum;
                     out.target = mv.target; out.cmp = mv.cmp;
                     out.sranges = st.ranges;
+                    out.ins = ins;
                     out.stretch = st.mode == 0 ? "" : std::string(fl ? "L" : "") + (fr ? "R" : "");
                     return true;
                 }
@@ -799,9 +819,12 @@ static std::string rule_json(const Rule& R, int fam, int par, int att, XV q) {
     }
     if (R.type == 'G') o << ",\"T\":" << g_T;
     if (!R.sranges.empty()) {
-        o << ",\"stretch_cols\":[";
+        o << ",\"sranges\":[";
         for (std::size_t i = 0; i < R.sranges.size(); ++i)
             o << (i ? "," : "") << "[" << R.sranges[i].first << "," << R.sranges[i].second << "]";
+        o << "],\"ins\":[";
+        for (std::size_t i = 0; i < R.ins.size(); ++i)
+            o << (i ? "," : "") << "[" << R.ins[i].first << "," << R.ins[i].second << "]";
         o << "]";
     }
     if (!R.subs.empty()) {
@@ -925,7 +948,8 @@ static std::vector<GCfg> gap_configs(const Layout& L, bool hasR) {
     }
     return out;
 }
-static bool gap_sub(const Layout& L, const GCfg& cf, int oc, XV q, XV qR, int cid, bool cheap, Rule& sub) {
+static bool gap_sub(const Layout& L, const GCfg& cf, int oc, XV q, XV qR, int cid, bool cheap, Rule& sub,
+                    XV* best = nullptr) {
     Strip P = build(L, cf.gaps);
     int w = int(P.size());
     Stretch st;
@@ -965,12 +989,15 @@ static bool gap_sub(const Layout& L, const GCfg& cf, int oc, XV q, XV qR, int ci
     for (int cap : {2, 3}) {
         bool got = three_pass(cid, [&](SC& sc) {
             long b = budget;
-            return search_cands(base, moves, centres, moveCentre, cap, st, sc, sub, &b);
+            return search_cands(base, moves, centres, moveCentre, cap, st, sc, sub, &b, best);
         });
         if (got) return true;
     }
     return false;
 }
+static std::vector<std::pair<int, int>> g_forceReplies;   // -reply r,c[:r,c...]
+static int g_gTries = 6;
+static bool g_gDiag = false;
 // par: spread the sub-rules over g_threads contexts (only when not already inside pfor).
 static bool find_BG(const Strip& s, int r, int c, XV q, int cid, Rule& out, bool par) {
     Strip s1 = s;
@@ -992,21 +1019,27 @@ static bool find_BG(const Strip& s, int r, int c, XV q, int cid, Rule& out, bool
         if (par) pfor(n, fn);
         else for (int i = 0; i < n && !g_stop; ++i) fn(i, cid);
     };
+    bool needL = atMax && c >= 9, needR = atMax && w - 1 - c >= 9;
     for (int cc = std::max(0, c - RW); cc <= std::min(w - 1, c + RW); ++cc)
         for (int rr = 0; rr < 5; ++rr) {
             if (!((s1[cc].b >> rr) & 1)) continue;
+            if (!g_forceReplies.empty() &&
+                std::find(g_forceReplies.begin(), g_forceReplies.end(), std::make_pair(rr, cc)) == g_forceReplies.end())
+                continue;
             Strip P = s1;
             wmove(P, rr, cc);
             Rep R;
             R.rr = rr; R.cc = cc;
             R.L = layout_of(P);
             int k = int(R.L.gaps.size());
-            if (atMax) {
-                // The stretched side's gap must be a long gap on that side of the opening.
+            if (needL || needR) {
+                // NOTES §4a.6: a side stretched beyond W(p) must have a long gap containing
+                // column 3 (left) or w-4 (right); stretching lengthens exactly that gap.
                 std::vector<int> st;
                 build(R.L, R.L.gaps, &st);
-                bool okL = c < 9 || (k > 0 && R.L.gaps[0] >= g_T && st[0] + R.L.gaps[0] <= c);
-                bool okR = w - 1 - c < 9 || (k > 0 && R.L.gaps[k - 1] >= g_T && st[k - 1] > c);
+                bool okL = !needL || (k > 0 && R.L.gaps[0] >= g_T && st[0] <= 3 && 3 < st[0] + R.L.gaps[0]);
+                bool okR = !needR || (k > 0 && R.L.gaps[k - 1] >= g_T && st[k - 1] <= w - 4 &&
+                                      w - 4 < st[k - 1] + R.L.gaps[k - 1]);
                 if (!okL || !okR) continue;
             }
             R.cfgs = gap_configs(R.L, hasR);
@@ -1031,38 +1064,43 @@ static bool find_BG(const Strip& s, int r, int c, XV q, int cid, Rule& out, bool
     std::stable_sort(reps.begin(), reps.end(), [](const Rep& a, const Rep& b) { return a.fails < b.fails; });
     int tried = 0;
     for (auto& R : reps) {
-        if (++tried > 6 || g_stop) break;
+        if (++tried > g_gTries || g_stop) break;
         std::vector<int> todo;
         for (std::size_t i = 0; i < R.cfgs.size(); ++i) if (!R.done[i]) todo.push_back(int(i));
         std::atomic<bool> stuck{false};
-        std::atomic<int> closed{0};
+        std::atomic<int> closed{0}, nstuck{0};
         std::mutex smu;
         std::string stuckAt;
         run(int(todo.size()), [&](int k, int t) {
-            if (stuck) return;
+            if (stuck && !g_gDiag) return;
             int i = todo[k];
-            if (gap_sub(R.L, R.cfgs[i], R.oc[i], q, qR, t, false, R.subs[i])) { R.done[i] = 1; ++closed; return; }
+            XV best[2] = {XBAD, XBAD};
+            if (gap_sub(R.L, R.cfgs[i], R.oc[i], q, qR, t, false, R.subs[i], best)) { R.done[i] = 1; ++closed; return; }
             if (g_stop) return;
+            ++nstuck;
+            auto& cf = R.cfgs[i];
+            std::string gs;
+            for (int g : cf.gaps) gs += (gs.empty() ? "" : ",") + std::to_string(g);
+            std::string d = "gaps [" + gs + "] second move (" + std::to_string(cf.xr) + "," + std::to_string(cf.x) +
+                            ") on " + draw(build(R.L, cf.gaps)) + " best no-reply " + xs(best[0]) + ", after reply " +
+                            xs(best[1]);
+            if (g_gDiag) LOG("        STUCK %s\n", d.c_str());
             std::lock_guard<std::mutex> lk(smu);
-            if (!stuck) {
-                stuck = true;
-                auto& cf = R.cfgs[i];
-                std::string gs;
-                for (int g : cf.gaps) gs += (gs.empty() ? "" : ",") + std::to_string(g);
-                stuckAt = "gaps [" + gs + "] second move (" + std::to_string(cf.xr) + "," + std::to_string(cf.x) +
-                          ") on " + draw(build(R.L, cf.gaps));
-            }
+            if (!stuck) { stuck = true; stuckAt = d; }
         });
         if (g_stop) return false;
         LOG("      gap rule w=%d (%d,%d) reply (%d,%d): %zu configurations, %d cheap failures, %s\n", w, r, c, R.rr,
-            R.cc, R.cfgs.size(), R.fails, stuck ? ("stuck after " + std::to_string(closed.load()) + ": " + stuckAt).c_str()
-                                                : "all closed");
+            R.cc, R.cfgs.size(), R.fails,
+            stuck ? (std::to_string(nstuck.load()) + " stuck (" + std::to_string(closed.load()) +
+                     " closed in deep pass), first: " + stuckAt).c_str()
+                  : "all closed");
         if (stuck) continue;
         Strip P = s1;
         wmove(P, R.rr, R.cc);
         out = Rule();
         out.type = 'G'; out.w = w; out.orow = r; out.ocol = c; out.rrow = R.rr; out.rcol = R.cc;
         out.target = q; out.cmp = 'L'; out.subs = R.subs; out.gaps = R.L.gaps; out.board = draw(P);
+        out.stretch = std::string(needL ? "L" : "") + (needR ? "R" : "");
         return true;
     }
     return false;
@@ -1154,7 +1192,7 @@ static Outcome run_table(int id, int p, XV q, bool collectAll) {
             auto& T = tasks[i];
             Strip s = member(f, T.w);
             bool got = g_gapRule && find_BG(s, T.r, T.c, q, t, rules[i], false);
-            if (!got && !g_stop && g_twoRound && (T.w < wmax_of(p) || g_wmaxOverride))
+            if (!got && !g_stop && g_twoRound && !g_gOnly && (T.w < wmax_of(p) || g_wmaxOverride))
                 got = find_B2(s, T.r, T.c, q, t, rules[i]);
             if (g_stop) return;
             if (got) {
@@ -1407,7 +1445,6 @@ static void load_hints(const std::string& path) {
 int main(int argc, char** argv) {
     std::string root = "KD", tag = "xrun", famDraw;
     int tr = -1, tc = -1;
-    bool gOnly = false;
     std::vector<int> testW;
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
@@ -1427,7 +1464,17 @@ int main(int argc, char** argv) {
         else if (a == "-rwfar") g_rwFar = std::atoi(argv[++i]);
         else if (a == "-T") g_T = std::atoi(argv[++i]);
         else if (a == "-noG") g_gapRule = false;
-        else if (a == "-G") gOnly = true;
+        else if (a == "-G") g_gOnly = true;
+        else if (a == "-Gdiag") g_gDiag = true;
+        else if (a == "-Gtries") g_gTries = std::atoi(argv[++i]);
+        else if (a == "-reply") {
+            std::stringstream rs(argv[++i]);
+            std::string t;
+            while (std::getline(rs, t, ':')) {
+                auto k = t.find(',');
+                g_forceReplies.push_back({std::atoi(t.substr(0, k).c_str()), std::atoi(t.substr(k + 1).c_str())});
+            }
+        }
         else if (a == "-B2") g_b2Budget = std::atol(argv[++i]);
         else if (a == "-test") {
             tr = std::atoi(argv[++i]); tc = std::atoi(argv[++i]);
@@ -1495,13 +1542,13 @@ int main(int argc, char** argv) {
                 continue;
             }
             Rule R;
-            bool got = !gOnly && find_B(s, tr, tc, q, g_threads, R);
+            bool got = !g_gOnly && find_B(s, tr, tc, q, g_threads, R);
             if (!got && g_gapRule) {
                 LOG("w=%d opening (%d,%d): trying gap-representative two-round rule, T=%d [%.0fs]\n", w, tr, tc, g_T,
                     now_s());
                 got = find_BG(s, tr, tc, q, g_threads, R, true);
             }
-            if (!got && g_twoRound && !gOnly) {
+            if (!got && g_twoRound && !g_gOnly) {
                 LOG("w=%d opening (%d,%d): no one-round rule, trying two-round [%.0fs]\n", w, tr, tc, now_s());
                 got = find_B2(s, tr, tc, q, g_threads, R);
             }
