@@ -272,3 +272,8 @@ reply is good in 12,896 (all where any reply is).
 21 of 22 classes have value `1` (P-outcome at guess 1). `D_5x9_B20_W10` (`v = (2,0)`,
 `u = (1,0)`) is INCONCLUSIVE after 600 s (40/42 root children done) and was skipped, as it
 is over the ~150 s budget.
+
+## 16. (W′) on 3×n by column cuts (PARTIAL)
+
+See `W_PRIME.md`: answer rule R* verified to 3×9, proved cut lemmas, conditional reduction to
+strip lemmas, and the two exact failing families (empty side of width ≡ 1 or 2 mod 4).

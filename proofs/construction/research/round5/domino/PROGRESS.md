@@ -33,3 +33,8 @@
   fixed Blue answers to White off-parity moves (§14). EVIDENCE: after a White off-parity
   move, `G^{R,y} − F ≥ 1/4` on all of 3×5.
 - Finished. No jobs running.
+- (W′) on 3×n: see `W_PRIME.md`. VERIFIED exhaustively to 3×9 (answer rule R*, 0 failures;
+  margin min 1/4). PROVED cut lemmas reduce (W′) to strip lemmas S1, T, K, P, E, except
+  when a side of the move's column is empty with width ≡ 1 (middle) or ≡ 2 (edge) mod 4;
+  there the cut gives exactly `F` or `F + *`. Missing: an empty-tail lemma. Upper half:
+  dual cuts certify all positions to 3×9. Replay: `run_wp.sh`.

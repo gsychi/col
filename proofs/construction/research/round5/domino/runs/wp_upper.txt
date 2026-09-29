@@ -1,0 +1,16 @@
+3x1 L=bnW R=nnn W : G-F = -1 x2
+3x1 L=bnW R=nnn b : G-F = -1 x1
+3x1 L=bnW R=nnn e : G-F = -1 x1
+3x3 L=bnW R=nnn W : G-F = -1 x240
+3x3 L=bnW R=nnn b : G-F = -1 x14
+3x3 L=bnW R=nnn b : G-F = -3/2 x1
+3x3 L=bnW R=nnn e : G-F = -1 x1
+3x5 L=bnW R=nnn W : G-F = -1 x16256
+3x5 L=bnW R=nnn b : G-F = -1 x127
+3x5 L=bnW R=nnn e : G-F = -1 x1
+3x7 L=bnW R=nnn W : G-F = -1 x1047552
+3x7 L=bnW R=nnn b : G-F = -1 x1022
+3x7 L=bnW R=nnn b : G-F = -3/2 x1
+3x7 L=bnW R=nnn e : G-F = -1 x1
+3x9 L=bnW R=nnn b : G-F = -1 x8191
+3x9 L=bnW R=nnn e : G-F = -1 x1
