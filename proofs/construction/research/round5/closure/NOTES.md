@@ -376,6 +376,24 @@ Measure: `(w, number of live cells of F_w)`, ordered lexicographically.
   that was used. When a bound is weakened, every closed (family, parity)
   that used it is re-queued and re-checked (the `users` sets in the engine).
 
+## 5a. Threshold pieces (`-thr`)
+
+A rule may bound one piece `P` of length `≤ 7` by a single inequality
+instead of its exact value. Let `R` be the sum of the bounds of the other
+pieces and `q` the target, and set `Q = q − R` (a value `y + η*`).
+
+- `src` `t`, rule `cmp` `le`: `P ≤ Q`. Then `G ≤ P + R ≤ Q + R = q`. This is
+  the same step as an exact value `v ≤ Q`.
+- `src` `u`, rule `cmp` `lf`: `P ⧏ Q`. If `q ≤ G^L` then `q ≤ P + R`, so
+  `Q = q − R ≤ P` (subtract `R`; `≤` is compatible with `+`), contradicting
+  `P ⧏ Q`. So `G^L ⧏ q`.
+
+The recorded `val` is `Q` and the rule's `sum` equals its `target`. The engine
+decides `P ≤ Q` as "Blue moving first loses `P − Q`" and `P ⧏ Q` as "White
+moving first wins `P − Q`" (F1–F4), one outcome search each. A replay checks
+that outcome for `P − y` with `η` stars added. Threshold pieces are never family
+pieces, so they are ignored by the stretch and insertion checks (§7, §4a).
+
 ## 6. Bounds, drift and weakening
 
 `v_F[0]` and `v_F[1]` are the exact values at widths 6 and 7. The engine
@@ -505,7 +523,8 @@ These are the points a certification pass must replay or re-prove:
   - `seams` (cut after these columns), `drops` `[seam, rows dropped in the
     left column, rows dropped in the right column]` as 5-bit row masks;
   - `pieces` with `cols`, `src` (`x` exact value, `f` family bound, `d`
-    dominated by family), `fam`, `fpar`, `val`, and `draw` (rows separated
+    dominated by family, `t` threshold `piece ≤ val`, `u` threshold
+    `piece ⧏ val`; §5a), `fam`, `fpar`, `val`, and `draw` (rows separated
     by `/`: `o` both, `b` Blue-only, `w` White-only, `.` neither);
   - `sum`, `target`, `cmp` (`le`: sum ≤ target; `lf`: sum ⧏ target),
     `stretch`, `sym`.
