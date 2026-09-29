@@ -1,0 +1,7 @@
+loaded 312389 exact values from /workspace/proofs/construction/research/round5/closure/runs/xc_values.txt
+loaded 14118 integer hints from /workspace/proofs/construction/research/round5/closure/runs/bounds_cache.txt
+loaded 86802 integer hints from /workspace/proofs/construction/research/round5/closure/runs/bounds_cache_t2.txt
+loaded 87000 integer hints from /workspace/proofs/construction/research/round5/closure/runs/bounds_cache_r5.txt
+value .bowooo/.ow.wob/.wowoow/.ooooob/ooooooo = -1  [1s]
+value .bowoooo/.ow.woob/.wowooow/.oooooob/oooooooo = -1/2  [1s]
+value .bowooooo/.ow.wooob/.wowoooow/.ooooooob/ooooooooo = ?  [46s]

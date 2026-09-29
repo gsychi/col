@@ -21,7 +21,7 @@
 //                 [-test r c w1,w2,..] [-fam w7draw] ROOT
 //        two-round: -T n (gap threshold of type G), -noG (no type G), -G (type G only:
 //                   no type b; with -test also no one-round search), -no2 (no type b),
-//                   -reply r,c[:r,c..] (G replies to try), -Gtries n, -Gdiag (G:
+//                   -reply r,c[:r,c..] (G replies to try), -Gtries n, -Gsec s (time cap per G sub-rule), -Gdiag (G:
 //                   report every stuck configuration with its best sums)
 //        -val d1,d2,..: print exact values of strip drawings and exit
 #define main colout5_main
@@ -168,6 +168,7 @@ static int g_threads = 3, g_smax = 14, g_maxSeams = 2, g_maxFam = 400, g_newBudg
 static bool g_diag = false, g_allDrops = false;
 static int g_rwFar = 2;
 static int g_T = 6;             // gap-representative rules: gaps >= g_T stand for all longer ones
+static double g_gSec = 300;     // time cap per deep G sub-rule search (failure is sound)
 static bool g_gapRule = true, g_gOnly = false;   // -noG / -G (G is the only two-round rule)
 static double g_limit = 900;
 static Cache* g_vc;
@@ -437,7 +438,7 @@ struct Rule {
     std::vector<std::pair<int, int>> ins;   // per range: insertion column j, piece index
     std::string board;
 };
-struct SC { int cid; bool cachedOnly, allowNew, allowDom; int newBudget; };
+struct SC { int cid; bool cachedOnly, allowNew, allowDom; int newBudget; double until = 1e18; };
 
 static bool piece_bound(const Strip& piece, SC& sc, PieceRec& rec) {
     int n = int(piece.size());
@@ -619,6 +620,7 @@ static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const 
                 for (auto& dv : drop_variants(s2, seams)) {
                     if (g_stop) return false;
                     if (budget && --*budget < 0) return false;
+                    if (sc.until < 1e17 && now_s() > sc.until) return false;
                     std::vector<PieceRec> pcs;
                     XV sum;
                     if (!evaluate(dv.s, seams, sc, pcs, sum)) continue;
@@ -1048,15 +1050,19 @@ static bool gap_sub(const Layout& L, const GCfg& cf, int oc, XV q, XV qR, int ci
     sub.board = draw(P);
     long budget = cheap ? 5000 : g_b2Budget;
     if (cheap) {
-        SC sc{cid, true, false, true, 0};
+        // The cheap pass ranks the replies; at large widths it needs family pieces
+        // that do not exist yet, so it may create a few.
+        SC sc{cid, true, true, true, 2};
         return search_cands(base, moves, centres, moveCentre, 2, st, sc, sub, &budget);
     }
+    const double until = now_s() + g_gSec;
     // Far from the opening the pieces are long family pieces, so new families are
     // tried (on cached exact values) before computing new exact values.
     for (int cap : {2, 3}) {
         SC passes[4] = {{cid, true, false, true, 0}, {cid, true, true, true, g_newBudget},
                         {cid, false, false, true, 0}, {cid, false, true, true, g_newBudget}};
         for (auto& sc : passes) {
+            sc.until = until;
             long b = budget;
             if (search_cands(base, moves, centres, moveCentre, cap, st, sc, sub, &b, best)) return true;
             if (g_stop) return false;
@@ -1089,9 +1095,11 @@ static bool find_BG(const Strip& s, int r, int c, XV q, int cid, Rule& out, bool
         else for (int i = 0; i < n && !g_stop; ++i) fn(i, cid);
     };
     bool needL = atMax && c >= 9, needR = atMax && w - 1 - c >= 9;
+    const bool vs1 = is_vsym(s1);   // mirrored replies give mirrored rules
     for (int cc = std::max(0, c - RW); cc <= std::min(w - 1, c + RW); ++cc)
         for (int rr = 0; rr < 5; ++rr) {
             if (!((s1[cc].b >> rr) & 1)) continue;
+            if (vs1 && rr > 2) continue;
             if (!g_forceReplies.empty() &&
                 std::find(g_forceReplies.begin(), g_forceReplies.end(), std::make_pair(rr, cc)) == g_forceReplies.end())
                 continue;
@@ -1545,6 +1553,7 @@ int main(int argc, char** argv) {
         else if (a == "-noG") g_gapRule = false;
         else if (a == "-G") g_gOnly = true;
         else if (a == "-Gdiag") g_gDiag = true;
+        else if (a == "-Gsec") g_gSec = std::atof(argv[++i]);
         else if (a == "-val") {
             std::stringstream vs(argv[++i]);
             std::string t;
