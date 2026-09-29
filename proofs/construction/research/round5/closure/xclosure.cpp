@@ -434,8 +434,10 @@ static bool evaluate(const Strip& s3, const std::vector<int>& seams, SC& sc, std
 }
 
 // Seam condition: for every row whose two cells at a seam are both White-legal,
-// White is dropped on one side. Four drop patterns per seam.
+// White is dropped on one side. Four drop patterns per seam, or every subset
+// when t_allDrops is set.
 struct DropV { Strip s; std::vector<std::array<int, 3>> d; };
+static thread_local bool t_allDrops = false;
 static std::vector<DropV> drop_variants(const Strip& s, const std::vector<int>& seams) {
     std::vector<DropV> out{{s, {}}};
     for (int j : seams) {
@@ -445,7 +447,7 @@ static std::vector<DropV> drop_variants(const Strip& s, const std::vector<int>& 
         std::uint8_t minorityLeft = 0;
         for (int r = 0; r < 5; ++r) if ((r + j) & 1) minorityLeft |= 1u << r;
         std::vector<std::uint8_t> choices{both, 0, std::uint8_t(both & minorityLeft), std::uint8_t(both & ~minorityLeft)};
-        if (g_allDrops)
+        if (t_allDrops)
             for (unsigned sub = both;; sub = (sub - 1) & both) {
                 choices.push_back(std::uint8_t(sub));
                 if (!sub) break;
@@ -526,8 +528,10 @@ static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const 
                          bool moveIsCentre, int maxStage, const Stretch& st, SC& sc, Rule& out, long* budget = nullptr) {
     int w = int(s1.size());
     std::vector<int> fixedList = seam_list(w, fixedCentres);
+    for (int dp = 0; dp < (g_allDrops ? 2 : 1); ++dp)
     for (int stage = 1; stage <= maxStage; ++stage)
         for (auto& mv : moves) {
+            t_allDrops = dp == 1;
             Strip s2 = s1;
             if (mv.r >= 0 && !wmove(s2, mv.r, mv.c)) continue;
             std::vector<int> sl = fixedList;
@@ -636,6 +640,7 @@ static long g_b2Budget = 400000;
 // used by its successful rules, so the closure explores past the failure.
 static bool g_keep = false, g_collectAll = false;
 static int g_xbase = 0;
+static int g_skipKD = 0;   // -skipkd D: root (family 0) odd parity, row-2 openings at distance >= D from both ends
 static std::set<std::pair<int, int>> g_no2;   // (family, parity) with two-round search disabled
 static bool find_B2(const Strip& s, int r, int c, XV q, int cid, Rule& out) {
     Strip s1 = s;
@@ -748,6 +753,7 @@ static void diagnose(const Strip& s, int r, int c, XV q, int cid) {
     for (int cc = std::max(0, c - RW); cc <= std::min(w - 1, c + RW); ++cc)
         for (int rr = 0; rr < 5; ++rr) if ((s1[cc].b >> rr) & 1) replies.push_back({rr, cc});
     SC sc{cid, false, true, true, 1 << 30};
+    t_allDrops = g_allDrops;
     for (auto [rr, cc] : replies) {
         Strip s2 = s1;
         if (rr >= 0) wmove(s2, rr, cc);
@@ -780,6 +786,7 @@ static void diagnose(const Strip& s, int r, int c, XV q, int cid) {
 static void diagnose_w(const Strip& s, XV t, int cid) {
     int w = int(s.size());
     SC sc{cid, false, true, true, 1 << 30};
+    t_allDrops = g_allDrops;
     for (auto& mv : white_moves(s, false, t)) {
         Strip s2 = s;
         if (mv.r >= 0) wmove(s2, mv.r, mv.c);
@@ -1141,7 +1148,6 @@ static Outcome run_table(int id, int p, XV q, bool collectAll) {
     XV qR;
     bool hasR = right_option(q, qR);
     auto ws = widths_of(p);
-    collectAll = collectAll || g_collectAll;
     const bool no2 = g_no2.count({id, p}) > 0;
     if (hasR) for (int w : ws) tasks.push_back({'W', w, -1, -1});
     for (int w : ws) {
@@ -1194,6 +1200,10 @@ static Outcome run_table(int id, int p, XV q, bool collectAll) {
     pfor(int(tasks.size()), [&](int i, int t) {
         if (failed && !collectAll) return;
         auto& T = tasks[i];
+        if (g_skipKD > 0 && id == 0 && p == 1 && T.type == 'B' && T.r == 2 && std::min(T.c, T.w - 1 - T.c) >= g_skipKD) {
+            fail_task(i, " (skipped: KD centre)");
+            return;
+        }
         Strip s = member(f, T.w);
         bool got;
         if (T.type == 'W') got = find_W(s, qR, false, t, rules[i]);
@@ -1241,7 +1251,6 @@ static Outcome run_table(int id, int p, XV q, bool collectAll) {
         if (g_keep) {
             for (std::size_t i = 0; i < tasks.size(); ++i) if (done[i]) o.rules.push_back(rules[i]);
             collect_needs(o);
-            o.rules.clear();
         }
         return o;
     }
@@ -1379,6 +1388,7 @@ static void check_family(int id, int p) {
     std::string method;
     std::vector<std::string> tried;
     std::vector<std::pair<int, int>> partialNeeds;
+    std::vector<Rule> partialRules;
     if (!q.ok) { o.why = "bound unknown"; }
     else {
         std::vector<std::string> order;
@@ -1392,7 +1402,11 @@ static void check_family(int id, int p) {
                 nl = next_level(fams[id], p);
             }
             if (m == "reserve") o = run_reserve(id, p, q);
-            else if (m == "table") { o = run_table(id, p, q, nl < 0 && last); partialNeeds = o.needs; }
+            else if (m == "table") {
+                o = run_table(id, p, q, nl < 0 && (last || g_collectAll));
+                partialNeeds = o.needs;
+                if (!o.ok) partialRules = o.rules;
+            }
             else o = run_rcut(id, p, q);
             tried.push_back(m + ": " + o.why);
             if (g_stop) return;
@@ -1426,7 +1440,10 @@ static void check_family(int id, int p) {
     int nl = next_level(F, p);
     if (nl < 0) {
         F.status[p] = -1; F.why[p] = all;
-        if (g_keep) F.needs[p] = partialNeeds;
+        if (g_keep) {
+            F.needs[p] = partialNeeds;
+            for (auto& r : partialRules) append_line(g_rulesPath, "{\"partial\":true," + rule_json(r, id, p, att, F.q[p]).substr(1));
+        }
         {
             std::lock_guard<std::mutex> lk2(g_logMu);
             std::printf("  F%d/%d FAILED at every bound level: %s\n", id, p, all.c_str());
@@ -1511,6 +1528,7 @@ int main(int argc, char** argv) {
         else if (a == "-B2") g_b2Budget = std::atol(argv[++i]);
         else if (a == "-keep") g_keep = true;
         else if (a == "-xbase") g_xbase = std::atoi(argv[++i]);
+        else if (a == "-skipkd") g_skipKD = std::atoi(argv[++i]);
         else if (a == "-q") qOverride = argv[++i];
         else if (a == "-all") g_collectAll = true;
         else if (a == "-no2fam") {
