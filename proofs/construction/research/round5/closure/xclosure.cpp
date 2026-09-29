@@ -264,10 +264,55 @@ static XV compute_exact(const Strip& s, int cid, const std::string& key) {
     if (!res.ok) ++g_nTimeout; else ++g_nExact;
     return res;
 }
-static XV xvalue(const Strip& s, int cid, bool cachedOnly) {
-    bool live = false;
-    for (auto& c : s) if (c.a | c.b) { live = true; break; }
-    if (!live) return XV{0, false};
+static bool g_comp = false;
+static std::atomic<std::uint64_t> g_nSplit{0};
+
+// Independent components of a strip. Two live cells interact only if they are
+// adjacent and share a legal colour, so a position is the disjoint sum of its
+// components, each returned trimmed to its own columns.
+static std::vector<Strip> split_components(const Strip& s) {
+    const int w = int(s.size());
+    std::vector<int> comp(5 * w, -1);
+    auto live = [&](int r, int c) { return ((s[c].a | s[c].b) >> r) & 1; };
+    auto share = [&](int r0, int c0, int r1, int c1) {
+        return ((s[c0].a >> r0) & (s[c1].a >> r1) & 1) || ((s[c0].b >> r0) & (s[c1].b >> r1) & 1);
+    };
+    std::vector<Strip> out;
+    std::vector<int> stack;
+    for (int c = 0; c < w; ++c)
+        for (int r = 0; r < 5; ++r) {
+            if (!live(r, c) || comp[r * w + c] >= 0) continue;
+            const int id = int(out.size());
+            int lo = c, hi = c;
+            std::vector<std::pair<int, int>> cells;
+            comp[r * w + c] = id;
+            stack.assign(1, r * w + c);
+            while (!stack.empty()) {
+                const int v = stack.back();
+                stack.pop_back();
+                const int vr = v / w, vc = v % w;
+                cells.push_back({vr, vc});
+                lo = std::min(lo, vc); hi = std::max(hi, vc);
+                const int nr[4] = {vr - 1, vr + 1, vr, vr}, nc[4] = {vc, vc, vc - 1, vc + 1};
+                for (int k = 0; k < 4; ++k) {
+                    const int ur = nr[k], uc = nc[k];
+                    if (ur < 0 || ur > 4 || uc < 0 || uc >= w || !live(ur, uc) || comp[ur * w + uc] >= 0) continue;
+                    if (!share(vr, vc, ur, uc)) continue;
+                    comp[ur * w + uc] = id;
+                    stack.push_back(ur * w + uc);
+                }
+            }
+            Strip piece(hi - lo + 1, Col{0, 0});
+            for (auto [cr, cc] : cells) {
+                piece[cc - lo].a |= s[cc].a & (1u << cr);
+                piece[cc - lo].b |= s[cc].b & (1u << cr);
+            }
+            out.push_back(std::move(piece));
+        }
+    return out;
+}
+
+static XV xvalue_whole(const Strip& s, int cid, bool cachedOnly) {
     std::string k = canon(s);
     XV v;
     if (val_lookup(k, v)) return v;
@@ -276,6 +321,22 @@ static XV xvalue(const Strip& s, int cid, bool cachedOnly) {
     if (!v.ok && g_stop) return v;   // interrupted, do not remember
     val_store(k, v);
     return v;
+}
+static XV xvalue(const Strip& s, int cid, bool cachedOnly) {
+    bool live = false;
+    for (auto& c : s) if (c.a | c.b) { live = true; break; }
+    if (!live) return XV{0, false};
+    if (!g_comp) return xvalue_whole(s, cid, cachedOnly);
+    XV v;
+    if (val_lookup(canon(s), v)) return v;
+    std::vector<Strip> parts = split_components(s);
+    if (parts.size() > 1) ++g_nSplit;
+    XV sum{0, false};
+    for (const Strip& p : parts) {
+        sum = xadd(sum, xvalue_whole(p, cid, cachedOnly));
+        if (!sum.ok) return sum;
+    }
+    return sum;
 }
 
 // ------------------------------------------------------------ families
@@ -1462,6 +1523,8 @@ int main(int argc, char** argv) {
     int tr = -1, tc = -1;
     std::vector<int> testW;
     std::vector<std::string> valDraws;
+    std::string valFile = "xc_values.txt", benchFile;
+    int benchN = 0;
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
         if (a == "-j") g_threads = std::atoi(argv[++i]);
@@ -1497,6 +1560,14 @@ int main(int argc, char** argv) {
             }
         }
         else if (a == "-B2") g_b2Budget = std::atol(argv[++i]);
+        else if (a == "-comp") g_comp = true;
+        else if (a == "-pass") g_pass = 1;
+        else if (a == "-refute") g_refute = std::atoi(argv[++i]);
+        else if (a == "-qrefute") g_quickRefute = std::atoi(argv[++i]);
+        else if (a == "-etc") g_etc = 1;
+        else if (a == "-smax") g_smax = std::atoi(argv[++i]);
+        else if (a == "-V") valFile = argv[++i];
+        else if (a == "-bench") { benchN = std::atoi(argv[++i]); benchFile = argv[++i]; }
         else if (a == "-test") {
             tr = std::atoi(argv[++i]); tc = std::atoi(argv[++i]);
             std::stringstream ws(argv[++i]);
@@ -1510,9 +1581,70 @@ int main(int argc, char** argv) {
     g_vc = &vc; g_tt = &tt;
     g_ctx.reset(new Ctx[g_threads + 1]);
     const std::string dir = "/workspace/proofs/construction/research/round5/closure/runs/";
-    g_valPath = dir + "xc_values.txt";
-    load_values(g_valPath);
     for (const char* h : {"bounds_cache.txt", "bounds_cache_t2.txt", "bounds_cache_r5.txt"}) load_hints(dir + h);
+    if (benchN > 0) {
+        // Recompute a deterministic sample of cached values from an empty value
+        // cache and compare with the recorded ones.
+        std::ifstream f(benchFile);
+        std::vector<std::pair<std::string, XV>> all;
+        std::string k, v;
+        while (f >> k >> v) { XV x; if (xparse(v, x)) all.push_back({unhex(k), x}); }
+        std::vector<std::pair<std::string, XV>> sample;
+        const std::size_t stride = std::max<std::size_t>(1, all.size() / std::size_t(benchN));
+        for (std::size_t i = 0; i < all.size() && int(sample.size()) < benchN; i += stride) sample.push_back(all[i]);
+        std::atomic<int> bad{0}, unk{0};
+        std::thread wd([] {
+            while (!g_quit) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                double t = now_s();
+                for (int i = 0; i <= g_threads; ++i)
+                    if (t > g_ctx[i].deadline.load()) g_ctx[i].abort = true;
+            }
+        });
+        const double t0 = now_s();
+        std::vector<double> took(sample.size(), 0);
+        pfor(int(sample.size()), [&](int i, int cid) {
+            const double ti = now_s();
+            struct Rec { double& at; double t; ~Rec() { at = now_s() - t; } } rec{took[i], ti};
+            const std::string& key = sample[i].first;
+            Strip s(key.size() / 2);
+            for (std::size_t c = 0; c < s.size(); ++c)
+                s[c] = Col{std::uint8_t(std::uint8_t(key[2 * c]) - 'a'), std::uint8_t(std::uint8_t(key[2 * c + 1]) - 'A')};
+            XV got = xvalue(s, cid, false);
+            if (!got.ok) ++unk;
+            else if (got.num != sample[i].second.num || got.star != sample[i].second.star) {
+                ++bad;
+                LOG("MISMATCH %s recorded %s got %s\n", draw(s).c_str(), xs(sample[i].second).c_str(), xs(got).c_str());
+            }
+        });
+        LOG("bench %s: %zu values in %.1fs, searches %" PRIu64 ", exact computations %" PRIu64 ", split pieces %" PRIu64
+            ", mismatches %d, unknown %d\n",
+            g_comp ? "comp" : "whole", sample.size(), now_s() - t0, g_nSearch.load(), g_nExact.load(), g_nSplit.load(),
+            bad.load(), unk.load());
+        std::vector<int> order(sample.size());
+        for (std::size_t i = 0; i < order.size(); ++i) order[i] = int(i);
+        std::sort(order.begin(), order.end(), [&](int x, int y) { return took[x] > took[y]; });
+        double total = 0;
+        for (double t : took) total += t;
+        double top = 0;
+        for (int i = 0; i < 10 && i < int(order.size()); ++i) top += took[order[i]];
+        LOG("thread-seconds %.1f; slowest 10 values %.1f (%.0f%%)\n", total, top, 100 * top / std::max(total, 1e-9));
+        for (int i = 0; i < 10 && i < int(order.size()); ++i) {
+            const std::string& key = sample[order[i]].first;
+            Strip s(key.size() / 2);
+            for (std::size_t c = 0; c < s.size(); ++c)
+                s[c] = Col{std::uint8_t(std::uint8_t(key[2 * c]) - 'a'), std::uint8_t(std::uint8_t(key[2 * c + 1]) - 'A')};
+            int live = 0;
+            for (auto& c : s) live += __builtin_popcount(unsigned(c.a | c.b));
+            LOG("  %.2fs  w=%zu live=%d value %s  %s\n", took[order[i]], s.size(), live, xs(sample[order[i]].second).c_str(),
+                draw(s).c_str());
+        }
+        g_quit = true;
+        wd.join();
+        return bad ? 2 : 0;
+    }
+    g_valPath = dir + valFile;
+    load_values(g_valPath);
     g_rulesPath = dir + tag + "_rules.jsonl";
     g_famPath = dir + tag + "_families.json";
 
