@@ -24,6 +24,7 @@
 //                   -reply r,c[:r,c..] (G replies to try), -Gtries n, -Gsec s (time cap per G sub-rule), -Gdiag (G:
 //                   report every stuck configuration with its best sums)
 //        -val d1,d2,..: print exact values of strip drawings and exit
+//                 [-vals/-valw w1,w2,..] [-keep] [-all] [-no2fam id/p]
 #define main colout5_main
 #include "xcolout5.cpp"
 #undef main
@@ -1333,6 +1334,11 @@ static bool find_W(const Strip& s, XV target, bool rcut, int cid, Rule& out) {
 // windows around the opening and x2, and (W) for q's Right option.
 static bool g_twoRound = true, g_verbose = false;
 static long g_b2Budget = 400000;
+// -keep: a (family, parity) that fails at every level still requires the families
+// used by its successful rules, so the closure explores past the failure.
+static bool g_keep = false, g_collectAll = false;
+static int g_xbase = 0;
+static std::set<std::pair<int, int>> g_no2;   // (family, parity) with two-round search disabled
 static bool find_B2(const Strip& s, int r, int c, XV q, int cid, Rule& out) {
     Strip s1 = s;
     if (!bmove(s1, r, c)) return false;
@@ -1476,6 +1482,41 @@ static void diagnose(const Strip& s, int r, int c, XV q, int cid) {
         bool ok = best.ok && (rr < 0 ? xlf(best, q) : xle(best, q));
         LOG("  reply %s: best %s %s%s\n",
             rr < 0 ? "none" : ("(" + std::to_string(rr) + "," + std::to_string(cc) + ")").c_str(), xs(best).c_str(),
+            bd.c_str(), ok ? "  OK" : "");
+    }
+}
+
+// Diagnostic for a White-first obligation G <| t: for every White move (or none),
+// the smallest cut sum with seams in the window around the move (around columns 3
+// and w-4 for no move). A move closes with sum <= t, no move with sum <| t.
+static void diagnose_w(const Strip& s, XV t, int cid) {
+    int w = int(s.size());
+    SC sc{cid, false, true, true, 1 << 30};
+    for (auto& mv : white_moves(s, false, t)) {
+        Strip s2 = s;
+        if (mv.r >= 0) wmove(s2, mv.r, mv.c);
+        std::vector<int> cs;
+        if (mv.r >= 0) cs.push_back(mv.c); else { cs.push_back(3); cs.push_back(w - 4); }
+        std::vector<int> sl = seam_list(w, cs);
+        XV best = XBAD;
+        std::string bd;
+        for (int stage = 1; stage <= g_maxSeams; ++stage)
+            for (auto& seams : combos(sl, stage))
+                for (auto& dv : drop_variants(s2, seams)) {
+                    std::vector<PieceRec> pcs;
+                    XV sum;
+                    if (!evaluate(dv.s, seams, sc, pcs, sum)) continue;
+                    if (!best.ok || sum.num < best.num || (sum.num == best.num && !sum.star && best.star)) {
+                        best = sum;
+                        bd.clear();
+                        for (auto& p : pcs)
+                            bd += "[" + std::to_string(p.b - p.a + 1) + (p.src == 'x' ? "" : p.src == 'f' ? "F" : "D") +
+                                  (p.fam >= 0 ? std::to_string(p.fam) : "") + ":" + xs(p.val) + "]";
+                    }
+                }
+        bool ok = best.ok && (mv.r < 0 ? xlf(best, t) : xle(best, t));
+        LOG("  white %s: best %s %s%s\n",
+            mv.r < 0 ? "none" : ("(" + std::to_string(mv.r) + "," + std::to_string(mv.c) + ")").c_str(), xs(best).c_str(),
             bd.c_str(), ok ? "  OK" : "");
     }
 }
@@ -1850,6 +1891,8 @@ static Outcome run_table(int id, int p, XV q, bool collectAll) {
     XV qR;
     bool hasR = right_option(q, qR);
     auto ws = widths_of(p);
+    collectAll = collectAll || g_collectAll;
+    const bool no2 = g_no2.count({id, p}) > 0;
     if (hasR) for (int w : ws) tasks.push_back({'W', w, -1, -1});
     for (int w : ws) {
         Strip s = member(f, w);
@@ -1879,6 +1922,25 @@ static Outcome run_table(int id, int p, XV q, bool collectAll) {
         o.fails.push_back(d);
         LOG("    F%d/%d q=%s FAIL %s\n", id, p, xs(q).c_str(), d.c_str());
     };
+    // Exact base (-xbase): at a width w <= g_xbase where some obligation failed,
+    // the member's exact value v with v <= q proves F_w <= q with no rules.
+    std::mutex xbMu[32];
+    int xbState[32] = {0};
+    XV xbVal[32];
+    auto exact_base = [&](int w, int t, Rule& R) {
+        if (w > g_xbase || w >= wmax_of(p) || w >= 32) return false;
+        std::lock_guard<std::mutex> lk(xbMu[w]);
+        if (!xbState[w]) {
+            xbVal[w] = xvalue(member(f, w), t, false);
+            xbState[w] = xbVal[w].ok && xle(xbVal[w], q) ? 1 : -1;
+            LOG("    F%d/%d q=%s exact base w=%d: value %s%s\n", id, p, xs(q).c_str(), w, xs(xbVal[w]).c_str(),
+                xbState[w] > 0 ? " <= q, width closed" : " (not <= q)");
+        }
+        if (xbState[w] < 0) return false;
+        R = Rule();
+        R.type = 'X'; R.w = w; R.sum = xbVal[w]; R.target = q; R.cmp = 'L';
+        return true;
+    };
     pfor(int(tasks.size()), [&](int i, int t) {
         if (failed && !collectAll) return;
         auto& T = tasks[i];
@@ -1887,10 +1949,12 @@ static Outcome run_table(int id, int p, XV q, bool collectAll) {
         if (T.type == 'W') got = find_W(s, qR, false, t, rules[i]);
         else got = find_B(s, T.r, T.c, q, t, rules[i]);
         if (g_stop) return;
+        if (!got) got = exact_base(T.w, t, rules[i]);
+        if (g_stop) return;
         if (got) {
             done[i] = 1;
             rules[i].sym = std::string(is_vsym(s) ? "v" : "") + (is_hsym(s) ? "h" : "");
-        } else if (T.type == 'B' && (g_gapRule || (g_twoRound && (T.w < wmax_of(p) || g_wmaxOverride)))) {
+        } else if (T.type == 'B' && !no2 && (g_gapRule || (g_twoRound && (T.w < wmax_of(p) || g_wmaxOverride)))) {
             std::lock_guard<std::mutex> lk(fmu);
             retry.push_back(i);
         } else fail_task(i, "");
@@ -1924,6 +1988,11 @@ static Outcome run_table(int id, int p, XV q, bool collectAll) {
     if (failed) {
         std::sort(o.fails.begin(), o.fails.end());
         o.why = "table: " + std::to_string(o.fails.size()) + " failure(s), first " + o.fails.front();
+        if (g_keep) {
+            for (std::size_t i = 0; i < tasks.size(); ++i) if (done[i]) o.rules.push_back(rules[i]);
+            collect_needs(o);
+            o.rules.clear();
+        }
         return o;
     }
     for (std::size_t i = 0; i < tasks.size(); ++i) o.rules.push_back(rules[i]);
@@ -2059,6 +2128,7 @@ static void check_family(int id, int p) {
     Outcome o;
     std::string method;
     std::vector<std::string> tried;
+    std::vector<std::pair<int, int>> partialNeeds;
     if (!q.ok) { o.why = "bound unknown"; }
     else {
         std::vector<std::string> order;
@@ -2072,7 +2142,7 @@ static void check_family(int id, int p) {
                 nl = next_level(fams[id], p);
             }
             if (m == "reserve") o = run_reserve(id, p, q);
-            else if (m == "table") o = run_table(id, p, q, nl < 0 && last);
+            else if (m == "table") { o = run_table(id, p, q, nl < 0 && last); partialNeeds = o.needs; }
             else o = run_rcut(id, p, q);
             tried.push_back(m + ": " + o.why);
             if (g_stop) return;
@@ -2106,9 +2176,18 @@ static void check_family(int id, int p) {
     int nl = next_level(F, p);
     if (nl < 0) {
         F.status[p] = -1; F.why[p] = all;
-        std::lock_guard<std::mutex> lk2(g_logMu);
-        std::printf("  F%d/%d FAILED at every bound level: %s\n", id, p, all.c_str());
-        std::fflush(stdout);
+        if (g_keep) F.needs[p] = partialNeeds;
+        {
+            std::lock_guard<std::mutex> lk2(g_logMu);
+            std::printf("  F%d/%d FAILED at every bound level: %s\n", id, p, all.c_str());
+            if (g_keep && !partialNeeds.empty())
+                std::printf("  F%d/%d keep: requiring %zu (family, parity) used by its successful rules\n", id, p,
+                            partialNeeds.size());
+            std::fflush(stdout);
+        }
+        if (g_keep)
+            for (auto& [g, gp] : partialNeeds)
+                if (fams[g].status[gp] == 0) { fams[g].status[gp] = 1; work.push_back({g, gp}); }
         return;
     }
     F.level[p] = nl;
@@ -2267,6 +2346,8 @@ int main(int argc, char** argv) {
     std::string valsArg, validateFile;
     int onlyPar = -1, valN = 0, valSeed = 1;
     bool valWarm = false;
+    std::vector<int> valW;
+    std::string qOverride;
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
         if (a == "-j") g_threads = std::atoi(argv[++i]);
@@ -2325,7 +2406,21 @@ int main(int argc, char** argv) {
         else if (a == "-vlog") g_vlog = true;
         else if (a == "-validate") {
             validateFile = argv[++i]; valN = std::atoi(argv[++i]); valSeed = std::atoi(argv[++i]);
-        } else if (a == "-test") {
+        }
+        else if (a == "-keep") g_keep = true;
+        else if (a == "-xbase") g_xbase = std::atoi(argv[++i]);
+        else if (a == "-q") qOverride = argv[++i];
+        else if (a == "-all") g_collectAll = true;
+        else if (a == "-no2fam") {
+            int fi = 0, fp = 0;
+            if (std::sscanf(argv[++i], "%d/%d", &fi, &fp) != 2) die("-no2fam needs id/parity");
+            g_no2.insert({fi, fp});
+        } else if (a == "-valw") {
+            std::stringstream ws(argv[++i]);
+            std::string t;
+            while (std::getline(ws, t, ',')) valW.push_back(std::atoi(t.c_str()));
+        }
+        else if (a == "-test") {
             tr = std::atoi(argv[++i]); tc = std::atoi(argv[++i]);
             std::stringstream ws(argv[++i]);
             std::string t;
@@ -2463,10 +2558,25 @@ int main(int argc, char** argv) {
     }
     int rid = get_family(f, root, g_threads, -1);
     int rc = 0;
-    if (!testW.empty()) {
+    if (!valW.empty()) {
+        for (int w : valW) {
+            Strip s = member(fams[rid].f, w);
+            double t0 = now_s();
+            XV v = xvalue(s, g_threads, false);
+            LOG("value w=%d %s  (%.0fs)  %s\n", w, xs(v).c_str(), now_s() - t0, draw(s).c_str());
+        }
+    } else if (!testW.empty()) {
         for (int w : testW) {
             Strip s = member(fams[rid].f, w);
             XV q = fams[rid].q[w & 1];
+            if (!qOverride.empty() && !xparse(qOverride, q)) die("bad -q value " + qOverride);
+            if (g_diag && tr < 0) {
+                XV qR;
+                if (!right_option(q, qR)) { LOG("w=%d q=%s has no Right option\n", w, xs(q).c_str()); continue; }
+                LOG("w=%d white-first q=%s target %s diagnosis:\n", w, xs(q).c_str(), xs(qR).c_str());
+                diagnose_w(s, qR, g_threads);
+                continue;
+            }
             if (g_diag) {
                 LOG("w=%d opening (%d,%d) q=%s diagnosis:\n", w, tr, tc, xs(q).c_str());
                 diagnose(s, tr, tc, q, g_threads);

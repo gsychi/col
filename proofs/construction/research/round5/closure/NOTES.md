@@ -358,6 +358,14 @@ the index of the piece). A replay checker must:
    `a + 2 ≤ j ≤ b − 3`, and that the piece has `src` `f` or `d`;
 4. at `W(p)`, check the §4a.6 condition.
 
+**Exact base (`X`, flag `-xbase W`).** At a checked width `w ≤ W` where some
+obligation of the table failed, the engine computes the exact value `v` of
+`F_w` itself. If `v ≤ q`, then `F_w ≤ q` holds outright and that width needs
+no rules. This is the same kind of fact as the base widths 6 and 7 (solver
+EVIDENCE, to be certified like every other exact value). It never enters the
+stretch argument, because it is only used below `W(p)`. JSON: type `X`, `sum`
+is the exact value.
+
 ## 5. The induction
 
 Measure: `(w, number of live cells of F_w)`, ordered lexicographically.
@@ -522,7 +530,7 @@ These are the points a certification pass must replay or re-prove:
     `subs`), `G` (gap-representative two-round rule, §4a.7: `board`, `gaps`,
     `T`, and per sub-rule `board`, `gaps`, `sranges`, `ins`),
     `W` (White-first; `white` null means the no-move cut),
-    `R` (reserve-cut), `E` (end-block reserve);
+    `R` (reserve-cut), `E` (end-block reserve), `X` (exact base, §4);
   - `w`, `open` `[row, col]`, `white` `[row, col]` or null (reply or White
     move);
   - `seams` (cut after these columns), `drops` `[seam, rows dropped in the
