@@ -33,10 +33,12 @@ static Choice rule(u64 blue, u64 white, u64 a1, int y) {
     bool lEmpty = c > 0 && !((blue | white) & left), rEmpty = c < K - 1 && !((blue | white) & right);
     bool lW = (white & left) != 0, rW = (white & right) != 0;
     if (r == 1) {
-        if (lEmpty) return {"M-empty", cell(0, c - 1)};
-        if (rEmpty) return {"M-empty", cell(0, c + 1)};
         if (lW && rW) return {"M-WW", -1};
-        return {"M-Wb", -1};
+        int s = lW ? 1 : -1;  // towards the side without White stones
+        const char* lab = (s < 0 ? lEmpty : rEmpty) ? "M-empty" : "M-Bonly";
+        if (legal(cell(0, c + s))) return {lab, cell(0, c + s)};
+        if (legal(cell(2, c + s))) return {lab, cell(2, c + s)};
+        return {"M-Bonly-cut", -1};
     }
     if (lEmpty && c >= 2) return {"E-empty", cell(r, c - 2)};
     if (rEmpty && c <= K - 3) return {"E-empty", cell(r, c + 2)};
