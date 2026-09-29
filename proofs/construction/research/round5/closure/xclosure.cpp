@@ -28,6 +28,7 @@
 #include <fstream>
 #include <functional>
 #include <map>
+#include <random>
 #include <set>
 #include <shared_mutex>
 #include <unordered_map>
@@ -195,6 +196,20 @@ static std::unordered_map<std::string, int> g_hint;
 static std::string g_valPath;
 static std::mutex g_valFileMu;
 static std::atomic<std::uint64_t> g_nExact{0}, g_nTimeout{0}, g_nSearch{0};
+// Speed options (SPEED.md). All off reproduces the original value path exactly.
+static bool g_comp = false, g_guess = false, g_mono = false, g_decide = false, g_sandwich = true, g_vlog = false;
+static std::atomic<std::uint64_t> g_nFree{0}, g_nSmall{0}, g_nPruned{0}, g_nBadBracket{0}, g_nGuessHit{0};
+// Profile (nanoseconds, summed over threads).
+static std::atomic<std::uint64_t> g_tSearch{0}, g_tCut{0}, g_tFold{0}, g_nCut{0};
+struct Timer {
+    std::atomic<std::uint64_t>& acc;
+    std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+    explicit Timer(std::atomic<std::uint64_t>& a) : acc(a) {}
+    ~Timer() {
+        acc += std::uint64_t(
+            std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - t0).count());
+    }
+};
 
 static bool val_lookup(const std::string& k, XV& v) {
     std::shared_lock<std::shared_mutex> lk(g_valMu);
@@ -202,6 +217,10 @@ static bool val_lookup(const std::string& k, XV& v) {
     if (it == g_val.end()) return false;
     v = it->second;
     return true;
+}
+static void val_mem(const std::string& k, XV v) {
+    std::unique_lock<std::shared_mutex> lk(g_valMu);
+    g_val.emplace(k, v);
 }
 static void val_store(const std::string& k, XV v) {
     {
@@ -247,6 +266,7 @@ static XV compute_exact(const Strip& s, int cid, const std::string& key) {
         }
         i64 t = simplest(true, lo, loOpen, true, hi, hiOpen);
         g_nSearch += 2;
+        Timer tm(g_tSearch);
         int b = S.win(A, B, -t, false, 0);
         if (b < 0) break;
         int wr = S.win(B, A, t, false, 0);
@@ -259,18 +279,319 @@ static XV compute_exact(const Strip& s, int cid, const std::string& key) {
     if (!res.ok) ++g_nTimeout; else ++g_nExact;
     return res;
 }
-static XV xvalue(const Strip& s, int cid, bool cachedOnly) {
-    bool live = false;
-    for (auto& c : s) if (c.a | c.b) { live = true; break; }
-    if (!live) return XV{0, false};
+
+// ------------------------------------------------------------ independent components
+// Cells are live if Blue- or White-legal; adjacent cells interact iff both are
+// Blue-legal or both White-legal. Distinct components are a disjoint sum.
+static bool is_live(const Strip& s) {
+    for (auto& c : s) if (c.a | c.b) return true;
+    return false;
+}
+static std::vector<Strip> components(const Strip& s) {
+    int w = int(s.size());
+    std::vector<char> seen(std::size_t(5 * w), 0);
+    std::vector<Strip> out;
+    std::vector<std::pair<int, int>> st;
+    for (int c0 = 0; c0 < w; ++c0)
+        for (int r0 = 0; r0 < 5; ++r0) {
+            if (!(((s[c0].a | s[c0].b) >> r0) & 1) || seen[r0 * w + c0]) continue;
+            Strip comp(w, Col{0, 0});
+            seen[r0 * w + c0] = 1;
+            st.assign(1, {r0, c0});
+            while (!st.empty()) {
+                auto [r, c] = st.back();
+                st.pop_back();
+                comp[c].a |= s[c].a & (1u << r);
+                comp[c].b |= s[c].b & (1u << r);
+                const int dr[4] = {-1, 1, 0, 0}, dc[4] = {0, 0, -1, 1};
+                for (int k = 0; k < 4; ++k) {
+                    int r2 = r + dr[k], c2 = c + dc[k];
+                    if (r2 < 0 || r2 > 4 || c2 < 0 || c2 >= w || seen[r2 * w + c2]) continue;
+                    bool ia = ((s[c].a >> r) & 1) && ((s[c2].a >> r2) & 1);
+                    bool ib = ((s[c].b >> r) & 1) && ((s[c2].b >> r2) & 1);
+                    if (!ia && !ib) continue;
+                    seen[r2 * w + c2] = 1;
+                    st.push_back({r2, c2});
+                }
+            }
+            out.push_back(comp);
+        }
+    return out;
+}
+// Trim dead end columns and shift the live rows to the top.
+static Strip normalize(const Strip& s) {
+    int lo = 0, hi = int(s.size()) - 1;
+    while (lo <= hi && !(s[lo].a | s[lo].b)) ++lo;
+    while (hi >= lo && !(s[hi].a | s[hi].b)) --hi;
+    if (lo > hi) return Strip();
+    std::uint8_t rows = 0;
+    for (int c = lo; c <= hi; ++c) rows |= s[c].a | s[c].b;
+    int sh = __builtin_ctz(rows);
+    Strip n;
+    for (int c = lo; c <= hi; ++c) n.push_back(Col{std::uint8_t(s[c].a >> sh), std::uint8_t(s[c].b >> sh)});
+    return n;
+}
+// Key of a component up to translation and the 4 rectangle symmetries. It equals
+// canon() of the normalized strip it names, so it is a valid g_val key.
+static std::string ckey(const Strip& n) {
+    Strip h = hflip(n);
+    return std::min(std::min(skey(n), skey(normalize(vflip(n)))), std::min(skey(h), skey(normalize(vflip(h)))));
+}
+static void to_masks(const Strip& s, Mask& A, Mask& B) {
+    int w = int(s.size());
+    A = B = 0;
+    for (int c = 0; c < w; ++c)
+        for (int r = 0; r < 5; ++r) {
+            if ((s[c].a >> r) & 1) A |= Mask(1) << (r * w + c);
+            if ((s[c].b >> r) & 1) B |= Mask(1) << (r * w + c);
+        }
+}
+static int live_cells(const Strip& s) {
+    int n = 0;
+    for (auto& c : s) n += __builtin_popcount(unsigned(c.a | c.b));
+    return n;
+}
+// Cached value of s (whole piece, or all of its components in -comp mode); no search.
+static bool lookup_any(const Strip& s, XV& v) {
+    if (!is_live(s)) { v = XV{0, false}; return true; }
+    if (val_lookup(canon(s), v)) return true;
+    if (!g_comp) return false;
+    XV sum{0, false};
+    for (auto& c : components(s)) {
+        XV x;
+        if (!val_lookup(ckey(normalize(c)), x)) return false;
+        sum = xadd(sum, x);
+    }
+    v = sum;
+    return true;
+}
+// lookup_any, or the solver's exact folding when s has at most smax live cells.
+static bool peek(const Strip& s, int cid, XV& v) {
+    if (lookup_any(s, v)) return v.ok;
+    Strip n = normalize(s);
+    if (live_cells(n) > g_smax) return false;
+    Timer tm(g_tFold);
+    Search& S = ctx_search(cid, int(n.size()));
+    Mask A, B;
+    to_masks(n, A, B);
+    Val x = S.vs.position(A, B);
+    v = XV{x.num, x.star};
+    return true;
+}
+
+// Closed bounds on the number part x of a value.
+struct Brk { bool hasLo = false, hasHi = false; i64 lo = 0, hi = 0; };
+static void brk_lo(Brk& b, i64 x) { if (!b.hasLo || x > b.lo) { b.hasLo = true; b.lo = x; } }
+static void brk_hi(Brk& b, i64 x) { if (!b.hasHi || x < b.hi) { b.hasHi = true; b.hi = x; } }
+
+// Bounds from one seam cut with cached halves (Lemma 2 and its dual): dropping
+// White at one end of every White-White cut edge gives G <= sum; dropping Blue at
+// one end of every Blue-Blue cut edge gives G >= sum. If some lower and some
+// upper sum are the same value, G equals it.
+struct CutB { Brk b; bool exact = false; XV val, lo = XBAD; };
+static CutB cut_bounds(const Strip& s, int cid) {
+    Timer tm(g_tCut);
+    ++g_nCut;
+    CutB out;
+    int n = int(s.size());
+    std::vector<XV> los, his;
+    for (int j = 0; j + 1 < n; ++j) {
+        std::uint8_t bw = s[j].b & s[j + 1].b, ba = s[j].a & s[j + 1].a;
+        for (int kind = 0; kind < 2; ++kind) {
+            std::uint8_t m = kind ? ba : bw;
+            for (int side = 0; side < 2; ++side) {
+                if (side && !m) break;
+                Strip L(s.begin(), s.begin() + j + 1), R(s.begin() + j + 1, s.end());
+                Col& e = side ? R.front() : L.back();
+                if (kind) e.a &= ~m; else e.b &= ~m;
+                XV x, y;
+                if (!peek(L, cid, x) || !peek(R, cid, y)) continue;
+                XV t = xadd(x, y);
+                if (kind) {
+                    brk_lo(out.b, t.num);
+                    los.push_back(t);
+                    if (!out.lo.ok || t.num > out.lo.num) out.lo = t;
+                }
+                else { brk_hi(out.b, t.num); his.push_back(t); }
+            }
+        }
+    }
+    if (g_sandwich)
+        for (auto& l : los)
+            for (auto& h : his)
+                if (l.num == h.num && l.star == h.star) { out.exact = true; out.val = l; return out; }
+    return out;
+}
+// Cached values of s with one neutral run two columns shorter or longer.
+static std::vector<i64> stretch_guesses(const Strip& s) {
+    std::vector<i64> out;
+    int n = int(s.size());
+    auto neutral = [&](int c) { return s[c].a == FC && s[c].b == FC; };
+    for (int j = 0; j < n;) {
+        if (!neutral(j)) { ++j; continue; }
+        int k = j;
+        while (k < n && neutral(k)) ++k;
+        std::vector<Strip> vs;
+        if (k - j >= 3) { Strip t = s; t.erase(t.begin() + j, t.begin() + j + 2); vs.push_back(t); }
+        if (n + 2 <= 7) { Strip t = s; t.insert(t.begin() + j, 2, Col{FC, FC}); vs.push_back(t); }
+        for (auto& t : vs) {
+            XV v;
+            if (lookup_any(t, v) && v.ok && std::find(out.begin(), out.end(), v.num) == out.end()) out.push_back(v.num);
+        }
+        j = k;
+    }
+    return out;
+}
+
+// Guess-then-confirm version of compute_exact. Every value is still decided by
+// the two outcome searches at one t (P: G = t, N: G = t + *); guesses, cut
+// bounds and hints only choose t, and a bracket that turns out empty is dropped.
+struct Iv { i64 lo, hi; bool lo_open, hi_open; };
+static bool iv_empty(const Iv& v) { return v.lo > v.hi || (v.lo == v.hi && (v.lo_open || v.hi_open)); }
+static Iv iv_and(const Iv& a, const Iv& b) {
+    Iv r = a;
+    if (b.lo > r.lo) { r.lo = b.lo; r.lo_open = b.lo_open; }
+    else if (b.lo == r.lo) r.lo_open = r.lo_open || b.lo_open;
+    if (b.hi < r.hi) { r.hi = b.hi; r.hi_open = b.hi_open; }
+    else if (b.hi == r.hi) r.hi_open = r.hi_open || b.hi_open;
+    return r;
+}
+static bool iv_has(const Iv& v, i64 t) {
+    return (v.lo_open ? t > v.lo : t >= v.lo) && (v.hi_open ? t < v.hi : t <= v.hi);
+}
+static XV compute_exact_guess(const Strip& s, int cid, const std::string& key, Brk extra) {
+    int w = int(s.size());
+    Search& S = ctx_search(cid, w);
+    Mask A, B;
+    to_masks(s, A, B);
+    if (live_cells(s) <= g_smax) {
+        Timer tm(g_tFold);
+        Val x = S.vs.position(A, B);
+        ++g_nSmall;
+        return XV{x.num, x.star};
+    }
+    CutB cb = cut_bounds(s, cid);
+    if (cb.exact) { ++g_nFree; return cb.val; }
+    if (cb.b.hasLo) brk_lo(extra, cb.b.lo);
+    if (cb.b.hasHi) brk_hi(extra, cb.b.hi);
+    std::vector<i64> guesses = stretch_guesses(s);
+    Ctx& C = g_ctx[cid];
+    C.abort = false;
+    C.deadline = now_s() + g_limit;
+    const i64 flo = -i64(S.alpha_upper(B) + 1) * ONE, fhi = i64(S.alpha_upper(A) + 1) * ONE;
+    Iv I{flo, fhi, false, false};
+    Iv soft{extra.hasLo ? extra.lo : flo, extra.hasHi ? extra.hi : fhi, false, false};
+    bool haveSoft = extra.hasLo || extra.hasHi, hinted = false;
+    Iv hint = I;
+    auto hit = g_hint.find(key);
+    if (hit != g_hint.end() && hit->second > -8 && hit->second <= 10) {
+        hint = Iv{i64(hit->second - 1) * ONE, i64(hit->second) * ONE, false, false};
+        hinted = true;
+    }
+    std::size_t gi = 0;
+    bool first = true;
+    XV res = XBAD;
+    for (int step = 0; step < 100; ++step) {
+        if (iv_empty(I)) die("exact value: empty interval for " + draw(s));
+        Iv W = I;
+        if (haveSoft) {
+            Iv x = iv_and(W, soft);
+            if (iv_empty(x)) { haveSoft = false; ++g_nBadBracket; }
+            else W = x;
+        }
+        if (hinted) {
+            Iv x = iv_and(W, hint);
+            if (iv_empty(x)) hinted = false;
+            else W = x;
+        }
+        i64 t;
+        bool guessed = false;
+        while (gi < guesses.size() && !iv_has(W, guesses[gi])) ++gi;
+        if (gi < guesses.size()) { t = guesses[gi++]; guessed = true; }
+        else if (haveSoft && extra.hasHi && W.hi - W.lo > ONE / 2) {
+            // Values mostly sit at or just below the cut upper bound: search down from it.
+            i64 l2 = W.hi - ONE / 2;
+            t = l2 > W.lo ? simplest(true, l2, false, true, W.hi, W.hi_open)
+                          : simplest(true, W.lo, W.lo_open, true, W.hi, W.hi_open);
+        } else t = simplest(true, W.lo, W.lo_open, true, W.hi, W.hi_open);
+        g_nSearch += 2;
+        int b, wr;
+        {
+            Timer tm(g_tSearch);
+            b = S.win(A, B, -t, false, 0);
+            wr = b < 0 ? -1 : S.win(B, A, t, false, 0);
+        }
+        if (b < 0 || wr < 0) break;
+        if (b == wr) {
+            res = XV{t, bool(b)};
+            if (first && (guessed || haveSoft)) ++g_nGuessHit;
+            break;
+        }
+        first = false;
+        if (b) I = iv_and(I, Iv{t, fhi, true, false});
+        else I = iv_and(I, Iv{flo, t, false, true});
+    }
+    C.deadline = 1e18;
+    if (!res.ok) ++g_nTimeout; else ++g_nExact;
+    return res;
+}
+static XV compute_value(const Strip& s, int cid, const std::string& key, const Brk* brk) {
+    std::uint64_t n0 = g_nSearch;
+    double t0 = now_s();
+    XV v = g_guess ? compute_exact_guess(s, cid, key, brk ? *brk : Brk()) : compute_exact(s, cid, key);
+    if (g_vlog)
+        LOG("VAL %s %s cells %d time %.3f searches~%" PRIu64 "\n", draw(s).c_str(), xs(v).c_str(), live_cells(s),
+            now_s() - t0, g_nSearch - n0);
+    return v;
+}
+
+// brk: optional bounds on the number part of the whole piece (from monotonicity).
+static XV xvalue(const Strip& s, int cid, bool cachedOnly, const Brk* brk = nullptr) {
+    if (!is_live(s)) return XV{0, false};
     std::string k = canon(s);
     XV v;
     if (val_lookup(k, v)) return v;
-    if (cachedOnly || g_stop) return XBAD;
-    v = compute_exact(s, cid, k);
-    if (!v.ok && g_stop) return v;   // interrupted, do not remember
-    val_store(k, v);
-    return v;
+    if (!g_comp) {
+        if (cachedOnly || g_stop) return XBAD;
+        v = compute_value(s, cid, k, brk);
+        if (!v.ok && g_stop) return v;   // interrupted, do not remember
+        val_store(k, v);
+        return v;
+    }
+    XV sum{0, false};
+    std::vector<std::pair<Strip, std::string>> todo;
+    for (auto& c : components(s)) {
+        Strip n = normalize(c);
+        std::string ck = ckey(n);
+        XV x;
+        if (val_lookup(ck, x)) {
+            if (!x.ok) return XBAD;
+            sum = xadd(sum, x);
+        } else todo.push_back({n, ck});
+    }
+    if (!todo.empty()) {
+        if (cachedOnly || g_stop) return XBAD;
+        for (auto& [n, ck] : todo) {
+            XV x;
+            if (val_lookup(ck, x)) {   // an equal component earlier in this piece
+                if (!x.ok) return XBAD;
+            } else {
+                Brk b, *bp = nullptr;
+                if (brk && todo.size() == 1) {
+                    if (brk->hasLo) brk_lo(b, brk->lo - sum.num);
+                    if (brk->hasHi) brk_hi(b, brk->hi - sum.num);
+                    bp = &b;
+                }
+                x = compute_value(n, cid, ck, bp);
+                if (!x.ok && g_stop) return x;
+                val_store(ck, x);
+                if (!x.ok) return XBAD;
+            }
+            sum = xadd(sum, x);
+        }
+    }
+    val_mem(k, sum);
+    return sum;
 }
 
 // ------------------------------------------------------------ families
@@ -432,6 +753,178 @@ static bool evaluate(const Strip& s3, const std::vector<int>& seams, SC& sc, std
     return true;
 }
 
+// -decide: facts "P <= c" (ge false) or "c <= P" (ge true) found by one outcome
+// search each, keyed by canon(P). They answer later questions by transitivity and
+// give bisection brackets for the number part x of P.
+struct Fact { XV c; bool ge, res; };
+static std::unordered_map<std::string, std::vector<Fact>> g_facts;
+static std::mutex g_factMu;
+static std::atomic<std::uint64_t> g_nDecided{0}, g_nDecideSearch{0}, g_nDecideFact{0};
+static int facts_answer(const std::vector<Fact>& fs, XV c, bool ge) {
+    for (auto& f : fs) {
+        if (!ge) {
+            if (!f.ge && f.res && xle(f.c, c)) return 1;     // P <= f.c <= c
+            if (!f.ge && !f.res && xle(c, f.c)) return 0;    // P <= c <= f.c would contradict
+            if (f.ge && f.res && !xle(f.c, c)) return 0;     // f.c <= P <= c would give f.c <= c
+        } else {
+            if (f.ge && f.res && xle(c, f.c)) return 1;      // c <= f.c <= P
+            if (f.ge && !f.res && xle(f.c, c)) return 0;     // f.c <= c <= P would contradict
+            if (!f.ge && f.res && !xle(c, f.c)) return 0;    // c <= P <= f.c would give c <= f.c
+        }
+    }
+    return -1;
+}
+// Is P <= c (ge false) / c <= P (ge true)? 1 yes, 0 no, -1 unknown (time limit).
+static int decide(const Strip& P, const std::string& key, XV c, bool ge, int cid) {
+    if (!is_live(P)) return ge ? xle(c, XV{0, false}) : xle(XV{0, false}, c);
+    {
+        std::lock_guard<std::mutex> lk(g_factMu);
+        auto it = g_facts.find(key);
+        if (it != g_facts.end()) {
+            int r = facts_answer(it->second, c, ge);
+            if (r >= 0) { ++g_nDecideFact; return r; }
+        }
+    }
+    int w = int(P.size());
+    Search& S = ctx_search(cid, w);
+    Mask A, B;
+    to_masks(P, A, B);
+    Ctx& C = g_ctx[cid];
+    C.abort = false;
+    C.deadline = now_s() + g_limit;
+    int r;
+    {
+        Timer tm(g_tSearch);
+        ++g_nSearch; ++g_nDecideSearch;
+        // P - c <= 0 iff Blue moving first loses; P - c >= 0 iff White moving first loses.
+        r = ge ? S.win(B, A, c.num, c.star, 0) : S.win(A, B, -c.num, c.star, 0);
+    }
+    C.deadline = 1e18;
+    if (r < 0) return -1;
+    int res = r ? 0 : 1;
+    std::lock_guard<std::mutex> lk(g_factMu);
+    g_facts[key].push_back(Fact{c, ge, bool(res)});
+    return res;
+}
+// Brackets on x (P = x or x+*) implied by the stored facts about P.
+static void facts_brk(const std::string& key, Brk& b) {
+    std::lock_guard<std::mutex> lk(g_factMu);
+    auto it = g_facts.find(key);
+    if (it == g_facts.end()) return;
+    for (auto& f : it->second) {
+        // P <= c or not (c <= P) give x <= c.x; not (P <= c) or c <= P give x >= c.x.
+        if (f.ge == f.res) brk_lo(b, f.c.num);
+        else brk_hi(b, f.c.num);
+    }
+}
+
+// -mono: like evaluate() (same family lookups and creations, in the same order),
+// but values of uncached short pieces are computed only while the candidate can
+// still pass. Lower bounds for such a piece P (so a bound on the sum from below):
+//   * base is the strip before the seam drops; P has the same Blue and at most
+//     the White permissions of the base piece on the same columns, so
+//     P >= base piece (monotonicity, NOTES §2);
+//   * a seam cut of P with Blue dropped at cut Blue-Blue edges (dual of Lemma 2).
+// dead(L) must be true only if no sum S >= L can make the candidate pass; pre()
+// holds the value-independent acceptance checks.
+// target (optional, with cmp L: sum <= target, F: sum <| target) enables -decide.
+template <class Dead, class Pre>
+static bool evaluate_pruned(const Strip& s3, const Strip& base, const std::vector<int>& seams, SC& sc,
+                            std::vector<PieceRec>& pcs, XV& sum, Dead dead, Pre pre, const XV* target = nullptr,
+                            char cmp = 'L') {
+    int prev = 0;
+    std::vector<int> cuts = seams;
+    cuts.push_back(int(s3.size()) - 1);
+    pcs.clear();
+    std::vector<int> pend;
+    for (int j : cuts) {
+        Strip piece(s3.begin() + prev, s3.begin() + j + 1);
+        PieceRec rec;
+        rec.a = prev; rec.b = j;
+        if (int(piece.size()) <= 7) {
+            XV v;
+            rec.src = 'x';
+            if (lookup_any(piece, v)) {
+                if (!v.ok) return false;
+                rec.val = v;
+            } else {
+                rec.val = XBAD;
+                pend.push_back(int(pcs.size()));
+            }
+        } else if (!piece_bound(piece, sc, rec)) return false;
+        rec.dr = draw(piece);
+        pcs.push_back(rec);
+        prev = j + 1;
+    }
+    if (!pre(pcs)) return false;
+    auto piece_of = [&](const Strip& s, int i) { return Strip(s.begin() + pcs[i].a, s.begin() + pcs[i].b + 1); };
+    std::vector<XV> lb(pcs.size(), XBAD);
+    for (int i : pend) {
+        Strip p = piece_of(s3, i), bp = piece_of(base, i);
+        XV v;
+        if (skey(bp) != skey(p) && lookup_any(bp, v) && v.ok) lb[i] = v;
+        CutB cb = cut_bounds(normalize(p), sc.cid);
+        if (cb.lo.ok && (!lb[i].ok || cb.lo.num > lb[i].num)) lb[i] = cb.lo;
+    }
+    int decided = -1;
+    while (!pend.empty()) {
+        XV lsum{0, false}, known{0, false};
+        for (std::size_t i = 0; i < pcs.size(); ++i) if (pcs[i].val.ok) known = xadd(known, pcs[i].val);
+        lsum = known;
+        bool all = true;
+        int pick = -1;
+        for (int i : pend) {
+            if (lb[i].ok) lsum = xadd(lsum, lb[i]);
+            else { all = false; if (pick < 0) pick = i; }
+        }
+        if (all && dead(lsum)) { ++g_nPruned; return false; }
+        if (pick < 0) pick = pend.front();
+        Brk b;
+        if (lb[pick].ok) brk_lo(b, lb[pick].num);
+        if (g_decide && target && pend.size() == 1) {
+            // The candidate passes iff P <= c (cmp L) or not c <= P (cmp F), with
+            // c = target - (all other pieces): one outcome search instead of a value.
+            Strip P = piece_of(s3, pick), R = P;
+            XV kp{0, false};
+            if (g_comp) {
+                for (auto& col : R) col = Col{0, 0};
+                for (auto& comp : components(P)) {
+                    XV x;
+                    if (val_lookup(ckey(normalize(comp)), x) && x.ok) { kp = xadd(kp, x); continue; }
+                    for (std::size_t c = 0; c < R.size(); ++c) { R[c].a |= comp[c].a; R[c].b |= comp[c].b; }
+                }
+            }
+            R = normalize(R);
+            std::string rk = canon(R);
+            XV c{target->num - known.num - kp.num, bool(target->star ^ known.star ^ kp.star)};
+            bool ge = cmp == 'F';
+            decided = decide(R, rk, c, ge, sc.cid);
+            if (decided >= 0 && (ge ? decided == 1 : decided == 0)) { ++g_nDecided; return false; }
+            Brk fb;
+            facts_brk(rk, fb);
+            if (fb.hasLo) brk_lo(b, fb.lo + kp.num);
+            if (fb.hasHi) brk_hi(b, fb.hi + kp.num);
+        }
+        XV v = xvalue(piece_of(s3, pick), sc.cid, false, &b);
+        if (!v.ok) return false;
+        pcs[pick].val = v;
+        pend.erase(std::find(pend.begin(), pend.end(), pick));
+        for (std::size_t k = 0; k < pend.size();) {
+            XV w;
+            if (lookup_any(piece_of(s3, pend[k]), w)) {
+                if (!w.ok) return false;
+                pcs[pend[k]].val = w;
+                pend.erase(pend.begin() + long(k));
+            } else ++k;
+        }
+    }
+    sum = XV{0, false};
+    for (auto& p : pcs) sum = xadd(sum, p.val);
+    if (decided >= 0 && !(cmp == 'L' ? xle(sum, *target) : xlf(sum, *target)))
+        die("-decide: outcome search and exact value disagree on " + draw(s3));
+    return true;
+}
+
 // Seam condition: for every row whose two cells at a seam are both White-legal,
 // White is dropped on one side. Four drop patterns per seam.
 struct DropV { Strip s; std::vector<std::array<int, 3>> d; };
@@ -542,7 +1035,19 @@ static bool search_cands(const Strip& s1, const std::vector<Cand>& moves, const 
                     if (budget && --*budget < 0) return false;
                     std::vector<PieceRec> pcs;
                     XV sum;
-                    if (!evaluate(dv.s, seams, sc, pcs, sum)) continue;
+                    bool got;
+                    if (g_mono && !sc.cachedOnly) {
+                        // A sum >= L passes "<= target" only if L <= target, and "<| target" only if not target <= L.
+                        auto dead = [&](XV l) { return mv.cmp == 'L' ? !xle(l, mv.target) : xle(mv.target, l); };
+                        auto pre = [&](const std::vector<PieceRec>& p) {
+                            bool fl = p.front().b - p.front().a + 1 >= 8, fr = p.back().b - p.back().a + 1 >= 8;
+                            if (st.mode == 1 && ((st.L && !fl) || (st.R && !fr))) return false;
+                            if (st.mode == 2 && !fl && !fr) return false;
+                            return ranges_ok(st, p);
+                        };
+                        got = evaluate_pruned(dv.s, s2, seams, sc, pcs, sum, dead, pre, &mv.target, mv.cmp);
+                    } else got = evaluate(dv.s, seams, sc, pcs, sum);
+                    if (!got) continue;
                     bool ok = mv.cmp == 'L' ? xle(sum, mv.target) : xlf(sum, mv.target);
                     if (!ok) continue;
                     bool fl = pcs.front().b - pcs.front().a + 1 >= 8, fr = pcs.back().b - pcs.back().a + 1 >= 8;
@@ -752,7 +1257,17 @@ static void diagnose(const Strip& s, int r, int c, XV q, int cid) {
                 for (auto& dv : drop_variants(s2, seams)) {
                     std::vector<PieceRec> pcs;
                     XV sum;
-                    if (!evaluate(dv.s, seams, sc, pcs, sum)) continue;
+                    bool got;
+                    if (g_mono) {
+                        // Only a strictly smaller number, or the same number without a star
+                        // against a starred best, replaces the best sum below; S >= x+* rules out S = x.
+                        auto dead = [&](XV l) {
+                            return best.ok && (l.num > best.num || (l.num == best.num && (!best.star || l.star)));
+                        };
+                        got = evaluate_pruned(dv.s, s2, seams, sc, pcs, sum, dead,
+                                              [](const std::vector<PieceRec>&) { return true; });
+                    } else got = evaluate(dv.s, seams, sc, pcs, sum);
+                    if (!got) continue;
                     if (!best.ok || sum.num < best.num || (sum.num == best.num && !sum.star && best.star)) {
                         best = sum;
                         bd.clear();
@@ -1395,6 +1910,57 @@ static void load_values(const std::string& path) {
     }
     std::fprintf(stderr, "loaded %zu exact values from %s\n", n, path.c_str());
 }
+static Strip strip_of_key(const std::string& k) {
+    Strip s;
+    for (std::size_t i = 0; i + 1 < k.size(); i += 2)
+        s.push_back(Col{std::uint8_t((k[i] - 'a') & 31), std::uint8_t((k[i + 1] - 'A') & 31)});
+    return s;
+}
+// -comp: register the component keys implied by cached whole pieces. A single
+// component gets its normalized key; for a multi-component piece with exactly one
+// unknown component that component is the difference (values form a group).
+// Pieces whose components are all known are checked against their sum.
+static void derive_components() {
+    std::vector<std::pair<std::string, XV>> all(g_val.begin(), g_val.end());
+    std::vector<std::pair<std::vector<std::string>, XV>> multi;
+    std::size_t added = 0, checked = 0, bad = 0;
+    for (auto& [k, v] : all) {
+        if (!v.ok) continue;
+        auto cs = components(strip_of_key(k));
+        std::vector<std::string> ks;
+        for (auto& c : cs) ks.push_back(ckey(normalize(c)));
+        if (ks.size() == 1) {
+            auto it = g_val.find(ks[0]);
+            if (it == g_val.end()) { g_val.emplace(ks[0], v); ++added; }
+            else if (it->second.num != v.num || it->second.star != v.star) ++bad;
+        } else if (ks.size() > 1) multi.push_back({ks, v});
+    }
+    std::vector<char> done(multi.size(), 0);
+    for (bool changed = true; changed;) {
+        changed = false;
+        for (std::size_t i = 0; i < multi.size(); ++i) {
+            if (done[i]) continue;
+            XV sum{0, false};
+            int unknown = -1, nu = 0;
+            for (std::size_t j = 0; j < multi[i].first.size(); ++j) {
+                auto it = g_val.find(multi[i].first[j]);
+                if (it == g_val.end() || !it->second.ok) { ++nu; unknown = int(j); }
+                else sum = xadd(sum, it->second);
+            }
+            XV v = multi[i].second;
+            if (nu == 0) {
+                done[i] = 1; ++checked;
+                if (sum.num != v.num || sum.star != v.star) ++bad;
+            } else if (nu == 1) {
+                g_val[multi[i].first[unknown]] = XV{v.num - sum.num, v.star != sum.star};
+                done[i] = 1; ++added; changed = true;
+            }
+        }
+    }
+    std::fprintf(stderr, "components: %zu keys derived, %zu multi-component pieces checked, %zu INCONSISTENT\n", added,
+                 checked, bad);
+    if (bad) die("component values inconsistent with cached pieces");
+}
 static void load_hints(const std::string& path) {
     std::ifstream f(path);
     std::string k;
@@ -1404,11 +1970,64 @@ static void load_hints(const std::string& path) {
     std::fprintf(stderr, "loaded %zu integer hints from %s\n", n, path.c_str());
 }
 
+static void print_stats() {
+    std::uint64_t ex = g_nExact, sm = g_nSmall, fr = g_nFree, se = g_nSearch;
+    LOG("STATS values searched %" PRIu64 " (%.2f searches each, first t right %" PRIu64 "), folded %" PRIu64
+        ", sandwiched %" PRIu64 ", timeouts %" PRIu64 "; searches %" PRIu64 "; pruned candidates %" PRIu64
+        "; dropped brackets %" PRIu64 "; %.1fs\n",
+        ex, ex ? double(se) / double(ex) : 0.0, g_nGuessHit.load(), sm, fr, g_nTimeout.load(), se, g_nPruned.load(),
+        g_nBadBracket.load(), now_s());
+    LOG("DECIDE candidates rejected by one comparison %" PRIu64 " (%" PRIu64 " outcome searches, %" PRIu64
+        " answered by stored facts)\n", g_nDecided.load(), g_nDecideSearch.load(), g_nDecideFact.load());
+    LOG("PROFILE thread-seconds: searches %.1f, cut bounds %.1f (%" PRIu64 " calls), small-piece folding %.1f\n",
+        g_tSearch * 1e-9, g_tCut * 1e-9, g_nCut.load(), g_tFold * 1e-9);
+}
+// -validate FILE N SEED: recompute N random distinct entries of a value file from
+// an empty cache with the selected value path and compare.
+// With warm, the value cache (-vals) stays loaded except for the sampled keys.
+static int run_validate(const std::string& path, int n, int seed, bool warm) {
+    std::map<std::string, std::string> recs;
+    {
+        std::ifstream f(path);
+        std::string k, v;
+        while (f >> k >> v) recs[k] = v;
+    }
+    std::vector<std::pair<std::string, std::string>> items(recs.begin(), recs.end());
+    std::mt19937 rng{unsigned(seed)};
+    std::shuffle(items.begin(), items.end(), rng);
+    if (n < int(items.size())) items.resize(std::size_t(n));
+    n = int(items.size());
+    if (warm) {
+        for (auto& it : items) g_val.erase(unhex(it.first));
+        if (g_comp) derive_components();
+    } else g_val.clear();
+    g_valPath.clear();
+    std::atomic<int> bad{0}, tmo{0};
+    double t0 = now_s();
+    pfor(n, [&](int i, int t) {
+        Strip s = strip_of_key(unhex(items[i].first));
+        XV want;
+        xparse(items[i].second, want);
+        XV got = xvalue(s, t, false);
+        if (!got.ok) ++tmo;
+        else if (got.num != want.num || got.star != want.star) {
+            ++bad;
+            LOG("MISMATCH %s file %s computed %s\n", draw(s).c_str(), items[i].second.c_str(), xs(got).c_str());
+        }
+    });
+    LOG("VALIDATE %s: %d entries (of %zu distinct), %d mismatches, %d timeouts, %.1fs, %.2f searches per entry\n",
+        path.c_str(), n, recs.size(), bad.load(), tmo.load(), now_s() - t0, n ? double(g_nSearch) / n : 0.0);
+    return bad || tmo ? 1 : 0;
+}
+
 int main(int argc, char** argv) {
     std::string root = "KD", tag = "xrun", famDraw;
     int tr = -1, tc = -1;
     bool gOnly = false;
     std::vector<int> testW;
+    std::string valsArg, valFile;
+    int onlyPar = -1, valN = 0, valSeed = 1;
+    bool valWarm = false;
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
         if (a == "-j") g_threads = std::atoi(argv[++i]);
@@ -1429,7 +2048,19 @@ int main(int argc, char** argv) {
         else if (a == "-noG") g_gapRule = false;
         else if (a == "-G") gOnly = true;
         else if (a == "-B2") g_b2Budget = std::atol(argv[++i]);
-        else if (a == "-test") {
+        else if (a == "-comp") g_comp = true;
+        else if (a == "-guess") g_guess = true;
+        else if (a == "-mono") g_mono = true;
+        else if (a == "-nosandwich") g_sandwich = false;
+        else if (a == "-decide") g_decide = true;
+        else if (a == "-fast") g_comp = g_guess = g_mono = g_decide = true;
+        else if (a == "-vals") valsArg = argv[++i];
+        else if (a == "-only") onlyPar = std::atoi(argv[++i]);
+        else if (a == "-warm") valWarm = true;
+        else if (a == "-vlog") g_vlog = true;
+        else if (a == "-validate") {
+            valFile = argv[++i]; valN = std::atoi(argv[++i]); valSeed = std::atoi(argv[++i]);
+        } else if (a == "-test") {
             tr = std::atoi(argv[++i]); tc = std::atoi(argv[++i]);
             std::stringstream ws(argv[++i]);
             std::string t;
@@ -1442,11 +2073,17 @@ int main(int argc, char** argv) {
     g_vc = &vc; g_tt = &tt;
     g_ctx.reset(new Ctx[g_threads + 1]);
     const std::string dir = "/workspace/proofs/construction/research/round5/closure/runs/";
-    g_valPath = dir + "xc_values.txt";
-    load_values(g_valPath);
+    // -vals PATH: value cache to load and append to; -vals none: start empty, write nothing.
+    g_valPath = valsArg.empty() ? dir + "xc_values.txt" : valsArg == "none" ? "" : valsArg;
+    if (!valFile.empty() && !valWarm) g_valPath.clear();
+    if (!g_valPath.empty()) load_values(g_valPath);
+    if (g_comp && valFile.empty()) derive_components();
     for (const char* h : {"bounds_cache.txt", "bounds_cache_t2.txt", "bounds_cache_r5.txt"}) load_hints(dir + h);
-    g_rulesPath = dir + tag + "_rules.jsonl";
-    g_famPath = dir + tag + "_families.json";
+    std::fprintf(stderr, "value path: comp %d guess %d mono %d decide %d sandwich %d\n", g_comp, g_guess, g_mono,
+                 g_decide, g_sandwich);
+    const std::string base = tag[0] == '/' ? tag : dir + tag;
+    g_rulesPath = base + "_rules.jsonl";
+    g_famPath = base + "_families.json";
 
     std::thread watchdog([] {
         int tick = 0;
@@ -1462,6 +2099,14 @@ int main(int argc, char** argv) {
             if (g_stop) for (int i = 0; i <= g_threads; ++i) g_ctx[i].abort = true;
         }
     });
+
+    if (!valFile.empty()) {
+        int vr = run_validate(valFile, valN, valSeed, valWarm);
+        print_stats();
+        g_quit = true;
+        watchdog.join();
+        return vr;
+    }
 
     auto letter = [](const char* p) {
         Col c{0, 0};
@@ -1509,13 +2154,15 @@ int main(int argc, char** argv) {
                 got ? rule_json(R, rid, w & 1, 0, q).c_str() : "NO RULE", now_s());
         }
     } else {
-        for (int p = 0; p < 2; ++p) require(rid, p);
+        if (onlyPar >= 0) require(rid, onlyPar);
+        else for (int p = 0; p < 2; ++p) require(rid, p);
         while (!work.empty() && !g_stop) {
             if (file_exists(g_stopPath)) { g_stop = true; break; }
             auto [id, p] = work.front();
             work.pop_front();
             check_family(id, p);
             write_families();
+            if (onlyPar >= 0) break;   // -only P: check the root at parity P, not the families it uses
         }
         int closed = 0, failed = 0, pending = 0;
         for (std::size_t i = 0; i < fams.size(); ++i)
@@ -1535,6 +2182,7 @@ int main(int argc, char** argv) {
         write_families();
         rc = failed ? 1 : 0;
     }
+    print_stats();
     g_quit = true;
     watchdog.join();
     return rc;
