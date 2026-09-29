@@ -147,10 +147,11 @@ with blocks `B_i` (all other columns, maximal neutral runs touching an end
 included in `B_0` or `B_k`). Each block between two gaps is non-empty and its
 columns next to a gap are non-neutral. For positive integers
 `h = (h_1..h_k)` let `P[h]` be the strip with the same blocks and gap lengths
-`h`. Fix `T ≥ 1` (engine default 6, CLI `-T`). Gap `i` is **long** if
+`h`. The lower limit `g_i` (not `T`) is all that §4a.6 needs, and it spares
+configurations that only stand for narrower members. Fix `T ≥ 1` (engine default 6, CLI `-T`). Gap `i` is **long** if
 `g_i ≥ T`, otherwise **short**. The **class** of the rule is
 
-    C = { P[h] : h_i = g_i for short i;  h_i ≥ T and h_i ≡ g_i (mod 2) for long i }.
+    C = { P[h] : h_i = g_i for short i;  h_i ≥ g_i and h_i ≡ g_i (mod 2) for long i }.
 
 The **representative** vector `ρ` has `ρ_i = g_i` (short) and
 `ρ_i = T + ((g_i − T) mod 2)` (long). Note `ρ_i ≤ h_i` for every `P[h] ∈ C`,
@@ -180,7 +181,8 @@ The rule is accepted if:
   Blue-legal `x2` in it, a sub-rule with an insertion point for every long gap.
 - **(G3) long-gap moves.** For every long gap `i`, every `l` with
   `T ≤ l ≤ 2T + 3` and `l ≡ g_i (mod 2)`, and every offset `u` with
-  `0 ≤ u ≤ l − 1`, `u ≤ T + 1`, `v := l − 1 − u ≤ T + 1`: on
+  `0 ≤ u ≤ l − 1`, `u ≤ T + 1`, `v := l − 1 − u ≤ T + 1`, and
+  (`u ≥ T` or `v ≥ T` or `l ≥ g_i`): on
   `S = P[ρ with ρ_i := l]` (gap `i` occupying columns `s..s+l−1`), for every
   Blue-legal `x2` in column `s + u`, a sub-rule with an insertion point for
   every other long gap, for `[s, s+u−1]` if `u ≥ T`, and for
@@ -266,7 +268,8 @@ carried along by translation.
   `u* = u` if `u ≤ T + 1`, else `u* = T + ((u − T) mod 2)`. Define `v*`
   likewise. Put `l = u* + v* + 1`. Then `u*, v* ≤ T + 1`, so `l ≤ 2T + 3`;
   `l ≡ h_i ≡ g_i (mod 2)`; and `l ≥ T`. If neither side was reduced,
-  `l = h_i ≥ T`. Otherwise the reduced side is `≥ T`, so `l ≥ T + 1`. So
+  `l = h_i ≥ g_i ≥ T`. Otherwise the reduced side is `≥ T`, so `l ≥ T + 1`
+  and the third condition of (G3) holds through `u* ≥ T` or `v* ≥ T`. So
   `(l, u*)` is a (G3) configuration. If `u* < u` then `u* ≥ T`, so the left
   sub-range was recorded; insert `(u − u*)/2` pairs there. By (a) the point is
   not next to the column of `x2`, so the new columns land left of `x2` and
@@ -498,7 +501,9 @@ These are the points a certification pass must replay or re-prove:
   and one `failed` line per failed attempt. Fields:
   - `fam`, `par`, `att` (attempt id); `bound` (the `q` proved);
   - `type`: `B` (Blue opening), `b` (two-round Blue opening, sub-rules in
-    `subs`), `W` (White-first; `white` null means the no-move cut),
+    `subs`), `G` (gap-representative two-round rule, §4a.7: `board`, `gaps`,
+    `T`, and per sub-rule `board`, `gaps`, `sranges`, `ins`),
+    `W` (White-first; `white` null means the no-move cut),
     `R` (reserve-cut), `E` (end-block reserve);
   - `w`, `open` `[row, col]`, `white` `[row, col]` or null (reply or White
     move);

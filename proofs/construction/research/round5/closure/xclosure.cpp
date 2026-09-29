@@ -23,6 +23,7 @@
 //                   no type b; with -test also no one-round search), -no2 (no type b),
 //                   -reply r,c[:r,c..] (G replies to try), -Gtries n, -Gdiag (G:
 //                   report every stuck configuration with its best sums)
+//        -val d1,d2,..: print exact values of strip drawings and exit
 #define main colout5_main
 #include "xcolout5.cpp"
 #undef main
@@ -860,7 +861,7 @@ template <class F> static void pfor(int n, F fn) {
 // ------------------------------------------------------------ gap-representative two-round rule
 // After the opening and White's reply, P = B0 N^g1 B1 ... N^gk Bk: blocks Bi
 // without neutral columns, separated by runs of neutral columns N. A gap with
-// g < T stands for itself; a gap with g >= T for every g' >= T of the same
+// g < T stands for itself; a gap with g >= T for every g' >= g of the same
 // parity. Every second Blue move is checked on a reduced configuration, and
 // every long (sub)gap must be stretchable in its sub-rule (NOTES §4a).
 static bool is_neutral(Col c) { return c.a == FC && c.b == FC; }
@@ -938,6 +939,9 @@ static std::vector<GCfg> gap_configs(const Layout& L, bool hasR) {
             for (int u = 0; u < l; ++u) {
                 int v = l - 1 - u;
                 if (lg && (u > g_T + 1 || v > g_T + 1)) continue;
+                // The class only contains gap lengths >= L.gaps[i] (NOTES §4a.1): a configuration
+                // with both sub-gaps exact stands for gap length l alone.
+                if (lg && u < g_T && v < g_T && l < L.gaps[i]) continue;
                 auto rr = long_ranges(g, st, i);
                 if (lg && u >= g_T) rr.push_back({st[i], st[i] + u - 1});
                 if (lg && v >= g_T) rr.push_back({st[i] + u + 1, st[i] + l - 1});
@@ -986,12 +990,16 @@ static bool gap_sub(const Layout& L, const GCfg& cf, int oc, XV q, XV qR, int ci
         SC sc{cid, true, false, true, 0};
         return search_cands(base, moves, centres, moveCentre, 2, st, sc, sub, &budget);
     }
+    // Far from the opening the pieces are long family pieces, so new families are
+    // tried (on cached exact values) before computing new exact values.
     for (int cap : {2, 3}) {
-        bool got = three_pass(cid, [&](SC& sc) {
+        SC passes[4] = {{cid, true, false, true, 0}, {cid, true, true, true, g_newBudget},
+                        {cid, false, false, true, 0}, {cid, false, true, true, g_newBudget}};
+        for (auto& sc : passes) {
             long b = budget;
-            return search_cands(base, moves, centres, moveCentre, cap, st, sc, sub, &b, best);
-        });
-        if (got) return true;
+            if (search_cands(base, moves, centres, moveCentre, cap, st, sc, sub, &b, best)) return true;
+            if (g_stop) return false;
+        }
     }
     return false;
 }
@@ -1075,7 +1083,14 @@ static bool find_BG(const Strip& s, int r, int c, XV q, int cid, Rule& out, bool
             if (stuck && !g_gDiag) return;
             int i = todo[k];
             XV best[2] = {XBAD, XBAD};
-            if (gap_sub(R.L, R.cfgs[i], R.oc[i], q, qR, t, false, R.subs[i], best)) { R.done[i] = 1; ++closed; return; }
+            if (gap_sub(R.L, R.cfgs[i], R.oc[i], q, qR, t, false, R.subs[i], best)) {
+                R.done[i] = 1;
+                ++closed;
+                if (g_verbose)
+                    LOG("        closed %d/%zu: second move (%d,%d) gaps %zu sum %s [%.0fs]\n", closed.load(), todo.size(),
+                        R.cfgs[i].xr, R.cfgs[i].x, R.cfgs[i].gaps.size(), xs(R.subs[i].sum).c_str(), now_s());
+                return;
+            }
             if (g_stop) return;
             ++nstuck;
             auto& cf = R.cfgs[i];
@@ -1446,6 +1461,7 @@ int main(int argc, char** argv) {
     std::string root = "KD", tag = "xrun", famDraw;
     int tr = -1, tc = -1;
     std::vector<int> testW;
+    std::vector<std::string> valDraws;
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
         if (a == "-j") g_threads = std::atoi(argv[++i]);
@@ -1466,6 +1482,11 @@ int main(int argc, char** argv) {
         else if (a == "-noG") g_gapRule = false;
         else if (a == "-G") g_gOnly = true;
         else if (a == "-Gdiag") g_gDiag = true;
+        else if (a == "-val") {
+            std::stringstream vs(argv[++i]);
+            std::string t;
+            while (std::getline(vs, t, ',')) valDraws.push_back(t);
+        }
         else if (a == "-Gtries") g_gTries = std::atoi(argv[++i]);
         else if (a == "-reply") {
             std::stringstream rs(argv[++i]);
@@ -1529,6 +1550,12 @@ int main(int argc, char** argv) {
         f.L[0] = letter("obwbo"); f.L[1] = N; f.L[2] = N;
         f.R[0] = N; f.R[1] = N; f.R[2] = letter("obwbo");
         if (root == "KD") { Strip s = member(f, 8); wmove(s, 2, 0); for (int i = 0; i < 3; ++i) f.L[i] = s[i]; }
+    }
+    if (!valDraws.empty()) {
+        for (auto& d : valDraws) LOG("value %s = %s  [%.0fs]\n", d.c_str(), xs(xvalue(undraw(d), g_threads, false)).c_str(), now_s());
+        g_quit = true;
+        watchdog.join();
+        return 0;
     }
     int rid = get_family(f, root, g_threads, -1);
     int rc = 0;
